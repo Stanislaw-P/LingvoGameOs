@@ -18,6 +18,14 @@ public class HomeController : Controller
         return View();
     }
 
+    // тестирование класса пользователей
+    public string Usser()
+    {
+        User user = new PlayerUser("ddkhugaev@gmail.com", "1234", "Давид", "Хугаев");
+        return user.ToString();
+        //return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
