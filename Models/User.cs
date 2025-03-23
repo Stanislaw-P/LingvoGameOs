@@ -2,8 +2,7 @@
 {
     public abstract class User
     {
-        static int instanceCounter = 0;
-        int Id { get; }
+        Guid Id { get; }
         string Email { get; set; }
         string Password { get; set; }
         string Name { get; set; }
@@ -13,16 +12,15 @@
 
         public User(string email, string password, string name, string surname)
         {
-            Id = instanceCounter;
+            Id = Guid.NewGuid();
             Email = email;
             Password = password;
             Name = name;
             Surname = surname;
-            instanceCounter++;
         }
         public override string ToString()
         {
-            return $"Id: {Id}\nEmail: {Email}\nPassword: {Password}\nName: {Name}\nSurname: {Surname}";
+            return $"Email: {Email}\nPassword: {Password}\nName: {Name}\nSurname: {Surname}";
         }
     }
 }
