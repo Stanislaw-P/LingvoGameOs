@@ -12,6 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlite(connectionString)); // Используем строку подключения
 
+builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 
 var app = builder.Build();
 

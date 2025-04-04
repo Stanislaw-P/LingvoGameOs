@@ -1,6 +1,6 @@
 ﻿namespace LingvoGameOs.Models
 {
-    public abstract class User
+    public abstract class UserViewModel
     {
         Guid Id { get; }
         string Email { get; set; }
@@ -10,7 +10,7 @@
         string Description { get; set; }
         string ImagePath { get; set; }
 
-        public User(string email, string password, string name, string surname)
+        public UserViewModel(string email, string password, string name, string surname)
         {
             Id = Guid.NewGuid();
             Email = email;
