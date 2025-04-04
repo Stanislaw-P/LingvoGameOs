@@ -1,4 +1,4 @@
-using LingvoGame.Db;
+using LingvoGameOs.data;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 // Настройка строки подключения из appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DatabaseContext>(options =>
-	options.UseSqlite(connectionString)); // Используем строку подключения
+    options.UseSqlite(connectionString)); // Используем строку подключения
 
 
 var app = builder.Build();
