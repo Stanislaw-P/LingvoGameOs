@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace LingvoGameOs.Migrations
+namespace LingvoGameOs.Db.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

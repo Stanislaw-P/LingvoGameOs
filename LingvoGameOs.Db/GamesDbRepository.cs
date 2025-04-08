@@ -1,7 +1,7 @@
-﻿using LingvoGameOs.data.Models;
+﻿using LingvoGameOs.Db.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LingvoGameOs.data
+namespace LingvoGameOs.Db
 {
 	public class GamesDbRepository : IGamesRepository
 	{

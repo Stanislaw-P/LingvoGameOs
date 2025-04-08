@@ -1,6 +1,6 @@
-﻿using LingvoGameOs.data.Models;
+﻿using LingvoGameOs.Db.Models;
 
-namespace LingvoGameOs.data
+namespace LingvoGameOs.Db
 {
 	public interface IGamesRepository
 	{

@@ -1,4 +1,4 @@
-using LingvoGameOs.data;
+using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using System;
 

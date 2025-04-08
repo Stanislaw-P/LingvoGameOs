@@ -1,4 +1,4 @@
-﻿namespace LingvoGameOs.data.Models
+﻿namespace LingvoGameOs.Db.Models
 {
 	public class GameType
 	{

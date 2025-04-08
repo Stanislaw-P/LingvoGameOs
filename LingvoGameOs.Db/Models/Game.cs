@@ -1,8 +1,8 @@
 ﻿using System.Security.AccessControl;
 using System;
-using LingvoGameOs.Models;
+using LingvoGameOs.Db.Models;
 
-namespace LingvoGameOs.data.Models
+namespace LingvoGameOs.Db.Models
 {
 	public class Game
 	{

@@ -1,8 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LingvoGameOs.Models;
-using LingvoGameOs.data;
-using LingvoGameOs.data.Models;
+
 
 namespace LingvoGameOs.Controllers;
 

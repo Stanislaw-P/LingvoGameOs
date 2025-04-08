@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LingvoGameOs.Migrations
+namespace LingvoGameOs.Db.Migrations
 {
     /// <inheritdoc />
     public partial class AddGameTable : Migration
