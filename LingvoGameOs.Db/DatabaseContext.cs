@@ -14,6 +14,6 @@ namespace LingvoGameOs.Db
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
 		{
 			Database.Migrate();
-		}
+		}	
 	}
 }
