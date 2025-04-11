@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LingvoGameOs", "LingvoGameOs.csproj", "{FC11B8D0-2D10-4ED6-964D-45E66BD2B129}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LingvoGameOs", "LingvoGameOsWeb\LingvoGameOs.csproj", "{FC11B8D0-2D10-4ED6-964D-45E66BD2B129}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LingvoGameOs.Db", "LingvoGameOs.Db\LingvoGameOs.Db.csproj", "{D6476AA9-6898-4D0E-BA89-F332327C00CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FC11B8D0-2D10-4ED6-964D-45E66BD2B129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC11B8D0-2D10-4ED6-964D-45E66BD2B129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC11B8D0-2D10-4ED6-964D-45E66BD2B129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6476AA9-6898-4D0E-BA89-F332327C00CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6476AA9-6898-4D0E-BA89-F332327C00CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6476AA9-6898-4D0E-BA89-F332327C00CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6476AA9-6898-4D0E-BA89-F332327C00CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿namespace LingvoGameOs.Models
 {
-    public class PlayerUser : User
+    public class PlayerUser : UserViewModel
     {
         public readonly string Role = "Игрок";
         int Level { get; set; } = 1;
