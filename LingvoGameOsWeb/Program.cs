@@ -13,6 +13,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlite(connectionString)); // Используем строку подключения
 
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
+builder.Services.AddTransient<IPlayerUsersRepository, PlayerUsersDbRepository>();
 
 var app = builder.Build();
 
