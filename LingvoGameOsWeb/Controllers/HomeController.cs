@@ -15,7 +15,7 @@ public class HomeController : Controller
     // тестирование класса пользователей
     public string Usser()
     {
-        UserViewModel user = new PlayerUser("ddkhugaev@gmail.com", "1234", "Давид", "Хугаев");
+        UserViewModel user = new PlayerUserViewModel("ddkhugaev@gmail.com", "1234", "Давид", "Хугаев");
         return user.ToString();
         //return View();
     }
