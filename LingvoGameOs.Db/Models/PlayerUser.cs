@@ -13,6 +13,8 @@ namespace LingvoGameOs.Db.Models
         public string Password { get; set; }
         public string Login { get; set; }
         public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Description { get; set; }
         public int Level { get; set; }
         public int Points { get; set; }
     }
