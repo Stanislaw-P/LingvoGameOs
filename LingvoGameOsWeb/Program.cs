@@ -14,6 +14,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 builder.Services.AddTransient<IPlayerUsersRepository, PlayerUsersDbRepository>();
+builder.Services.AddTransient<IDevUsersRepository, DevUsersDbRepository>();
 
 var app = builder.Build();
 

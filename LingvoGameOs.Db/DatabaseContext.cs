@@ -11,6 +11,7 @@ namespace LingvoGameOs.Db
 		public DbSet<Technology> Technologys { get; set; }
 		public DbSet<Platform> Platforms { get; set; }
 		public DbSet<PlayerUser> PlayerUsers { get; set; }
+		public DbSet<DevUser> DevUsers { get; set; }
 
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
 		{
