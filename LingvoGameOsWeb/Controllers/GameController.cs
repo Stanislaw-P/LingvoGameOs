@@ -1,5 +1,7 @@
 ﻿using LingvoGameOs.Db;
+using LingvoGameOs.Db.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace LingvoGameOs.Controllers
 {
@@ -23,7 +25,34 @@ namespace LingvoGameOs.Controllers
         public IActionResult Start(int idGame)
         {
             var existingGame = gamesRepository.TryGetById(idGame);
-            return View();
-        }
+
+			if (existingGame == null)
+				return NotFound();
+
+			string runningScript = Path.Combine("/home/stas/games/", "piece-by-piece", "run.sh");
+
+			if (!System.IO.File.Exists(runningScript))
+				return NotFound("Game script not found");
+
+			var runningProcess = new ProcessStartInfo
+			{
+				FileName = "/bin/bash",
+				Arguments = runningScript,
+				WorkingDirectory = Path.GetDirectoryName(runningScript),
+				UseShellExecute = false,
+				CreateNoWindow = true,
+			};
+
+			try
+			{
+				Process.Start(runningProcess);
+
+				return Redirect($"{existingGame.GameURL}");
+			}
+			catch (Exception ex)
+			{
+				return BadRequest("Error starting game: " + ex.Message);
+			}
+		}
     }
 }

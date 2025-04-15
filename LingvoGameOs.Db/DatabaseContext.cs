@@ -117,6 +117,21 @@ namespace LingvoGameOs.Db
 					CoverImageURL = "/img/games/art-object-banner.png",
 					GameURL = "/home/index",
 					NumberDownloads = 2241
+				},
+				new Game
+				{
+					Id = 3,
+					Title = "Собери животное",
+					Description = "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.",
+					AuthorId = devUser1.Id,
+					PublicationDate = DateTime.UtcNow,
+					LastUpdateDate = DateTime.UtcNow,
+					LanguageLevelId = languageLevelIntermediate.Id,
+					GamePlatformId = platform1.Id,
+					Raiting = 4.2,
+					CoverImageURL = "/img/games/art-object-banner.png",
+					GameURL = "http://158.160.142.70:5001",
+					NumberDownloads = 5
 				}
 			);
 
