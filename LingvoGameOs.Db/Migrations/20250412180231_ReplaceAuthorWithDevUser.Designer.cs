@@ -3,6 +3,7 @@ using System;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250412180231_ReplaceAuthorWithDevUser")]
+    partial class ReplaceAuthorWithDevUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.14");
@@ -46,17 +49,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DevUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Студент яндекс лицея. Лучший разработчик по версии журнала Babushka",
-                            Email = "AlanTest@mail.ru",
-                            Login = "AlanTest",
-                            Name = "Алан",
-                            Password = "_Aa123456"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
@@ -111,75 +103,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasIndex("LanguageLevelId");
 
                     b.ToTable("Games");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = 1,
-                            CoverImageURL = "/img/games/mountain labyrinth-banner.png",
-                            Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
-                            GamePlatformId = 2,
-                            GameURL = "/home/index",
-                            LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 4, 13, 15, 10, 5, 219, DateTimeKind.Utc).AddTicks(742),
-                            NumberDownloads = 1000,
-                            PublicationDate = new DateTime(2025, 4, 13, 15, 10, 5, 219, DateTimeKind.Utc).AddTicks(738),
-                            Raiting = 4.5999999999999996,
-                            Title = "Горный лабиринт"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AuthorId = 1,
-                            CoverImageURL = "/img/games/art-object-banner.png",
-                            Description = "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.",
-                            GamePlatformId = 1,
-                            GameURL = "/home/index",
-                            LanguageLevelId = 2,
-                            LastUpdateDate = new DateTime(2025, 4, 13, 15, 10, 5, 219, DateTimeKind.Utc).AddTicks(753),
-                            NumberDownloads = 2241,
-                            PublicationDate = new DateTime(2025, 4, 13, 15, 10, 5, 219, DateTimeKind.Utc).AddTicks(752),
-                            Raiting = 4.2000000000000002,
-                            Title = "Тур-викторина 'Арт объекты Осетии'"
-                        });
-                });
-
-            modelBuilder.Entity("LingvoGameOs.Db.Models.GameGameType", b =>
-                {
-                    b.Property<int>("GameId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("GameTypeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("GameId", "GameTypeId");
-
-                    b.HasIndex("GameTypeId");
-
-                    b.ToTable("GameGameType", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            GameId = 1,
-                            GameTypeId = 2
-                        },
-                        new
-                        {
-                            GameId = 2,
-                            GameTypeId = 3
-                        },
-                        new
-                        {
-                            GameId = 1,
-                            GameTypeId = 1
-                        },
-                        new
-                        {
-                            GameId = 2,
-                            GameTypeId = 4
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.GameType", b =>
@@ -188,45 +111,18 @@ namespace LingvoGameOs.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("GameId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameTypes");
+                    b.HasIndex("GameId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Словарный запас"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Грамматика"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Аудирование"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Чтение"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Говорение"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Головоломка"
-                        });
+                    b.ToTable("GameTypes");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.LanguageLevel", b =>
@@ -242,23 +138,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LanguageLevels");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Начинающий"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Средний"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Продвинутый"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Platform", b =>
@@ -274,18 +153,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Platforms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Web"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Desktop"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.PlayerUser", b =>
@@ -335,11 +202,16 @@ namespace LingvoGameOs.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("GameId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("Technologys");
                 });
@@ -371,28 +243,30 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("LanguageLevel");
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.GameGameType", b =>
+            modelBuilder.Entity("LingvoGameOs.Db.Models.GameType", b =>
                 {
-                    b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("LingvoGameOs.Db.Models.Game", null)
+                        .WithMany("GameTypes")
+                        .HasForeignKey("GameId");
+                });
 
-                    b.HasOne("LingvoGameOs.Db.Models.GameType", "GameType")
-                        .WithMany()
-                        .HasForeignKey("GameTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Game");
-
-                    b.Navigation("GameType");
+            modelBuilder.Entity("LingvoGameOs.Db.Models.Technology", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.Game", null)
+                        .WithMany("Technologys")
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.DevUser", b =>
                 {
                     b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
+                {
+                    b.Navigation("GameTypes");
+
+                    b.Navigation("Technologys");
                 });
 #pragma warning restore 612, 618
         }

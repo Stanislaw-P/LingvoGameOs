@@ -19,7 +19,12 @@ namespace LingvoGameOs.Db
 
 		public Game? TryGetById(int idGame)
 		{
-			return databaseContext.Games.FirstOrDefault(game => game.Id == idGame);
+			return databaseContext.Games
+				.Include(g => g.GameTypes)
+				.Include(g => g.LanguageLevel)
+				.Include(g => g.GamePlatform)
+				.Include(g => g.Author)
+				.FirstOrDefault(game => game.Id == idGame);
 		}
 
 		public void Add(Game newGame)

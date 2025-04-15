@@ -7,7 +7,7 @@ namespace LingvoGameOs.Controllers;
 
 public class HomeController : Controller
 {
-	public IActionResult Index(int gameId)
+	public IActionResult Index()
     {
 
         return View();

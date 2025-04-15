@@ -19,5 +19,11 @@ namespace LingvoGameOs.Controllers
                 return NotFound();
             return View(existingGame);
         }
+
+        public IActionResult Start(int idGame)
+        {
+            var existingGame = gamesRepository.TryGetById(idGame);
+            return View();
+        }
     }
 }
