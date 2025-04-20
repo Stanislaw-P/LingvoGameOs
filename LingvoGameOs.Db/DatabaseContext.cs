@@ -130,7 +130,7 @@ namespace LingvoGameOs.Db
 					GamePlatformId = platform1.Id,
 					Raiting = 4.2,
 					CoverImageURL = "/img/games/art-object-banner.png",
-					GameURL = "http://158.160.142.70:5001",
+					GameURL = "http://84.201.144.125:5001",
 					NumberDownloads = 5
 				}
 			);

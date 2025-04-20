@@ -29,6 +29,7 @@ namespace LingvoGameOs.Controllers
 			if (existingGame == null)
 				return NotFound();
 
+			// TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
 			string runningScript = Path.Combine("/home/stas/games/", "piece-by-piece", "run.sh");
 
 			if (!System.IO.File.Exists(runningScript))
