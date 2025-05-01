@@ -1,13 +1,18 @@
-﻿@model string
+﻿
 
 <div class="wrapper">
 	<div id="header-placeholder"></div>
-
-	<main class="content">
-		<div class="content__container _container">
-			<iframe src="@Model">Ваш браузер устарел для отображения 'iframe'</iframe>
-		</div>
-	</main>
+	
+	@* Сделайте норм стили кто-нибудь, а не статичные тут *@
+	<div style="max-width: 480px; max-height: 900px; margin: auto;">
+		<iframe src="@ViewBag.GameUrl"
+				width="480"
+				height="700"
+				frameborder="0"
+				allowfullscreen
+				scrolling="no">
+		</iframe>
+	</div>
 
 	<div id="footer-placeholder"></div>
 </div>

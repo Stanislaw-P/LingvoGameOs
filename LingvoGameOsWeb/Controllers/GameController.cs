@@ -47,7 +47,8 @@ namespace LingvoGameOs.Controllers
 			try
 			{
 				Process.Start(runningProcess);
-				return View(existingGame.GameURL);
+				ViewBag.GameUrl = existingGame.GameURL;
+				return View();
 			}
 			catch (Exception ex)
 			{
