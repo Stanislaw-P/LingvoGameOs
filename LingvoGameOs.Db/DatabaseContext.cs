@@ -71,20 +71,21 @@ namespace LingvoGameOs.Db
 			);
 
 
-			var platform1 = new Platform { Id = 1, Name = "Web" };
+			var platform1 = new Platform { Id = 1, Name = "Web-Desktop" };
 			var platform2 = new Platform { Id = 2, Name = "Desktop" };
+			var platform3 = new Platform { Id = 3, Name = "Web-Mobile" };
 			modelBuilder.Entity<Platform>().HasData(
 				platform1,
-				platform2
+				platform2,
+				platform3
 			);
 
 
-			var devUser1 = new DevUser { Id = 1, Name = "Алан", Description = "Студент яндекс лицея. Лучший разработчик по версии журнала Babushka", Email = "AlanTest@mail.ru", Login = "AlanTest", Password = "_Aa123456" };
+			DevUser devUser1 = new DevUser { Id = 1, Name = "Марат", Description = "Студент яндекс лицея. Лучший разработчик по версии журнала Babushka", Email = "MaratTest@mail.ru", Login = "MaratTest", Password = "_Aa123456" };
 
 			modelBuilder.Entity<DevUser>().HasData(
 				devUser1
 			);
-
 
 			// Добавление двух игр
 			modelBuilder.Entity<Game>().HasData(
@@ -111,9 +112,9 @@ namespace LingvoGameOs.Db
 					AuthorId = devUser1.Id,
 					PublicationDate = DateTime.UtcNow,
 					LastUpdateDate = DateTime.UtcNow,
-					LanguageLevelId = languageLevelIntermediate.Id,
+					LanguageLevelId = languageLevelBeginning.Id,
 					GamePlatformId = platform1.Id,
-					Raiting = 4.2,
+					Raiting = 4.4,
 					CoverImageURL = "/img/games/art-object-banner.png",
 					GameURL = "/home/index",
 					NumberDownloads = 2241
@@ -127,9 +128,9 @@ namespace LingvoGameOs.Db
 					PublicationDate = DateTime.UtcNow,
 					LastUpdateDate = DateTime.UtcNow,
 					LanguageLevelId = languageLevelIntermediate.Id,
-					GamePlatformId = platform1.Id,
+					GamePlatformId = platform3.Id,
 					Raiting = 4.2,
-					CoverImageURL = "/img/games/art-object-banner.png",
+					CoverImageURL = "/img/games/gameplay-animal.png",
 					GameURL = "http://84.201.144.125:5001",
 					NumberDownloads = 5
 				}
@@ -141,7 +142,9 @@ namespace LingvoGameOs.Db
 				new { GameId = 1, GameTypeId = 2 },
 				new { GameId = 2, GameTypeId = 3 },
 				new { GameId = 1, GameTypeId = 1 },
-				new { GameId = 2, GameTypeId = 4 }
+				new { GameId = 2, GameTypeId = 4 },
+				new { GameId = 3, GameTypeId = 1 },
+				new { GameId = 3, GameTypeId = 3 }
 			);
 		}
 	}

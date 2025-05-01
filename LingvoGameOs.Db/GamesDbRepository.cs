@@ -24,6 +24,7 @@ namespace LingvoGameOs.Db
 				.Include(g => g.LanguageLevel)
 				.Include(g => g.GamePlatform)
 				.Include(g => g.Author)
+				.ThenInclude(a=>a.Games)
 				.FirstOrDefault(game => game.Id == idGame);
 		}
 

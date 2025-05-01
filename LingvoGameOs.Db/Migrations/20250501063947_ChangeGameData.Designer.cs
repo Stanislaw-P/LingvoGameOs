@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250420120809_ChangeGameIpUrl")]
-    partial class ChangeGameIpUrl
+    [Migration("20250501063947_ChangeGameData")]
+    partial class ChangeGameData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,9 +55,9 @@ namespace LingvoGameOs.Db.Migrations
                         {
                             Id = 1,
                             Description = "Студент яндекс лицея. Лучший разработчик по версии журнала Babushka",
-                            Email = "AlanTest@mail.ru",
-                            Login = "AlanTest",
-                            Name = "Алан",
+                            Email = "MaratTest@mail.ru",
+                            Login = "MaratTest",
+                            Name = "Марат",
                             Password = "_Aa123456"
                         });
                 });
@@ -125,9 +125,9 @@ namespace LingvoGameOs.Db.Migrations
                             GamePlatformId = 2,
                             GameURL = "/home/index",
                             LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 4, 20, 12, 8, 7, 710, DateTimeKind.Utc).AddTicks(651),
+                            LastUpdateDate = new DateTime(2025, 5, 1, 6, 39, 46, 28, DateTimeKind.Utc).AddTicks(7745),
                             NumberDownloads = 1000,
-                            PublicationDate = new DateTime(2025, 4, 20, 12, 8, 7, 710, DateTimeKind.Utc).AddTicks(644),
+                            PublicationDate = new DateTime(2025, 5, 1, 6, 39, 46, 28, DateTimeKind.Utc).AddTicks(7742),
                             Raiting = 4.5999999999999996,
                             Title = "Горный лабиринт"
                         },
@@ -139,25 +139,25 @@ namespace LingvoGameOs.Db.Migrations
                             Description = "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.",
                             GamePlatformId = 1,
                             GameURL = "/home/index",
-                            LanguageLevelId = 2,
-                            LastUpdateDate = new DateTime(2025, 4, 20, 12, 8, 7, 710, DateTimeKind.Utc).AddTicks(665),
+                            LanguageLevelId = 1,
+                            LastUpdateDate = new DateTime(2025, 5, 1, 6, 39, 46, 28, DateTimeKind.Utc).AddTicks(7754),
                             NumberDownloads = 2241,
-                            PublicationDate = new DateTime(2025, 4, 20, 12, 8, 7, 710, DateTimeKind.Utc).AddTicks(665),
-                            Raiting = 4.2000000000000002,
+                            PublicationDate = new DateTime(2025, 5, 1, 6, 39, 46, 28, DateTimeKind.Utc).AddTicks(7753),
+                            Raiting = 4.4000000000000004,
                             Title = "Тур-викторина 'Арт объекты Осетии'"
                         },
                         new
                         {
                             Id = 3,
                             AuthorId = 1,
-                            CoverImageURL = "/img/games/art-object-banner.png",
+                            CoverImageURL = "/img/games/gameplay-animal.png",
                             Description = "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.",
-                            GamePlatformId = 1,
+                            GamePlatformId = 3,
                             GameURL = "http://84.201.144.125:5001",
                             LanguageLevelId = 2,
-                            LastUpdateDate = new DateTime(2025, 4, 20, 12, 8, 7, 710, DateTimeKind.Utc).AddTicks(668),
+                            LastUpdateDate = new DateTime(2025, 5, 1, 6, 39, 46, 28, DateTimeKind.Utc).AddTicks(7757),
                             NumberDownloads = 5,
-                            PublicationDate = new DateTime(2025, 4, 20, 12, 8, 7, 710, DateTimeKind.Utc).AddTicks(668),
+                            PublicationDate = new DateTime(2025, 5, 1, 6, 39, 46, 28, DateTimeKind.Utc).AddTicks(7756),
                             Raiting = 4.2000000000000002,
                             Title = "Собери животное"
                         });
@@ -197,6 +197,16 @@ namespace LingvoGameOs.Db.Migrations
                         {
                             GameId = 2,
                             GameTypeId = 4
+                        },
+                        new
+                        {
+                            GameId = 3,
+                            GameTypeId = 1
+                        },
+                        new
+                        {
+                            GameId = 3,
+                            GameTypeId = 3
                         });
                 });
 
@@ -297,12 +307,17 @@ namespace LingvoGameOs.Db.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Web"
+                            Name = "Web-Desktop"
                         },
                         new
                         {
                             Id = 2,
                             Name = "Desktop"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Web-Mobile"
                         });
                 });
 
