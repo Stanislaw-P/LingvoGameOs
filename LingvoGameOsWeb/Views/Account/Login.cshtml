@@ -1,0 +1,36 @@
+﻿@model LoginViewModel
+
+<form method="post">
+    <div>
+        <h3>Вход</h3>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="UserName"></label><br />
+            <input type="text" asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Password"></label><br />
+            <input type="text" asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label>Запомнить меня</label>
+            <input type="checkbox" name="RememberMe" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <button type="submit" asp-controller="Account" asp-action="Login">Войти</button>
+        </div>
+    </div>
+</form>
