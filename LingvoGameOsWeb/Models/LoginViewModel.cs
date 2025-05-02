@@ -4,12 +4,12 @@ namespace LingvoGameOs.Models
 {
     public class LoginViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Введите логин")]
+        [EmailAddress(ErrorMessage = "Введите корректный email")]
         public string UserName { get; set; }
 
-        [Required]
-        [StringLength(100, MinimumLength = 8)]
+        [Required(ErrorMessage = "Введите пароль")]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = "Длина пароля должна быть от 8 до 100 символов")]
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
