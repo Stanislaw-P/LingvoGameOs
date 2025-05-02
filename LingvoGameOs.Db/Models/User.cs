@@ -1,7 +1,9 @@
-﻿namespace LingvoGameOs.Db.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace LingvoGameOs.Db.Models
 {
-	public class User
+	public class User : IdentityUser
 	{
-		public int Id { get; set; }
+		
 	}
 }
