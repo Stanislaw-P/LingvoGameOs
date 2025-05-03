@@ -7,6 +7,8 @@
 
     <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
 
+    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+
     <div class="row">
         <div class="col-6">
             <label asp-for="UserName"></label><br />

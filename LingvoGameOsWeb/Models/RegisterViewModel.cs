@@ -16,5 +16,7 @@ namespace LingvoGameOs.Models
         [StringLength(100, MinimumLength = 8, ErrorMessage = "Длина пароля должна быть от 8 до 100 символов")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
+
+        public string? ReturnUrl { get; set; }
     }
 }

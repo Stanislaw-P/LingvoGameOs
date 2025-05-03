@@ -7,16 +7,16 @@ namespace LingvoGameOs.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string? returnUrl)
         {
             return View(new LoginViewModel() { ReturnUrl = returnUrl });
         }
@@ -27,10 +27,10 @@ namespace LingvoGameOs.Controllers
             if (ModelState.IsValid)
             {
                 // проблема: всегда запоминает, даже если не нажать галочку
-                var result = _signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, false).Result;
+                var result = signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, false).Result;
                 if (result.Succeeded)
                 {
-                    return Redirect(login.ReturnUrl);
+                    return Redirect(login.ReturnUrl ?? "/Home");
                 }
                 else
                 {
@@ -40,9 +40,9 @@ namespace LingvoGameOs.Controllers
             return View(login);
         }
 
-        public IActionResult Register()
+        public IActionResult Register(string? returnUrl)
         {
-            return View();
+            return View(new RegisterViewModel() { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -54,7 +54,20 @@ namespace LingvoGameOs.Controllers
             }
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
+                User user = new User() { Email = register.UserName, UserName = register.UserName };
+                var result = userManager.CreateAsync(user, register.Password).Result;
+                if (result.Succeeded)
+                {
+                    signInManager.SignInAsync(user, false).Wait();
+                    return Redirect(register.ReturnUrl ?? "/Home");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
             return View(register);
         }

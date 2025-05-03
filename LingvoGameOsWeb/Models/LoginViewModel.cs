@@ -14,6 +14,6 @@ namespace LingvoGameOs.Models
 
         public bool RememberMe { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
     }
 }
