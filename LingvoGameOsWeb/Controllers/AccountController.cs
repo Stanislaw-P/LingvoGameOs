@@ -1,4 +1,5 @@
-﻿using LingvoGameOs.Db.Models;
+﻿using LingvoGameOs.Db;
+using LingvoGameOs.Db.Models;
 using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,14 @@ namespace LingvoGameOs.Controllers
                 var result = userManager.CreateAsync(user, register.Password).Result;
                 if (result.Succeeded)
                 {
+                    if (register.IsDev)
+                    {
+                        userManager.AddToRoleAsync(user, Constants.DevRoleName);
+                    }
+                    else
+                    {
+                        userManager.AddToRoleAsync(user, Constants.UserRoleName);
+                    }
                     signInManager.SignInAsync(user, false).Wait();
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }
@@ -73,6 +82,7 @@ namespace LingvoGameOs.Controllers
         }
         public IActionResult Logout()
         {
+            signInManager.SignOutAsync().Wait();
             return RedirectToAction("Index", "Home");
         }
     }

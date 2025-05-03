@@ -23,6 +23,12 @@ namespace LingvoGameOs.Db
                 roleManager.CreateAsync(new IdentityRole(Constants.UserRoleName)).Wait();
             }
 
+            // создаем роль разработчика, если ее нет
+            if (roleManager.FindByNameAsync(Constants.DevRoleName).Result == null)
+            {
+                roleManager.CreateAsync(new IdentityRole(Constants.DevRoleName)).Wait();
+            }
+
             // создаем админа, если его нет
             if (userManager.FindByNameAsync(adminEmail).Result == null)
             {

@@ -1,5 +1,9 @@
 ﻿@model LoginViewModel
 
+@{
+    ViewData["Title"] = "Вход";
+}
+
 <form method="post">
     <div>
         <h3>Вход</h3>
@@ -28,7 +32,7 @@
     <div class="row">
         <div class="col-6">
             <label>Запомнить меня</label>
-            <input type="checkbox" name="RememberMe" class="form-check-input" />
+            <input type="checkbox" name="RememberMe" class="form-check-input" value="true" />
         </div>
     </div>
 
@@ -40,7 +44,7 @@
 
     <div class="row">
         <div class="col-6">
-            <button type="submit" asp-controller="Account" asp-action="Login" value="true" class="btn btn-primary">Войти</button>
+            <button type="submit" asp-controller="Account" asp-action="Login" class="btn btn-primary">Войти</button>
         </div>
     </div>
 </form>

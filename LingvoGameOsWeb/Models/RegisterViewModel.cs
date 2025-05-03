@@ -17,6 +17,8 @@ namespace LingvoGameOs.Models
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
 
+        public bool IsDev { get; set; }
+
         public string? ReturnUrl { get; set; }
     }
 }

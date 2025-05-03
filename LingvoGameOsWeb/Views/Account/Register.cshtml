@@ -1,5 +1,9 @@
 ﻿@model RegisterViewModel
 
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
 <form method="post">
     <div>
         <h3>Регистрация</h3>
@@ -30,6 +34,13 @@
             <label asp-for="ConfirmPassword"></label><br />
             <input type="text" asp-for="ConfirmPassword" class="form-control" />
             <span asp-validation-for="ConfirmPassword" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label>Я разработчик</label>
+            <input type="checkbox" name="IsDev" class="form-check-input" value="true" />
         </div>
     </div>
 
