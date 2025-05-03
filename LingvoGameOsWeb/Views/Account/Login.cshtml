@@ -7,6 +7,8 @@
 
     <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
 
+    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl"/>
+
     <div class="row">
         <div class="col-6">
             <label asp-for="UserName"></label><br />
@@ -26,13 +28,13 @@
     <div class="row">
         <div class="col-6">
             <label>Запомнить меня</label>
-            <input type="checkbox" name="RememberMe" class="form-control"/>
+            <input type="checkbox" name="RememberMe" class="form-check-input" />
         </div>
     </div>
 
     <div class="row">
         <div class="col-6">
-            <button type="submit" asp-controller="Account" asp-action="Login">Войти</button>
+            <button type="submit" asp-controller="Account" asp-action="Login" value="true" class="btn btn-primary">Войти</button>
         </div>
     </div>
 </form>

@@ -16,9 +16,9 @@ namespace LingvoGameOs.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            return View();
+            return View(new LoginViewModel() { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -26,9 +26,18 @@ namespace LingvoGameOs.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
+                // проблема: всегда запоминает, даже если не нажать галочку
+                var result = _signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, false).Result;
+                if (result.Succeeded)
+                {
+                    return Redirect(login.ReturnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный пароль");
+                }
             }
-            return RedirectToAction("Login");
+            return View(login);
         }
 
         public IActionResult Register()
@@ -47,7 +56,11 @@ namespace LingvoGameOs.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Register");
+            return View(register);
+        }
+        public IActionResult Logout()
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }
