@@ -11,6 +11,9 @@ namespace LingvoGameOs.Db.Models
 		public string Description { get; set; }
 		public DevUser Author { get; set; }
 		public int AuthorId { get; set; }
+
+		//добавил для взаимодействия с identity, потому что там айдишники не int
+		public string AuthorStringId { get; set; }
 		public DateTime PublicationDate { get; set; }
 		public DateTime LastUpdateDate { get; set; }
 		public LanguageLevel LanguageLevel { get; set; }

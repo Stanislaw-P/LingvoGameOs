@@ -3,6 +3,7 @@ using System;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250504194034_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
@@ -68,10 +71,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AuthorStringId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CoverImageURL")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -121,15 +120,14 @@ namespace LingvoGameOs.Db.Migrations
                         {
                             Id = 1,
                             AuthorId = 1,
-                            AuthorStringId = "",
                             CoverImageURL = "/img/games/mountain labyrinth-banner.png",
                             Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
                             GamePlatformId = 2,
                             GameURL = "/home/index",
                             LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6613),
+                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 40, 32, 925, DateTimeKind.Utc).AddTicks(9428),
                             NumberDownloads = 1000,
-                            PublicationDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6609),
+                            PublicationDate = new DateTime(2025, 5, 4, 19, 40, 32, 925, DateTimeKind.Utc).AddTicks(9425),
                             Raiting = 4.5999999999999996,
                             Title = "Горный лабиринт"
                         },
@@ -137,15 +135,14 @@ namespace LingvoGameOs.Db.Migrations
                         {
                             Id = 2,
                             AuthorId = 1,
-                            AuthorStringId = "",
                             CoverImageURL = "/img/games/art-object-banner.png",
                             Description = "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.",
                             GamePlatformId = 1,
                             GameURL = "/home/index",
                             LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6618),
+                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 40, 32, 925, DateTimeKind.Utc).AddTicks(9433),
                             NumberDownloads = 2241,
-                            PublicationDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6618),
+                            PublicationDate = new DateTime(2025, 5, 4, 19, 40, 32, 925, DateTimeKind.Utc).AddTicks(9433),
                             Raiting = 4.4000000000000004,
                             Title = "Тур-викторина 'Арт объекты Осетии'"
                         },
@@ -153,15 +150,14 @@ namespace LingvoGameOs.Db.Migrations
                         {
                             Id = 3,
                             AuthorId = 1,
-                            AuthorStringId = "",
                             CoverImageURL = "/img/games/gameplay-animal.png",
                             Description = "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.",
                             GamePlatformId = 3,
                             GameURL = "http://84.201.144.125:5001",
                             LanguageLevelId = 2,
-                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6621),
+                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 40, 32, 925, DateTimeKind.Utc).AddTicks(9437),
                             NumberDownloads = 5,
-                            PublicationDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6621),
+                            PublicationDate = new DateTime(2025, 5, 4, 19, 40, 32, 925, DateTimeKind.Utc).AddTicks(9436),
                             Raiting = 4.2000000000000002,
                             Title = "Собери животное"
                         });

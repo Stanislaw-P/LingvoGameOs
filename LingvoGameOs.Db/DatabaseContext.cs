@@ -88,6 +88,7 @@ namespace LingvoGameOs.Db
 			);
 
 			// Добавление двух игр
+			// я добавил новое свойство, надо добавить их и здесь
 			modelBuilder.Entity<Game>().HasData(
 				new Game
 				{
@@ -102,7 +103,9 @@ namespace LingvoGameOs.Db
 					Raiting = 4.6,
 					CoverImageURL = "/img/games/mountain labyrinth-banner.png",
 					GameURL = "/home/index",
-					NumberDownloads = 1000
+					NumberDownloads = 1000,
+					//
+					AuthorStringId = ""
 				},
 				new Game
 				{
@@ -117,8 +120,10 @@ namespace LingvoGameOs.Db
 					Raiting = 4.4,
 					CoverImageURL = "/img/games/art-object-banner.png",
 					GameURL = "/home/index",
-					NumberDownloads = 2241
-				},
+					NumberDownloads = 2241,
+					//
+                    AuthorStringId = ""
+                },
 				new Game
 				{
 					Id = 3,
@@ -132,8 +137,10 @@ namespace LingvoGameOs.Db
 					Raiting = 4.2,
 					CoverImageURL = "/img/games/gameplay-animal.png",
 					GameURL = "http://84.201.144.125:5001",
-					NumberDownloads = 5
-				}
+					NumberDownloads = 5,
+					//
+                    AuthorStringId = ""
+                }
 			);
 
 
