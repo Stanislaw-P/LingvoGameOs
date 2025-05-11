@@ -1,0 +1,50 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<form method="post">
+    <div>
+        <h3>Вход</h3>
+    </div>
+
+    <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
+
+    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl"/>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="UserName">Имя пользователя (почта)</label><br />
+            <input type="text" asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Password">Пароль</label><br />
+            <input type="text" asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label>Запомнить меня</label>
+            <input type="checkbox" name="RememberMe" class="form-check-input" value="true" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрировать новый аккаунт</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <button type="submit" asp-controller="Account" asp-action="Login" class="btn btn-primary">Войти</button>
+        </div>
+    </div>
+</form>

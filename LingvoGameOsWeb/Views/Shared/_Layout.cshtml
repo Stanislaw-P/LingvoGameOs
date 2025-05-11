@@ -29,7 +29,9 @@
     @await Html.PartialAsync("Footer", false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/script.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial");
     @await RenderSectionAsync("Scripts", required: false)
     <script asp-src-include="~/js/**/*.js" type="module"></script>
 </body>

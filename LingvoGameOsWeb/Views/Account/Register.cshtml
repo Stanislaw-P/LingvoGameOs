@@ -1,0 +1,68 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<form method="post">
+    <div>
+        <h3>Регистрация</h3>
+    </div>
+
+    <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
+
+    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="UserName">Имя пользователя (почта)</label><br />
+            <input type="text" asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Name">Имя</label><br />
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Surname">Фамилия</label><br />
+            <input type="text" asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Password">Пароль</label><br />
+            <input type="text" asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="ConfirmPassword">Подтвердите пароль</label><br />
+            <input type="text" asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label>Я разработчик</label>
+            <input type="checkbox" name="IsDev" class="form-check-input" value="true" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <button type="submit" asp-controller="Account" asp-action="Register" class="btn btn-primary">Зарегистрироваться</button>
+        </div>
+    </div>
+</form>
