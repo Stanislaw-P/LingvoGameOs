@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-6">
-            <label asp-for="UserName"></label><br />
+            <label asp-for="UserName">Имя пользователя (почта)</label><br />
             <input type="text" asp-for="UserName" class="form-control" />
             <span asp-validation-for="UserName" />
         </div>
@@ -23,7 +23,23 @@
 
     <div class="row">
         <div class="col-6">
-            <label asp-for="Password"></label><br />
+            <label asp-for="Name">Имя</label><br />
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Surname">Фамилия</label><br />
+            <input type="text" asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="Password">Пароль</label><br />
             <input type="text" asp-for="Password" class="form-control" />
             <span asp-validation-for="Password" />
         </div>
@@ -31,7 +47,7 @@
 
     <div class="row">
         <div class="col-6">
-            <label asp-for="ConfirmPassword"></label><br />
+            <label asp-for="ConfirmPassword">Подтвердите пароль</label><br />
             <input type="text" asp-for="ConfirmPassword" class="form-control" />
             <span asp-validation-for="ConfirmPassword" />
         </div>
