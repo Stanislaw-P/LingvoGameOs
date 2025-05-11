@@ -14,9 +14,9 @@ namespace LingvoGameOs.Controllers
 			this.gamesRepository = gamesRepository;
 		}
 
-		public IActionResult Index(int id)
+		public IActionResult Details(int idGame)
         {
-            var existingGame = gamesRepository.TryGetById(id);
+            var existingGame = gamesRepository.TryGetById(idGame);
             if (existingGame == null)
                 return NotFound();
             return View(existingGame);
@@ -25,35 +25,38 @@ namespace LingvoGameOs.Controllers
         public IActionResult Start(int idGame)
         {
             var existingGame = gamesRepository.TryGetById(idGame);
+			ViewBag.GameId = idGame;
+			ViewBag.GameTitle = existingGame.Title;
+			return View();
 
-			if (existingGame == null)
-				return NotFound();
+			//if (existingGame == null)
+			//	return NotFound();
 
-			// TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
-			string runningScript = Path.Combine("/home/stas/games/", "piece-by-piece", "run.sh");
+			//// TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
+			//string runningScript = Path.Combine("/home/stas/games/", "piece-by-piece", "run.sh");
 
-			if (!System.IO.File.Exists(runningScript))
-				return NotFound("Game script not found");
+			//if (!System.IO.File.Exists(runningScript))
+			//	return NotFound("Game script not found");
 
-			var runningProcess = new ProcessStartInfo
-			{
-				FileName = "/bin/bash",
-				Arguments = runningScript,
-				WorkingDirectory = Path.GetDirectoryName(runningScript),
-				UseShellExecute = false,
-				CreateNoWindow = true,
-			};
+			//var runningProcess = new ProcessStartInfo
+			//{
+			//	FileName = "/bin/bash",
+			//	Arguments = runningScript,
+			//	WorkingDirectory = Path.GetDirectoryName(runningScript),
+			//	UseShellExecute = false,
+			//	CreateNoWindow = true,
+			//};
 
-			try
-			{
-				Process.Start(runningProcess);
-				ViewBag.GameUrl = existingGame.GameURL;
-				return View();
-			}
-			catch (Exception ex)
-			{
-				return BadRequest("Error starting game: " + ex.Message);
-			}
+			//try
+			//{
+			//	Process.Start(runningProcess);
+			//	ViewBag.GameUrl = existingGame.GameURL;
+			//	return View();
+			//}
+			//catch (Exception ex)
+			//{
+			//	return BadRequest("Error starting game: " + ex.Message);
+			//}
 		}
     }
 }

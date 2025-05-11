@@ -10,18 +10,27 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
 </head>
 <body>
-    @await Html.PartialAsync("Header")
-    <div class="container">
-        <main role="main" class="content pb-3">
-            @RenderBody()
+    @if (ViewContext.RouteData.Values["Action"]?.ToString() == "Start")
+    {
+        @await Html.PartialAsync("GamePlayHeader", new ViewDataDictionary(ViewData))
+    }
+    else
+    {
+        @await Html.PartialAsync("Header")
+    }
+    <div class="wrapper">
+        <main role="main" class="content">
+            <div class="content__container _container">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
     @await Html.PartialAsync("Footer", false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/script.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+    <script asp-src-include="~/js/**/*.js" type="module"></script>
 </body>
 </html>

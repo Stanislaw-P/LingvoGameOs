@@ -1,16 +1,27 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LingvoGameOs.Models;
+using LingvoGameOs.Db;
 
 
 namespace LingvoGameOs.Controllers;
 
 public class HomeController : Controller
 {
-	public IActionResult Index()
-    {
+    readonly IGamesRepository gamesRepository;
+    readonly DatabaseContext databaseContext;
 
-        return View();
+    public HomeController(IGamesRepository gamesRepository, DatabaseContext databaseContext)
+    {
+        this.gamesRepository = gamesRepository;
+        this.databaseContext = databaseContext;
+    }
+
+    public IActionResult Index()
+    {
+        var games = gamesRepository.GetAll();
+        ViewBag.GameTypes = databaseContext.GameTypes.Select(type => type.Name);
+        return View(games);
     }
 
     // тестирование класса пользователей

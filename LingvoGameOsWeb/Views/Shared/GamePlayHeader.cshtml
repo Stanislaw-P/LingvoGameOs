@@ -1,0 +1,28 @@
+﻿<header class="game-play__header">
+    <div class="game-play__container _container">
+        <a href="/home/index"  class="game-play__logo" aria-label="Вернуться на главную страницу">
+            <img src="/img/logo/Logo.png" alt="LingvoGameOs Logo" class="game-play__logo-image">
+        </a>
+        <h1 class="game-play__title">
+            <button class="game-play__title-button" aria-label="Показать информацию об игре" lang="ru">
+                @ViewBag.GameTitle
+            </button>
+        </h1>
+        <div class="game-play__score" role="status" aria-live="polite">
+            <span class="game-play__score-value">0 баллов</span>
+        </div>
+        <button class="game-play__pause" aria-label="Пауза" aria-pressed="false">
+            <img src="/icon/pause.svg" alt="" class="game-play__pause-icon">
+        </button>
+        <button class="game-play__sound-toggle" aria-label="Включить/выключить звук" aria-pressed="true"
+                data-sound="on">
+            <img src="/icon/sound-on.svg" alt="" class="game-play__sound-icon">
+        </button>
+        <button class="game-play__fullscreen" aria-label="Полноэкранный режим" aria-pressed="false">
+            <img src="/icon/fullscreen.svg" alt="" class="game-play__fullscreen-icon">
+        </button>
+        <button class="game-play__close" aria-label="Закрыть игру">
+            <img src="/icon/close.svg" alt="" class="game-play__close-icon">
+        </button>
+    </div>
+</header>

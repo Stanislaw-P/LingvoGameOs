@@ -1,8 +1,81 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<Game>
+
+@{
+    ViewData["Title"] = "Сипсок игр";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Тут будет проект</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="games">
+    <div class="games__filter">
+        <div class="games__filter-search">
+            <input type="text" class="email-prompt-text-style games__search-input"
+            placeholder="Найти игру...">
+            <button class="games__search-button">Найти</button>
+        </div>
+        <div class="games__filter-dropdowns">
+            <div class="games__dropdown">
+                <button class="games__dropdown-toggle">
+                    <span>Категории</span>
+                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                </button>
+                <div class="games__dropdown-menu">
+                    <div class="games__dropdown-search">
+                        <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
+                    </div>
+                    <ul class="games__dropdown-list">
+                        @foreach(var type in ViewBag.GameTypes)
+                        {
+                            <li class="games__dropdown-item" data-filter="category" data-value="reading">
+                                @type
+                            </li>
+                        }                   
+                    </ul>
+                </div>
+            </div>
+           
+            <div class="games__dropdown">
+                <button class="games__dropdown-toggle">
+                    <span>Рейтинг</span>
+                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                </button>
+                <div class="games__dropdown-menu">
+                    <ul class="games__dropdown-list">
+                        <li class="games__dropdown-item" data-filter="rating" data-value="5">
+                            <img src="/icon/star.svg" alt="Star" class="rating-star filled"> 5
+                        </li>
+                        <li class="games__dropdown-item" data-filter="rating" data-value="4">
+                            <img src="/icon/star.svg" alt="Star" class="rating-star filled"> 4
+                        </li>
+                        <li class="games__dropdown-item" data-filter="rating" data-value="3">
+                            <img src="/icon/star.svg" alt="Star" class="rating-star filled"> 3
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="games__title">Все игры</h2>
+    <div class="games__list">
+        @foreach (var game in Model)
+        {
+            <div class="games__item">
+                <img class="games__image" src="@game.CoverImageURL" alt="@game.Title">
+                <div class="games__content">
+                    <h3 class="games__name">@game.Title</h3>
+                    <div class="games__stats">
+                        <span class="games__rating">
+                            <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                            <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                            <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                            <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                            <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.Raiting
+                        </span>
+                    </div>
+                    <div class="games__actions">
+                        <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Детали</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

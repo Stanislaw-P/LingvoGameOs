@@ -1,18 +1,26 @@
 ﻿
-
 <div class="wrapper">
-	<div id="header-placeholder"></div>
-	
-	@* Сделайте норм стили кто-нибудь, а не статичные тут *@
-	<div style="max-width: 480px; max-height: 900px; margin: auto;">
-		<iframe src="@ViewBag.GameUrl"
-				width="480"
-				height="700"
-				frameborder="0"
-				allowfullscreen
-				scrolling="no">
-		</iframe>
-	</div>
+    <div id="header-placeholder"></div>
 
-	<div id="footer-placeholder"></div>
+    @* Сделайте норм стили кто-нибудь, а не статичные тут *@
+    @if (ViewBag.GameUrl == null)
+    {
+        <div class="game-play__loading" id="loadingScreen">
+            <p class="game-play__loading-text">Загрузка...</p>
+        </div>
+    }
+    else
+    {
+        <div style="max-width: 480px; max-height: 900px; margin: auto;">
+            <iframe src="@ViewBag.GameUrl"
+                    width="480"
+                    height="700"
+                    frameborder="0"
+                    allowfullscreen
+                    scrolling="no">
+            </iframe>
+        </div>
+    }
+
+    <div id="footer-placeholder"></div>
 </div>
