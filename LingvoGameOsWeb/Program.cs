@@ -1,5 +1,6 @@
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,6 +39,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 builder.Services.AddTransient<IPlayerUsersRepository, PlayerUsersDbRepository>();
 builder.Services.AddTransient<IDevUsersRepository, DevUsersDbRepository>();
+
+// встраиваю собственный сервис
+builder.Services.AddScoped<UserGameService>();
 
 var app = builder.Build();
 
