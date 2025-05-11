@@ -39,8 +39,19 @@ namespace LingvoGameOs.Controllers
 
         public IActionResult Index(string name)
         {
+            return RedirectToAction("EditProfile", new { name });
+        }
+
+        public IActionResult EditProfile(string name)
+        {
             var user = userManager.FindByNameAsync(name).Result;
             return View(UserToProfileViewModel(user));
+        }
+
+        [HttpPost]
+        public IActionResult EditProfile(ProfileViewModel profile)
+        {
+            return View(profile);
         }
     }
 }
