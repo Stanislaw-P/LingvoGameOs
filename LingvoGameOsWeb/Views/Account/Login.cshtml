@@ -4,47 +4,44 @@
     ViewData["Title"] = "Вход";
 }
 
-<form method="post">
-    <div>
-        <h3>Вход</h3>
-    </div>
+<div class="wrapper">
+    <main class="content">
+        <div class="content__container _container">
+            <div class="content__row">
+                <!-- Профиль пользователя -->
+                <div class="profile">
+                    <h3 class="profile__title">Вход</h3>
 
-    <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
+                    <form method="post" class="profile__form">
+                        <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
 
-    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl"/>
+                        <div class="profile__field">
+                            <label asp-for="UserName" class="profile__label">Email</label><br />
+                            <input type="email" asp-for="UserName" class="profile__input" required />
+                            <span asp-validation-for="UserName" />
+                        </div>
 
-    <div class="row">
-        <div class="col-6">
-            <label asp-for="UserName">Имя пользователя (почта)</label><br />
-            <input type="text" asp-for="UserName" class="form-control" />
-            <span asp-validation-for="UserName" />
+                        <div class="profile__field">
+                            <label asp-for="Password" class="profile__label">Пароль</label><br />
+                            <input type="password" asp-for="Password" class="profile__input" required />
+                            <span asp-validation-for="Password" />
+                        </div>
+
+                        <div class="profile__field">
+                            <label asp-for="RememberMe" class="profile__label">Запомнить меня</label>
+                            <input type="checkbox" asp-for="RememberMe" name="RememberMe" class="form-check-input" value="true" checked />
+                        </div>
+
+                        <div class="profile__field">
+                            <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрировать новый аккаунт</a>
+                        </div>
+
+                        <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+
+                        <button type="submit" asp-controller="Account" asp-action="Login" class="profile__button">Войти</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <label asp-for="Password">Пароль</label><br />
-            <input type="text" asp-for="Password" class="form-control" />
-            <span asp-validation-for="Password" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <label>Запомнить меня</label>
-            <input type="checkbox" name="RememberMe" class="form-check-input" value="true" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрировать новый аккаунт</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <button type="submit" asp-controller="Account" asp-action="Login" class="btn btn-primary">Войти</button>
-        </div>
-    </div>
-</form>
+    </main>
+</div>
