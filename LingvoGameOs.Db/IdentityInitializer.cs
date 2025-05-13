@@ -9,7 +9,9 @@ namespace LingvoGameOs.Db
         public static void Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             var adminEmail = "admin@gmail.com";
-            var password = "_Aa123456";
+            var password = "Aa123456_";
+            var name = "Админ";
+            var surname = "Админов";
 
             // создаем роль админа, если ее нет
             if (roleManager.FindByNameAsync(Constants.AdminRoleName).Result == null)
@@ -32,7 +34,7 @@ namespace LingvoGameOs.Db
             // создаем админа, если его нет
             if (userManager.FindByNameAsync(adminEmail).Result == null)
             {
-                var admin = new User { Email = adminEmail, UserName = adminEmail };
+                var admin = new User { Email = adminEmail, UserName = adminEmail, Name = name, Surname = surname };
                 var result = userManager.CreateAsync(admin, password).Result;
                 if (result.Succeeded)
                 {
