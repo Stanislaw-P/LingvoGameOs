@@ -9,18 +9,18 @@ namespace LingvoGameOs.Controllers;
 public class HomeController : Controller
 {
     readonly IGamesRepository gamesRepository;
-    readonly DatabaseContext databaseContext;
+    readonly NewDatabaseContext newDatabaseContext;
 
-    public HomeController(IGamesRepository gamesRepository, DatabaseContext databaseContext)
+    public HomeController(IGamesRepository gamesRepository, NewDatabaseContext newDatabaseContext)
     {
         this.gamesRepository = gamesRepository;
-        this.databaseContext = databaseContext;
+        this.newDatabaseContext = newDatabaseContext;
     }
 
     public IActionResult Index()
     {
         var games = gamesRepository.GetAll();
-        ViewBag.GameTypes = databaseContext.GameTypes.Select(type => type.Name);
+        ViewBag.GameTypes = newDatabaseContext.GameTypes.Select(type => type.Name);
         return View(games);
     }
 

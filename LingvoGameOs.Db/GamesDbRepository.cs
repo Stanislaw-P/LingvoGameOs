@@ -5,39 +5,39 @@ namespace LingvoGameOs.Db
 {
 	public class GamesDbRepository : IGamesRepository
 	{
-		readonly DatabaseContext databaseContext;
+		readonly NewDatabaseContext newDatabaseContext;
 
-		public GamesDbRepository(DatabaseContext databaseContext)
+		public GamesDbRepository(NewDatabaseContext newDatabaseContext)
 		{
-			this.databaseContext = databaseContext;
+			this.newDatabaseContext = newDatabaseContext;
 		}
 
 		public List<Game> GetAll()
 		{
-			return databaseContext.Games.ToList();
+			return newDatabaseContext.Games.ToList();
 		}
 
 		public Game? TryGetById(int idGame)
 		{
-			return databaseContext.Games
+			return newDatabaseContext.Games
 				.Include(g => g.GameTypes)
 				.Include(g => g.LanguageLevel)
 				.Include(g => g.GamePlatform)
-				.Include(g => g.Author)
-				.ThenInclude(a=>a.Games)
+				//.Include(g => g.Author)
+				//.ThenInclude(a=>a.DevGames)
 				.FirstOrDefault(game => game.Id == idGame);
 		}
 
 		public void Add(Game newGame)
 		{
-			databaseContext.Games.Add(newGame);
-			databaseContext.SaveChanges();
+			newDatabaseContext.Games.Add(newGame);
+			newDatabaseContext.SaveChanges();
 		}
 
 		public void Remove(Game game)
 		{
-			databaseContext.Games.Remove(game);
-			databaseContext.SaveChanges();
+			newDatabaseContext.Games.Remove(game);
+			newDatabaseContext.SaveChanges();
 		}
 	}
 }

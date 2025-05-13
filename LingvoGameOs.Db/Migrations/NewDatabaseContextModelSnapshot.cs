@@ -3,64 +3,19 @@ using System;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace LingvoGameOs.Db.Migrations
 {
-    [DbContext(typeof(DatabaseContext))]
-    [Migration("20250504194441_AddAuthorStringIdInGame")]
-    partial class AddAuthorStringIdInGame
+    [DbContext(typeof(NewDatabaseContext))]
+    partial class NewDatabaseContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
-
-            modelBuilder.Entity("LingvoGameOs.Db.Models.DevUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DevUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Студент яндекс лицея. Лучший разработчик по версии журнала Babushka",
-                            Email = "MaratTest@mail.ru",
-                            Login = "MaratTest",
-                            Name = "Марат",
-                            Password = "_Aa123456"
-                        });
-                });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
@@ -68,10 +23,7 @@ namespace LingvoGameOs.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AuthorStringId")
+                    b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -109,13 +61,21 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("AuthorId");
+                    b.Property<string>("UserId1")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("GamePlatformId");
 
                     b.HasIndex("LanguageLevelId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Games");
 
@@ -123,48 +83,45 @@ namespace LingvoGameOs.Db.Migrations
                         new
                         {
                             Id = 1,
-                            AuthorId = 1,
-                            AuthorStringId = "",
+                            AuthorId = "a7038988-99ad-48b5-8370-e2214e2d6055",
                             CoverImageURL = "/img/games/mountain labyrinth-banner.png",
                             Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
                             GamePlatformId = 2,
                             GameURL = "/home/index",
                             LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6613),
+                            LastUpdateDate = new DateTime(2025, 5, 13, 17, 12, 22, 195, DateTimeKind.Utc).AddTicks(2807),
                             NumberDownloads = 1000,
-                            PublicationDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6609),
+                            PublicationDate = new DateTime(2025, 5, 13, 17, 12, 22, 195, DateTimeKind.Utc).AddTicks(2803),
                             Raiting = 4.5999999999999996,
                             Title = "Горный лабиринт"
                         },
                         new
                         {
                             Id = 2,
-                            AuthorId = 1,
-                            AuthorStringId = "",
+                            AuthorId = "a7038988-99ad-48b5-8370-e2214e2d6055",
                             CoverImageURL = "/img/games/art-object-banner.png",
                             Description = "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.",
                             GamePlatformId = 1,
                             GameURL = "/home/index",
                             LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6618),
+                            LastUpdateDate = new DateTime(2025, 5, 13, 17, 12, 22, 195, DateTimeKind.Utc).AddTicks(2812),
                             NumberDownloads = 2241,
-                            PublicationDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6618),
+                            PublicationDate = new DateTime(2025, 5, 13, 17, 12, 22, 195, DateTimeKind.Utc).AddTicks(2812),
                             Raiting = 4.4000000000000004,
                             Title = "Тур-викторина 'Арт объекты Осетии'"
                         },
                         new
                         {
                             Id = 3,
-                            AuthorId = 1,
-                            AuthorStringId = "",
+                            AuthorId = "a7038988-99ad-48b5-8370-e2214e2d6055",
                             CoverImageURL = "/img/games/gameplay-animal.png",
                             Description = "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.",
                             GamePlatformId = 3,
                             GameURL = "http://84.201.144.125:5001",
                             LanguageLevelId = 2,
-                            LastUpdateDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6621),
+                            LastUpdateDate = new DateTime(2025, 5, 13, 17, 12, 22, 195, DateTimeKind.Utc).AddTicks(2816),
                             NumberDownloads = 5,
-                            PublicationDate = new DateTime(2025, 5, 4, 19, 44, 40, 784, DateTimeKind.Utc).AddTicks(6621),
+                            PublicationDate = new DateTime(2025, 5, 13, 17, 12, 22, 195, DateTimeKind.Utc).AddTicks(2815),
                             Raiting = 4.2000000000000002,
                             Title = "Собери животное"
                         });
@@ -328,47 +285,6 @@ namespace LingvoGameOs.Db.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.PlayerUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PlayerUsers");
-                });
-
             modelBuilder.Entity("LingvoGameOs.Db.Models.Technology", b =>
                 {
                     b.Property<int>("Id")
@@ -384,14 +300,231 @@ namespace LingvoGameOs.Db.Migrations
                     b.ToTable("Technologys");
                 });
 
+            modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a7038988-99ad-48b5-8370-e2214e2d6055",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "eddb262c-1bf9-4f47-a905-6c655195101a",
+                            Email = "MaratTest@mail.ru",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            Name = "Марат",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "11238855-df1c-4742-9bf9-6ef5184e539c",
+                            Surname = "Какой-то",
+                            TwoFactorEnabled = false,
+                            UserName = "MaratTest@mail.ru"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
-                    b.HasOne("LingvoGameOs.Db.Models.DevUser", "Author")
-                        .WithMany("Games")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LingvoGameOs.Db.Models.Platform", "GamePlatform")
                         .WithMany()
                         .HasForeignKey("GamePlatformId")
@@ -404,7 +537,13 @@ namespace LingvoGameOs.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany("DevGames")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany("PlayerGames")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("GamePlatform");
 
@@ -430,9 +569,62 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("GameType");
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.DevUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Navigation("Games");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>
+                {
+                    b.Navigation("DevGames");
+
+                    b.Navigation("PlayerGames");
                 });
 #pragma warning restore 612, 618
         }

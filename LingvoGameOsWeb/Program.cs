@@ -13,16 +13,16 @@ builder.Services.AddControllersWithViews();
 
 // Настройка строки подключения из appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlite(connectionString)); // Используем строку подключения
-
-// добавляем контекст IndentityContext в качестве сервиса в приложение
-builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
 
 // указываем тип пользователя и роли
 builder.Services.AddIdentity<User, IdentityRole>()
                 // устанавливаем тип хранилища - наш контекст
-                .AddEntityFrameworkStores<IdentityContext>();
+                .AddEntityFrameworkStores<NewDatabaseContext>();
+
+// подключение контекста бд
+builder.Services.AddDbContext<NewDatabaseContext>(options => options.UseSqlite(connectionString));
+
+
 
 // настройка cookie
 builder.Services.ConfigureApplicationCookie(options =>
@@ -37,11 +37,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
-builder.Services.AddTransient<IPlayerUsersRepository, PlayerUsersDbRepository>();
-builder.Services.AddTransient<IDevUsersRepository, DevUsersDbRepository>();
 
-// встраиваю собственный сервис
-builder.Services.AddScoped<UserGameService>();
+//// встраиваю собственный сервис
+//builder.Services.AddScoped<UserGameService>();
 
 var app = builder.Build();
 

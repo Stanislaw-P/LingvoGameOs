@@ -1,6 +1,7 @@
 ﻿using System.Security.AccessControl;
 using System;
 using LingvoGameOs.Db.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LingvoGameOs.Db.Models
 {
@@ -9,11 +10,7 @@ namespace LingvoGameOs.Db.Models
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
-		public DevUser Author { get; set; }
-		public int AuthorId { get; set; }
-
-		//добавил для взаимодействия с identity, потому что там айдишники не int
-		public string AuthorStringId { get; set; }
+		public string AuthorId { get; set; }
 		public DateTime PublicationDate { get; set; }
 		public DateTime LastUpdateDate { get; set; }
 		public LanguageLevel LanguageLevel { get; set; }
