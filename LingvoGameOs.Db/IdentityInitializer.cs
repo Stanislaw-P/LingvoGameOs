@@ -41,6 +41,45 @@ namespace LingvoGameOs.Db
                     userManager.AddToRoleAsync(admin, Constants.AdminRoleName).Wait();
                 }
             }
+
+
+            // Создание разрабов по умолчанию
+            var dev1Email = "MaraTest@mail.ru";
+            if(userManager.FindByEmailAsync(dev1Email).Result == null)
+            {
+                var dev1 = new User
+                {
+                    Id = "23691240-2d4a-4354-8d9a-41e6fd99c8f7", // Этот айди будет у игр Марата
+                    Name = "Марат",
+                    Surname = "Дзиов",
+                    ImageURL = "/img/avatars/MaraAva.jpg",
+                    Description = "Выпускниц яндекс лицея. В совершенстве знает python и даже был в офисе Яндекс.",
+                    UserName = dev1Email,
+                    Email = dev1Email
+                };
+                var result = userManager.CreateAsync(dev1, password).Result;
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(dev1, Constants.DevRoleName).Wait();
+            }
+
+            var dev2Email = "DavaTest@mail.ru";
+            if(userManager.FindByEmailAsync(dev2Email).Result == null)
+            {
+                var dev2 = new User
+                {
+                    Id = "aacde62d-a630-45a1-8ee5-dea31270329c",
+                    Name = "Дэвид",
+                    Surname = "Кадиев",
+                    ImageURL = "/img/avatars/DavaAva.jpg",
+                    Description = "Лучший составитель тестов и кроссвордов. Сдал ЕГЭ по информатике на 98 баллов и теперь пишет игры для Осетии.",
+                    UserName = dev2Email,
+                    Email = dev2Email
+                };
+                var result = userManager.CreateAsync(dev2, password).Result;
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(dev2, Constants.DevRoleName).Wait();
+            }
+            
         }
     }
 }

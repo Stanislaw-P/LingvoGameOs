@@ -5,9 +5,9 @@ namespace LingvoGameOs.Db
 {
 	public class GamesDbRepository : IGamesRepository
 	{
-		readonly NewDatabaseContext newDatabaseContext;
+		readonly DatabaseContext newDatabaseContext;
 
-		public GamesDbRepository(NewDatabaseContext newDatabaseContext)
+		public GamesDbRepository(DatabaseContext newDatabaseContext)
 		{
 			this.newDatabaseContext = newDatabaseContext;
 		}
@@ -23,8 +23,8 @@ namespace LingvoGameOs.Db
 				.Include(g => g.GameTypes)
 				.Include(g => g.LanguageLevel)
 				.Include(g => g.GamePlatform)
-				//.Include(g => g.Author)
-				//.ThenInclude(a=>a.DevGames)
+				.Include(g => g.Author)
+				.ThenInclude(a => a.DevGames)
 				.FirstOrDefault(game => game.Id == idGame);
 		}
 

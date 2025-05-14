@@ -1,5 +1,6 @@
 ﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,21 +9,24 @@ namespace LingvoGameOs.Controllers
     public class GameController : Controller
     {
         readonly IGamesRepository gamesRepository;
+		readonly UserManager<User> _userManager;
 
-		public GameController(IGamesRepository gamesRepository)
-		{
-			this.gamesRepository = gamesRepository;
-		}
-
-		public IActionResult Details(int idGame)
+        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager)
         {
-            var existingGame = gamesRepository.TryGetById(idGame);
-            if (existingGame == null)
-                return NotFound();
-            return View(existingGame);
+            this.gamesRepository = gamesRepository;
+            _userManager = userManager;
         }
 
-        public IActionResult Start(int idGame)
+		public IActionResult Details(int idGame)
+		{
+			var existingGame = gamesRepository.TryGetById(idGame);
+			if (existingGame == null)
+				return NotFound();
+
+			return View(existingGame);
+		}
+
+		public IActionResult Start(int idGame)
         {
             var existingGame = gamesRepository.TryGetById(idGame);
 
@@ -36,7 +40,7 @@ namespace LingvoGameOs.Controllers
 			string runningScript = Path.Combine("/home/stas/games/", "piece-by-piece", "run.sh");
 
 			if (!System.IO.File.Exists(runningScript))
-				return NotFound("Game script not found");
+				return View();
 
 			var runningProcess = new ProcessStartInfo
 			{

@@ -1,26 +1,15 @@
-﻿namespace LingvoGameOs.Models
-{
-    public abstract class UserViewModel
-    {
-        Guid Id { get; }
-        string Email { get; set; }
-        string Password { get; set; }
-        string Name { get; set; }
-        string Surname { get; set; }
-        string Description { get; set; }
-        string ImagePath { get; set; }
+﻿using LingvoGameOs.Db.Models;
 
-        public UserViewModel(string email, string password, string name, string surname)
-        {
-            Id = Guid.NewGuid();
-            Email = email;
-            Password = password;
-            Name = name;
-            Surname = surname;
-        }
-        public override string ToString()
-        {
-            return $"Email: {Email}\nPassword: {Password}\nName: {Name}\nSurname: {Surname}";
-        }
+namespace LingvoGameOs.Models
+{
+    public class UserViewModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string? Description { get; set; }
+        public string? ImageURL { get; set; }
+        public List<Game>? PlayerGames { get; set; }
+        public List<Game>? DevGames { get; set; }
     }
 }

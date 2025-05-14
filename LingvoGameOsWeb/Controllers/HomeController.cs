@@ -9,9 +9,9 @@ namespace LingvoGameOs.Controllers;
 public class HomeController : Controller
 {
     readonly IGamesRepository gamesRepository;
-    readonly NewDatabaseContext newDatabaseContext;
+    readonly DatabaseContext newDatabaseContext;
 
-    public HomeController(IGamesRepository gamesRepository, NewDatabaseContext newDatabaseContext)
+    public HomeController(IGamesRepository gamesRepository, DatabaseContext newDatabaseContext)
     {
         this.gamesRepository = gamesRepository;
         this.newDatabaseContext = newDatabaseContext;
@@ -22,13 +22,5 @@ public class HomeController : Controller
         var games = gamesRepository.GetAll();
         ViewBag.GameTypes = newDatabaseContext.GameTypes.Select(type => type.Name);
         return View(games);
-    }
-
-    // тестирование класса пользователей
-    public string Usser()
-    {
-        UserViewModel user = new PlayerUserViewModel("ddkhugaev@gmail.com", "1234", "Давид", "Хугаев");
-        return user.ToString();
-        //return View();
     }
 }

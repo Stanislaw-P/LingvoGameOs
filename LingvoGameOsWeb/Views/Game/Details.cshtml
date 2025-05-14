@@ -4,8 +4,77 @@
 	<div id="header-placeholder"></div>
 
 	<div class="content__container _container">
-		<!-- Главный баннер игры -->
+		<!-- Главный баннер игры с каруселью -->
 		<section class="game-hero" data-game-id="game1">
+			<div class="game-hero__text">
+				<h1 class="game-hero__main-title">@Model.Title</h1>
+				<p class="game-hero__main-description">
+					@Model.Rules
+				</p>
+			</div>
+			<div class="game-hero__content">
+				<div class="game-hero__carousel">
+					<div class="game-hero__slides" style="display: flex; overflow: hidden;">
+						<!-- Обложка игры (первая) -->
+						<div class="game-hero__slide">
+							<img src="@Model.CoverImageURL" alt="Game screenshot 1"
+								 class="game-hero__slide-image">
+						</div>
+						<!-- Видео с VK (вторая) -->
+						<div class="game-hero__slide game-hero__video-slide">
+							<iframe src="https://vkvideo.ru/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
+									width="640" height="360"
+									allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+									frameborder="0" allowfullscreen></iframe>
+						</div>
+						<!-- Скриншот 2 (третий) -->
+						<div class="game-hero__slide">
+							<img src="/img/screenshot2.png" alt="Game screenshot 2"
+								 class="game-hero__slide-image">
+						</div>
+						<!-- Скриншот 3 (четвертый) -->
+						<div class="game-hero__slide">
+							<img src="/img/screenshot3.png" alt="Game screenshot 3"
+								 class="game-hero__slide-image">
+						</div>
+					</div>
+					<!-- Навигационные кнопки -->
+					<button class="game-hero__carousel-button game-hero__carousel-prev">
+						<img src="/icon/prev.svg" alt="Previous">
+					</button>
+					<button class="game-hero__carousel-button game-hero__carousel-next">
+						<img src="/icon/next.svg" alt="Next">
+					</button>
+					<!-- Индикаторы (обновлены на полоски) -->
+					<div class="game-hero__carousel-indicators">
+						<span class="game-hero__indicator active"></span>
+						<span class="game-hero__indicator"></span>
+						<span class="game-hero__indicator"></span>
+						<span class="game-hero__indicator"></span>
+					</div>
+				</div>
+				<div class="game-hero__info">
+					<h1 class="game-hero__title">@Model.Title</h1>
+					<div class="game-hero__actions">
+						<button class="game-hero__button profile__button">
+							<a asp-controller="Game" asp-action="Start" asp-route-idGame="@Model.Id"><img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Начать игру</a>
+						</button>
+						<button class="game-hero__share profile__button">
+							<img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+
+
+
+
+
+		<!-- Главный баннер игры -->
+		@* <section class="game-hero" data-game-id="game1">
 			<div class="game-hero__content">
 				<img src="@Model.CoverImageURL" alt="Game banner" class="game-hero__image">
 				<div class="game-hero__info">
@@ -25,7 +94,7 @@
 			</div>
 
 		</section>
-
+ *@
 		<!-- Основная информация об игре -->
 		<section class="game-info">
 			<h2 class="game-info__title">Основная информация об игре</h2>
@@ -73,7 +142,20 @@
 										<img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
 										<img src="/icon/star-half.svg" alt="Half Star" class="game-info__star">
 									</div>
-									<span class="game-info__rating-value">@Model.Raiting</span>
+									<span class="game-info__rating-value">@Model.RaitingPlayers</span>
+								</div>
+							</div>
+							<div class="game-info__rating-group">
+								<h5 class="game-info__rating-title">Учителя</h5>
+								<div class="game-info__rating-details">
+									<div class="game-info__stars">
+										<img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
+										<img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
+										<img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
+										<img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
+										<img src="/icon/star-empty.svg" alt="Empty Star" class="game-hero__star">
+									</div>
+									<span class="game-info__rating-value">@Model.RaitingTeachers</span>
 								</div>
 							</div>
 						</div>
@@ -81,12 +163,10 @@
 					<div class="game-info__metadata-item">
 						<h4 class="game-info__metadata-title">Разработчик</h4>
 						<div class="game-info__developer">
-							<img src="/img/developer-avatar.png" alt="Developer" class="game-info__developer-avatar">
+							<img src="@Model.Author.ImageURL" alt="@Model.Author.Name" class="game-info__developer-avatar">
 							<div class="game-info__developer-details">
-								@* <span class="game-info__developer-name">@Model.Author.Name</span> *@
-								@* <span class="game-info__developer-games">Игр: @Model?.Author?.DevGames?.Count</span> *@
-								<span class="game-info__developer-name">Имя автора</span>
-								<span class="game-info__developer-games">Игр: количество</span>
+								<span class="game-info__developer-name">@Model.Author.Name</span>
+								<span class="game-info__developer-games">Игр: @Model?.Author?.DevGames?.Count</span>
 							</div>
 						</div>
 					</div>

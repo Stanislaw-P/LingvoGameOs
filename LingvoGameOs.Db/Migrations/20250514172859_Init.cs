@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LingvoGameOs.Db.Migrations
 {
     /// <inheritdoc />
-    public partial class StartNewDatabase : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -222,6 +222,7 @@ namespace LingvoGameOs.Db.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Rules = table.Column<string>(type: "TEXT", nullable: false),
                     AuthorId = table.Column<string>(type: "TEXT", nullable: false),
                     PublicationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -286,11 +287,6 @@ namespace LingvoGameOs.Db.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Description", "Email", "EmailConfirmed", "ImageURL", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b45ef5bd-da4b-41f8-8c78-38e60e4c5291", 0, "fe4bd986-5da8-4d47-a219-071e610d50c6", null, "MaratTest@mail.ru", false, null, false, null, "Марат", null, null, null, null, false, "7bb38f54-ef2a-4653-8943-df34479d4303", "Какой-то", false, "MaratTest@mail.ru" });
-
-            migrationBuilder.InsertData(
                 table: "GameTypes",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -325,12 +321,13 @@ namespace LingvoGameOs.Db.Migrations
 
             migrationBuilder.InsertData(
                 table: "Games",
-                columns: new[] { "Id", "AuthorId", "CoverImageURL", "Description", "GamePlatformId", "GameURL", "LanguageLevelId", "LastUpdateDate", "NumberDownloads", "PublicationDate", "Raiting", "Title", "UserId", "UserId1" },
+                columns: new[] { "Id", "AuthorId", "CoverImageURL", "Description", "GamePlatformId", "GameURL", "LanguageLevelId", "LastUpdateDate", "NumberDownloads", "PublicationDate", "Raiting", "Rules", "Title", "UserId", "UserId1" },
                 values: new object[,]
                 {
-                    { 1, "b45ef5bd-da4b-41f8-8c78-38e60e4c5291", "/img/games/mountain labyrinth-banner.png", "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.", 2, "/home/index", 1, new DateTime(2025, 5, 13, 16, 41, 52, 82, DateTimeKind.Utc).AddTicks(4475), 1000, new DateTime(2025, 5, 13, 16, 41, 52, 82, DateTimeKind.Utc).AddTicks(4470), 4.5999999999999996, "Горный лабиринт", null, null },
-                    { 2, "b45ef5bd-da4b-41f8-8c78-38e60e4c5291", "/img/games/art-object-banner.png", "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.", 1, "/home/index", 1, new DateTime(2025, 5, 13, 16, 41, 52, 82, DateTimeKind.Utc).AddTicks(4480), 2241, new DateTime(2025, 5, 13, 16, 41, 52, 82, DateTimeKind.Utc).AddTicks(4479), 4.4000000000000004, "Тур-викторина 'Арт объекты Осетии'", null, null },
-                    { 3, "b45ef5bd-da4b-41f8-8c78-38e60e4c5291", "/img/games/gameplay-animal.png", "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.", 3, "http://84.201.144.125:5001", 2, new DateTime(2025, 5, 13, 16, 41, 52, 82, DateTimeKind.Utc).AddTicks(4483), 5, new DateTime(2025, 5, 13, 16, 41, 52, 82, DateTimeKind.Utc).AddTicks(4483), 4.2000000000000002, "Собери животное", null, null }
+                    { 1, "23691240-2d4a-4354-8d9a-41e6fd99c8f7", "/img/games/mountain labyrinth-banner.png", "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.", 2, "/home/index", 1, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2528), 1000, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2525), 4.5999999999999996, "Правила еще находятся в разработке. Простите за неудобства.", "Горный лабиринт", null, null },
+                    { 2, "23691240-2d4a-4354-8d9a-41e6fd99c8f7", "/img/games/art-object-banner.png", "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.", 1, "/home/index", 1, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2532), 241, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2531), 4.4000000000000004, "Слушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.", "Тур-викторина 'Арт объекты Осетии'", null, null },
+                    { 3, "23691240-2d4a-4354-8d9a-41e6fd99c8f7", "/img/games/gameplay-animal.png", "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.", 3, "http://84.201.144.125:5001", 2, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2534), 5, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2534), 4.2000000000000002, "Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').", "Собери животное", null, null },
+                    { 4, "aacde62d-a630-45a1-8ee5-dea31270329c", "/img/games/93a62f0945389b9_920x0.jpg", "Используется текстовое, звуковое и графическое представление языка. Эта игра может быть использована как преподавателями осетинского языка в рамках учебного процесса, так и широким кругом пользователей просто для развлечения.\nНа верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.", 3, "скоро будет", 1, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2536), 10, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2536), 5.0, "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.", "Кроссворд осетинских слов", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -343,7 +340,10 @@ namespace LingvoGameOs.Db.Migrations
                     { 2, 3 },
                     { 2, 4 },
                     { 3, 1 },
-                    { 3, 3 }
+                    { 3, 3 },
+                    { 4, 1 },
+                    { 4, 2 },
+                    { 4, 4 }
                 });
 
             migrationBuilder.CreateIndex(
