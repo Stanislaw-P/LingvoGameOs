@@ -158,7 +158,7 @@ namespace LingvoGameOs.Db
                     RaitingPlayers = 5,
                     RaitingTeachers = 4.9,
                     CoverImageURL = "/img/games/93a62f0945389b9_920x0.jpg",
-                    GameURL = "скоро будет",
+                    GameURL = "https://ossetian-crosswords.glitch.me/",
                     NumberDownloads = 10
                 }
             );

@@ -67,37 +67,9 @@
 			</div>
 		</section>
 
-
-
-
-
-
-
-		<!-- Главный баннер игры -->
-		@* <section class="game-hero" data-game-id="game1">
-			<div class="game-hero__content">
-				<img src="@Model.CoverImageURL" alt="Game banner" class="game-hero__image">
-				<div class="game-hero__info">
-					<h1 class="game-hero__title">@Model.Title</h1>
-					<p class="game-hero__description">
-						@Model.Description
-					</p>
-					<div class="game-hero__actions">
-						<button class="game-hero__button profile__button">
-							<a asp-controller="Game" asp-action="Start" asp-route-idGame="@Model.Id"><img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Начать игру</a>
-						</button>
-						<button class="game-hero__share profile__button">
-							<img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
-						</button>
-					</div>
-				</div>
-			</div>
-
-		</section>
- *@
 		<!-- Основная информация об игре -->
 		<section class="game-info">
-			<h2 class="game-info__title">Основная информация об игре</h2>
+			@* <h2 class="game-info__title">Основная информация об игре</h2> *@
 			<div class="game-info__row">
 				<article class="game-info__description">
 					<h3 class="game-info__subtitle">Описание</h3>
