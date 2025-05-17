@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace LingvoGameOs.Db.Migrations
 {
     /// <inheritdoc />
@@ -227,27 +225,22 @@ namespace LingvoGameOs.Db.Migrations
                     PublicationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LanguageLevelId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Raiting = table.Column<double>(type: "REAL", nullable: false),
+                    RaitingPlayers = table.Column<double>(type: "REAL", nullable: false),
+                    RaitingTeachers = table.Column<double>(type: "REAL", nullable: false),
                     CoverImageURL = table.Column<string>(type: "TEXT", nullable: false),
                     GameURL = table.Column<string>(type: "TEXT", nullable: false),
                     GamePlatformId = table.Column<int>(type: "INTEGER", nullable: false),
-                    NumberDownloads = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId1 = table.Column<string>(type: "TEXT", nullable: true)
+                    NumberDownloads = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Games_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Games_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Games_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Games_LanguageLevels_LanguageLevelId",
                         column: x => x.LanguageLevelId,
@@ -286,64 +279,28 @@ namespace LingvoGameOs.Db.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "GameTypes",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "GameUser",
+                columns: table => new
                 {
-                    { 1, "Словарный запас" },
-                    { 2, "Грамматика" },
-                    { 3, "Аудирование" },
-                    { 4, "Чтение" },
-                    { 5, "Говорение" },
-                    { 6, "Головоломка" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "LanguageLevels",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
+                    PlayerGamesId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PlayersId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
                 {
-                    { 1, "Начинающий" },
-                    { 2, "Средний" },
-                    { 3, "Продвинутый" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Platforms",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Web-Desktop" },
-                    { 2, "Desktop" },
-                    { 3, "Web-Mobile" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Games",
-                columns: new[] { "Id", "AuthorId", "CoverImageURL", "Description", "GamePlatformId", "GameURL", "LanguageLevelId", "LastUpdateDate", "NumberDownloads", "PublicationDate", "Raiting", "Rules", "Title", "UserId", "UserId1" },
-                values: new object[,]
-                {
-                    { 1, "23691240-2d4a-4354-8d9a-41e6fd99c8f7", "/img/games/mountain labyrinth-banner.png", "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.", 2, "/home/index", 1, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2528), 1000, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2525), 4.5999999999999996, "Правила еще находятся в разработке. Простите за неудобства.", "Горный лабиринт", null, null },
-                    { 2, "23691240-2d4a-4354-8d9a-41e6fd99c8f7", "/img/games/art-object-banner.png", "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.", 1, "/home/index", 1, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2532), 241, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2531), 4.4000000000000004, "Слушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.", "Тур-викторина 'Арт объекты Осетии'", null, null },
-                    { 3, "23691240-2d4a-4354-8d9a-41e6fd99c8f7", "/img/games/gameplay-animal.png", "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.", 3, "http://84.201.144.125:5001", 2, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2534), 5, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2534), 4.2000000000000002, "Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').", "Собери животное", null, null },
-                    { 4, "aacde62d-a630-45a1-8ee5-dea31270329c", "/img/games/93a62f0945389b9_920x0.jpg", "Используется текстовое, звуковое и графическое представление языка. Эта игра может быть использована как преподавателями осетинского языка в рамках учебного процесса, так и широким кругом пользователей просто для развлечения.\nНа верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.", 3, "скоро будет", 1, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2536), 10, new DateTime(2025, 5, 14, 17, 28, 58, 749, DateTimeKind.Utc).AddTicks(2536), 5.0, "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.", "Кроссворд осетинских слов", null, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "GameGameType",
-                columns: new[] { "GameId", "GameTypeId" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 1, 2 },
-                    { 2, 3 },
-                    { 2, 4 },
-                    { 3, 1 },
-                    { 3, 3 },
-                    { 4, 1 },
-                    { 4, 2 },
-                    { 4, 4 }
+                    table.PrimaryKey("PK_GameUser", x => new { x.PlayerGamesId, x.PlayersId });
+                    table.ForeignKey(
+                        name: "FK_GameUser_AspNetUsers_PlayersId",
+                        column: x => x.PlayersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GameUser_Games_PlayerGamesId",
+                        column: x => x.PlayerGamesId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -389,6 +346,11 @@ namespace LingvoGameOs.Db.Migrations
                 column: "GameTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Games_AuthorId",
+                table: "Games",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Games_GamePlatformId",
                 table: "Games",
                 column: "GamePlatformId");
@@ -399,14 +361,9 @@ namespace LingvoGameOs.Db.Migrations
                 column: "LanguageLevelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_UserId",
-                table: "Games",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Games_UserId1",
-                table: "Games",
-                column: "UserId1");
+                name: "IX_GameUser_PlayersId",
+                table: "GameUser",
+                column: "PlayersId");
         }
 
         /// <inheritdoc />
@@ -429,6 +386,9 @@ namespace LingvoGameOs.Db.Migrations
 
             migrationBuilder.DropTable(
                 name: "GameGameType");
+
+            migrationBuilder.DropTable(
+                name: "GameUser");
 
             migrationBuilder.DropTable(
                 name: "Technologys");

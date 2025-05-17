@@ -2,6 +2,7 @@ using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -38,9 +39,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 
-//// встраиваю собственный сервис
-//builder.Services.AddScoped<UserGameService>();
-
 var app = builder.Build();
 
 
@@ -66,7 +64,8 @@ using (var serviceScope = app.Services.CreateScope())
     var services = serviceScope.ServiceProvider;
     var userManager = services.GetRequiredService<UserManager<User>>();
     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    IdentityInitializer.Initialize(userManager, rolesManager);
+    var dbContextOptions = services.GetRequiredService<DbContextOptions<DatabaseContext>>();
+    IdentityInitializer.Initialize(userManager, rolesManager, dbContextOptions);
 }
 
 app.MapControllerRoute(

@@ -11,14 +11,29 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250514192054_AddUrlForGameDavida")]
-    partial class AddUrlForGameDavida
+    [Migration("20250517190739_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
+
+            modelBuilder.Entity("GameUser", b =>
+                {
+                    b.Property<int>("PlayerGamesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PlayersId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PlayerGamesId", "PlayersId");
+
+                    b.HasIndex("PlayersId");
+
+                    b.ToTable("GameUser");
+                });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
@@ -71,9 +86,6 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -82,79 +94,7 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.HasIndex("LanguageLevelId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Games");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = "23691240-2d4a-4354-8d9a-41e6fd99c8f7",
-                            CoverImageURL = "/img/games/mountain labyrinth-banner.png",
-                            Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
-                            GamePlatformId = 2,
-                            GameURL = "/home/index",
-                            LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9170),
-                            NumberDownloads = 1000,
-                            PublicationDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9168),
-                            RaitingPlayers = 4.5999999999999996,
-                            RaitingTeachers = 4.7999999999999998,
-                            Rules = "Правила еще находятся в разработке. Простите за неудобства.",
-                            Title = "Горный лабиринт"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AuthorId = "23691240-2d4a-4354-8d9a-41e6fd99c8f7",
-                            CoverImageURL = "/img/games/art-object-banner.png",
-                            Description = "Супер интересная викторина для компании. Поможет найти арт пространства и расскажет о них много интересного.",
-                            GamePlatformId = 1,
-                            GameURL = "/home/index",
-                            LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9173),
-                            NumberDownloads = 241,
-                            PublicationDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9173),
-                            RaitingPlayers = 4.4000000000000004,
-                            RaitingTeachers = 4.0,
-                            Rules = "Слушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
-                            Title = "Тур-викторина 'Арт объекты Осетии'"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AuthorId = "23691240-2d4a-4354-8d9a-41e6fd99c8f7",
-                            CoverImageURL = "/img/games/gameplay-animal.png",
-                            Description = "Игра состоит из двух уровней никак не связанных друг с другом. После открытия сайта пользователь попадает на главное окно. Там он может ознакомится с правилами игры, а также просмотреть список лидеров и увидеть свой уровень достижений И зарегистрироваться/войти в аккаунт.",
-                            GamePlatformId = 3,
-                            GameURL = "http://84.201.144.125:5001",
-                            LanguageLevelId = 2,
-                            LastUpdateDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9176),
-                            NumberDownloads = 5,
-                            PublicationDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9175),
-                            RaitingPlayers = 4.2000000000000002,
-                            RaitingTeachers = 4.2999999999999998,
-                            Rules = "Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
-                            Title = "Собери животное"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AuthorId = "aacde62d-a630-45a1-8ee5-dea31270329c",
-                            CoverImageURL = "/img/games/93a62f0945389b9_920x0.jpg",
-                            Description = "Используется текстовое, звуковое и графическое представление языка. Эта игра может быть использована как преподавателями осетинского языка в рамках учебного процесса, так и широким кругом пользователей просто для развлечения.\nНа верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.",
-                            GamePlatformId = 3,
-                            GameURL = "https://ossetian-crosswords.glitch.me/",
-                            LanguageLevelId = 1,
-                            LastUpdateDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9178),
-                            NumberDownloads = 10,
-                            PublicationDate = new DateTime(2025, 5, 14, 19, 20, 53, 984, DateTimeKind.Utc).AddTicks(9178),
-                            RaitingPlayers = 5.0,
-                            RaitingTeachers = 4.9000000000000004,
-                            Rules = "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
-                            Title = "Кроссворд осетинских слов"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.GameGameType", b =>
@@ -170,53 +110,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasIndex("GameTypeId");
 
                     b.ToTable("GameGameType", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            GameId = 1,
-                            GameTypeId = 2
-                        },
-                        new
-                        {
-                            GameId = 2,
-                            GameTypeId = 3
-                        },
-                        new
-                        {
-                            GameId = 1,
-                            GameTypeId = 1
-                        },
-                        new
-                        {
-                            GameId = 2,
-                            GameTypeId = 4
-                        },
-                        new
-                        {
-                            GameId = 3,
-                            GameTypeId = 1
-                        },
-                        new
-                        {
-                            GameId = 3,
-                            GameTypeId = 3
-                        },
-                        new
-                        {
-                            GameId = 4,
-                            GameTypeId = 1
-                        },
-                        new
-                        {
-                            GameId = 4,
-                            GameTypeId = 2
-                        },
-                        new
-                        {
-                            GameId = 4,
-                            GameTypeId = 4
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.GameType", b =>
@@ -232,38 +125,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GameTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Словарный запас"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Грамматика"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Аудирование"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Чтение"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Говорение"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Головоломка"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.LanguageLevel", b =>
@@ -279,23 +140,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LanguageLevels");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Начинающий"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Средний"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Продвинутый"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Platform", b =>
@@ -311,23 +155,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Platforms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Web-Desktop"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Desktop"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Web-Mobile"
-                        });
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Technology", b =>
@@ -551,6 +378,21 @@ namespace LingvoGameOs.Db.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GameUser", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("PlayerGamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LingvoGameOs.Db.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.User", "Author")
@@ -570,10 +412,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasForeignKey("LanguageLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("LingvoGameOs.Db.Models.User", null)
-                        .WithMany("PlayerGames")
-                        .HasForeignKey("UserId");
 
                     b.Navigation("Author");
 
@@ -655,8 +493,6 @@ namespace LingvoGameOs.Db.Migrations
             modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>
                 {
                     b.Navigation("DevGames");
-
-                    b.Navigation("PlayerGames");
                 });
 #pragma warning restore 612, 618
         }
