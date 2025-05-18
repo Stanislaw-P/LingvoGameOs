@@ -35,6 +35,7 @@ namespace LingvoGameOs.Controllers
 
 			ViewBag.GameId = idGame;
 			ViewBag.GameTitle = existingGame.Title;
+			
 
 			// TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
 			string runningScript = Path.Combine("/home/stas/games/", "piece-by-piece", "run.sh");
@@ -55,7 +56,12 @@ namespace LingvoGameOs.Controllers
 			{
 				Process.Start(runningProcess);
 				ViewBag.GameUrl = existingGame.GameURL;
-				return View();
+
+				// Добавление игры в историю пользователя
+                var currentUser = _userManager.GetUserAsync(User).Result;
+                if (currentUser != null)
+                    gamesRepository.AddPlayerToGameHistory(existingGame, currentUser);
+                return View();
 			}
 			catch (Exception ex)
 			{

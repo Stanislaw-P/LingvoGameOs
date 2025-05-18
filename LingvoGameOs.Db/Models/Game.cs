@@ -25,7 +25,7 @@ namespace LingvoGameOs.Db.Models
 		public Platform GamePlatform { get; set; }
 		public int GamePlatformId { get; set; }
 		public int NumberDownloads { get; set; }
-        public List<User> Players { get; set; }
-        //public List<UserGame> UserGames { get; set; }
-    }
+        public List<User>? Players { get; set; }
+		public List<UserGame> UserGames { get; set; }
+	}
 }

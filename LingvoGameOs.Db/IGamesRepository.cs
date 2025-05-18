@@ -8,5 +8,7 @@ namespace LingvoGameOs.Db
 		List<Game> GetAll();
 		void Remove(Game game);
 		Game? TryGetById(int idGame);
-	}
+		void AddPlayerToGameHistory(Game game, User player);
+		List<Game>? TryGetUserGameHistory(User user);
+    }
 }

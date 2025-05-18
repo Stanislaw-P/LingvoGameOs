@@ -36,6 +36,11 @@ namespace LingvoGameOs.Db
 
             // Настройка связи многие-ко-многим
             modelBuilder.Entity<Game>()
+                .HasMany(g => g.Players)
+                .WithMany(u => u.PlayerGames)
+                .UsingEntity<UserGame>();
+
+            modelBuilder.Entity<Game>()
                 .HasMany(g => g.GameTypes)
                 .WithMany(gt => gt.Games)
                 .UsingEntity<GameGameType>(

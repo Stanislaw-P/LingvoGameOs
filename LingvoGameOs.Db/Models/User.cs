@@ -9,6 +9,7 @@ namespace LingvoGameOs.Db.Models
 		public string? Description { get; set; }
 		public string? ImageURL { get; set; }
 		public List<Game>? PlayerGames { get; set; }
-		public List<Game>? DevGames { get; set; }
+        public List<UserGame> UserGames { get; set; }
+        public List<Game>? DevGames { get; set; }
 	}
 }
