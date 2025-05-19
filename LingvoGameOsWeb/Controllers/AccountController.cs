@@ -59,7 +59,7 @@ namespace LingvoGameOs.Controllers
                 var result = userManager.CreateAsync(user, register.Password).Result;
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, Constants.UserRoleName);
+                    userManager.AddToRoleAsync(user, Constants.PlayerRoleName);
                     signInManager.SignInAsync(user, false).Wait();
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }

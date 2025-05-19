@@ -14,8 +14,9 @@ namespace LingvoGameOs.Db
             {
                 // создаем роли, если их нет
                 _CreateRole(roleManager, Constants.AdminRoleName);
-                _CreateRole(roleManager, Constants.UserRoleName);
+                _CreateRole(roleManager, Constants.PlayerRoleName);
                 _CreateRole(roleManager, Constants.DevRoleName);
+                _CreateRole(roleManager, Constants.TeacherRoleName);
 
                 // инициализация пользователей
                 var password = "Aa123456_";
