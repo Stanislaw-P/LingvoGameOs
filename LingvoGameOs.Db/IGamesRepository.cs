@@ -10,5 +10,6 @@ namespace LingvoGameOs.Db
 		Game? TryGetById(int idGame);
 		void AddPlayerToGameHistory(Game game, User player);
 		List<Game>? TryGetUserGameHistory(User user);
+		List<Game>? TryGetUserDevGames(User user);
     }
 }

@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    //const playButton = document.querySelector('.game-hero__button');
-    //if (playButton) playButton.addEventListener('click', () => alert('Игра запускается! (Функционал в разработке)'));
+    const playButton = document.querySelector('.game-hero__button');
+    if (playButton) playButton.addEventListener('click', () => alert('Игра запускается! (Функционал в разработке)'));
 
     const reviewButton = document.querySelector('.game-reviews__button');
     if (reviewButton) reviewButton.addEventListener('click', showReviewModal);
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gameLikeButton = document.querySelector('.header__like');
     if (gameLikeButton && window.location.pathname.includes('game.html')) {
-        const gameData = { id: 'game1', name: 'Сокровища Осетии', image: '/img/game-banner.png' };
+        const gameData = { id: 'game1', name: 'Сокровища Осетии', image: 'img/game-banner.png' };
         gameLikeButton.addEventListener('click', () => toggleFavorite(gameData.id, gameData));
-        if (getFavorites().some(game => game.id === gameData.id)) gameLikeButton.querySelector('img').src = '/icon/like-filled.svg';
+        if (getFavorites().some(game => game.id === gameData.id)) gameLikeButton.querySelector('img').src = 'icon/like-filled.svg';
     }
 
     if (window.location.pathname.includes('favorites.html')) updateFavoritesPage();

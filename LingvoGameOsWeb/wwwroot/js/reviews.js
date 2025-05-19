@@ -72,14 +72,14 @@ export function addReviewToList(review) {
     reviewCard.className = 'game-reviews__card';
     reviewCard.innerHTML = `
         <div class="game-reviews__reviewer">
-            <img src="/img/avatar.png" alt="Reviewer" class="game-reviews__avatar">
+            <img src="img/avatar.png" alt="Reviewer" class="game-reviews__avatar">
             <div class="game-reviews__reviewer-details">
                 <span class="game-reviews__reviewer-name">${review.name}</span>
                 <span class="game-reviews__reviewer-location">${review.location}</span>
             </div>
             <div class="game-reviews__rating">
                 <span class="game-reviews__rating-score">${review.rating}</span>
-                <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
+                <img src="icon/star-filled.svg" alt="Star" class="game-reviews__star">
             </div>
         </div>
         <p class="game-reviews__text">${review.text}</p>

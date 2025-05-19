@@ -18,6 +18,14 @@ function initializeUploadForm() {
     const modalOverlay = document.querySelector('#qualityModalOverlay');
     const modalCloseButton = document.querySelector('#qualityModalClose');
     const openModalLink = document.querySelector('#open-quality-modal');
+    const platformInput = document.querySelector('#game-platform');
+    const fileUrlGroup = document.querySelector('#game-file-url-group');
+    const fileUploadGroup = document.querySelector('#game-file-upload-group');
+    const platformDropdown = document.querySelector('#platform-dropdown');
+    const platformSelected = platformDropdown.querySelector('.custom-dropdown__selected');
+    const platformList = platformDropdown.querySelector('.custom-dropdown__list');
+    const platformItems = platformList.querySelectorAll('.custom-dropdown__item');
+    const categoryLabels = document.querySelectorAll('#categories-options-list label');
     let lastFocusedElement = null;
 
     // Allowed game file types and extensions
@@ -34,6 +42,80 @@ function initializeUploadForm() {
     const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     const MAX_COVER_SIZE = 30 * 1024 * 1024; // 30MB
 
+    // Custom dropdown functionality
+    function toggleDropdown() {
+        const isOpen = !platformList.hasAttribute('hidden');
+        platformList.toggleAttribute('hidden', isOpen);
+        platformSelected.setAttribute('aria-expanded', !isOpen);
+    }
+
+    function selectPlatform(value, text) {
+        platformInput.value = value;
+        platformSelected.querySelector('span').textContent = text;
+        platformList.setAttribute('hidden', '');
+        platformSelected.setAttribute('aria-expanded', 'false');
+        const event = new Event('change', { bubbles: true });
+        platformInput.dispatchEvent(event);
+    }
+
+    platformSelected.addEventListener('click', toggleDropdown);
+
+    platformItems.forEach(item => {
+        item.addEventListener('click', () => {
+            selectPlatform(item.dataset.value, item.textContent);
+        });
+    });
+
+    platformSelected.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleDropdown();
+        }
+    });
+
+    platformList.addEventListener('keydown', (e) => {
+        const items = Array.from(platformItems);
+        const current = items.find(item => item === document.activeElement);
+        const index = current ? items.indexOf(current) : -1;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = index < items.length - 1 ? items[index + 1] : items[0];
+            next.focus();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = index > 0 ? items[index - 1] : items[items.length - 1];
+            prev.focus();
+        } else if (e.key === 'Enter' && current) {
+            e.preventDefault();
+            selectPlatform(current.dataset.value, current.textContent);
+        } else if (e.key === 'Escape') {
+            platformList.setAttribute('hidden', '');
+            platformSelected.setAttribute('aria-expanded', 'false');
+            platformSelected.focus();
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!platformDropdown.contains(e.target)) {
+            platformList.setAttribute('hidden', '');
+            platformSelected.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Handle platform selection
+    platformInput.addEventListener('change', () => {
+        const platform = platformInput.value;
+        fileUrlGroup.style.display = 'none';
+        fileUploadGroup.style.display = 'none';
+
+        if (platform === 'web-mobile' || platform === 'web-desktop') {
+            fileUrlGroup.style.display = 'block';
+        } else if (platform === 'desktop') {
+            fileUploadGroup.style.display = 'block';
+        }
+    });
+
     // Handle categories input
     categoriesInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && e.target.value.trim()) {
@@ -41,6 +123,44 @@ function initializeUploadForm() {
             addTag(categoriesList, e.target.value.trim(), 'category');
             e.target.value = '';
         }
+    });
+
+    // Handle category labels click with toggle functionality
+    categoryLabels.forEach(label => {
+        label.classList.add('category-label'); // Add class for styling
+        label.setAttribute('role', 'button'); // Improve accessibility
+        label.setAttribute('tabindex', '0'); // Make focusable
+        label.addEventListener('click', (e) => {
+            e.preventDefault();
+            const categoryText = label.textContent.trim();
+            const isSelected = label.classList.contains('selected');
+
+            if (isSelected) {
+                // Deselect: remove from categoriesList and unhighlight
+                const tag = Array.from(categoriesList.querySelectorAll('.category-item'))
+                    .find(item => item.dataset.value === categoryText);
+                if (tag) tag.remove();
+                label.classList.remove('selected');
+                label.setAttribute('aria-pressed', 'false');
+            } else {
+                // Select: add to categoriesList and highlight
+                const existingCategories = Array.from(categoriesList.querySelectorAll('.category-item'))
+                    .map(item => item.dataset.value);
+                if (!existingCategories.includes(categoryText)) {
+                    addTag(categoriesList, categoryText, 'category');
+                    label.classList.add('selected');
+                    label.setAttribute('aria-pressed', 'true');
+                }
+            }
+        });
+
+        // Handle keyboard interaction
+        label.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                label.click(); // Trigger click event
+            }
+        });
     });
 
     // Handle keywords input
@@ -52,13 +172,22 @@ function initializeUploadForm() {
         }
     });
 
-    // Handle tag removal
+    // Handle tag removal from categoriesList
     categoriesList.addEventListener('click', (e) => {
         if (e.target.classList.contains('category-item__remove')) {
-            e.target.parentElement.remove();
+            const tag = e.target.parentElement;
+            const categoryText = tag.dataset.value;
+            tag.remove();
+            // Unhighlight corresponding label
+            const label = Array.from(categoryLabels).find(l => l.textContent.trim() === categoryText);
+            if (label) {
+                label.classList.remove('selected');
+                label.setAttribute('aria-pressed', 'false');
+            }
         }
     });
 
+    // Handle tag removal from keywordsList
     keywordsList.addEventListener('click', (e) => {
         if (e.target.classList.contains('category-item__remove')) {
             e.target.parentElement.remove();
@@ -67,24 +196,24 @@ function initializeUploadForm() {
 
     // Handle file uploads with improved validation
     setupFileUpload(
-        coverDropzone, 
-        coverFileInput, 
-        '#cover-preview', 
-        MAX_COVER_SIZE, 
+        coverDropzone,
+        coverFileInput,
+        '#cover-preview',
+        MAX_COVER_SIZE,
         ALLOWED_COVER_TYPES,
         ['.jpg', '.jpeg', '.png', '.webp']
     );
-    
+
     setupFileUpload(
-        fileDropzone, 
-        gameFileInput, 
-        '#file-preview', 
-        MAX_GAME_SIZE, 
+        fileDropzone,
+        gameFileInput,
+        '#file-preview',
+        MAX_GAME_SIZE,
         ALLOWED_GAME_TYPES,
         ALLOWED_GAME_EXTENSIONS
     );
 
-    // Rest of the modal functionality remains the same
+    // Modal functionality
     function openModal() {
         lastFocusedElement = document.activeElement;
         modalOverlay.classList.add('quality-modal__overlay--visible');
@@ -144,6 +273,7 @@ function initializeUploadForm() {
         const formData = new FormData(form);
         const categories = Array.from(categoriesList.querySelectorAll('.category-item')).map(item => item.dataset.value);
         const keywords = Array.from(keywordsList.querySelectorAll('.category-item')).map(item => item.dataset.value);
+        const platform = formData.get('platform');
 
         // Validate required fields
         if (!formData.get('title').trim()) {
@@ -151,8 +281,23 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
+        if (!formData.get('short-description').trim()) {
+            showFormError('short-description-error', 'Short description is required');
+            submitButton.setAttribute('aria-busy', 'false');
+            return;
+        }
+        if (formData.get('short-description').length > 200) {
+            showFormError('short-description-error', 'Short description must be 200 characters or less');
+            submitButton.setAttribute('aria-busy', 'false');
+            return;
+        }
         if (!formData.get('description').trim()) {
             showFormError('description-error', 'Game description is required');
+            submitButton.setAttribute('aria-busy', 'false');
+            return;
+        }
+        if (!formData.get('rules').trim()) {
+            showFormError('rules-error', 'Game rules are required');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
@@ -166,20 +311,31 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (!formData.get('file-file') && !formData.get('file-url').trim()) {
-            showFormError('file-error', 'Game file or URL is required');
+        if (!platform) {
+            showFormError('platform-error', 'Please select a platform');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-
-        // Additional game file validation
-        const gameFile = gameFileInput.files[0];
-        if (gameFile) {
-            const fileExtension = gameFile.name.slice(gameFile.name.lastIndexOf('.')).toLowerCase();
-            if (!ALLOWED_GAME_EXTENSIONS.includes(fileExtension)) {
-                showFormError('file-error', `Invalid file extension. Allowed: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
+        if (platform === 'web-mobile' || platform === 'web-desktop') {
+            if (!formData.get('file-url').trim()) {
+                showFormError('file-url-error', 'Game URL is required for web platforms');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
+            }
+        } else if (platform === 'desktop') {
+            if (!formData.get('file-file')) {
+                showFormError('file-error', 'Game file is required for desktop platform');
+                submitButton.setAttribute('aria-busy', 'false');
+                return;
+            }
+            const gameFile = gameFileInput.files[0];
+            if (gameFile) {
+                const fileExtension = gameFile.name.slice(gameFile.name.lastIndexOf('.')).toLowerCase();
+                if (!ALLOWED_GAME_EXTENSIONS.includes(fileExtension)) {
+                    showFormError('file-error', `Invalid file extension. Allowed: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
+                    submitButton.setAttribute('aria-busy', 'false');
+                    return;
+                }
             }
         }
 
@@ -203,6 +359,15 @@ function initializeUploadForm() {
             keywordsList.innerHTML = '';
             document.querySelector('#cover-preview').innerHTML = '';
             document.querySelector('#file-preview').innerHTML = '';
+            fileUrlGroup.style.display = 'none';
+            fileUploadGroup.style.display = 'none';
+            platformSelected.querySelector('span').textContent = 'Выберите платформу';
+            platformInput.value = '';
+            // Reset category labels
+            categoryLabels.forEach(label => {
+                label.classList.remove('selected');
+                label.setAttribute('aria-pressed', 'false');
+            });
         } catch (error) {
             showNotification(error.message || 'Failed to upload game. Please try again.', 'error');
             console.error('Upload error:', error);

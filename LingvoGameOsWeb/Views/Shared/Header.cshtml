@@ -1,4 +1,5 @@
-﻿<header>
+﻿@using System.Security.Claims
+<header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LingvoGameOs</a>
@@ -11,14 +12,22 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
+
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-name="@User.Identity.Name">@User.Identity.Name</a>
-                        </li>
+                        {
+                            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userId">@User.Identity.Name</a>
+                            </li>
+                        }
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Upload" asp-action="Index">Загрузить игру</a>
                         </li>
                     }
                     else
@@ -27,6 +36,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
                         </li>
                     }
+
                     @if (User.IsInRole(Constants.AdminRoleName))
                     {
                         <li class="nav-item">

@@ -69,7 +69,7 @@ function toggleSound() {
     isSoundOn = !isSoundOn;
     if (soundToggle) {
         soundToggle.setAttribute('aria-pressed', isSoundOn);
-        soundToggle.querySelector('.game-play__sound-icon').src = isSoundOn ? '/icon/sound-on.svg' : '/icon/sound-off.svg';
+        soundToggle.querySelector('.game-play__sound-icon').src = isSoundOn ? 'icon/sound-on.svg' : 'icon/sound-off.svg';
         soundToggle.setAttribute('data-sound', isSoundOn ? 'on' : 'off');
     } else {
         console.warn('Sound toggle button not found');
@@ -87,7 +87,7 @@ function toggleFullscreen() {
             });
             if (fullscreenButton) {
                 fullscreenButton.setAttribute('aria-pressed', 'true');
-                fullscreenButton.querySelector('.game-play__fullscreen-icon').src = '/icon/fullscreen-exit.svg';
+                fullscreenButton.querySelector('.game-play__fullscreen-icon').src = 'icon/fullscreen-exit.svg';
             }
         } else {
             console.warn('Game section element (.game-play) not found for fullscreen');
@@ -120,8 +120,8 @@ function initializeHeader() {
     // Logo navigation
     if (logoLink) {
         logoLink.addEventListener('click', (e) => {
-            //e.preventDefault();
-            //window.location.href = 'index.html';
+            e.preventDefault();
+            window.location.href = 'index.html';
         });
     } else {
         console.warn('Logo link element (.game-play__logo) not found');

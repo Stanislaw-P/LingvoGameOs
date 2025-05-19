@@ -64,5 +64,15 @@ namespace LingvoGameOs.Db
 				return null;
 			return existingUser.PlayerGames;
 		}
-	}
+
+        public List<Game>? TryGetUserDevGames(User user)
+		{
+            var existingUser = databaseContext.Users
+				.Include(u => u.DevGames)
+                .FirstOrDefault(u => u.Id == user.Id);
+            if (existingUser == null)
+                return null;
+            return existingUser.DevGames;
+        }
+    }
 }
