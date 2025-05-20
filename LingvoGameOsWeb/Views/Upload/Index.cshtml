@@ -14,361 +14,391 @@ ViewData["Title"] = "Загрузка игры";
                     <div class="upload-hero__form-container">
                         <p class="upload-hero__info">
                             Ознакомьтесь с нашими
-                            <a href="#" class="upload-hero__info--highlight" id="open-quality-modal">
+                            <a href="#" id="open-quality-modal" class="upload-hero__info--highlight">
                                 рекомендациями
                                 по обеспечению качества
                             </a>
                             перед публикацией вашего проекта.
                         </p>
                         <form class="upload-form" id="upload-game-form" enctype="multipart/form-data">
-                            <!-- Game Title -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-title">
+                                <label for="game-title" class="upload-form__label">
                                     Название игры <span class="required">*</span>
                                 </label>
-                                <div class="upload-form__input-wrapper" data-tooltip="Введите название игры">
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-title" name="title"
-                                                placeholder="Введите название игры" class="input-field__input thq-input"
-                                                required aria-describedby="title-error" />
+                                        <input type="text" id="game-title" name="title" class="input-field__input"
+                                                placeholder="Введите название игры" required>
                                     </div>
-                                    <span class="error-message" id="title-error" aria-live="polite"></span>
+                                    <span id="title-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <!-- Game Description -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-description">
+                                <label for="game-short-description" class="upload-form__label">
+                                    Краткое описание игры
+                                    (до 200 символов) <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field input-field--textarea">
+                                        <textarea id="game-short-description" name="short-description"
+                                                    class="input-field__textarea"
+                                                    placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
+                                                    required></textarea>
+                                    </div>
+                                    <span id="short-description-error" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-description" class="upload-form__label">
                                     Описание игры <span class="required">*</span>
                                 </label>
-                                <div class="upload-form__input-wrapper" data-tooltip="Введите текст задания">
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
                                         <textarea id="game-description" name="description"
-                                                    placeholder="Введите текст задания"
-                                                    class="input-field__textarea thq-input" required
-                                                    aria-describedby="description-error"></textarea>
+                                                    class="input-field__textarea" placeholder="Расскажите подробнее об игре"
+                                                    required></textarea>
                                     </div>
-                                    <span class="error-message" id="description-error" aria-live="polite"></span>
+                                    <span id="description-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <!-- Categories -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-categories">
+                                <label for="game-rules" class="upload-form__label">
+                                    Правила игры <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field input-field--textarea">
+                                        <textarea id="game-rules" name="rules" class="input-field__textarea"
+                                                    placeholder="Опишите правила игры" required></textarea>
+                                    </div>
+                                    <span id="rules-error" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-categories" class="upload-form__label">
                                     Категории <span class="required">*</span>
                                 </label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Введите категории в которых будет входить ваша игра">
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-categories"
-                                                placeholder="Введите категории в которых будет входить ваша игра"
-                                                class="input-field__input thq-input"
-                                                aria-describedby="categories-error" />
+                                        <input type="text" id="game-categories" class="input-field__input"
+                                                placeholder="Введите категорию и нажмите Enter">
                                     </div>
                                     <div class="categories-list" id="categories-list">
                                         <span class="category-item" data-value="vocabulary">словарный запас</span>
                                         <span class="category-item" data-value="grammar">грамматика</span>
+                                        <span class="category-item" data-value="vocabulary">аудирование</span>
+                                        <span class="category-item" data-value="grammar">чтение</span>
+                                        <span class="category-item" data-value="vocabulary">говорение</span>
+                                        <span class="category-item" data-value="grammar">головоломка</span>
                                     </div>
-                                    <span class="error-message" id="categories-error" aria-live="polite"></span>
+                                    <div class="categories-list" id="categories-list"></div>
+                                    <span id="categories-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <!-- Keywords -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-keywords">Ключевые слова</label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Введите ключевые слова по которым пользователю будет легче найти вашу игру">
+                                <label for="game-keywords" class="upload-form__label">Ключевые слова</label>
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-keywords"
-                                                placeholder="Введите ключевые слова по которым пользователю будет легче найти вашу игру"
-                                                class="input-field__input thq-input" />
+                                        <input type="text" id="game-keywords" class="input-field__input"
+                                                placeholder="Введите ключевое слово и нажмите Enter">
                                     </div>
                                     <div class="categories-list" id="keywords-list"></div>
+                                    <span id="keywords-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <!-- Level -->
                             <div class="upload-form__group">
                                 <label class="upload-form__label">Уровень <span class="required">*</span></label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Выберите подходящий уровень сложности">
-                                    <div class="level-list" role="radiogroup" aria-required="true"
-                                            aria-describedby="level-error">
-                                        <div class="level-item">
-                                            <div class="level-item__input">
+                                <div class="upload-form__input-wrapper">
+                                    <div class="level-list">
+                                        <label class="level-item">
+                                            <span class="level-item__input">
                                                 <input type="radio" name="level" value="beginner"
-                                                        id="level-beginner" class="level-item__radio thq-checkbox"
-                                                        required />
-                                            </div>
-                                            <label for="level-beginner" class="level-item__text">
-                                                «Барашек, который
-                                                пытается говорить» – начинаешь издавать осмысленные звуки, но пока
-                                                не всё понятно.
-                                            </label>
-                                        </div>
-                                        <div class="level-item">
-                                            <div class="level-item__input">
+                                                        class="level-item__radio" required>
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Барашек, который пытается говорить» –
+                                                начинаешь издавать осмысленные звуки, но пока не всё понятно.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
+                                                <input type="radio" name="level" value="elementary"
+                                                        class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Юный нарт» – уже умеешь составлять
+                                                предложения и понимаешь базовые правила языка.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
                                                 <input type="radio" name="level" value="intermediate"
-                                                        id="level-intermediate"
-                                                        class="level-item__radio thq-checkbox" />
-                                            </div>
-                                            <label for="level-intermediate" class="level-item__text">
-                                                «Юный нарт» –
-                                                уже умеешь составлять предложения и понимаешь базовые правила
-                                                языка.
-                                            </label>
-                                        </div>
-                                        <div class="level-item">
-                                            <div class="level-item__input">
+                                                        class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Кавказский орёл» – уверенно говоришь,
+                                                строишь сложные фразы и можешь поддержать разговор.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
                                                 <input type="radio" name="level" value="advanced"
-                                                        id="level-advanced" class="level-item__radio thq-checkbox" />
-                                            </div>
-                                            <label for="level-advanced" class="level-item__text">
-                                                «Кавказский орёл» –
-                                                уверенно говоришь, строишь сложные фразы и можешь поддержать
-                                                разговор.
-                                            </label>
-                                        </div>
-                                        <div class="level-item">
-                                            <div class="level-item__input">
-                                                <input type="radio" name="level" value="expert" id="level-expert"
-                                                        class="level-item__radio thq-checkbox" />
-                                            </div>
-                                            <label for="level-expert" class="level-item__text">
-                                                «Старейшина, который
-                                                говорит тосты» – свободно владеешь языком, понимаешь тонкости и
-                                                культурные нюансы, можешь красиво говорить и даже вести застольные
-                                                беседы.
-                                            </label>
-                                        </div>
+                                                        class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Старейшина, который говорит тосты» –
+                                                свободно владеешь языком, понимаешь тонкости и культурные
+                                                нюансы.
+                                            </span>
+                                        </label>
                                     </div>
-                                    <span class="error-message" id="level-error" aria-live="polite"></span>
+                                    <span id="level-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <!-- Game Cover -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-cover-url">
+                                <label for="game-platform" class="upload-form__label">
+                                    Платформа <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field custom-dropdown" id="platform-dropdown">
+                                        <input type="hidden" id="game-platform" name="platform" required>
+                                        <div class="custom-dropdown__selected" tabindex="0" aria-haspopup="listbox"
+                                                aria-label="Выберите платформу">
+                                            <span>Выберите платформу</span>
+                                            <img src="icon/chevron-down.svg" alt="" class="custom-dropdown__icon">
+                                        </div>
+                                        <ul class="custom-dropdown__list" role="listbox" hidden>
+                                            <li class="custom-dropdown__item" role="option" data-value="web-mobile">
+                                                Web-Mobile
+                                            </li>
+                                            <li class="custom-dropdown__item" role="option"
+                                                data-value="web-desktop">Web-Desktop</li>
+                                            <li class="custom-dropdown__item" role="option" data-value="desktop">
+                                                Desktop
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <span id="platform-error" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group" id="game-file-url-group" style="display: none;">
+                                <label for="game-file-url" class="upload-form__label">
+                                    URL-адрес игры <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="url" id="game-file-url" name="file-url"
+                                                class="input-field__input" placeholder="Введите URL игры">
+                                    </div>
+                                    <span id="file-url-error" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group" id="game-file-upload-group" style="display: none;">
+                                <label class="upload-form__label">Файл игры <span class="required">*</span></label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="upload-form__file-upload">
+                                        <label class="file-upload" id="file-dropzone">
+                                            <div class="file-upload__dropzone">
+                                                <div class="file-upload__text">
+                                                    <img src="icon/upload.svg" alt="" class="file-upload__icon">
+                                                    <div class="file-upload__info">
+                                                        <p class="file-upload__info-text">
+                                                            Загрузите или перетащите
+                                                            игру сюда (ZIP, RAR, APK)
+                                                        </p>
+                                                        <p class="file-upload__size">Максимальный размер 2 ГБ</p>
+                                                    </div>
+                                                </div>
+                                                <input type="file" id="game-file-file" name="file-file"
+                                                        class="input-field__input"
+                                                        accept=".zip,.rar,.7z,.apk,.exe,.app,.dmg" hidden>
+                                            </div>
+                                        </label>
+                                        <div class="file-upload__previews" id="file-preview"></div>
+                                    </div>
+                                    <span id="file-error" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-cover-url" class="upload-form__label">
                                     URL-адрес обложки
                                     игры
                                 </label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Введите URL-адрес обложки игры">
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" id="game-cover-url" name="cover-url"
-                                                placeholder="Введите URL-адрес обложки игры"
-                                                class="input-field__input thq-input" aria-describedby="cover-error" />
+                                                class="input-field__input" placeholder="Введите URL обложки">
                                     </div>
-                                    <div class="upload-form__file-upload">
-                                        <span class="upload-form__file-label">
-                                            Или вы можете прикрепить фото обложки
-                                            игры
-                                        </span>
-                                        <div class="file-upload" id="cover-dropzone">
-                                            <div class="file-upload__dropzone">
-                                                <div class="file-upload__text">
-                                                    <img src="icon/cloud-download.svg" alt="Cloud Download"
-                                                            class="file-upload__icon" />
-                                                    <div class="file-upload__info">
-                                                        <span class="file-upload__info-text">
-                                                            Загрузите или
-                                                            перетащите файлы
-                                                        </span>
-                                                        <span class="file-upload__size">
-                                                            Максимальный размер
-                                                            30MB
-                                                        </span>
-                                                    </div>
+                                    <span id="cover-url-error" class="error-message"></span>
+                                </div>
+                                <p class="upload-form__file-label">Или вы можете прикрепить фото обложки игры</p>
+                                <div class="upload-form__file-upload">
+                                    <label class="file-upload" id="cover-dropzone">
+                                        <div class="file-upload__dropzone">
+                                            <div class="file-upload__text">
+                                                <img src="icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                <div class="file-upload__info">
+                                                    <p class="file-upload__info-text">
+                                                        Загрузите или перетащите файлы
+                                                    </p>
+                                                    <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="file-upload__actions">
-                                            <div class="file-upload__previews" id="cover-preview"></div>
                                             <input type="file" id="game-cover-file" name="cover-file"
-                                                    accept="image/jpeg,image/png" class="file-upload__input" hidden />
+                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
-                                    </div>
-                                    <span class="error-message" id="cover-error" aria-live="polite"></span>
+                                    </label>
+                                    <div class="file-upload__previews" id="cover-preview"></div>
                                 </div>
+                                <span id="cover-error" class="error-message"></span>
                             </div>
 
-                            <!-- Game Video URL (Updated Field) -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-video-url">
+                                <label for="game-video" class="upload-form__label">
                                     Код для вставки видео из
                                     VK
                                 </label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Введите iframe-код для видео из VK (например, <iframe src='https://vkvideo.ru/video_ext.php?...'></iframe>)">
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-video-url" name="video-url"
-                                                placeholder="Введите iframe-код для видео из VK (например, <iframe src='https://vkvideo.ru/video_ext.php?...'></iframe>)"
-                                                class="input-field__input thq-input" aria-describedby="video-error" />
+                                        <input type="text" id="game-video" name="video" class="input-field__input"
+                                                placeholder="Вставьте код видео">
                                     </div>
-                                    <span class="error-message" id="video-error" aria-live="polite"></span>
+                                    <span id="video-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <!-- Game Screenshots URLs -->
                             <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-screenshots-urls">
+                                <label for="game-screenshots-url" class="upload-form__label">
                                     URL-адреса скриншотов
                                     игры
                                 </label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Введите URL-адреса скриншотов игры, разделяя их запятыми">
+                                <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-screenshots-urls" name="screenshots-urls"
-                                                placeholder="Введите URL-адреса скриншотов игры, разделяя их запятыми"
-                                                class="input-field__input thq-input"
-                                                aria-describedby="screenshots-error" />
+                                        <input type="url" id="game-screenshots-url" name="screenshots-url"
+                                                class="input-field__input" placeholder="Введите URL скриншотов">
                                     </div>
-                                    <div class="upload-form__file-upload">
-                                        <span class="upload-form__file-label">
-                                            Или вы можете прикрепить скриншоты
-                                            игры
-                                        </span>
-                                        <div class="file-upload" id="cover-dropzone">
-                                            <div class="file-upload__dropzone">
-                                                <div class="file-upload__text">
-                                                    <img src="icon/cloud-download.svg" alt="Cloud Download"
-                                                            class="file-upload__icon" />
-                                                    <div class="file-upload__info">
-                                                        <span class="file-upload__info-text">
-                                                            Загрузите или
-                                                            перетащите файлы
-                                                        </span>
-                                                        <span class="file-upload__size">
-                                                            Максимальный размер
-                                                            30MB
-                                                        </span>
-                                                    </div>
+                                    <span id="screenshots-url-error" class="error-message"></span>
+                                </div>
+                                <p class="upload-form__file-label">Или вы можете прикрепить скриншоты игры</p>
+                                <div class="upload-form__file-upload">
+                                    <label class="file-upload" id="screenshots-dropzone">
+                                        <div class="file-upload__dropzone">
+                                            <div class="file-upload__text">
+                                                <img src="icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                <div class="file-upload__info">
+                                                    <p class="file-upload__info-text">
+                                                        Загрузите или перетащите файлы
+                                                    </p>
+                                                    <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
+                                            <input type="file" id="game-screenshots-file" name="screenshots-file"
+                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
+                                                    hidden>
                                         </div>
-                                        <div class="file-upload__actions">
-                                            <div class="file-upload__previews" id="cover-preview"></div>
-                                            <input type="file" id="game-cover-file" name="cover-file"
-                                                    accept="image/jpeg,image/png" class="file-upload__input" hidden />
-                                        </div>
-                                    </div>
-                                    <span class="error-message" id="screenshots-error" aria-live="polite"></span>
+                                    </label>
+                                    <div class="file-upload__previews" id="screenshots-preview"></div>
                                 </div>
+                                <span id="screenshots-error" class="error-message"></span>
                             </div>
 
-                            <!-- Game File -->
-                            <div class="upload-form__group">
-                                <label class="upload-form__label" for="game-file-url">
-                                    URL-адрес или путь к файлу
-                                    игры <span class="required">*</span>
-                                </label>
-                                <div class="upload-form__input-wrapper"
-                                        data-tooltip="Введите URL-адрес или путь к файлу игры">
-                                    <div class="input-field">
-                                        <input type="url" id="game-file-url" name="file-url"
-                                                placeholder="Введите URL-адрес или путь к файлу игры"
-                                                class="input-field__input thq-input" aria-describedby="file-error" />
-                                    </div>
-                                    <div class="upload-form__file-upload">
-                                        <span class="upload-form__file-label">
-                                            Или вы можете прикрепить файл с
-                                            игрой
-                                        </span>
-                                        <div class="file-upload" id="file-dropzone">
-                                            <div class="file-upload__dropzone">
-                                                <div class="file-upload__text">
-                                                    <img src="icon/cloud-download.svg" alt="Cloud Download"
-                                                            class="file-upload__icon" />
-                                                    <div class="file-upload__info">
-                                                        <span class="file-upload__info-text">
-                                                            Загрузите или
-                                                            перетащите игру сюда (ZIP, RAR, APK)
-                                                        </span>
-                                                        <span class="file-upload__size">
-                                                            Максимальный размер 2
-                                                            ГБ
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="file-upload__actions">
-                                            <div class="file-upload__previews" id="file-preview"></div>
-                                            <input type="file" id="game-file-file" name="file-file" accept=".zip"
-                                                    class="file-upload__input" hidden required />
-                                        </div>
-                                    </div>
-                                    <span class="error-message" id="file-error" aria-live="polite"></span>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="upload-form__submit thq-button-filled" aria-busy="false">
+                            <button type="submit" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>
                             </button>
                         </form>
                     </div>
                 </div>
-                <!-- Quality Guidelines Modal -->
-                <div class="quality-modal__overlay" id="qualityModalOverlay">
-                    <div class="quality-modal" role="dialog" aria-labelledby="qualityModalTitle" aria-modal="true">
-                        <button class="quality-modal__close" id="qualityModalClose" aria-label="Close modal">
-                            <svg class="quality-modal__close-icon" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" stroke="%23D54646" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                        <h2 class="quality-modal__title" id="qualityModalTitle">
-                            Рекомендации по обеспечению качества
-                        </h2>
-                        <div class="quality-modal__section">
-                            <h3 class="quality-modal__subtitle">Соответствие осетинской культуре</h3>
-                            <p class="quality-modal__text">
-                                Убедитесь, что контент игры уважает осетинские традиции.
-                                Используйте аутентичные слова, фразы и мотивы.
-                            </p>
-                        </div>
-                        <div class="quality-modal__section">
-                            <h3 class="quality-modal__subtitle">Образовательная ценность</h3>
-                            <p class="quality-modal__text">
-                                Игра должна способствовать изучению языка. Включите
-                                задания на словарный запас, грамматику или аудирование.
-                            </p>
-                        </div>
-                        <div class="quality-modal__section">
-                            <h3 class="quality-modal__subtitle">Качество метаданных</h3>
-                            <p class="quality-modal__text">
-                                Укажите точное название, описание и теги. Обложка должна
-                                быть привлекательной.
-                            </p>
-                        </div>
-                        <div class="quality-modal__section">
-                            <h3 class="quality-modal__subtitle">Техническая интеграция</h3>
-                            <p class="quality-modal__text">
-                                Используйте HTML5 для встраивания через iframe. Проверьте
-                                игру на отсутствие ошибок.
-                            </p>
-                        </div>
-                        <div class="quality-modal__section">
-                            <h3 class="quality-modal__subtitle">Доступность и интерактивность</h3>
-                            <p class="quality-modal__text">
-                                Обеспечьте адаптивность для всех устройств и мгновенную
-                                обратную связь.
-                            </p>
-                        </div>
-                        <div class="quality-modal__section">
-                            <h3 class="quality-modal__subtitle">Соответствие стандартам</h3>
-                            <p class="quality-modal__text">
-                                Проверьте игру на соответствие WCAG и безопасность
-                                контента.
-                            </p>
+            </section>
+
+            <div class="quality-modal__overlay" id="qualityModalOverlay">
+                <div class="quality-modal">
+                    <button class="quality-modal__close" id="qualityModalClose" aria-label="Закрыть модальное окно">
+                        <img src="icon/close.svg" alt="Закрыть" class="quality-modal__close-icon">
+                    </button>
+                    <h2 class="quality-modal__title">Рекомендации по обеспечению качества</h2>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Соответствие осетинской культуре</h3>
+                        <p class="quality-modal__text">
+                            Убедитесь, что контент игры уважает осетинские традиции.
+                            Используйте аутентичные слова, фразы и мотивы.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Образовательная ценность</h3>
+                        <p class="quality-modal__text">
+                            Игра должна способствовать изучению языка. Включите задания
+                            на словарный запас, грамматику или аудирование.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+
+
+                        <div class="quality-modal__overlay" id="qualityModalOverlay">
+                            <div class="quality-modal">
+                                <button class="quality-modal__close" id="qualityModalClose"
+                                        aria-label="Закрыть модальное окно">
+                                    <img src="icon/close.svg" alt="Закрыть" class="quality-modal__close-icon">
+                                </button>
+                                <h2 class="quality-modal__title">Рекомендации по обеспечению качества</h2>
+                                <div class="quality-modal__section">
+                                    <h3 class="quality-modal__subtitle">Соответствие осетинской культуре</h3>
+                                    <p class="quality-modal__text">
+                                        Убедитесь, что контент игры уважает осетинские
+                                        традиции.
+                                        Используйте аутентичные слова, фразы и мотивы.
+                                    </p>
+                                </div>
+                                <div class="quality-modal__section">
+                                    <h3 class="quality-modal__subtitle">Образовательная ценность</h3>
+                                    <p class="quality-modal__text">
+                                        Игра должна способствовать изучению языка.
+                                        Включите задания
+                                        на словарный запас, грамматику или аудирование.
+                                    </p>
+                                </div>
+                                <div class="quality-modal__section">
+                                    <h3 class="quality-modal__subtitle">Качество метаданных</h3>
+                                    <p class="quality-modal__text">
+                                        Укажите точное название, описание и теги. Обложка
+                                        должна быть
+                                        привлекательной.
+                                    </p>
+                                </div>
+                                <div class="quality-modal__section">
+                                    <h3 class="quality-modal__subtitle">Техническая интеграция</h3>
+                                    <p class="quality-modal__text">
+                                        Используйте HTML5 для встраивания через iframe.
+                                        Проверьте
+                                        игру на отсутствие ошибок.
+                                    </p>
+                                </div>
+                                <div class="quality-modal__section">
+                                    <h3 class="quality-modal__subtitle">Доступность и интерактивность</h3>
+                                    <p class="quality-modal__text">
+                                        Обеспечьте адаптивность для всех устройств и
+                                        мгновенную
+                                        обратную связь.
+                                    </p>
+                                </div>
+                                <div class="quality-modal__section">
+                                    <h3 class="quality-modal__subtitle">Соответствие стандартам</h3>
+                                    <p class="quality-modal__text">
+                                        Проверьте игру на соответствие WCAG и
+                                        безопасность контента.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        </div>
     </main>
     <div id="footer-placeholder"></div>
 </div>
