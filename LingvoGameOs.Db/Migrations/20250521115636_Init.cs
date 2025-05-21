@@ -219,7 +219,7 @@ namespace LingvoGameOs.Db.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 201, nullable: false),
                     Rules = table.Column<string>(type: "TEXT", nullable: false),
                     AuthorId = table.Column<string>(type: "TEXT", nullable: false),
                     PublicationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -280,24 +280,24 @@ namespace LingvoGameOs.Db.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GameUser",
+                name: "UserGame",
                 columns: table => new
                 {
-                    PlayerGamesId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PlayersId = table.Column<string>(type: "TEXT", nullable: false)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    GameId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameUser", x => new { x.PlayerGamesId, x.PlayersId });
+                    table.PrimaryKey("PK_UserGame", x => new { x.GameId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_GameUser_AspNetUsers_PlayersId",
-                        column: x => x.PlayersId,
+                        name: "FK_UserGame_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GameUser_Games_PlayerGamesId",
-                        column: x => x.PlayerGamesId,
+                        name: "FK_UserGame_Games_GameId",
+                        column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -361,9 +361,9 @@ namespace LingvoGameOs.Db.Migrations
                 column: "LanguageLevelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameUser_PlayersId",
-                table: "GameUser",
-                column: "PlayersId");
+                name: "IX_UserGame_UserId",
+                table: "UserGame",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -388,10 +388,10 @@ namespace LingvoGameOs.Db.Migrations
                 name: "GameGameType");
 
             migrationBuilder.DropTable(
-                name: "GameUser");
+                name: "Technologys");
 
             migrationBuilder.DropTable(
-                name: "Technologys");
+                name: "UserGame");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

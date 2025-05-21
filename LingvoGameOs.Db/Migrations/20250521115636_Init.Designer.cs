@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250517190739_Init")]
+    [Migration("20250521115636_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -19,21 +19,6 @@ namespace LingvoGameOs.Db.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
-
-            modelBuilder.Entity("GameUser", b =>
-                {
-                    b.Property<int>("PlayerGamesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("PlayersId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("PlayerGamesId", "PlayersId");
-
-                    b.HasIndex("PlayersId");
-
-                    b.ToTable("GameUser");
-                });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
@@ -51,6 +36,7 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(201)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GamePlatformId")
@@ -250,6 +236,21 @@ namespace LingvoGameOs.Db.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("LingvoGameOs.Db.Models.UserGame", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("GameId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserGame");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -378,21 +379,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GameUser", b =>
-                {
-                    b.HasOne("LingvoGameOs.Db.Models.Game", null)
-                        .WithMany()
-                        .HasForeignKey("PlayerGamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LingvoGameOs.Db.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("PlayersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.User", "Author")
@@ -437,6 +423,25 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("Game");
 
                     b.Navigation("GameType");
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.UserGame", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
+                        .WithMany("UserGames")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LingvoGameOs.Db.Models.User", "User")
+                        .WithMany("UserGames")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -490,9 +495,16 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
+                {
+                    b.Navigation("UserGames");
+                });
+
             modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>
                 {
                     b.Navigation("DevGames");
+
+                    b.Navigation("UserGames");
                 });
 #pragma warning restore 612, 618
         }

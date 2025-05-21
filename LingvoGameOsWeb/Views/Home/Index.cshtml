@@ -4,6 +4,68 @@
     ViewData["Title"] = "Сипсок игр";
 }
 
+<section class="game-hero" data-game-id="game1">
+    <div class="game-hero__text">
+        <h1 class="game-hero__main-title">НАЧНИТЕ ОБУЧЕНИЕ С ЭТОЙ ИГРЫ!</h1>
+        <p class="game-hero__main-description">
+            Погрузитесь в осетинскую культуру, играя в эту новую
+            игру!
+            Играйте прямо сейчас.
+        </p>
+    </div>
+    <div class="game-hero__content">
+        <div class="game-hero__carousel">
+            <div class="game-hero__slides" style="display: flex; overflow: hidden;">
+                <div class="game-hero__slide">
+                    <img src="/img/game-banner.png" alt="Game screenshot 1"
+                    class="game-hero__slide-image">
+                </div>
+                <div class="game-hero__slide game-hero__video-slide">
+                    <iframe src="https://vk.com/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
+                    width="640" height="360"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                    frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="game-hero__slide">
+                    <img src="/img/screenshot2.png" alt="Game screenshot 2"
+                    class="game-hero__slide-image">
+                </div>
+                <div class="game-hero__slide">
+                    <img src="/img/screenshot3.png" alt="Game screenshot 3"
+                    class="game-hero__slide-image">
+                </div>
+            </div>
+            <button class="game-hero__carousel-button game-hero__carousel-prev">
+                <img src="/icon/prev.svg" alt="Previous">
+            </button>
+            <button class="game-hero__carousel-button game-hero__carousel-next">
+                <img src="/icon/next.svg" alt="Next">
+            </button>
+            <div class="game-hero__carousel-indicators">
+                <span class="game-hero__indicator active"></span>
+                <span class="game-hero__indicator"></span>
+                <span class="game-hero__indicator"></span>
+                <span class="game-hero__indicator"></span>
+            </div>
+        </div>
+        <div class="game-hero__info">
+            <h1 class="game-hero__title">Сокровища Осетии</h1>
+            <p class="game-hero__description">
+                Увлекательная игра, в которой вы бегаете по живописному селу в горах Северной Осетии,
+                открывая сундуки с артефактами и решая лингвистические головоломки.
+            </p>
+            <div class="game-hero__actions">
+                <button class="game-hero__button profile__button">
+                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Начать игру
+                </button>
+                <button class="game-hero__share profile__button">
+                    <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="games">
     <div class="games__filter">
         <div class="games__filter-search">
@@ -22,20 +84,41 @@
                         <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
                     </div>
                     <ul class="games__dropdown-list">
-                        @foreach(var type in ViewBag.GameTypes)
+                        @foreach(var gameType in ViewBag.GameTypes)
                         {
                             <li class="games__dropdown-item" data-filter="category" data-value="reading">
-                                @type
+                                @gameType
                             </li>
-                        }                   
+                        }
                     </ul>
                 </div>
             </div>
-           
+            <div class="games__dropdown">
+                <button class="games__dropdown-toggle">
+                    <span>Ключевые слова</span>
+                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                </button>
+                <div class="games__dropdown-menu">
+                    <div class="games__dropdown-search">
+                        <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
+                    </div>
+                    <ul class="games__dropdown-list">
+                        <li class="games__dropdown-item" data-filter="keyword" data-value="culture">
+                            Культура
+                        </li>
+                        <li class="games__dropdown-item" data-filter="keyword" data-value="history">
+                            История
+                        </li>
+                        <li class="games__dropdown-item" data-filter="keyword" data-value="language">
+                            Язык
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="games__dropdown">
                 <button class="games__dropdown-toggle">
                     <span>Рейтинг</span>
-                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                    <img src="icon/chevron-down.svg" alt="Chevron" class="games__chevron">
                 </button>
                 <div class="games__dropdown-menu">
                     <ul class="games__dropdown-list">
@@ -57,7 +140,8 @@
     <div class="games__list">
         @foreach (var game in Model)
         {
-            <div class="games__item">
+            <div class="games__item"
+                 data-rating="@game.RaitingPlayers">
                 <img class="games__image" src="@game.CoverImageURL" alt="@game.Title">
                 <div class="games__content">
                     <h3 class="games__name">@game.Title</h3>
@@ -69,13 +153,49 @@
                             <img src="/icon/star.svg" alt="star" class="rating-star filled">
                             <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
                         </span>
+                        <span class="games__likes">
+                            <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> 120
+                        </span>
+                        <span class="games__views">
+                            <img src="/icon/eye.svg" alt="view" class="stat-icon"> @game.NumberDownloads
+                        </span>
                     </div>
                     <div class="games__actions">
                         <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
-                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Детали</a>
+                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
                     </div>
                 </div>
             </div>
         }
+
+        <div class="games__item games__item--locked" data-categories="grammar,vocabulary"
+             data-keywords="language,culture" data-rating="5">
+            <div class="games__locked-overlay">
+                <img src="/icon/lock.svg" alt="Locked" class="games__lock-icon">
+            </div>
+            <img class="games__image" src="/img/game1.png" alt="Ancient Tales">
+            <div class="games__content">
+                <h3 class="games__name">Древние сказания</h3>
+                <div class="games__stats">
+                    <span class="games__rating">
+                        <img src="icon/star.svg" alt="star" class="rating-star filled">
+                        <img src="icon/star.svg" alt="star" class="rating-star filled">
+                        <img src="icon/star.svg" alt="star" class="rating-star filled">
+                        <img src="icon/star.svg" alt="star" class="rating-star filled">
+                        <img src="icon/star.svg" alt="star" class="rating-star filled"> 5.0
+                    </span>
+                    <span class="games__likes">
+                        <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> 150
+                    </span>
+                    <span class="games__views">
+                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2K
+                    </span>
+                </div>
+                <div class="games__actions">
+                    <a href="game-details.html" class="games__button">Играть</a>
+                    <button class="games__preview button">Предпросмотр</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

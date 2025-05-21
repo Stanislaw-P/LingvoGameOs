@@ -4,281 +4,279 @@
     ViewData["Title"] = $"Профиль {Model.Name} {Model.Surname}";
 }
 
-<div class="wrapper">
-    <div id="header-placeholder"></div>
-    <main class="content">
-        <div class="content__container _container">
-            <div class="content__row">
-                <aside class="content__sidebar">
-                    <!-- Профиль пользователя -->
-                    <div class="profile">
-                        <h3 class="profile__title">Профиль пользователя</h3>
-                        <div class="profile__avatar">
-                            <div class="profile__avatar-wrapper">
-                                @if (Model.ImageURL != null)
-                                {
-                                    <img src="@Model.ImageURL" alt="Аватар пользователя" class="profile__image">
-                                }
-                                else
-                                {
-                                    <img src="/img/avatar100.png" alt="Аватар пользователя" class="profile__image">
-                                }
-                            </div>
-                        </div>
-                        <form class="profile__form">
-                            <div class="profile__field">
-                                <label class="profile__label" for="firstName">Имя</label>
-                                <input type="text" class="profile__input" id="firstName" value="@Model.Name" disabled>
-                            </div>
-                            <div class="profile__field">
-                                <label class="profile__label" for="lastName">Фамилия</label>
-                                <input type="text" class="profile__input" id="lastName" value="@Model.Surname" disabled>
-                            </div>
-                            <div class="profile__field">
-                                <label class="profile__label" for="email">Email*</label>
-                                <input type="email" class="profile__input" id="email" value="@Model.Email"
-                                disabled>
-                            </div>
-                            <div class="profile__field">
-                                <label class="profile__label" for="level">Уровень</label>
-                                <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
-                            </div>
-                            <div class="profile__field">
-                                <label class="profile__label" for="bio">О себе</label>
-                                <textarea class="profile__input profile__textarea" id="bio"
-                                placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
-                            </div>
-
-                            <button type="button" class="profile__button" id="open-edit-modal">Изменить
-                                профиль</button>
-                        </form>
-                    </div>
-                    <!-- Прогресс уровней -->
-                    <div class="level-progress">
-                        <h3 class="level-progress__title">Ваш прогресс</h3>
-                        <div class="level-progress__overview">
-                            <span class="level-progress__total">Всего баллов: 450</span>
-                            <span class="level-progress__to-next">До следующего уровня: 50</span>
-                        </div>
-                        <div class="level-progress__bar">
-                            <div class="level-progress__fill" style="width: 90%;"></div>
-                        </div>
-                        <div class="level-progress__levels">
-                            <div class="level-progress__level" data-tooltip="0-300 баллов"
-                            data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
-                                1. Барашек, который пытается говорить</div>
-                            <div class="level-progress__level active" data-tooltip="300-600 баллов"
-                            data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
-                                2. Юный нарт</div>
-                            <div class="level-progress__level" data-tooltip="600-900 баллов"
-                            data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
-                                3. Кавказский орёл</div>
-                            <div class="level-progress__level" data-tooltip="900-1200 баллов"
-                            data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
-                                4. Старейшина, который говорит тосты</div>
-                            <div class="level-progress__level" data-tooltip="1200+ баллов"
-                            data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
-                                5. Хранитель языка</div>
-                        </div>
-                    </div>
-                    <!-- Новый блок: Прогресс изучения языка -->
-                    <div class="language-progress">
-                        <h3 class="language-progress__title">Прогресс изучения</h3>
-                        <div class="language-progress__item">
-                            <span class="language-progress__label">Словарный запас</span>
-                            <div class="language-progress__bar">
-                                <div class="language-progress__fill" style="width: 60%;"></div>
-                            </div>
-                            <span class="language-progress__value">60%</span>
-                        </div>
-                        <div class="language-progress__item">
-                            <span class="language-progress__label">Грамматика</span>
-                            <div class="language-progress__bar">
-                                <div class="language-progress__fill" style="width: 45%;"></div>
-                            </div>
-                            <span class="language-progress__value">45%</span>
-                        </div>
-                        <div class="language-progress__item">
-                            <span class="language-progress__label">Аудирование</span>
-                            <div class="language-progress__bar">
-                                <div class="language-progress__fill" style="width: 30%;"></div>
-                            </div>
-                            <span class="language-progress__value">30%</span>
-                        </div>
-                    </div>
-                </aside>
-                <section class="content__main">
-                    <!-- Блок общей активности -->
-                    <div class="activity">
-                        <h3 class="activity__title">Общая активность</h3>
-                        <div class="activity__chart">
-                            <div class="activity__chart-grid">
-                                <!-- 365 ячеек для года, сгенерированных для примера -->
-                                <div class="activity__chart-cell"></div>
-                                <div class="activity__chart-cell active"></div>
-                                <div class="activity__chart-cell"></div>
-                                <div class="activity__chart-cell active"></div>
-                                <div class="activity__chart-cell"></div>
-                                <div class="activity__chart-cell active"></div>
-                                <div class="activity__chart-cell"></div>
-                                <div class="activity__chart-cell"></div>
-                                <div class="activity__chart-cell active"></div>
-                                <div class="activity__chart-cell"></div>
-                                <!-- Повторяется до 365 -->
-                            </div>
-                            <div class="activity__chart-labels">
-                                <span>янв.</span><span>фев.</span><span>мар.</span><span>апр.</span>
-                                <span>май</span><span>июн.</span><span>июл.</span><span>авг.</span>
-                                <span>сен.</span><span>окт.</span><span>ноя.</span><span>дек.</span>
-                            </div>
-                        </div>
-                        <div class="activity__stats">
-                            <div class="activity__stat">
-                                <span class="activity__stat-value">65</span>
-                                <span class="activity__stat-label">активных дней с момента регистрации</span>
-                            </div>
-                            <div class="activity__stat">
-                                <span class="activity__stat-value">363</span>
-                                <span class="activity__stat-label">балла заработано</span>
-                            </div>
-                            <div class="activity__stat">
-                                <span class="activity__stat-value">5</span>
-                                <span class="activity__stat-label">игр пройдено</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user-games">
-                        @if (User.IsInRole(Constants.DevRoleName))
-                        {
-                            <h3 class="user-games__title">Созданные игры</h3>
-                            
-                            <div class="user-games__list">
-                                @foreach (var game in Model.DevGames)
-                                {
-                                    <div class="user-games__item user-game-card">
-                                        <img src="@game.CoverImageURL" alt="Обложка игры" class="user-game-card__image">
-                                        <div class="user-game-card__content">
-                                            <h4 class="user-game-card__name">@game.Title</h4>
-                                            <p class="user-game-card__description">@game.Description</p>
-                                            <div class="user-game-card__stats">
-                                                <span>@game.NumberDownloads игроков</span>
-                                                <span>@game.RaitingPlayers рейтинг</span>
-                                                <span>85% (static) активность</span>
-                                            </div>
-                                            <div class="user-game-card__actions">
-                                                <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-games__button">Играть</a>
-                                                   <a href="analytics_game1.html" class="user-games__button--secondary">Аналитика</a>
-                                                <a href="edit_mygame1.html" class="user-games__button--secondary">Редактировать</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        }
-                    </div>
-                </section>
+<div class="content__row">
+    <aside class="content__sidebar">
+        <!-- Профиль пользователя -->
+        <div class="profile">
+            <h3 class="profile__title">Профиль пользователя</h3>
+            <div class="profile__avatar">
+                <div class="profile__avatar-wrapper">
+                    @if (Model.ImageURL != null)
+                    {
+                        <img src="@Model.ImageURL" alt="Аватар пользователя" class="profile__image">
+                    }
+                    else
+                    {
+                        <img src="/img/avatar100.png" alt="Аватар пользователя" class="profile__image">
+                    }
+                </div>
             </div>
-            <!-- Блок рейтинга в играх -->
-            <div class="game-stats">
-                <h3 class="game-stats__title">Рейтинг в играх</h3>
-                <div class="game-stats__list">
-                    <div class="game-stats__item">
-                        <span class="game-stats__name">"Игра 1: Словарный Бой"</span>
-                        <span class="game-stats__points">Баллы: 1200</span>
-                        <span class="game-stats__ranking">Рейтинг: 1523</span>
-                        <span class="game-stats__level">Уровень: 3</span>
-                        <a href="leaderboard_game1.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
-                    </div>
-                    <div class="game-stats__item">
-                        <span class="game-stats__name">"Игра 2: Грамматический Штурм"</span>
-                        <span class="game-stats__points">Баллы: 900</span>
-                        <span class="game-stats__ranking">Рейтинг: 1345</span>
-                        <span class="game-stats__level">Уровень: 2</span>
-                        <a href="leaderboard_game2.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
-                    </div>
-                    <div class="game-stats__item">
-                        <span class="game-stats__name">"Игра 3: Уши на Макушке"</span>
-                        <span class="game-stats__points">Баллы: 600</span>
-                        <span class="game-stats__ranking">Рейтинг: 987</span>
-                        <span class="game-stats__level">Уровень: 1</span>
-                        <a href="leaderboard_game3.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
-                    </div>
+            <form class="profile__form">
+                <div class="profile__field">
+                    <label class="profile__label" for="firstName">Имя</label>
+                    <input type="text" class="profile__input" id="firstName" value="@Model.Name" disabled>
+                </div>
+                <div class="profile__field">
+                    <label class="profile__label" for="lastName">Фамилия</label>
+                    <input type="text" class="profile__input" id="lastName" value="@Model.Surname" disabled>
+                </div>
+                <div class="profile__field">
+                    <label class="profile__label" for="email">Email*</label>
+                    <input type="email" class="profile__input" id="email" value="@Model.Email"
+                           disabled>
+                </div>
+                <div class="profile__field">
+                    <label class="profile__label" for="level">Уровень</label>
+                    <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
+                </div>
+                <div class="profile__field">
+                    <label class="profile__label" for="bio">О себе</label>
+                    <textarea class="profile__input profile__textarea" id="bio"
+                              placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
                 </div>
 
+                <button type="button" class="profile__button" id="open-edit-modal">
+                    Изменить
+                    профиль
+                </button>
+            </form>
+        </div>
+        <!-- Прогресс уровней -->
+        <div class="level-progress">
+            <h3 class="level-progress__title">Ваш прогресс</h3>
+            <div class="level-progress__overview">
+                <span class="level-progress__total">Всего баллов: 450</span>
+                <span class="level-progress__to-next">До следующего уровня: 50</span>
             </div>
-
-            <!-- Рекомендуемые игры -->
-            <div class="recommended-games">
-                <h3 class="recommended-games__title">Рекомендуемые игры</h3>
-                <div class="recommended-games__list">
-                    <div class="recommended-games__item">
-                        <img src="/img/game1.png" alt="Игра" class="recommended-games__image">
-                        <div class="recommended-games__content">
-                            <h4 class="recommended-games__name">"Название игры"</h4>
-                            <div class="recommended-games__stats">
-                                <span class="recommended-games__rating">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
-                                </span>
-                                <span class="recommended-games__likes">
-                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                                </span>
-                                <span class="recommended-games__views">
-                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recommended-games__item">
-                        <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
-                        <div class="recommended-games__content">
-                            <h4 class="recommended-games__name">"Название игры"</h4>
-                            <div class="recommended-games__stats">
-                                <span class="recommended-games__rating">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star"> 4.5
-                                </span>
-                                <span class="recommended-games__likes">
-                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                                </span>
-                                <span class="recommended-games__views">
-                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recommended-games__item">
-                        <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
-                        <div class="recommended-games__content">
-                            <h4 class="recommended-games__name">"Название игры"</h4>
-                            <div class="recommended-games__stats">
-                                <span class="recommended-games__rating">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                    <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
-                                </span>
-                                <span class="recommended-games__likes">
-                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                                </span>
-                                <span class="recommended-games__views">
-                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="level-progress__bar">
+                <div class="level-progress__fill" style="width: 90%;"></div>
+            </div>
+            <div class="level-progress__levels">
+                <div class="level-progress__level" data-tooltip="0-300 баллов"
+                     data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
+                    1. Барашек, который пытается говорить
+                </div>
+                <div class="level-progress__level active" data-tooltip="300-600 баллов"
+                     data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
+                    2. Юный нарт
+                </div>
+                <div class="level-progress__level" data-tooltip="600-900 баллов"
+                     data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
+                    3. Кавказский орёл
+                </div>
+                <div class="level-progress__level" data-tooltip="900-1200 баллов"
+                     data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
+                    4. Старейшина, который говорит тосты
+                </div>
+                <div class="level-progress__level" data-tooltip="1200+ баллов"
+                     data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
+                    5. Хранитель языка
                 </div>
             </div>
         </div>
-    </main>
+        <!-- Новый блок: Прогресс изучения языка -->
+        <div class="language-progress">
+            <h3 class="language-progress__title">Прогресс изучения</h3>
+            <div class="language-progress__item">
+                <span class="language-progress__label">Словарный запас</span>
+                <div class="language-progress__bar">
+                    <div class="language-progress__fill" style="width: 60%;"></div>
+                </div>
+                <span class="language-progress__value">60%</span>
+            </div>
+            <div class="language-progress__item">
+                <span class="language-progress__label">Грамматика</span>
+                <div class="language-progress__bar">
+                    <div class="language-progress__fill" style="width: 45%;"></div>
+                </div>
+                <span class="language-progress__value">45%</span>
+            </div>
+            <div class="language-progress__item">
+                <span class="language-progress__label">Аудирование</span>
+                <div class="language-progress__bar">
+                    <div class="language-progress__fill" style="width: 30%;"></div>
+                </div>
+                <span class="language-progress__value">30%</span>
+            </div>
+        </div>
+    </aside>
+    <section class="content__main">
+        <!-- Блок общей активности -->
+        <div class="activity">
+            <h3 class="activity__title">Общая активность</h3>
+            <div class="activity__chart">
+                <div class="activity__chart-grid">
+                    <!-- 365 ячеек для года, сгенерированных для примера -->
+                    <div class="activity__chart-cell"></div>
+                    <div class="activity__chart-cell active"></div>
+                    <div class="activity__chart-cell"></div>
+                    <div class="activity__chart-cell active"></div>
+                    <div class="activity__chart-cell"></div>
+                    <div class="activity__chart-cell active"></div>
+                    <div class="activity__chart-cell"></div>
+                    <div class="activity__chart-cell"></div>
+                    <div class="activity__chart-cell active"></div>
+                    <div class="activity__chart-cell"></div>
+                    <!-- Повторяется до 365 -->
+                </div>
+                <div class="activity__chart-labels">
+                    <span>янв.</span><span>фев.</span><span>мар.</span><span>апр.</span>
+                    <span>май</span><span>июн.</span><span>июл.</span><span>авг.</span>
+                    <span>сен.</span><span>окт.</span><span>ноя.</span><span>дек.</span>
+                </div>
+            </div>
+            <div class="activity__stats">
+                <div class="activity__stat">
+                    <span class="activity__stat-value">65</span>
+                    <span class="activity__stat-label">активных дней с момента регистрации</span>
+                </div>
+                <div class="activity__stat">
+                    <span class="activity__stat-value">363</span>
+                    <span class="activity__stat-label">балла заработано</span>
+                </div>
+                <div class="activity__stat">
+                    <span class="activity__stat-value">5</span>
+                    <span class="activity__stat-label">игр пройдено</span>
+                </div>
+            </div>
+        </div>
+        <div class="user-games">
+            @if (User.IsInRole(Constants.DevRoleName))
+            {
+                <h3 class="user-games__title">Созданные игры</h3>
 
-    <div id="footer-placeholder"></div>
+                <div class="user-games__list">
+                    @foreach (var game in Model.DevGames)
+                    {
+                        <div class="user-games__item user-game-card">
+                            <img src="@game.CoverImageURL" alt="Обложка игры" class="user-game-card__image">
+                            <div class="user-game-card__content">
+                                <h4 class="user-game-card__name">@game.Title</h4>
+                                <p class="user-game-card__description">@game.Description</p>
+                                <div class="user-game-card__stats">
+                                    <span>@game.NumberDownloads игроков</span>
+                                    <span>@game.RaitingPlayers рейтинг</span>
+                                    <span>85% (static) активность</span>
+                                </div>
+                                <div class="user-game-card__actions">
+                                    <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-games__button">Играть</a>
+                                    <a href="analytics_game1.html" class="user-games__button--secondary">Аналитика</a>
+                                    <a href="edit_mygame1.html" class="user-games__button--secondary">Редактировать</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </section>
 </div>
-<script type="module" src="/js/script.js"></script>
+<!-- Блок рейтинга в играх -->
+<div class="game-stats">
+    <h3 class="game-stats__title">Рейтинг в играх</h3>
+    <div class="game-stats__list">
+        <div class="game-stats__item">
+            <span class="game-stats__name">"Игра 1: Словарный Бой"</span>
+            <span class="game-stats__points">Баллы: 1200</span>
+            <span class="game-stats__ranking">Рейтинг: 1523</span>
+            <span class="game-stats__level">Уровень: 3</span>
+            <a href="leaderboard_game1.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
+        </div>
+        <div class="game-stats__item">
+            <span class="game-stats__name">"Игра 2: Грамматический Штурм"</span>
+            <span class="game-stats__points">Баллы: 900</span>
+            <span class="game-stats__ranking">Рейтинг: 1345</span>
+            <span class="game-stats__level">Уровень: 2</span>
+            <a href="leaderboard_game2.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
+        </div>
+        <div class="game-stats__item">
+            <span class="game-stats__name">"Игра 3: Уши на Макушке"</span>
+            <span class="game-stats__points">Баллы: 600</span>
+            <span class="game-stats__ranking">Рейтинг: 987</span>
+            <span class="game-stats__level">Уровень: 1</span>
+            <a href="leaderboard_game3.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Рекомендуемые игры -->
+<div class="recommended-games">
+    <h3 class="recommended-games__title">Рекомендуемые игры</h3>
+    <div class="recommended-games__list">
+        <div class="recommended-games__item">
+            <img src="/img/game1.png" alt="Игра" class="recommended-games__image">
+            <div class="recommended-games__content">
+                <h4 class="recommended-games__name">"Название игры"</h4>
+                <div class="recommended-games__stats">
+                    <span class="recommended-games__rating">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
+                    </span>
+                    <span class="recommended-games__likes">
+                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
+                    </span>
+                    <span class="recommended-games__views">
+                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="recommended-games__item">
+            <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
+            <div class="recommended-games__content">
+                <h4 class="recommended-games__name">"Название игры"</h4>
+                <div class="recommended-games__stats">
+                    <span class="recommended-games__rating">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star"> 4.5
+                    </span>
+                    <span class="recommended-games__likes">
+                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
+                    </span>
+                    <span class="recommended-games__views">
+                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="recommended-games__item">
+            <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
+            <div class="recommended-games__content">
+                <h4 class="recommended-games__name">"Название игры"</h4>
+                <div class="recommended-games__stats">
+                    <span class="recommended-games__rating">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                        <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
+                    </span>
+                    <span class="recommended-games__likes">
+                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
+                    </span>
+                    <span class="recommended-games__views">
+                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* <script type="module" src="/js/script.js"></script> *@

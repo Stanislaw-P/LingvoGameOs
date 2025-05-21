@@ -2,6 +2,7 @@
 using System;
 using LingvoGameOs.Db.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace LingvoGameOs.Db.Models
 {
@@ -9,6 +10,7 @@ namespace LingvoGameOs.Db.Models
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }
+		[MaxLength(201)]
 		public string Description { get; set; }
         public string Rules { get; set; }
         public User Author { get; set; }

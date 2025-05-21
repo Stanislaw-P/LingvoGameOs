@@ -33,6 +33,7 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(201)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GamePlatformId")
