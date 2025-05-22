@@ -82,19 +82,25 @@ ViewData["Title"] = "Загрузка игры";
                                     Категории <span class="required">*</span>
                                 </label>
                                 <div class="upload-form__input-wrapper">
-                                    <div class="input-field">
-                                        <input type="text" id="game-categories" class="input-field__input"
-                                                placeholder="Введите категорию и нажмите Enter">
+                                    <div class="custom-dropdown" id="categories-dropdown">
+                                        <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите категории">
+                                            <span class="custom-dropdown__placeholder">Выберите категории</span>
+                                            <img src="icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
+                                        </div>
+                                        <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
+                                            <input type="text" class="custom-dropdown__search" placeholder="Поиск категорий..." aria-label="Поиск категорий">
+                                            <ul class="custom-dropdown__options">
+                                                <li class="custom-dropdown__option" data-value="vocabulary" role="option" aria-selected="false">Словарный запас</li>
+                                                <li class="custom-dropdown__option" data-value="grammar" role="option" aria-selected="false">Грамматика</li>
+                                                <li class="custom-dropdown__option" data-value="listening" role="option" aria-selected="false">Аудирование</li>
+                                                <li class="custom-dropdown__option" data-value="reading" role="option" aria-selected="false">Чтение</li>
+                                                <li class="custom-dropdown__option" data-value="speaking" role="option" aria-selected="false">Говорение</li>
+                                                <li class="custom-dropdown__option" data-value="puzzle" role="option" aria-selected="false">Головоломка</li>
+                                            </ul>
+                                        </div>
+                                        <div class="selected-categories-list" id="selected-categories-list"></div>
+                                        <input type="hidden" id="game-categories" name="categories" required>
                                     </div>
-                                    <div class="categories-list" id="categories-list">
-                                        <span class="category-item" data-value="vocabulary">словарный запас</span>
-                                        <span class="category-item" data-value="grammar">грамматика</span>
-                                        <span class="category-item" data-value="vocabulary">аудирование</span>
-                                        <span class="category-item" data-value="grammar">чтение</span>
-                                        <span class="category-item" data-value="vocabulary">говорение</span>
-                                        <span class="category-item" data-value="grammar">головоломка</span>
-                                    </div>
-                                    <div class="categories-list" id="categories-list"></div>
                                     <span id="categories-error" class="error-message"></span>
                                 </div>
                             </div>
@@ -208,7 +214,7 @@ ViewData["Title"] = "Загрузка игры";
                                         <label class="file-upload" id="file-dropzone">
                                             <div class="file-upload__dropzone">
                                                 <div class="file-upload__text">
-                                                    <img src="icon/upload.svg" alt="" class="file-upload__icon">
+                                                    <img src="icon/cloud-download.svg" alt="" class="file-upload__icon">
                                                     <div class="file-upload__info">
                                                         <p class="file-upload__info-text">
                                                             Загрузите или перетащите

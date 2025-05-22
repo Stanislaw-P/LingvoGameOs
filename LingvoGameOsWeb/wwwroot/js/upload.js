@@ -5,10 +5,17 @@ import { showError } from './dom.js';
  * Initializes the upload form and modal functionality
  */
 function initializeUploadForm() {
+    // ... (previous variable declarations remain unchanged)
     const form = document.querySelector('#upload-game-form');
+    const categoriesDropdown = document.querySelector('#categories-dropdown');
+    const categoriesSelected = categoriesDropdown.querySelector('.custom-dropdown__selected');
+    const categoriesMenu = categoriesDropdown.querySelector('.custom-dropdown__menu');
+    const categoriesSearch = categoriesDropdown.querySelector('.custom-dropdown__search');
+    const categoriesOptions = categoriesDropdown.querySelectorAll('.custom-dropdown__option');
+    const selectedCategoriesList = document.querySelector('#selected-categories-list');
     const categoriesInput = document.querySelector('#game-categories');
+    const categoriesError = document.querySelector('#categories-error');
     const keywordsInput = document.querySelector('#game-keywords');
-    const categoriesList = document.querySelector('#categories-list');
     const keywordsList = document.querySelector('#keywords-list');
     const coverDropzone = document.querySelector('#cover-dropzone');
     const fileDropzone = document.querySelector('#file-dropzone');
@@ -25,8 +32,8 @@ function initializeUploadForm() {
     const platformSelected = platformDropdown.querySelector('.custom-dropdown__selected');
     const platformList = platformDropdown.querySelector('.custom-dropdown__list');
     const platformItems = platformList.querySelectorAll('.custom-dropdown__item');
-    const categoryLabels = document.querySelectorAll('#categories-options-list label');
     let lastFocusedElement = null;
+    let selectedCategories = [];
 
     // Allowed game file types and extensions
     const ALLOWED_GAME_TYPES = [
@@ -42,8 +49,8 @@ function initializeUploadForm() {
     const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     const MAX_COVER_SIZE = 30 * 1024 * 1024; // 30MB
 
-    // Custom dropdown functionality
-    function toggleDropdown() {
+    // Custom dropdown functionality for platforms
+    function togglePlatformDropdown() {
         const isOpen = !platformList.hasAttribute('hidden');
         platformList.toggleAttribute('hidden', isOpen);
         platformSelected.setAttribute('aria-expanded', !isOpen);
@@ -58,7 +65,7 @@ function initializeUploadForm() {
         platformInput.dispatchEvent(event);
     }
 
-    platformSelected.addEventListener('click', toggleDropdown);
+    platformSelected.addEventListener('click', togglePlatformDropdown);
 
     platformItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -69,7 +76,7 @@ function initializeUploadForm() {
     platformSelected.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            toggleDropdown();
+            togglePlatformDropdown();
         }
     });
 
@@ -101,6 +108,10 @@ function initializeUploadForm() {
             platformList.setAttribute('hidden', '');
             platformSelected.setAttribute('aria-expanded', 'false');
         }
+        if (!categoriesDropdown.contains(e.target)) {
+            categoriesSelected.setAttribute('aria-expanded', 'false');
+            categoriesMenu.setAttribute('aria-hidden', 'true');
+        }
     });
 
     // Handle platform selection
@@ -116,51 +127,141 @@ function initializeUploadForm() {
         }
     });
 
-    // Handle categories input
-    categoriesInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && e.target.value.trim()) {
+    // Handle categories selection
+    function updateSelectedCategories() {
+        selectedCategoriesList.innerHTML = '';
+        categoriesInput.value = selectedCategories.join(',');
+        categoriesSelected.querySelector('.custom-dropdown__placeholder').textContent =
+            selectedCategories.length ? `${selectedCategories.length} выбрано` : 'Выберите категории';
+
+        selectedCategories.forEach(value => {
+            const option = Array.from(categoriesOptions).find(opt => opt.dataset.value === value);
+            if (option) {
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'selected-category-item';
+                categoryItem.dataset.value = value;
+                categoryItem.innerHTML = `
+                    ${option.textContent}
+                    <span class="selected-category-item__remove" role="button" aria-label="Удалить ${option.textContent}" tabindex="0">×</span>
+                `;
+                selectedCategoriesList.appendChild(categoryItem);
+            }
+        });
+
+        categoriesOptions.forEach(option => {
+            option.setAttribute('aria-selected', selectedCategories.includes(option.dataset.value));
+        });
+
+        if (selectedCategories.length > 0) {
+            categoriesError.classList.remove('error-message--visible');
+            categoriesError.textContent = '';
+        }
+    }
+
+    function toggleCategoriesDropdown() {
+        const isExpanded = categoriesSelected.getAttribute('aria-expanded') === 'true';
+        categoriesSelected.setAttribute('aria-expanded', !isExpanded);
+        categoriesMenu.setAttribute('aria-hidden', isExpanded);
+        categoriesMenu.style.display = isExpanded ? 'none' : 'block';
+        if (!isExpanded) {
+            categoriesSearch.focus();
+            categoriesMenu.classList.add('custom-dropdown__menu--open');
+        } else {
+            categoriesMenu.classList.remove('custom-dropdown__menu--open');
+        }
+    }
+
+    function addCategory(value, text) {
+        if (!selectedCategories.includes(value)) {
+            selectedCategories.push(value);
+            updateSelectedCategories();
+            const newTag = selectedCategoriesList.lastElementChild;
+            if (newTag) {
+                newTag.classList.add('selected-category-item--added');
+                setTimeout(() => newTag.classList.remove('selected-category-item--added'), 300);
+            }
+        }
+    }
+
+    function removeCategory(value) {
+        selectedCategories = selectedCategories.filter(cat => cat !== value);
+        updateSelectedCategories();
+    }
+
+    function filterCategories() {
+        const query = categoriesSearch.value.toLowerCase();
+        categoriesOptions.forEach(option => {
+            const text = option.textContent.toLowerCase();
+            option.style.display = text.includes(query) ? 'block' : 'none';
+        });
+    }
+
+    categoriesSelected.addEventListener('click', toggleCategoriesDropdown);
+    categoriesSelected.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            addTag(categoriesList, e.target.value.trim(), 'category');
-            e.target.value = '';
+            toggleCategoriesDropdown();
         }
     });
 
-    // Handle category labels click with toggle functionality
-    categoryLabels.forEach(label => {
-        label.classList.add('category-label'); // Add class for styling
-        label.setAttribute('role', 'button'); // Improve accessibility
-        label.setAttribute('tabindex', '0'); // Make focusable
-        label.addEventListener('click', (e) => {
-            e.preventDefault();
-            const categoryText = label.textContent.trim();
-            const isSelected = label.classList.contains('selected');
+    categoriesSearch.addEventListener('input', filterCategories);
+    categoriesSearch.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            categoriesSelected.setAttribute('aria-expanded', 'false');
+            categoriesMenu.setAttribute('aria-hidden', 'true');
+            categoriesMenu.style.display = 'none';
+            categoriesSelected.focus();
+        }
+    });
 
-            if (isSelected) {
-                // Deselect: remove from categoriesList and unhighlight
-                const tag = Array.from(categoriesList.querySelectorAll('.category-item'))
-                    .find(item => item.dataset.value === categoryText);
-                if (tag) tag.remove();
-                label.classList.remove('selected');
-                label.setAttribute('aria-pressed', 'false');
-            } else {
-                // Select: add to categoriesList and highlight
-                const existingCategories = Array.from(categoriesList.querySelectorAll('.category-item'))
-                    .map(item => item.dataset.value);
-                if (!existingCategories.includes(categoryText)) {
-                    addTag(categoriesList, categoryText, 'category');
-                    label.classList.add('selected');
-                    label.setAttribute('aria-pressed', 'true');
-                }
-            }
+    categoriesOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.dataset.value;
+            const text = option.textContent;
+            addCategory(value, text);
         });
-
-        // Handle keyboard interaction
-        label.addEventListener('keydown', (e) => {
+        option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                label.click(); // Trigger click event
+                const value = option.dataset.value;
+                const text = option.textContent;
+                addCategory(value, text);
             }
         });
+    });
+
+    selectedCategoriesList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('selected-category-item__remove')) {
+            const tag = e.target.parentElement;
+            const value = tag.dataset.value;
+            removeCategory(value);
+        }
+    });
+
+    selectedCategoriesList.addEventListener('keydown', (e) => {
+        if (e.target.classList.contains('selected-category-item__remove') && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            const tag = e.target.parentElement;
+            const value = tag.dataset.value;
+            removeCategory(value);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!categoriesDropdown.contains(e.target) && categoriesSelected.getAttribute('aria-expanded') === 'true') {
+            categoriesSelected.setAttribute('aria-expanded', 'false');
+            categoriesMenu.setAttribute('aria-hidden', 'true');
+            categoriesMenu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && categoriesSelected.getAttribute('aria-expanded') === 'true') {
+            categoriesSelected.setAttribute('aria-expanded', 'false');
+            categoriesMenu.setAttribute('aria-hidden', 'true');
+            categoriesMenu.style.display = 'none';
+            categoriesSelected.focus();
+        }
     });
 
     // Handle keywords input
@@ -169,21 +270,6 @@ function initializeUploadForm() {
             e.preventDefault();
             addTag(keywordsList, e.target.value.trim(), 'keyword');
             e.target.value = '';
-        }
-    });
-
-    // Handle tag removal from categoriesList
-    categoriesList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('category-item__remove')) {
-            const tag = e.target.parentElement;
-            const categoryText = tag.dataset.value;
-            tag.remove();
-            // Unhighlight corresponding label
-            const label = Array.from(categoryLabels).find(l => l.textContent.trim() === categoryText);
-            if (label) {
-                label.classList.remove('selected');
-                label.setAttribute('aria-pressed', 'false');
-            }
         }
     });
 
@@ -271,7 +357,6 @@ function initializeUploadForm() {
         clearErrors();
 
         const formData = new FormData(form);
-        const categories = Array.from(categoriesList.querySelectorAll('.category-item')).map(item => item.dataset.value);
         const keywords = Array.from(keywordsList.querySelectorAll('.category-item')).map(item => item.dataset.value);
         const platform = formData.get('platform');
 
@@ -301,7 +386,7 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (categories.length === 0) {
+        if (selectedCategories.length === 0) {
             showFormError('categories-error', 'At least one category is required');
             submitButton.setAttribute('aria-busy', 'false');
             return;
@@ -321,7 +406,7 @@ function initializeUploadForm() {
                 showFormError('file-url-error', 'Game URL is required for web platforms');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
-            }
+        }
         } else if (platform === 'desktop') {
             if (!formData.get('file-file')) {
                 showFormError('file-error', 'Game file is required for desktop platform');
@@ -339,7 +424,7 @@ function initializeUploadForm() {
             }
         }
 
-        formData.set('categories', JSON.stringify(categories));
+        formData.set('categories', JSON.stringify(selectedCategories));
         formData.set('keywords', JSON.stringify(keywords));
 
         try {
@@ -355,7 +440,8 @@ function initializeUploadForm() {
 
             showNotification('Game uploaded successfully!', 'success');
             form.reset();
-            categoriesList.innerHTML = '';
+            selectedCategories = [];
+            updateSelectedCategories();
             keywordsList.innerHTML = '';
             document.querySelector('#cover-preview').innerHTML = '';
             document.querySelector('#file-preview').innerHTML = '';
@@ -363,11 +449,7 @@ function initializeUploadForm() {
             fileUploadGroup.style.display = 'none';
             platformSelected.querySelector('span').textContent = 'Выберите платформу';
             platformInput.value = '';
-            // Reset category labels
-            categoryLabels.forEach(label => {
-                label.classList.remove('selected');
-                label.setAttribute('aria-pressed', 'false');
-            });
+            categoriesSelected.querySelector('.custom-dropdown__placeholder').textContent = 'Выберите категории';
         } catch (error) {
             showNotification(error.message || 'Failed to upload game. Please try again.', 'error');
             console.error('Upload error:', error);

@@ -1,4 +1,4 @@
-/* === Сброс стилей === */
+/* #region Сброс стилей*/
 *,
 *::before,
 *::after {
@@ -31,8 +31,10 @@ h6 {
     font-weight: inherit;
     font-size: inherit;
 }
+/* #endregion */
 
-/* === Глобальные стили === */
+
+/* #region Глобальные стили */
 html,
 body {
     height: 100%;
@@ -40,7 +42,7 @@ body {
     font-size: 16px;
     font-weight: 400;
     color: var(--text-light);
-    background-color: var(--bg-body);
+    background-color: var(--bg-body) !important;; 
     font-family: "Axiforma", sans-serif;
 
 }
@@ -54,8 +56,10 @@ body {
     max-width: 1240px;
     margin: 0px auto;
 }
+/* #endregion */
 
-/* === Корневые переменные === */
+
+/* #region Корневые переменные */
 :root {
     /* Цвета фона */
     --bg-light: #F8FAFE;
@@ -90,8 +94,10 @@ body {
     --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     --radius: 12px;
 }
+/* #endregion */
 
-/* === Шрифты === */
+
+/* #region Шрифты */
 @font-face {
     font-family: 'Axiforma';
     src: url('Axiforma-Bold.eot');
@@ -146,8 +152,10 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+/* #endregion */
 
-/* === Стили шапки === */
+
+/* #region Стили шапки */
 .header {
     width: 100%;
     left: 0;
@@ -249,7 +257,10 @@ body {
     margin-left: 32px;
 }
 
-/* === Выпадающее меню профиля === */
+/* #endregion */
+
+
+/* #region Выпадающее меню профиля */
 .user-profile__dropdown {
     position: relative;
     display: flex;
@@ -323,7 +334,10 @@ body {
     display: block;
 }
 
-/* === Стили контента === */
+/* #endregion */
+
+
+/* #region Стили контента */
 .content {
     flex: 1 1 auto;
     padding: 40px 0;
@@ -356,7 +370,10 @@ body {
     gap: 30px;
 }
 
-/* === Стили страницы профиля === */
+/* #endregion */
+
+
+/* #region Стили страницы профиля */
 .profile {
     background: var(--bg-light);
     padding: 30px;
@@ -568,250 +585,6 @@ body {
     }
 }
 
-/* === Стили блока прогресса уровней === */
-.level-progress {
-    background: var(--bg-light);
-    padding: 30px;
-    border-radius: 10px 70px;
-    box-shadow: var(--shadow);
-    color: var(--text-primary);
-}
-
-.level-progress__title {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 25px;
-}
-
-.level-progress__overview {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-.level-progress__bar {
-    background: var(--border-light);
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.level-progress__fill {
-    background: var(--accent-2);
-    height: 100%;
-    border-radius: 10px;
-    animation: progress 1s ease-in-out;
-}
-
-.level-progress__levels {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 20px 0;
-}
-
-.level-progress__level {
-    font-size: 14px;
-    color: var(--text-muted);
-    padding-left: 25px;
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.level-progress__level.active {
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.level-progress__level:hover {
-    color: var(--accent-2);
-}
-
-.level-progress__level[data-tooltip]:hover::after,
-.level-progress__level[data-description]:hover::after {
-    content: attr(data-description);
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%) translateX(10px);
-    background: #333;
-    color: var(--text-light);
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 12px;
-    white-space: normal;
-    width: 250px;
-    z-index: 10;
-    opacity: 0;
-    animation: fadeIn 0.3s ease forwards;
-}
-
-.level-progress__ciel[data-tooltip]:hover::before {
-    content: "";
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 10px;
-    height: 10px;
-    background: #333;
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-    z-index: 10;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-50%) translateX(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(-50%) translateX(10px);
-    }
-}
-
-.user-game-card {
-border-radius: 10px 70px;
-overflow: hidden;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.user-game-card:hover {
-transform: translateY(-5px);
-box-shadow: 0 8px 25px rgba(24, 32, 50, 0.25);
-}
-
-.user-game-card__image {
-width: 30%;
-height: 100%;
-object-fit: cover;
-}
-
-.user-game-card__content {
-padding: 20px 40px 20px 20px;
-display: flex;
-flex-direction: column;
-gap: 20px;
-color: var(--text-primary);
-}
-
-.user-game-card__name {
-font-size: 20px;
-font-weight: 600;
-}
-
-.user-game-card__description {
-font-size: 14px;
-color: var(--text-body);
-line-height: 1.4;
-min-height: 38px;
-}
-
-.user-game-card__stats {
-display: flex;
-justify-content: space-between;
-font-size: 13px;
-color: var(--text-muted);
-padding: 6px 12px;
-background: var(--bg-light);
-border-radius: 6px;
-width: 80%;
-gap: 30px;
-}
-
-.user-game-card__actions {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-margin-top: 10px;
-}
-
-.user-games__button,
-.user-games__button--secondary {
-font-size: 14px;
-padding: 10px 16px;
-border-radius: 32px;
-font-weight: 500;
-font-family: "Axiforma", sans-serif;
-cursor: pointer;
-transition: all 0.3s ease;
-text-align: center;
-}
-
-.user-games__button {
-background: var(--accent-2);
-color: var(--text-light);
-border: none;
-}
-
-.user-games__button:hover {
-background: var(--secondary-1);
-}
-
-.user-games__button--secondary {
-background: transparent;
-color: var(--accent-2);
-border: 1px solid var(--accent-2);
-}
-
-.user-games__button--secondary:hover {
-background-color: var(--accent-2);
-color: var(--text-light);
-}
-
-
-/* === Стили блока прогресса изучения языка === */
-.language-progress {
-    background: var(--bg-white);
-    padding: 30px;
-    border-radius: 10px 70px;
-    color: var(--text-primary);
-    box-shadow: var(--shadow);
-    width: 100%;
-}
-
-.language-progress__title {
-    font-size: 24px;
-    margin-bottom: 25px;
-    text-align: left;
-}
-
-.language-progress__item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.language-progress__label {
-    font-size: 16px;
-    color: var(--text-primary);
-    flex: 1;
-}
-
-.language-progress__bar {
-    width: 200px;
-    height: 12px;
-    background-color: var(--border-light);
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.language-progress__fill {
-    height: 100%;
-    background-color: var(--accent-2);
-    transition: width 0.3s ease;
-}
-
-.language-progress__value {
-    font-size: 14px;
-    color: var(--text-body);
-}
 
 /* === Стили блока общей активности === */
 .activity {
@@ -887,120 +660,8 @@ color: var(--text-light);
     color: var(--text-body);
 }
 
-/* === Стили блока достижений === */
-.achievements {
-    background: var(--bg-light);
-    padding: 30px 30px 40px;
-    border-radius: 10px 70px;
-    color: var(--text-primary);
-    box-shadow: var(--shadow);
-    width: 100%;
-}
 
-.achievements__title {
-    font-size: 24px;
-    margin-bottom: 25px;
-    text-align: left;
-}
 
-.achievements__list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.achievements__item {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.achievements__icon img {
-    width: 40px;
-    height: 40px;
-}
-
-.achievements__info {
-    display: flex;
-    flex-direction: column;
-}
-
-.achievements__name {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.achievements__description {
-    font-size: 14px;
-    color: var(--text-body);
-}
-
-/* === Стили блока игрового вызова дня === */
-.daily-challenge {
-    background: var(--bg-light);
-    padding: 30px;
-    border-radius: 10px 70px;
-    color: var(--text-primary);
-    box-shadow: var(--shadow);
-    width: 100%;
-}
-
-.daily-challenge__title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.daily-challenge__content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-}
-
-.daily-challenge__info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.daily-challenge__name {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.daily-challenge__task {
-    font-size: 14px;
-    color: var(--text-body);
-}
-
-.daily-challenge__reward {
-    font-size: 14px;
-    color: var(--accent-2);
-    font-weight: 500;
-}
-
-.daily-challenge__time {
-    font-size: 14px;
-    color: var(--error-color);
-}
-
-.daily-challenge__button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--accent-2);
-    color: var(--text-light);
-    text-decoration: none;
-    border-radius: 32px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.daily-challenge__button:hover {
-    background-color: var(--secondary-1);
-}
 
 /* === Стили блока рейтинга в играх === */
 .game-stats {
@@ -1238,8 +899,10 @@ color: var(--text-light);
   background: var(--secondary-1);
 }
 
+/* #endregion */
 
-/* === Стили подвала === */
+
+/* #region Стили подвала */
 .footer {
     margin-top: 100px;
     margin-bottom: 50px;
@@ -1342,7 +1005,10 @@ color: var(--text-light);
     background-size: contain;
 }
 
-/* === Стили секции новостей === */
+/* #endregion */
+
+
+/* #region Стили секции новостей */
 .news-update-container {
     display: flex;
     flex-direction: column;
@@ -1440,7 +1106,10 @@ color: var(--text-light);
     background: var(--accent-1);
 }
 
-/* === Стили страницы игры === */
+/* #endregion */
+
+
+/* #region Стили страницы игры */
 .game-hero {
     display: flex;
     justify-content: space-between;
@@ -2078,8 +1747,10 @@ color: var(--text-light);
     color: var(--text-light);
 }
 
+/* #endregion */
 
-/* === Стили страницы игры (полноэкранный режим) === */
+
+/* #region Стили страницы игры (полноэкранный режим) */
 .game-play__body {
     background: var(--bg-body);
     margin: 0;
@@ -2468,7 +2139,10 @@ color: var(--text-light);
     }
 }
 
-/* === Стили секции избранных игр === */
+/* #endregion */
+
+
+/* #region Стили секции избранных игр */
 .favorites {
     padding: 40px 0;
 }
@@ -2676,7 +2350,11 @@ color: var(--text-light);
     padding-top: 20px;
 }
 
-/* === Стили страницы загрузки игры === */
+/* #endregion */
+
+
+
+/* #region Стили страницы загрузки игры */
 .upload-hero {
     padding: 0px 0;
     display: flex;
@@ -2741,19 +2419,322 @@ color: var(--text-light);
 }
 
 .upload-form__group {
-    gap: 8px;
     display: flex;
-    align-self: stretch;
-    align-items: flex-start;
     flex-direction: column;
+    gap: 8px;
+    width: 100%;
 }
 
 .upload-form__label {
-    color: var(--secondary-3);
-    font-size: 14px;
+    font-size: 16px;
     font-family: "Axiforma", sans-serif;
     font-weight: 500;
-    line-height: 100%;
+    color: var(--text-primary);
+    padding: 0px 20px;
+}
+
+.required {
+    color: var(--accent-red);
+}
+
+.upload-form__input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Custom Dropdown for Categories */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    font-family: "Axiforma", sans-serif;
+}
+
+.custom-dropdown__selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 20px;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 73px;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.custom-dropdown__selected:hover {
+    border-color: var(--accent-2);
+}
+
+.custom-dropdown__selected:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.custom-dropdown__selected[aria-expanded="true"] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.custom-dropdown__placeholder {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--secondary-3);
+    font-size: 16px;
+    font-family: "Axiforma", sans-serif;
+    font-weight: 400;
+    line-height: 24px;
+    flex: 1;
+}
+
+.custom-dropdown__icon {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s ease;
+}
+
+.custom-dropdown__selected[aria-expanded="true"] .custom-dropdown__icon {
+    transform: rotate(180deg);
+}
+
+.custom-dropdown__menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%; 
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    transition: opacity 0.2s ease;
+}
+
+.custom-dropdown__menu--open {
+    display: block;
+    opacity: 1;
+}
+
+.custom-dropdown__search {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    background: transparent;
+}
+
+.custom-dropdown__search:focus {
+    outline: none;
+    border-bottom-color: var(--accent-blue);
+}
+
+.custom-dropdown__options {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+}
+
+.custom-dropdown__option {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-body);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.custom-dropdown__option:hover,
+.custom-dropdown__option:focus {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+}
+
+.custom-dropdown__option[aria-selected="true"] {
+    background-color: var(--accent-blue);
+    color: var(--text-light);
+}
+
+/* Selected Categories Tags */
+.selected-categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px; 
+    margin-top: 8px;
+    width: 100%; 
+}
+
+.selected-category-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px; 
+    border: 1px solid var(--border-light);
+    border-radius: 8px; 
+    background-color: var(--bg-light);
+    font-size: 13px; 
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.selected-category-item:hover {
+    background-color: var(--accent-3);
+    color: var(--text-light);
+}
+
+.selected-category-item__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    font-size: 10px; /* Smaller remove icon */
+    color: var(--text-body);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.selected-category-item__remove:hover,
+.selected-category-item__remove:focus {
+    color: var(--accent-red);
+}
+
+
+.custom-dropdown__option[aria-selected="true"] {
+    background-color: var(--accent-blue);
+    color: var(--text-light);
+}
+
+/* Selected Categories Tags */
+.selected-categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.selected-category-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 17px;
+    background-color: var(--bg-light);
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.selected-category-item--added {
+    transform: scale(1.05);
+}
+
+.selected-category-item:hover {
+    background-color: var(--accent-3);
+    color: var(--text-light);
+}
+
+.selected-category-item__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+    color: var(--text-body);
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.selected-category-item__remove:hover,
+.selected-category-item__remove:focus {
+    color: var(--accent-red);
+    transform: scale(1.2);
+}
+
+
+.custom-dropdown__options {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+}
+
+.custom-dropdown__option {
+    padding: 10px 16px;
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.custom-dropdown__option:hover,
+.custom-dropdown__option:focus {
+    background-color: var(--accent-3);
+    color: var(--text-light);
+}
+
+.custom-dropdown__option[aria-selected="true"] {
+    background-color: var(--accent-blue);
+    color: var(--text-light);
+
+
+}
+
+/* #region Upload*/
+
+.selected-categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.selected-category-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    background: var(--bg-light);
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    transition: background-color 0.3s ease;
+}
+
+.selected-category-item:hover {
+    background-color: var(--accent-3);
+    color: var(--text-light);
+}
+
+.selected-category-item__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+    color: var(--text-body);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.selected-category-item__remove:hover {
+    color: var(--accent-red);
 }
 
 .upload-form__label .required {
@@ -2829,7 +2810,7 @@ color: var(--text-light);
     width: 100%;
     border: none;
     background: transparent;
-    color: var(--text-primary);
+    color: var(--secondary-3);
     font-size: 16px;
     font-family: "Axiforma", sans-serif;
     font-weight: 400;
@@ -2843,7 +2824,7 @@ color: var(--text-light);
 
 .input-field__textarea {
     border-radius: 10px 70px;
-    padding: 12px 16px;
+    padding: 20px 20px;
 }
 
 .input-field__textarea {
@@ -2865,82 +2846,6 @@ color: var(--text-light);
 .input-field__input:valid:not(:placeholder-shown),
 .input-field__textarea:valid:not(:placeholder-shown) {
     border: 1px solid var(--success-color);
-}
-
-.custom-dropdown {
-    position: relative;
-    cursor: pointer;
-    border: 1px solid var(--border-light);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.custom-dropdown:hover {
-    border-color: var(--accent-2);
-}
-
-.custom-dropdown__selected {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    color: var(--text-primary);
-    font-size: 16px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 24px;
-    background-color: var(--bg-light);
-    border-radius: 73px;
-}
-
-.custom-dropdown__selected[aria-expanded="true"] {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.custom-dropdown__icon {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.3s ease;
-}
-
-.custom-dropdown__selected[aria-expanded="true"] .custom-dropdown__icon {
-    transform: rotate(180deg);
-}
-
-.custom-dropdown__list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background-color: var(--bg-white);
-    border: 1px solid var(--border-light);
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    box-shadow: var(--shadow);
-    z-index: 10;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.custom-dropdown__list:not([hidden]) {
-    display: block;
-}
-
-.custom-dropdown__item {
-    padding: 12px 20px;
-    color: var(--text-primary);
-    font-size: 16px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 24px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.custom-dropdown__item:hover,
-.custom-dropdown__item:focus {
-    background-color: var(--accent-3);
-    color: var(--text-light);
-    outline: none;
 }
 
 .categories-list {
@@ -3260,7 +3165,6 @@ color: var(--text-light);
     color: var(--text-light);
 }
 
-/* === Стили модального окна === */
 .quality-modal__overlay {
     position: fixed;
     top: 0;
@@ -3288,7 +3192,6 @@ color: var(--text-light);
     padding: 32px;
     max-width: 600px;
     width: 90%;
-    max-height: 80vh;
     overflow-y: auto;
     position: relative;
     box-shadow: var(--shadow);
@@ -3350,10 +3253,12 @@ color: var(--text-light);
     font-weight: 400;
     line-height: 150%;
 }
+/* #endregion */
+
+/* #endregion */
 
 
-
-/* === Стили страницы игр === */
+/* #region Стили страницы игр */
 
 .games {
     padding: 60px 0;
@@ -3806,8 +3711,10 @@ color: var(--text-light);
     background: var(--accent-1);
 }
 
+/* #endregion */
 
-/* === Стили для game-play.html=== */
+
+/* #region Стили для game-play.html */
 .game-play__body {
     background: linear-gradient(135deg, #2d3748, #4a5568);
     min-height: 100vh;
@@ -4363,7 +4270,10 @@ game-pause-modal {
     right: 10px;
 }
 
-/* Стили для регистрации */
+/* #endregion */
+
+
+/* #region Стили для регистрации */
 .registration {
     display: flex;
     align-items: center;
@@ -4599,3 +4509,5 @@ game-pause-modal {
     outline: 2px solid #4CAF50;
     outline-offset: 2px;
 }
+
+/* #endregion */
