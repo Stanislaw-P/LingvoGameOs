@@ -96,8 +96,8 @@ body {
     font-family: 'Axiforma';
     src: url('Axiforma-Bold.eot');
     src: local('Axiforma Bold'), local('Axiforma-Bold'),
-        url("//fonts/Axiforma-Bold.woff2") format("woff2"),
-        url("//fonts/Axiforma-Bold.woff") format("woff"),
+        url("/fonts/Axiforma-Bold.woff2") format("woff2"),
+        url("/fonts/Axiforma-Bold.woff") format("woff"),
         url("/fonts/Axiforma-Bold.ttf") format("truetype");
     font-weight: bold;
     font-style: normal;
@@ -108,8 +108,8 @@ body {
     font-family: 'Axiforma';
     src: url('Axiforma-SemiBold.eot');
     src: local('Axiforma SemiBold'), local('Axiforma-SemiBold'),
-        url("//fonts/Axiforma-SemiBold.woff2") format("woff2"),
-        url("//fonts/Axiforma-SemiBold.woff") format("woff"),
+        url("/fonts/Axiforma-SemiBold.woff2") format("woff2"),
+        url("/fonts/Axiforma-SemiBold.woff") format("woff"),
         url("/fonts/Axiforma-SemiBold.ttf") format("truetype");
     font-weight: 600;
     font-style: normal;
@@ -120,8 +120,8 @@ body {
     font-style: normal;
     font-weight: 400;
     src: local("Axiforma"),
-        url("//fonts/Axiforma-Regular.woff2") format("woff2"),
-        url("//fonts/Axiforma-Regular.woff") format("woff"),
+        url("/fonts/Axiforma-Regular.woff2") format("woff2"),
+        url("/fonts/Axiforma-Regular.woff") format("woff"),
         url("/fonts/Axiforma-Regular.ttf") format("truetype");
 }
 
@@ -129,8 +129,8 @@ body {
     font-family: 'Axiforma';
     src: url('Axiforma-Book.eot');
     src: local('Axiforma Book'), local('Axiforma-Book'),
-        url("//fonts/Axiforma-Book.woff2") format("woff2"),
-        url("//fonts/Axiforma-Book.woff") format("woff"),
+        url("/fonts/Axiforma-Book.woff2") format("woff2"),
+        url("/fonts/Axiforma-Book.woff") format("woff"),
         url("/fonts/Axiforma-Book.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
@@ -140,8 +140,8 @@ body {
 @font-face {
     font-family: "Arkhip";
     src: local("Arkhip"),
-        url("//fonts/Arkhip.woff2") format("woff2"),
-        url("//fonts/Arkhip.woff") format("woff"),
+        url("/fonts/Arkhip.woff2") format("woff2"),
+        url("/fonts/Arkhip.woff") format("woff"),
         url("/fonts/Arkhip.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
