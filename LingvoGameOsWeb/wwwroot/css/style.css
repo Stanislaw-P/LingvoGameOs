@@ -383,6 +383,9 @@ body {
 }
 
 .profile__title {
+    font-family: "Axiforma", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 25px;
@@ -412,6 +415,7 @@ body {
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
+    font-family: "Axiforma", sans-serif;
     cursor: pointer;
     transition: background 0.3s ease;
 }
@@ -433,7 +437,9 @@ body {
 .profile__label {
     font-size: 14px;
     font-weight: 500;
+    font-family: "Axiforma", sans-serif;
     margin-bottom: 8px;
+    padding: 0px 16px;
 }
 
 .profile__input,
@@ -453,6 +459,7 @@ body {
     color: var(--text-muted);
     font-size: 14px;
     font-weight: 400;
+    font-family: "Axiforma", sans-serif;
 }
 
 .profile__input:focus,
@@ -585,6 +592,167 @@ body {
     }
 }
 
+/* === Стили блока прогресса изучения языка === */
+.language-progress {
+    background: var(--bg-white);
+    padding: 30px;
+    border-radius: 10px 70px;
+    color: var(--text-primary);
+    box-shadow: var(--shadow);
+    width: 100%;
+}
+
+.language-progress__title {
+    font-family: "Axiforma", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.language-progress__item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.language-progress__label {
+    font-size: 16px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.language-progress__bar {
+    width: 200px;
+    height: 12px;
+    background-color: var(--border-light);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.language-progress__fill {
+    height: 100%;
+    background-color: var(--accent-2);
+    transition: width 0.3s ease;
+}
+
+.language-progress__value {
+    font-size: 14px;
+    color: var(--text-body);
+    font-family: "Axiforma", sans-serif;
+}
+
+/* === Стили блока прогресса уровней === */
+.level-progress {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 10px 70px;
+    box-shadow: var(--shadow);
+    color: var(--text-primary);
+}
+
+.level-progress__title {
+    font-family: "Axiforma", sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.level-progress__overview {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-family: "Axiforma", sans-serif;
+}
+
+.level-progress__bar {
+    background: var(--border-light);
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.level-progress__fill {
+    background: var(--accent-2);
+    height: 100%;
+    border-radius: 10px;
+    animation: progress 1s ease-in-out;
+}
+
+.level-progress__levels {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.level-progress__level {
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-muted);
+    padding-left: 5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.level-progress__level.active {
+    font-weight: 600;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+}
+
+.level-progress__level:hover {
+    color: var(--accent-2);
+}
+
+.level-progress__level[data-tooltip]:hover::after,
+.level-progress__level[data-description]:hover::after {
+    content: attr(data-description);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    background: #333;
+    color: var(--text-light);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: "Axiforma", sans-serif;
+    white-space: normal;
+    width: 250px;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.level-progress__ciel[data-tooltip]:hover::before {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #333;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    z-index: 10;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(10px);
+    }
+}
+
 
 /* === Стили блока общей активности === */
 .activity {
@@ -600,6 +768,8 @@ body {
     font-size: 24px;
     margin-bottom: 25px;
     text-align: left;
+    font-family: "Axiforma", sans-serif;
+    font-weight: 600;
 }
 
 .activity__chart {
@@ -632,6 +802,7 @@ body {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
+    font-family: "Axiforma", sans-serif;
     color: var(--text-body);
     margin-top: 8px;
     text-align: left;
@@ -651,12 +822,14 @@ body {
 .activity__stat-value {
     display: block;
     font-size: 24px;
+    font-family: "Axiforma", sans-serif;
     font-weight: bold;
     color: var(--text-primary);
 }
 
 .activity__stat-label {
     font-size: 14px;
+    font-family: "Axiforma", sans-serif;
     color: var(--text-body);
 }
 
@@ -674,6 +847,8 @@ body {
 }
 
 .game-stats__title {
+    font-family: "Axiforma", sans-serif;
+    font-weight: 600;
     font-size: 24px;
     margin-bottom: 25px;
     text-align: left;
@@ -700,6 +875,7 @@ body {
 .game-stats__name {
     font-size: 16px;
     font-weight: 600;
+    font-family: "Axiforma", sans-serif;
     color: var(--text-primary);
     flex: 1;
 }
@@ -708,12 +884,14 @@ body {
 .game-stats__ranking,
 .game-stats__level {
     font-size: 14px;
+    font-family: "Axiforma", sans-serif;
     color: var(--text-body);
     flex: 1;
 }
 
 .game-stats__leaderboard-link {
     font-size: 14px;
+    font-family: "Axiforma", sans-serif;
     color: var(--accent-2);
     text-decoration: underline;
     padding: 5px 10px;
@@ -734,6 +912,8 @@ body {
 }
 
 .recommended-games__title {
+    font-family: "Arkhip", sans-serif;
+    font-weight: 600;
     font-size: 52px;
     margin-bottom: 25px;
     text-align: left;
@@ -788,6 +968,7 @@ body {
 .recommended-games__name {
     font-size: 20px;
     font-weight: 400;
+    font-family: "Axiforma", sans-serif;
     margin-bottom: 15px;
     z-index: 2;
 }
@@ -797,6 +978,7 @@ body {
     justify-content: space-around;
     width: 100%;
     font-size: 12px;
+    font-family: "Axiforma", sans-serif;
     margin-bottom: 15px;
     z-index: 2;
     align-items: center;
@@ -841,6 +1023,7 @@ body {
 
 .user-games__title {
   font-size: 24px;
+  font-family: "Axiforma", sans-serif;
   margin-bottom: 25px;
   text-align: left;
   color: var(--text-gray);
@@ -878,10 +1061,12 @@ body {
 .user-games__name {
   font-size: 18px;
   font-weight: 600;
+  font-family: "Axiforma", sans-serif;
 }
 
 .user-games__description {
   font-size: 14px;
+  font-family: "Axiforma", sans-serif;
   color: var(--text-body);
 }
 
@@ -899,6 +1084,202 @@ body {
   background: var(--secondary-1);
 }
 
+/* #region  Модальное окно для изменения профиля */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal--open {
+    display: flex;
+}
+
+.modal__content {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 10px 70px;
+    box-shadow: var(--shadow);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+}
+
+.modal__close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.modal__close:hover {
+    transform: scale(1.2);
+}
+
+.modal__title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+}
+
+.modal__form {
+    display: grid;
+    gap: 20px;
+}
+
+.modal__field {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal__label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    padding: 0 16px;
+}
+
+.modal__input,
+.modal__textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-light);
+    border-radius: 73px;
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    color: var(--text-primary);
+    background-color: #F7F7F7;
+    transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal__textarea {
+    border-radius: 10px 50px;
+    resize: vertical;
+    height: 100px;
+}
+
+.modal__input:focus,
+.modal__textarea:focus {
+    border-color: var(--accent-2);
+    background-color: var(--bg-white);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63, 105, 210, 0.2);
+}
+
+.modal__input:valid,
+.modal__textarea:valid {
+    border-color: var(--success-color);
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2351D546" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat right 12px center / 16px 16px, var(--bg-white);
+}
+
+.modal__input:invalid:not(:placeholder-shown):not(:focus),
+.modal__textarea:invalid:not(:placeholder-shown):not(:focus) {
+    border-color: var(--error-color);
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23D54646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>') no-repeat right 12px center / 16px 16px, var(--bg-white);
+}
+
+.modal__avatar-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal__avatar-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-2);
+}
+
+.modal__avatar-input {
+    display: none;
+}
+
+.modal__upload-button {
+    background: var(--accent-2);
+    color: var(--text-light);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.modal__upload-button:hover {
+    background: var(--secondary-1);
+}
+
+.modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal__button {
+    padding: 12px 20px;
+    border-radius: 73px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Axiforma", sans-serif;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+.modal__button--primary {
+    background: var(--accent-2);
+    color: var(--text-light);
+    border: none;
+}
+
+.modal__button--primary:hover {
+    background: var(--secondary-1);
+    box-shadow: 0 2px 8px rgba(160, 132, 232, 0.3);
+}
+
+.modal__button--primary:active {
+    transform: scale(0.98);
+}
+
+.modal__button--secondary {
+    background: var(--border-light);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+}
+
+.modal__button--secondary:hover {
+    background: var(--bg-white);
+    box-shadow: 0 2px 8px rgba(160, 132, 232, 0.3);
+}
+
+.modal__button--secondary:active {
+    transform: scale(0.98);
+}
+
+.modal__error {
+    color: var(--error-color);
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+/* #endregion */
 /* #endregion */
 
 
