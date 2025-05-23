@@ -102,9 +102,9 @@ body {
     font-family: 'Axiforma';
     src: url('Axiforma-Bold.eot');
     src: local('Axiforma Bold'), local('Axiforma-Bold'),
-        url("/fonts/Axiforma-Bold.woff2") format("woff2"),
-        url("/fonts/Axiforma-Bold.woff") format("woff"),
-        url("/fonts/Axiforma-Bold.ttf") format("truetype");
+        url("../fonts/Axiforma-Bold.woff2") format("woff2"),
+        url("../fonts/Axiforma-Bold.woff") format("woff"),
+        url("../fonts/Axiforma-Bold.ttf") format("truetype");
     font-weight: bold;
     font-style: normal;
 }
@@ -114,9 +114,9 @@ body {
     font-family: 'Axiforma';
     src: url('Axiforma-SemiBold.eot');
     src: local('Axiforma SemiBold'), local('Axiforma-SemiBold'),
-        url("/fonts/Axiforma-SemiBold.woff2") format("woff2"),
-        url("/fonts/Axiforma-SemiBold.woff") format("woff"),
-        url("/fonts/Axiforma-SemiBold.ttf") format("truetype");
+        url("../fonts/Axiforma-SemiBold.woff2") format("woff2"),
+        url("../fonts/Axiforma-SemiBold.woff") format("woff"),
+        url("../fonts/Axiforma-SemiBold.ttf") format("truetype");
     font-weight: 600;
     font-style: normal;
 }
@@ -126,18 +126,18 @@ body {
     font-style: normal;
     font-weight: 400;
     src: local("Axiforma"),
-        url("/fonts/Axiforma-Regular.woff2") format("woff2"),
-        url("/fonts/Axiforma-Regular.woff") format("woff"),
-        url("/fonts/Axiforma-Regular.ttf") format("truetype");
+        url("../fonts/Axiforma-Regular.woff2") format("woff2"),
+        url("../fonts/Axiforma-Regular.woff") format("woff"),
+        url("../fonts/Axiforma-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: 'Axiforma';
     src: url('Axiforma-Book.eot');
     src: local('Axiforma Book'), local('Axiforma-Book'),
-        url("/fonts/Axiforma-Book.woff2") format("woff2"),
-        url("/fonts/Axiforma-Book.woff") format("woff"),
-        url("/fonts/Axiforma-Book.ttf") format("truetype");
+        url("../fonts/Axiforma-Book.woff2") format("woff2"),
+        url("../fonts/Axiforma-Book.woff") format("woff"),
+        url("../fonts/Axiforma-Book.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -146,9 +146,9 @@ body {
 @font-face {
     font-family: "Arkhip";
     src: local("Arkhip"),
-        url("/fonts/Arkhip.woff2") format("woff2"),
-        url("/fonts/Arkhip.woff") format("woff"),
-        url("/fonts/Arkhip.ttf") format("truetype");
+        url("../fonts/Arkhip.woff2") format("woff2"),
+        url("../fonts/Arkhip.woff") format("woff"),
+        url("../fonts/Arkhip.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
 }
@@ -427,11 +427,17 @@ body {
 .profile__form {
     display: grid;
     gap: 25px;
+    grid-template-columns: 1fr 1fr; 
 }
 
 .profile__field {
     display: flex;
     flex-direction: column;
+}
+
+.profile__field--bio {
+    grid-column: 1 / -1;
+    width: 100%;
 }
 
 .profile__label {
@@ -496,7 +502,8 @@ body {
 }
 
 .profile__textarea {
-    height: 80px;
+    width: 100%;
+    height: 120px;
     resize: vertical;
     border-radius: 10px 50px;
 }
@@ -584,11 +591,16 @@ body {
 
 @media (max-width: 768px) {
     .profile__form {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Одна колонка на мобильных */
     }
 
     .profile__button {
-        grid-column: span 1;
+        grid-column: span 1; /* Кнопка занимает одну колонку на мобильных, как в исходном коде */
+    }
+
+    .profile__field--bio {
+        grid-column: 1 / -1; /* Поле "О себе" занимает всю ширину на мобильных */
+        width: 100%;
     }
 }
 
@@ -4880,5 +4892,146 @@ game-pause-modal {
     outline: 2px solid #4CAF50;
     outline-offset: 2px;
 }
+
+/* #endregion */
+
+/* #region Стили Страницы для разработчиков с инструкциями */
+
+
+
+
+        .developer-page {
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .developer-page__container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .developer-page__title {
+            font-family: "Arkhip", sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .developer-page__section {
+            background: var(--bg-white);
+            padding: 30px;
+            border-radius: 10px 70px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .developer-page__section-title {
+            font-family: "Axiforma", sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .developer-page__description {
+            font-family: "Axiforma", sans-serif;
+            font-size: 16px;
+            color: var(--text-body);
+            line-height: 150%;
+            margin-bottom: 20px;
+        }
+
+        .developer-page__instructions {
+            font-family: "Axiforma", sans-serif;
+            font-size: 14px;
+            color: var(--text-body);
+            line-height: 150%;
+        }
+
+        .developer-page__instructions-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: 73px;
+            font-family: "Axiforma", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .developer-page__instructions-toggle:hover {
+            background-color: var(--accent-3);
+        }
+
+        .developer-page__instructions-toggle[aria-expanded="true"] .developer-page__toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .developer-page__toggle-icon {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .developer-page__instructions-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid var(--border-light);
+            border-radius: 10px 50px;
+            margin-top: 12px;
+        }
+
+        .developer-page__instructions-content[aria-hidden="false"] {
+            display: block;
+        }
+
+        .developer-page__instructions-step {
+            margin-bottom: 16px;
+        }
+
+        .developer-page__instructions-step h4 {
+            font-family: "Axiforma", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .developer-page__instructions-step p {
+            font-family: "Axiforma", sans-serif;
+            font-size: 14px;
+            color: var(--text-body);
+            line-height: 150%;
+        }
+
+        @media (max-width: 768px) {
+            .developer-page__title {
+                font-size: 28px;
+            }
+
+            .developer-page__section {
+                padding: 20px;
+            }
+
+            .developer-page__section-title {
+                font-size: 20px;
+            }
+
+            .developer-page__description,
+            .developer-page__instructions {
+                font-size: 14px;
+            }
+        }
 
 /* #endregion */
