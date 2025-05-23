@@ -9,6 +9,8 @@ import { initializeProfileModal } from './profileModal.js';
 
 // Основная инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM полностью загружен, инициализация начинается');
+
     // Загрузка компонентов header и footer
     loadComponent('components/header.html', 'header-placeholder');
     loadComponent('components/footer.html', 'footer-placeholder');
@@ -30,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             button.textContent = 'Отправка...';
             try {
-                // Симуляция API-запроса
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 button.textContent = 'Подписаться';
                 showNotification('Вы успешно подписались!');
@@ -97,7 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Инициализация модального окна профиля
-    if (document.getElementById('edit-profile-modal')) {
-        initializeProfileModal('@(Model.ImageURL ?? "/img/avatar100.png")');
+    const profileModal = document.getElementById('edit-profile-modal');
+    if (profileModal) {
+        console.log('Инициализация модального окна профиля');
+        try {
+            initializeProfileModal('/img/avatar100.png');
+        } catch (error) {
+            console.error('Ошибка при инициализации модального окна:', error);
+        }
+    } else {
+        console.warn('Модальное окно профиля (#edit-profile-modal) не найдено');
     }
 });
