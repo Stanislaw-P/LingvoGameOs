@@ -138,7 +138,7 @@ namespace LingvoGameOs.Db
                     RaitingPlayers = 4.2,
                     RaitingTeachers = 4.3,
                     CoverImageURL = "/img/games/gameplay-animal.png",
-                    GameURL = "http://84.201.144.125:5001",
+                    GameURL = "http://158.160.131.69:5001",
                     GameTypes = new List<GameType> { gameType1, gameType3 },
                     NumberDownloads = 5
                 };
