@@ -1,22 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using LingvoGameOs.Db.Models;
-using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
-
 
 namespace LingvoGameOs.Db
 {
     public class IdentityInitializer
     {
-        public static void Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
+        public static async Task Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
         {
             using (DatabaseContext context = new DatabaseContext(dbContextOptions))
             {
                 // создаем роли, если их нет
-                _CreateRole(roleManager, Constants.AdminRoleName);
-                _CreateRole(roleManager, Constants.PlayerRoleName);
-                _CreateRole(roleManager, Constants.DevRoleName);
+                await _CreateRole(roleManager, Constants.AdminRoleName);
+                await _CreateRole(roleManager, Constants.PlayerRoleName);
+                await _CreateRole(roleManager, Constants.DevRoleName);
 
                 // инициализация пользователей
                 var password = "Aa123456_";
@@ -52,9 +49,9 @@ namespace LingvoGameOs.Db
                 };
 
                 // создаем пользователя, если его нет
-                _CreateUser(userManager, adminUser, password, Constants.AdminRoleName);
-                _CreateUser(userManager, devMarat, password, Constants.DevRoleName);
-                _CreateUser(userManager, devDavid, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
+                await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
 
 
                 // Далее инициализация и добавление в БД данных
@@ -63,10 +60,10 @@ namespace LingvoGameOs.Db
                 var languageLevelAdvanced = new LanguageLevel { Id = 3, Name = "Кавказский орёл" };
                 var languageLevelPro = new LanguageLevel { Id = 4, Name = "Старейшина, который говорит тосты" };
                 var languageLevelGrandMaster = new LanguageLevel { Id = 5, Name = "Хранитель языка" };
-                if (!context.LanguageLevels.Any())
+                if (!await context.LanguageLevels.AnyAsync())
                 {
                     context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelAdvanced, languageLevelPro, languageLevelGrandMaster);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
                 var gameType1 = new GameType { Id = 1, Name = "Словарный запас" };
@@ -77,17 +74,17 @@ namespace LingvoGameOs.Db
                 var gameType6 = new GameType { Id = 6, Name = "Головоломка" };
                 if (!context.GameTypes.Any())
                 {
-                    context.GameTypes.AddRange(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
-                    context.SaveChanges();
+                    await context.GameTypes.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
+                    await context.SaveChangesAsync();
                 }
 
                 var platform1 = new Platform { Id = 1, Name = "Web-Desktop" };
                 var platform2 = new Platform { Id = 2, Name = "Desktop" };
                 var platform3 = new Platform { Id = 3, Name = "Web-Mobile" };
-                if (!context.Platforms.Any())
+                if (!await context.Platforms.AnyAsync())
                 {
-                    context.Platforms.AddRange(platform1, platform2, platform3);
-                    context.SaveChanges();
+                    await context.Platforms.AddRangeAsync(platform1, platform2, platform3);
+                    await context.SaveChangesAsync();
                 }
 
                 var game1 = new Game
@@ -165,31 +162,31 @@ namespace LingvoGameOs.Db
                     NumberDownloads = 10
                 };
 
-                if (!context.Games.Any())
+                if (!await context.Games.AnyAsync())
                 {
-                    context.AddRange(game1, game2, game3, game4);
-                    context.SaveChanges();
+                    await context.AddRangeAsync(game1, game2, game3, game4);
+                    await context.SaveChangesAsync();
                 }
             }
         }
 
-        private static void _CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
+        private static async Task _CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
         {
             // создаем роль, если ее нет
-            if (roleManager.FindByNameAsync(roleName).Result == null)
+            if (await roleManager.FindByNameAsync(roleName) == null)
             {
-                roleManager.CreateAsync(new IdentityRole(roleName)).Wait();
+                await roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
 
-        private static void _CreateUser(UserManager<User> userManager, User user, string pass, string roleName)
+        private static async Task _CreateUserAsync(UserManager<User> userManager, User user, string pass, string roleName)
         {
-            if (userManager.FindByEmailAsync(user.Email).Result == null)
+            if (await userManager.FindByEmailAsync(user.Email) == null)
             {
-                var result = userManager.CreateAsync(user, pass).Result;
+                var result = await userManager.CreateAsync(user, pass);
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, roleName).Wait();
+                    await userManager.AddToRoleAsync(user, roleName);
                 }
             }
         }

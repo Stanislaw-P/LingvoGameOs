@@ -23,12 +23,12 @@ namespace LingvoGameOs.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel login)
+        public async Task<IActionResult> LoginAsync(LoginViewModel login)
         {
             if (ModelState.IsValid)
             {
                 // проблема: всегда запоминает, даже если не нажать галочку
-                var result = signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, false).Result;
+                var result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, false);
                 if (result.Succeeded)
                 {
                     return Redirect(login.ReturnUrl ?? "/Home");
@@ -47,7 +47,7 @@ namespace LingvoGameOs.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel register)
+        public async Task<IActionResult> Register(RegisterViewModel register)
         {
             if (register.UserName == register.Password)
             {
@@ -56,11 +56,11 @@ namespace LingvoGameOs.Controllers
             if (ModelState.IsValid)
             {
                 User user = new User() { Email = register.UserName, UserName = register.UserName, Name = register.Name, Surname = register.Surname };
-                var result = userManager.CreateAsync(user, register.Password).Result;
+                var result = await userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, Constants.PlayerRoleName);
-                    signInManager.SignInAsync(user, false).Wait();
+                    await userManager.AddToRoleAsync(user, Constants.PlayerRoleName);
+                    await signInManager.SignInAsync(user, false);
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }
                 else
@@ -73,9 +73,10 @@ namespace LingvoGameOs.Controllers
             }
             return View(register);
         }
-        public IActionResult Logout()
+
+        public async Task<IActionResult> LogoutAsync()
         {
-            signInManager.SignOutAsync().Wait();
+            await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

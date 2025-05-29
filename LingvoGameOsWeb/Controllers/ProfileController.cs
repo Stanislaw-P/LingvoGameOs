@@ -45,12 +45,12 @@ namespace LingvoGameOs.Controllers
             return RedirectToAction("Profile");
         }
 
-        public IActionResult Profile(string userId)
+        public async Task<IActionResult> ProfileAsync(string userId)
         {
-            var user = userManager.FindByIdAsync(userId).Result;
+            var user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                var games = gamesRepository.TryGetUserDevGames(user);
+                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevGames = games;
                 return View(user);
             }
