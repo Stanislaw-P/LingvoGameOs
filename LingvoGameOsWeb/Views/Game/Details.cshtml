@@ -53,9 +53,9 @@
         <div class="game-hero__info">
             <h1 class="game-hero__title">@Model.Title</h1>
             <div class="game-hero__actions">
-                <button class="game-hero__button profile__button">
+                <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model.Id" class="game-hero__button profile__button">
                     <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Начать игру
-                </button>
+                </a>
                 <button class="game-hero__share profile__button">
                     <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
                 </button>

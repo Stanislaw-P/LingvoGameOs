@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const playButton = document.querySelector('.game-hero__button');
-    if (playButton) playButton.addEventListener('click', () => alert('Игра запускается! (Функционал в разработке)'));
+    //const playButton = document.querySelector('.game-hero__button');
+    //if (playButton) playButton.addEventListener('click', () => alert('Игра запускается! (Функционал в разработке)'));
 
     const reviewButton = document.querySelector('.game-reviews__button');
     if (reviewButton) reviewButton.addEventListener('click', showReviewModal);

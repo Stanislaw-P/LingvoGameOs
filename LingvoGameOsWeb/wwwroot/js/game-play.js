@@ -118,14 +118,14 @@ function handleModalKeyboard(event) {
 // Header functionality
 function initializeHeader() {
     // Logo navigation
-    if (logoLink) {
-        logoLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.location.href = 'index.html';
-        });
-    } else {
-        console.warn('Logo link element (.game-play__logo) not found');
-    }
+    //if (logoLink) {
+    //    logoLink.addEventListener('click', (e) => {
+    //        e.preventDefault();
+    //        window.location.href = 'index.html';
+    //    });
+    //} else {
+    //    console.warn('Logo link element (.game-play__logo) not found');
+    //}
 
     // Title button - Show game info modal
     if (titleButton) {
@@ -163,7 +163,7 @@ function initializeHeader() {
     // Close button - Exit game
     if (closeButton) {
         closeButton.addEventListener('click', () => {
-            window.location.href = 'index.html';
+            //window.location.href = 'index.html';
         });
     } else {
         console.warn('Close button (.game-play__close) not found');
