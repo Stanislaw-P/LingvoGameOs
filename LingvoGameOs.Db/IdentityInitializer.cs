@@ -2,6 +2,7 @@
 using LingvoGameOs.Db.Models;
 using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 
 namespace LingvoGameOs.Db
@@ -57,12 +58,14 @@ namespace LingvoGameOs.Db
 
 
                 // Далее инициализация и добавление в БД данных
-                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Начинающий" };
-                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Средний" };
-                var languageLevelPro = new LanguageLevel { Id = 3, Name = "Продвинутый" };
+                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить\r\n" };
+                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Юный нарт" };
+                var languageLevelAdvanced = new LanguageLevel { Id = 3, Name = "Кавказский орёл" };
+                var languageLevelPro = new LanguageLevel { Id = 4, Name = "Старейшина, который говорит тосты" };
+                var languageLevelGrandMaster = new LanguageLevel { Id = 5, Name = "Хранитель языка" };
                 if (!context.LanguageLevels.Any())
                 {
-                    context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelPro);
+                    context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelAdvanced, languageLevelPro, languageLevelGrandMaster);
                     context.SaveChanges();
                 }
 

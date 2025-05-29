@@ -13,5 +13,9 @@ namespace LingvoGameOs.Db.Models
 
         public int GameId { get; set; } // Первичный ключ игры
         public Game Game { get; set; }
+
+        public DateTime LastLaunch { get; set; }
+        public double AssignedRating { get; set; }
+        public int PointsReceived { get; set; }
     }
 }
