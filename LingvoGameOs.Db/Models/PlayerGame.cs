@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LingvoGameOs.Db.Models
 {
-    public class UserGame
+    public class PlayerGame
     {
         public string UserId { get; set; } // Первичный ключ пользователя
         public User User { get; set; }

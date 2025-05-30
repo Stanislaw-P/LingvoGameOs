@@ -42,7 +42,7 @@ namespace LingvoGameOs.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Profile");
+            return RedirectToAction(nameof(ProfileAsync));
         }
 
         public async Task<IActionResult> ProfileAsync(string userId)

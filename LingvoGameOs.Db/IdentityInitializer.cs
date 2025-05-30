@@ -55,26 +55,26 @@ namespace LingvoGameOs.Db
 
 
                 // Далее инициализация и добавление в БД данных
-                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить\r\n" };
-                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Юный нарт" };
-                var languageLevelAdvanced = new LanguageLevel { Id = 3, Name = "Кавказский орёл" };
-                var languageLevelPro = new LanguageLevel { Id = 4, Name = "Старейшина, который говорит тосты" };
-                var languageLevelGrandMaster = new LanguageLevel { Id = 5, Name = "Хранитель языка" };
+                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
+                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Юный нарт", Description = "«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка." };
+                var languageLevelAdvanced = new LanguageLevel { Id = 3, Name = "Кавказский орёл", Description = "«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор." };
+                var languageLevelPro = new LanguageLevel { Id = 4, Name = "Старейшина, который говорит тосты", Description = "«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы." };
+                var languageLevelGrandMaster = new LanguageLevel { Id = 5, Name = "Хранитель языка", Description = "«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков." };
                 if (!await context.LanguageLevels.AnyAsync())
                 {
                     context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelAdvanced, languageLevelPro, languageLevelGrandMaster);
                     await context.SaveChangesAsync();
                 }
 
-                var gameType1 = new GameType { Id = 1, Name = "Словарный запас" };
-                var gameType2 = new GameType { Id = 2, Name = "Грамматика" };
-                var gameType3 = new GameType { Id = 3, Name = "Аудирование" };
-                var gameType4 = new GameType { Id = 4, Name = "Чтение" };
-                var gameType5 = new GameType { Id = 5, Name = "Говорение" };
-                var gameType6 = new GameType { Id = 6, Name = "Головоломка" };
-                if (!context.GameTypes.Any())
+                var gameType1 = new SkillLearning { Id = 1, Name = "Словарный запас" };
+                var gameType2 = new SkillLearning { Id = 2, Name = "Грамматика" };
+                var gameType3 = new SkillLearning { Id = 3, Name = "Аудирование" };
+                var gameType4 = new SkillLearning { Id = 4, Name = "Чтение" };
+                var gameType5 = new SkillLearning { Id = 5, Name = "Говорение" };
+                var gameType6 = new SkillLearning { Id = 6, Name = "Диктанта" };
+                if (!context.SkillsLearning.Any())
                 {
-                    await context.GameTypes.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
+                    await context.SkillsLearning.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
                     await context.SaveChangesAsync();
                 }
 
@@ -102,7 +102,7 @@ namespace LingvoGameOs.Db
                     RaitingTeachers = 4.8,
                     CoverImageURL = "/img/games/mountain labyrinth-banner.png",
                     GameURL = "/home/index",
-                    GameTypes = new List<GameType> { gameType1, gameType2 },
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2 },
                     NumberDownloads = 1000
                 };
 
@@ -121,7 +121,7 @@ namespace LingvoGameOs.Db
                     RaitingTeachers = 4,
                     CoverImageURL = "/img/games/art-object-banner.png",
                     GameURL = "/home/index",
-                    GameTypes = new List<GameType> { gameType3, gameType4 },
+                    SkillsLearning = new List<SkillLearning> { gameType3, gameType4 },
                     NumberDownloads = 241
                 };
                 var game3 = new Game
@@ -139,7 +139,7 @@ namespace LingvoGameOs.Db
                     RaitingTeachers = 4.3,
                     CoverImageURL = "/img/games/gameplay-animal.png",
                     GameURL = "http://158.160.131.69:5001",
-                    GameTypes = new List<GameType> { gameType1, gameType3 },
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5
                 };
                 var game4 = new Game
@@ -158,7 +158,7 @@ namespace LingvoGameOs.Db
                     RaitingTeachers = 4.9,
                     CoverImageURL = "/img/games/93a62f0945389b9_920x0.jpg",
                     GameURL = "https://ossetian-crosswords.glitch.me/",
-                    GameTypes = new List<GameType> { gameType1, gameType2, gameType4 },
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10
                 };
 

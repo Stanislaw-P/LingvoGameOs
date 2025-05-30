@@ -94,10 +94,10 @@
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">
                     <img src="/icon/categories.svg" alt="Categories" class="game-info__metadata-icon">
-                    <h4 class="game-info__metadata-title">Категории</h4>
+                    <h4 class="game-info__metadata-title">Развиваемые навыки</h4>
                 </div>
                 <div class="game-info__metadata-list">
-                    @foreach(var gameType in Model.GameTypes)
+                    @foreach(var gameType in Model.SkillsLearning)
                     {
                         <span class="game-info__metadata-tag">@gameType.Name</span>
                     }

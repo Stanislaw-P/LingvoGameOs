@@ -20,7 +20,7 @@ namespace LingvoGameOs.Db
 		public async Task<Game?> TryGetByIdAsync(int idGame)
 		{
 			return await databaseContext.Games
-				.Include(g => g.GameTypes)
+				.Include(g => g.SkillsLearning)
 				.Include(g => g.LanguageLevel)
 				.Include(g => g.GamePlatform)
 				.Include(g => g.Players)

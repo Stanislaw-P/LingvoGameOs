@@ -73,7 +73,8 @@ namespace LingvoGameOs.Db.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -280,23 +281,26 @@ namespace LingvoGameOs.Db.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserGame",
+                name: "PlayerGame",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    GameId = table.Column<int>(type: "INTEGER", nullable: false)
+                    GameId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LastLaunch = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    AssignedRating = table.Column<double>(type: "REAL", nullable: false),
+                    PointsReceived = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGame", x => new { x.GameId, x.UserId });
+                    table.PrimaryKey("PK_PlayerGame", x => new { x.GameId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UserGame_AspNetUsers_UserId",
+                        name: "FK_PlayerGame_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserGame_Games_GameId",
+                        name: "FK_PlayerGame_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
@@ -361,8 +365,8 @@ namespace LingvoGameOs.Db.Migrations
                 column: "LanguageLevelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGame_UserId",
-                table: "UserGame",
+                name: "IX_PlayerGame_UserId",
+                table: "PlayerGame",
                 column: "UserId");
         }
 
@@ -388,10 +392,10 @@ namespace LingvoGameOs.Db.Migrations
                 name: "GameGameType");
 
             migrationBuilder.DropTable(
-                name: "Technologys");
+                name: "PlayerGame");
 
             migrationBuilder.DropTable(
-                name: "UserGame");
+                name: "Technologys");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

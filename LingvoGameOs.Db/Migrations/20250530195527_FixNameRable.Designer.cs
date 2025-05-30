@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250529170856_AddColumnToUserGame")]
-    partial class AddColumnToUserGame
+    [Migration("20250530195527_FixNameRable")]
+    partial class FixNameRable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,7 +83,7 @@ namespace LingvoGameOs.Db.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.GameGameType", b =>
+            modelBuilder.Entity("LingvoGameOs.Db.Models.GameSkillLearning", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("INTEGER");
@@ -95,22 +95,7 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.HasIndex("GameTypeId");
 
-                    b.ToTable("GameGameType", (string)null);
-                });
-
-            modelBuilder.Entity("LingvoGameOs.Db.Models.GameType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GameTypes");
+                    b.ToTable("GameSkillLearning", (string)null);
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.LanguageLevel", b =>
@@ -118,6 +103,10 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -141,6 +130,45 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Platforms");
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.PlayerGame", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("AssignedRating")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateTime>("LastLaunch")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PointsReceived")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("GameId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PlayerGame");
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.SkillLearning", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameTypes");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Technology", b =>
@@ -234,30 +262,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("LingvoGameOs.Db.Models.UserGame", b =>
-                {
-                    b.Property<int>("GameId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("AssignedRating")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("LastLaunch")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PointsReceived")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("GameId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserGame");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -415,7 +419,7 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("LanguageLevel");
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.GameGameType", b =>
+            modelBuilder.Entity("LingvoGameOs.Db.Models.GameSkillLearning", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
                         .WithMany()
@@ -423,7 +427,7 @@ namespace LingvoGameOs.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LingvoGameOs.Db.Models.GameType", "GameType")
+                    b.HasOne("LingvoGameOs.Db.Models.SkillLearning", "GameType")
                         .WithMany()
                         .HasForeignKey("GameTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -434,7 +438,7 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("GameType");
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.UserGame", b =>
+            modelBuilder.Entity("LingvoGameOs.Db.Models.PlayerGame", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
                         .WithMany("UserGames")

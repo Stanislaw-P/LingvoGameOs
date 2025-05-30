@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace LingvoGameOs.Db.Models
 {
-    class GameGameType
+    class GameSkillLearning
     {
 		public int GameId { get; set; }
 		public Game? Game { get; set; }
 
 		public int GameTypeId { get; set; }
-		public GameType? GameType { get; set; }
+		public SkillLearning? GameType { get; set; }
 	}
 }
