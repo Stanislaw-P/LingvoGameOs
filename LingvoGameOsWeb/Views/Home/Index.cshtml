@@ -18,21 +18,21 @@
             <div class="game-hero__slides" style="display: flex; overflow: hidden;">
                 <div class="game-hero__slide">
                     <img src="/img/game-banner.png" alt="Game screenshot 1"
-                    class="game-hero__slide-image">
+                         class="game-hero__slide-image">
                 </div>
                 <div class="game-hero__slide game-hero__video-slide">
                     <iframe src="https://vk.com/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
-                    width="640" height="360"
-                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                    frameborder="0" allowfullscreen></iframe>
+                            width="640" height="360"
+                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                            frameborder="0" allowfullscreen></iframe>
                 </div>
                 <div class="game-hero__slide">
                     <img src="/img/screenshot2.png" alt="Game screenshot 2"
-                    class="game-hero__slide-image">
+                         class="game-hero__slide-image">
                 </div>
                 <div class="game-hero__slide">
                     <img src="/img/screenshot3.png" alt="Game screenshot 3"
-                    class="game-hero__slide-image">
+                         class="game-hero__slide-image">
                 </div>
             </div>
             <button class="game-hero__carousel-button game-hero__carousel-prev">
@@ -70,7 +70,7 @@
     <div class="games__filter">
         <div class="games__filter-search">
             <input type="text" class="email-prompt-text-style games__search-input"
-            placeholder="Найти игру...">
+                   placeholder="Найти игру...">
             <button class="games__search-button">Найти</button>
         </div>
         <div class="games__filter-dropdowns">
@@ -84,7 +84,7 @@
                         <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
                     </div>
                     <ul class="games__dropdown-list">
-                        @foreach(var gameType in ViewBag.GameTypes)
+                        @foreach (var gameType in ViewBag.GameTypes)
                         {
                             <li class="games__dropdown-item" data-filter="category" data-value="reading">
                                 @gameType
@@ -161,7 +161,14 @@
                         </span>
                     </div>
                     <div class="games__actions">
-                        <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                        @if (game.GamePlatform.Name == "Desktop")
+                        {
+                            <a href="#" role="button" class="games__button">Скачать</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                        }
                         <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
                     </div>
                 </div>

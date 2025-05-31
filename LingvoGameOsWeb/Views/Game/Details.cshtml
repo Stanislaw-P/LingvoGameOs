@@ -17,16 +17,16 @@
                 {
                     <div class="game-hero__slide">
                         <img src="@imgUrl" alt="Game screenshot"
-                             class="game-hero__slide-image">
+                        class="game-hero__slide-image">
                     </div>
                 }
 
                 <!-- Видео с VK (вторая) -->
                 <div class="game-hero__slide game-hero__video-slide">
                     <iframe src="https://vkvideo.ru/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
-                            width="640" height="360"
-                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                            frameborder="0" allowfullscreen></iframe>
+                    width="640" height="360"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                    frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
             <!-- Навигационные кнопки -->
@@ -47,9 +47,19 @@
         <div class="game-hero__info">
             <h1 class="game-hero__title">@Model.Title</h1>
             <div class="game-hero__actions">
-                <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model.Id" class="game-hero__button profile__button">
-                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Начать игру
-                </a>
+                @if (Model.GamePlatform.Name == "Desktop")
+                {
+                    <a role="button" href="#" class="game-hero__button profile__button">
+                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Скачать
+                    </a>
+                }
+                else
+                {
+                    <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model.Id" class="game-hero__button profile__button">
+                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Играть
+                    </a>
+                }
+                
                 <button class="game-hero__share profile__button">
                     <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
                 </button>
