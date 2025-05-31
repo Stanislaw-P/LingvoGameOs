@@ -6,8 +6,9 @@
     <title>@ViewData["Title"] - LingvoGameOs</title>
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LingvoGameOs.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
 </head>
 <body>
     @if (ViewContext.RouteData.Values["Action"]?.ToString() == "Start")
@@ -27,8 +28,9 @@
     </div>
 
     @await Html.PartialAsync("Footer", false)
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* Удаляем ссылку на jQuery и Bootstrap JS, если они больше не нужны *@
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     
     @await Html.PartialAsync("_ValidationScriptsPartial");
 

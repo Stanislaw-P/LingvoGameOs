@@ -198,7 +198,7 @@ body {
 
 .header__like {
     background-color: var(--bg-body);
-    margin-left: 352px;
+    margin-left: auto;
 }
 
 .user-profile {
@@ -208,20 +208,21 @@ body {
 }
 
 .user-profile__container {
-    width: 171px;
-    height: 52px;
+    width: auto;
+    min-width: 150px;
+    height: 64px;
     border-radius: 6px 16px;
-    padding: 10px;
+    padding: 10px 0px 10px 10px;
     display: flex;
     align-items: center;
     background-color: var(--bg-white);
+    position: relative;
 }
 
 .user-profile__content {
     display: flex;
     align-items: center;
     gap: 11px;
-    width: 119px;
 }
 
 .user-profile__avatar {
@@ -259,7 +260,6 @@ body {
 
 /* #endregion */
 
-
 /* #region Выпадающее меню профиля */
 .user-profile__dropdown {
     position: relative;
@@ -268,74 +268,95 @@ body {
 }
 
 .user-profile__toggle {
+    display: flex;
+    align-items: center;
+    gap: 11px;
     cursor: pointer;
-    padding: 8px;
-    transition: transform 0.3s ease;
+    padding: 10px;
+    border-radius: 6px 16px;
+    background: var(--bg-white);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .user-profile__toggle:hover {
-    transform: scale(1.1);
+    background: var(--bg-light);
+    box-shadow: 0 2px 8px rgba(63, 105, 210, 0.2);
+    transform: translateY(-2px);
+}
+
+.user-profile__toggle:active {
+    transform: scale(0.98);
 }
 
 .user-profile__menu {
     position: absolute;
-    top: calc(100% + 10px);
-    right: -40px;
-    background: var(--text-primary);
-    border-radius: 10px 50px;
-    box-shadow: 0 6px 20px rgba(24, 32, 50, 0.3);
-    min-width: 220px;
-    padding: 15px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px 70px;
+    box-shadow: var(--shadow);
+    min-width: 240px;
+    padding: 12px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(15px) scale(0.95);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
     z-index: 100;
-    border: 1px solid rgba(248, 250, 254, 0.1);
 }
 
 .user-profile__menu.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0) scale(1);
+    transform: translateX(-50%) translateY(0);
 }
 
 .user-profile__menu-item {
-    padding: 12px 20px;
-    color: var(--text-light);
-    font-size: 14px;
-    font-family: "Axiforma", "Arial", sans-serif;
-    font-weight: 500;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 73px;
-    transition: background 0.3s ease, padding-left 0.3s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: "Axiforma", sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 73px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .user-profile__menu-item:hover {
-    background-color: var(--accent-2);
-    padding-left: 25px;
-    transform: translateX(25px);
+    background: var(--bg-light);
+    box-shadow: 0 2px 8px rgba(63, 105, 210, 0.2);
+    transform: translateX(5px);
 }
 
 .user-profile__menu-item:active {
-    background-color: var(--accent-1);
-    transform: translateX(2px);
+    background: var(--accent-2);
+    transform: translateX(0);
+    color: var(--text-light);
+}
+
+.user-profile__menu-item i {
+    font-size: 16px;
+    color: var(--accent-2);
 }
 
 .user-profile__menu-item a.menu__link {
-    color: var(--text-light);
+    color: var(--text-primary);
+    text-decoration: none;
+    flex: 1;
     font-size: 14px;
     font-weight: 500;
-    text-align: left;
-    display: block;
+    font-family: "Axiforma", sans-serif;
+}
+
+.user-profile__menu-item a.menu__link:hover {
+    text-decoration: none;
+    color: var(--accent-2);
 }
 
 /* #endregion */
-
 
 /* #region Стили контента */
 .content {
@@ -765,7 +786,6 @@ body {
     }
 }
 
-
 /* === Стили блока общей активности === */
 .activity {
     background: var(--bg-light);
@@ -780,8 +800,6 @@ body {
     font-size: 24px;
     margin-bottom: 25px;
     text-align: left;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 600;
 }
 
 .activity__chart {
@@ -814,7 +832,6 @@ body {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
-    font-family: "Axiforma", sans-serif;
     color: var(--text-body);
     margin-top: 8px;
     text-align: left;
@@ -834,18 +851,14 @@ body {
 .activity__stat-value {
     display: block;
     font-size: 24px;
-    font-family: "Axiforma", sans-serif;
     font-weight: bold;
     color: var(--text-primary);
 }
 
 .activity__stat-label {
     font-size: 14px;
-    font-family: "Axiforma", sans-serif;
     color: var(--text-body);
 }
-
-
 
 
 /* === Стили блока рейтинга в играх === */
@@ -1035,7 +1048,6 @@ body {
 
 .user-games__title {
   font-size: 24px;
-  font-family: "Axiforma", sans-serif;
   margin-bottom: 25px;
   text-align: left;
   color: var(--text-gray);
@@ -1073,12 +1085,10 @@ body {
 .user-games__name {
   font-size: 18px;
   font-weight: 600;
-  font-family: "Axiforma", sans-serif;
 }
 
 .user-games__description {
   font-size: 14px;
-  font-family: "Axiforma", sans-serif;
   color: var(--text-body);
 }
 
@@ -1094,6 +1104,98 @@ body {
 
 .user-games__button:hover {
   background: var(--secondary-1);
+}
+
+.user-games__button,
+.user-games__button--secondary {
+font-size: 14px;
+padding: 10px 16px;
+border-radius: 32px;
+font-weight: 500;
+font-family: "Axiforma", sans-serif;
+cursor: pointer;
+transition: all 0.3s ease;
+text-align: center;
+}
+
+.user-games__button {
+background: var(--accent-2);
+color: var(--text-light);
+border: none;
+}
+
+.user-games__button:hover {
+background: var(--secondary-1);
+}
+
+.user-games__button--secondary {
+background: transparent;
+color: var(--accent-2);
+border: 1px solid var(--accent-2);
+}
+
+.user-games__button--secondary:hover {
+background-color: var(--accent-2);
+color: var(--text-light);
+}
+
+.user-game-card {
+border-radius: 10px 70px;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-game-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 25px rgba(24, 32, 50, 0.25);
+}
+
+.user-game-card__image {
+width: 30%;
+height: 100%;
+object-fit: cover;
+}
+
+.user-game-card__content {
+padding: 20px 40px 20px 20px;
+display: flex;
+flex-direction: column;
+gap: 20px;
+color: var(--text-primary);
+}
+
+.user-game-card__name {
+font-size: 20px;
+font-weight: 600;
+}
+
+.user-game-card__description {
+font-size: 14px;
+color: var(--text-body);
+line-height: 1.4;
+min-height: 38px;
+}
+
+.user-game-card__stats {
+display: flex;
+justify-content: space-between;
+font-size: 13px;
+color: var(--text-muted);
+padding: 6px 12px;
+background: var(--bg-light);
+border-radius: 6px;
+width: 80%;
+gap: 30px;
+}
+
+.user-game-card__actions {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 10px;
 }
 
 /* #region  Модальное окно для изменения профиля */
