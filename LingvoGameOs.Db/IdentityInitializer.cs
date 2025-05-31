@@ -100,7 +100,12 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.6,
                     RaitingTeachers = 4.8,
-                    CoverImageURL = "/img/games/mountain labyrinth-banner.png",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/mountain-labyrinth-banner-1.png",
+                        "/img/games/mountain-labyrinth-banner-2.png",
+                        "/img/games/mountain-labyrinth-banner-3.png"
+                    },
                     GameURL = "/home/index",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2 },
                     NumberDownloads = 1000
@@ -119,7 +124,12 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform1.Id,
                     RaitingPlayers = 4.4,
                     RaitingTeachers = 4,
-                    CoverImageURL = "/img/games/art-object-banner.png",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/art-object-1.png",
+                        "/img/games/art-object-2.jpeg",
+                        "/img/games/art-object-3.png"
+                    },
                     GameURL = "/home/index",
                     SkillsLearning = new List<SkillLearning> { gameType3, gameType4 },
                     NumberDownloads = 241
@@ -137,7 +147,12 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
                     RaitingTeachers = 4.3,
-                    CoverImageURL = "/img/games/gameplay-animal.png",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/gameplay-animal.png",
+                        "/img/games/gameplay-animal-1.jpg",
+                        "/img/games/gameplay-animal-2.jpg"
+                    },
                     GameURL = "http://158.160.131.69:5001",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5
@@ -148,7 +163,7 @@ namespace LingvoGameOs.Db
                     Title = "Кроссворд осетинских слов",
                     Description = "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
                     Rules = "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n" +
-                    "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
+                "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
                     AuthorId = devDavid.Id,
                     PublicationDate = DateTime.UtcNow,
                     LastUpdateDate = DateTime.UtcNow,
@@ -156,7 +171,11 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,
                     RaitingTeachers = 4.9,
-                    CoverImageURL = "/img/games/93a62f0945389b9_920x0.jpg",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/93a62f0945389b9_920x0.jpg",
+                        "/img/games/cross-1.jpg"
+                    },
                     GameURL = "https://ossetian-crosswords.glitch.me/",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10

@@ -22,8 +22,8 @@ namespace LingvoGameOs.Db.Models
 		public List<SkillLearning> SkillsLearning { get; set; }
 		public double RaitingPlayers { get; set; }
         public double RaitingTeachers { get; set; }
-        public string CoverImageURL { get; set; }
-		public string GameURL { get; set; }
+        public List<string> ImagesURLs { get; set; }
+        public string GameURL { get; set; }
 		public Platform GamePlatform { get; set; }
 		public int GamePlatformId { get; set; }
 		public int NumberDownloads { get; set; }

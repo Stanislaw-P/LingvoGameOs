@@ -159,7 +159,7 @@
                     @foreach (var game in Model.DevGames)
                     {
                         <div class="user-games__item user-game-card">
-                            <img src="@game.CoverImageURL" alt="Обложка игры" class="user-game-card__image">
+                            <img src="@game.ImagesURLs[0]" alt="Обложка игры" class="user-game-card__image">
                             <div class="user-game-card__content">
                                 <h4 class="user-game-card__name">@game.Title</h4>
                                 <p class="user-game-card__description">@game.Description</p>

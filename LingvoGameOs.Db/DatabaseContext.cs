@@ -22,7 +22,7 @@ namespace LingvoGameOs.Db
         {
             base.OnModelCreating(modelBuilder);
 
-            // Настройка связи
+            // Настройка связей
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.Author)
                 .WithMany(a => a.DevGames)
