@@ -32,16 +32,19 @@
                 </div>
                 <div class="profile__field">
                     <label class="profile__label" for="email">Email*</label>
-                    <input type="email" class="profile__input" id="email" value="@Model.Email" disabled>
+                    <input type="email" class="profile__input" id="email" value="@Model.Email"
+                           disabled>
                 </div>
                 <div class="profile__field">
                     <label class="profile__label" for="level">Уровень</label>
                     <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
                 </div>
-                <div class="profile__field profile__field--bio">
+                <div class="profile__field">
                     <label class="profile__label" for="bio">О себе</label>
-                    <textarea class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
+                    <textarea class="profile__input profile__textarea" id="bio"
+                              placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
                 </div>
+
                 <button type="button" class="profile__button" id="open-edit-modal">
                     Изменить профиль
                 </button>
@@ -149,72 +152,12 @@
         <div class="user-games">
             @if (User.IsInRole(Constants.DevRoleName))
             {
-                <div class="user-games__header">
-                    <h3 class="user-games__title">Созданные игры</h3>
-                    <a href="/create-game" class="user-games__button user-games__button--create">Создать игру</a>
-                </div>
-                <div class="user-games__list" id="created-games-list">
-                    @if (!Model.DevGames.Any())
+                <h3 class="user-games__title">Созданные игры</h3>
+
+                <div class="user-games__list">
+                    @foreach (var game in Model.DevGames)
                     {
-                        <div class="user-games__empty">
-                            <img src="/img/empty-state.svg" alt="Нет игр" class="user-games__empty-image">
-                            <p class="user-games__empty-text">Вы ещё не создали ни одной игры. Начните творить и поделитесь своими идеями с миром!</p>
-                            <a href="/create-game" class="user-games__button user-games__button--create">Создать игру</a>
-                        </div>
-                    }
-                    else
-                    {
-                        @foreach (var game in Model.DevGames.Take(3))
-                        {
-                            <div class="user-games__item user-game-card" data-game-id="@game.Id">
-                                <img src="@game.CoverImageURL" alt="Обложка игры" class="user-game-card__image">
-                                <div class="user-game-card__content">
-                                    <h4 class="user-game-card__name">@game.Title</h4>
-                                    <p class="user-game-card__description">@game.Description</p>
-                                    <div class="user-game-card__stats">
-                                        <span>@game.NumberDownloads игроков</span>
-                                        <span>@game.RaitingPlayers рейтинг</span>
-                                        <span>85% активность</span>
-                                    </div>
-                                    <div class="user-game-card__actions">
-                                        <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-games__button">Играть</a>
-                                        <a href="analytics_game@(game.Id).html" class="user-games__button--secondary">Аналитика</a>
-                                        <a href="edit_mygame@(game.Id).html" class="user-games__button--secondary">Редактировать</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        @if (Model.DevGames.Count() > 3)
-                        {
-                            <div class="user-games__pagination">
-                                <button class="user-games__pagination-button" id="created-games-prev" disabled>Назад</button>
-                                <span class="user-games__pagination-info" id="created-games-page-info">1 из @Math.Ceiling(Model.DevGames.Count() / 3.0)</span>
-                                <button class="user-games__pagination-button" id="created-games-next" @(Model.DevGames.Count() <= 3 ? "disabled" : "")>Вперёд</button>
-                                <a href="/all-created-games" class="user-games__view-all">Посмотреть все игры</a>
-                            </div>
-                        }
-                    }
-                </div>
-            }
-        </div>
-        <div class="recently-played">
-            <div class="recently-played__header">
-                <h3 class="recently-played__title">Недавно сыгранные игры</h3>
-            </div>
-            <div class="recently-played__list" id="recently-played-list">
-                @if (!Model.RecentlyPlayedGames.Any())
-                {
-                    <div class="recently-played__empty">
-                        <img src="/img/empty-state.svg" alt="Нет игр" class="recently-played__empty-image">
-                        <p class="recently-played__empty-text">Вы ещё не играли ни в одну игру. Погрузитесь в увлекательный мир игр прямо сейчас!</p>
-                        <a href="/games" class="recently-played__button">Найти игры</a>
-                    </div>
-                }
-                else
-                {
-                    @foreach (var game in Model.RecentlyPlayedGames.Take(3))
-                    {
-                        <div class="recently-played__item user-game-card" data-game-id="@game.Id">
+                        <div class="user-games__item user-game-card">
                             <img src="@game.CoverImageURL" alt="Обложка игры" class="user-game-card__image">
                             <div class="user-game-card__content">
                                 <h4 class="user-game-card__name">@game.Title</h4>
@@ -222,26 +165,18 @@
                                 <div class="user-game-card__stats">
                                     <span>@game.NumberDownloads игроков</span>
                                     <span>@game.RaitingPlayers рейтинг</span>
-                                    <span>85% активность</span>
+                                    <span>85% (static) активность</span>
                                 </div>
                                 <div class="user-game-card__actions">
                                     <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-games__button">Играть</a>
-                                    <a href="leaderboard_game@(game.Id).html" class="user-games__button--secondary">Таблица лидеров</a>
+                                    <a href="analytics_game1.html" class="user-games__button--secondary">Аналитика</a>
+                                    <a href="edit_mygame1.html" class="user-games__button--secondary">Редактировать</a>
                                 </div>
                             </div>
                         </div>
                     }
-                    @if (Model.RecentlyPlayedGames.Count() > 3)
-                    {
-                        <div class="recently-played__pagination">
-                            <button class="recently-played__pagination-button" id="recently-played-prev" disabled>Назад</button>
-                            <span class="recently-played__pagination-info" id="recently-played-page-info">1 из @Math.Ceiling(Model.RecentlyPlayedGames.Count() / 3.0)</span>
-                            <button class="recently-played__pagination-button" id="recently-played-next" @(Model.RecentlyPlayedGames.Count() <= 3 ? "disabled" : "")>Вперёд</button>
-                            <a href="/all-recently-played" class="recently-played__view-all">Посмотреть все игры</a>
-                        </div>
-                    }
-                }
-            </div>
+                </div>
+            }
         </div>
     </section>
 </div>
@@ -345,7 +280,7 @@
 </div>
 
 <!-- Modal for editing profile -->
-<div class="custom-modal" id="edit-profile-modal">
+<div class="modal" id="edit-profile-modal">
     <div class="modal__content">
         <button class="modal__close" id="close-edit-modal" aria-label="Закрыть модальное окно">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
