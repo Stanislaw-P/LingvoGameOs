@@ -6,6 +6,7 @@ import { initializeActivityChart } from './activityChart.js';
 import { showNotification } from './notifications.js';
 import { initializeSlider } from './slider.js';
 import { initializeProfileModal } from './profileModal.js';
+import { initializeGameBlocks } from './gameBlocks.js';
 
 // Основная инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
@@ -108,5 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } else {
         console.warn('Модальное окно профиля (#edit-profile-modal) не найдено');
+    }
+
+    // Инициализация блоков с играми
+    if (document.querySelector('.user-added-games') || document.querySelector('.recent-games')) {
+        console.log('Инициализация блоков с играми');
+        try {
+            initializeGameBlocks();
+        } catch (error) {
+            console.error('Ошибка при инициализации блоков с играми:', error);
+        }
     }
 });
