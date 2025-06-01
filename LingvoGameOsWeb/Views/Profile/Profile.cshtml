@@ -46,8 +46,7 @@
                 </div>
 
                 <button type="button" class="profile__button" id="open-edit-modal">
-                    Изменить
-                    профиль
+                    Изменить профиль
                 </button>
             </form>
         </div>
@@ -277,6 +276,50 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal for editing profile -->
+<div class="modal" id="edit-profile-modal">
+    <div class="modal__content">
+        <button class="modal__close" id="close-edit-modal" aria-label="Закрыть модальное окно">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <h2 class="modal__title">Редактировать профиль</h2>
+        <form class="modal__form" id="edit-profile-form" enctype="multipart/form-data">
+            <div class="modal__field">
+                <label class="modal__label" for="modal-avatar">Аватар</label>
+                <div class="modal__avatar-wrapper">
+                    <img src="@(Model.ImageURL ?? "/img/avatar100.png")" alt="Аватар пользователя" class="modal__avatar-image" id="modal-avatar-preview">
+                    <input type="file" class="modal__avatar-input" id="modal-avatar" accept="image/*">
+                    <label for="modal-avatar" class="modal__upload-button">Загрузить новое фото</label>
+                </div>
+            </div>
+            <div class="modal__field">
+                <label class="modal__label" for="modal-firstName">Имя</label>
+                <input type="text" class="modal__input" id="modal-firstName" value="@Model.Name" required>
+            </div>
+            <div class="modal__field">
+                <label class="modal__label" for="modal-lastName">Фамилия</label>
+                <input type="text" class="modal__input" id="modal-lastName" value="@Model.Surname" required>
+            </div>
+            <div class="modal__field">
+                <label class="modal__label" for="modal-email">Email*</label>
+                <input type="email" class="modal__input" id="modal-email" value="@Model.Email" required>
+            </div>
+            <div class="modal__field">
+                <label class="modal__label" for="modal-bio">О себе</label>
+                <textarea class="modal__input modal__textarea" id="modal-bio" placeholder="Расскажите о себе">@Model.Description</textarea>
+            </div>
+            <div class="modal__actions">
+                <button type="button" class="modal__button modal__button--secondary" id="cancel-edit">Отмена</button>
+                <button type="submit" class="modal__button modal__button--primary" id="save-profile">Сохранить</button>
+            </div>
+            <div class="modal__error" id="modal-error" style="display: none;"></div>
+        </form>
     </div>
 </div>
 @* <script type="module" src="/js/script.js"></script> *@

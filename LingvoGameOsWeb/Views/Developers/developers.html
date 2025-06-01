@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для разработчиков</title>
+    <link rel="stylesheet" href="/LingvoGameOsWeb/wwwroot/css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div id="header-placeholder"></div>
+        <main class="developer-page">
+            <div class="developer-page__container">
+                <h1 class="developer-page__title">Для разработчиков</h1>
+
+                <!-- Web-Mobile Section -->
+                <section class="developer-page__section">
+                    <h2 class="developer-page__section-title">Web-Mobile приложения</h2>
+                    <div class="developer-page__description">
+                        Web-Mobile приложения — это игры и образовательные приложения, разработанные с использованием веб-технологий (HTML5, CSS, JavaScript), которые оптимизированы для работы на мобильных устройствах через браузер. Они обеспечивают кроссплатформенную доступность и не требуют установки.
+                    </div>
+                    <button class="developer-page__instructions-toggle" aria-expanded="false" aria-controls="web-mobile-instructions">
+                        Инструкции для разработчиков
+                        <img src="~/icon/more.svg" alt="Развернуть" class="developer-page__toggle-icon">
+                    </button>
+                    <div class="developer-page__instructions-content" id="web-mobile-instructions" aria-hidden="true">
+                        <div class="developer-page__instructions">
+                            <div class="developer-page__instructions-step">
+                                <h4>1. Подготовка приложения</h4>
+                                <p>Создайте приложение, используя HTML5, CSS, и JavaScript. Убедитесь, что оно адаптивно и работает на устройствах с разными размерами экрана (от 320px до 768px). Используйте фреймворки, такие как Phaser для игр или React для интерактивных приложений.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>2. Тестирование</h4>
+                                <p>Проверьте приложение на популярных мобильных браузерах (Chrome, Safari, Firefox). Убедитесь, что оно соответствует стандартам WCAG 2.1 для доступности. Проверьте производительность с помощью инструментов, таких как Lighthouse.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>3. Подготовка метаданных</h4>
+                                <p>Создайте привлекательную обложку (рекомендуемый размер: 294x424px), подготовьте скриншоты и описание. Укажите категории (например, "Словарный запас", "Грамматика") и ключевые слова для поиска.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>4. Публикация</h4>
+                                <p>Загрузите приложение через форму на странице <a href="/upload">Загрузка игры</a>. Укажите URL игры или загрузите ZIP-архив. После проверки модератором приложение станет доступным в разделе "Рекомендуемые игры".</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Web-Desktop Section -->
+                <section class="developer-page__section">
+                    <h2 class="developer-page__section-title">Web-Desktop приложения</h2>
+                    <div class="developer-page__description">
+                        Web-Desktop приложения — это веб-приложения, оптимизированные для работы в браузерах на настольных компьютерах. Они подходят для более сложных образовательных игр, требующих большего экрана и производительности.
+                    </div>
+                    <button class="developer-page__instructions-toggle" aria-expanded="false" aria-controls="web-desktop-instructions">
+                        Инструкции для разработчиков
+                        <img src="~/icon/more.svg" alt="Развернуть" class="developer-page__toggle-icon">
+                    </button>
+                    <div class="developer-page__instructions-content" id="web-desktop-instructions" aria-hidden="true">
+                        <div class="developer-page__instructions">
+                            <div class="developer-page__instructions-step">
+                                <h4>1. Подготовка приложения</h4>
+                                <p>Разработайте приложение с использованием HTML5, CSS, и JavaScript. Рекомендуется использовать canvas или WebGL для сложных визуальных эффектов. Убедитесь, что интерфейс удобен для работы с мышью и клавиатурой.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>2. Тестирование</h4>
+                                <p>Проверьте приложение в Chrome, Firefox, и Edge. Оптимизируйте производительность для экранов с разрешением от 1280x720px. Используйте инструменты, такие как Chrome DevTools, для отладки.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>3. Подготовка метаданных</h4>
+                                <p>Подготовьте обложку (294x424px), скриншоты, и подробное описание. Укажите уровень сложности (например, "Юный нарт" или "Кавказский орёл") и категории.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>4. Публикация</h4>
+                                <p>Загрузите приложение через форму на странице <a href="/upload">Загрузка игры</a>. Предоставьте URL или ZIP-архив. После проверки приложение появится в каталоге.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Desktop Section -->
+                <section class="developer-page__section">
+                    <h2 class="developer-page__section-title">Desktop приложения</h2>
+                    <div class="developer-page__description">
+                        Desktop приложения — это автономные программы для Windows, macOS или Linux, которые пользователи загружают и устанавливают. Они подходят для сложных образовательных приложений с высокой интерактивностью.
+                    </div>
+                    <button class="developer-page__instructions-toggle" aria-expanded="false" aria-controls="desktop-instructions">
+                        Инструкции для разработчиков
+                        <img src="~/icon/more.svg" alt="Развернуть" class="developer-page__toggle-icon">
+                    </button>
+                    <div class="developer-page__instructions-content" id="desktop-instructions" aria-hidden="true">
+                        <div class="developer-page__instructions">
+                            <div class="developer-page__instructions-step">
+                                <h4>1. Подготовка приложения</h4>
+                                <p>Разработайте приложение, используя подходящий язык (например, C++, Python с Pygame, или Unity). Убедитесь, что оно поддерживает популярные ОС (Windows, macOS, Linux).</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>2. Тестирование</h4>
+                                <p>Проверьте приложение на целевых платформах. Убедитесь, что оно не содержит ошибок и соответствует требованиям безопасности. Проверьте установочный файл (EXE, DMG, или AppImage).</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>3. Подготовка метаданных</h4>
+                                <p>Создайте обложку (294x424px), скриншоты, и описание. Укажите системные требования и поддерживаемые ОС.</p>
+                            </div>
+                            <div class="developer-page__instructions-step">
+                                <h4>4. Публикация</h4>
+                                <p>Загрузите установочный файл (ZIP, RAR, APK, EX выступает, DMG) через форму на странице <a href="/upload">Загрузка игры</a>. После проверки приложение станет доступным для скачивания.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.developer-page__instructions-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                const contentId = toggle.getAttribute('aria-controls');
+                const content = document.getElementById(contentId);
+
+                toggle.setAttribute('aria-expanded', !isExpanded);
+                content.setAttribute('aria-hidden', isExpanded);
+
+                // Toggle visibility
+                content.style.display = isExpanded ? 'none' : 'block';
+            });
+
+            // Keyboard accessibility
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
