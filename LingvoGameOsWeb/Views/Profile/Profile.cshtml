@@ -146,34 +146,102 @@
                 </div>
             </div>
         </div>
-        <div class="user-games">
-            @if (User.IsInRole(Constants.DevRoleName))
-            {
-                <h3 class="user-games__title">Созданные игры</h3>
-
-                <div class="user-games__list">
-                    @foreach (var game in Model.DevGames)
+        <!-- Блок добавленных пользователем игр -->
+       <div class="games-block">
+            <!-- Your Games Block -->
+            <section class="user-added-games">
+                <header class="user-added-games__header">
+                    <h3 class="user-added-games__title">Ваши игры</h3>
+                    @if (User.IsInRole(Constants.DevRoleName))
                     {
-                        <div class="user-games__item user-game-card">
-                            <img src="@game.CoverImageURL" alt="Обложка игры" class="user-game-card__image">
-                            <div class="user-game-card__content">
-                                <h4 class="user-game-card__name">@game.Title</h4>
-                                <p class="user-game-card__description">@game.Description</p>
-                                <div class="user-game-card__stats">
-                                    <span>@game.NumberDownloads игроков</span>
-                                    <span>@game.RaitingPlayers рейтинг</span>
-                                    <span>85% (static) активность</span>
-                                </div>
-                                <div class="user-game-card__actions">
-                                    <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-games__button">Играть</a>
-                                    <a href="analytics_game1.html" class="user-games__button--secondary">Аналитика</a>
-                                    <a href="edit_mygame1.html" class="user-games__button--secondary">Редактировать</a>
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" class="user-added-games__upload-button">Загрузить игру</button>
                     }
-                </div>
-            }
+                </header>
+                @if (Model.DevGames != null && Model.DevGames.Any())
+                {
+                    <div class="user-added-games__list">
+                        @foreach (var game in Model.DevGames)
+                        {
+                            <article class="user-added-games__item">
+                                <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__link">
+                                    <img src="@game.CoverImageURL" alt="Обложка @game.Title" class="user-added-games__image" loading="lazy">
+                                    <div class="user-added-games__content">
+                                        <h4 class="user-added-games__name">@game.Title</h4>
+                                        <div class="user-added-games__actions">
+                                            <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
+                                            <a href="analytics_game@(game.Id).html" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
+                                            <a href="edit_mygame@(game.Id).html" class="user-added-games__button user-added-games__button--secondary">Ред</a>
+                                        </div>
+                                        <div class="user-added-games__stats">
+                                            <span class="user-added-games__rating">
+                                                <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                                                <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                                                <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                                                <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                                                <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
+                                            </span>
+                                            <span class="user-added-games__likes">
+                                                <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
+                                            </span>
+                                            <span class="user-added-games__views">
+                                                <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="user-added-games__empty">
+                        <p class="user-added-games__empty-text">Создайте свою первую игру!</p>
+                        @if (User.IsInRole(Constants.DevRoleName))
+                        {
+                            <button type="button" class="user-added-games__upload-button">Создать игру</button>
+                        }
+                    </div>
+                }
+            </section>
+
+            <!-- Recent Games Block -->
+            <section class="recent-games">
+                <h3 class="recent-games__title">Недавние игры</h3>
+                @{
+                    var placeholderGames = new[]
+                    {
+                        new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
+                        new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
+                        new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
+                    };
+                }
+                @if (placeholderGames.Any())
+                {
+                    <div class="recent-games__list">
+                        @foreach (var game in placeholderGames)
+                        {
+                            <article class="recent-games__item">
+                                <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="recent-games__link">
+                                    <img src="@game.CoverImageURL" alt="Обложка @game.Title" class="recent-games__image" loading="lazy">
+                                    <div class="recent-games__content">
+                                        <h4 class="recent-games__name">@game.Title</h4>
+                                        <p class="recent-games__description">@game.Description</p>
+                                        <p class="recent-games__score">Очки: 0</p>
+                                    </div>
+                                </a>
+                            </article>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="recent-games__empty">
+                        <p class="recent-games__empty-text">Откройте новые игры для изучения!</p>
+                        <a href="/games" class="recent-games__button">Найти игры</a>
+                    </div>
+                }
+            </section>
         </div>
     </section>
 </div>
@@ -203,7 +271,6 @@
             <a href="leaderboard_game3.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
         </div>
     </div>
-
 </div>
 
 <!-- Рекомендуемые игры -->
