@@ -154,7 +154,7 @@
                     <h3 class="user-added-games__title">Ваши игры</h3>
                     @if (User.IsInRole(Constants.DevRoleName))
                     {
-                        <button type="button" class="user-added-games__upload-button">Загрузить игру</button>
+                        <button type="button" class="user-added-games__upload-button" asp-controller="Upload" asp-action="Index">Загрузить игру</button>
                     }
                 </header>
                 @if (Model.DevGames != null && Model.DevGames.Any())

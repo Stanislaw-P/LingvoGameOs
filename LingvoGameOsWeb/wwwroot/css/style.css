@@ -216,7 +216,7 @@ body {
     width: auto;
     min-width: 150px;
     height: 64px;
-    border-radius: 6px 16px;
+    border-radius: 6px 20px;
     padding: 10px 0px 10px 10px;
     display: flex;
     align-items: center;
@@ -291,24 +291,23 @@ body {
 .user-profile__menu {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
+    left: 100%;
     background: var(--bg-white);
     border: 1px solid var(--border-light);
-    border-radius: 10px 70px;
+    border-radius: 20px 20px;
     box-shadow: var(--shadow);
-    min-width: 240px;
+    min-width: 290px;
     padding: 12px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
     z-index: 100;
 }
 
 .user-profile__menu.active {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-100%) translateY(3%);
 }
 
 .user-profile__menu-item {
