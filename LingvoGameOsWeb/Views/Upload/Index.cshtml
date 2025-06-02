@@ -81,7 +81,7 @@ ViewData["Title"] = "Загрузка игры";
                                 <label for="game-categories" class="upload-form__label">
                                     Категории <span class="required">*</span>
                                 </label>
-                                <div class="upload-form__input-wrapper">
+                                <div class="upload-form__input-wrapper" data-tooltip="Выберите категории, соответствующие вашей игре">
                                     <div class="custom-dropdown" id="categories-dropdown">
                                         <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите категории">
                                             <span class="custom-dropdown__placeholder">Выберите категории</span>
@@ -90,6 +90,7 @@ ViewData["Title"] = "Загрузка игры";
                                         <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
                                             <input type="text" class="custom-dropdown__search" placeholder="Поиск категорий..." aria-label="Поиск категорий">
                                             <ul class="custom-dropdown__options">
+                                                <li class="custom-dropdown__option" data-value="select-all" role="option" aria-selected="false">Выбрать все</li>
                                                 <li class="custom-dropdown__option" data-value="vocabulary" role="option" aria-selected="false">Словарный запас</li>
                                                 <li class="custom-dropdown__option" data-value="grammar" role="option" aria-selected="false">Грамматика</li>
                                                 <li class="custom-dropdown__option" data-value="listening" role="option" aria-selected="false">Аудирование</li>
@@ -180,23 +181,18 @@ ViewData["Title"] = "Загрузка игры";
                                 <label for="game-platform" class="upload-form__label">
                                     Платформа <span class="required">*</span>
                                 </label>
-                                <div class="upload-form__input-wrapper">
-                                    <div class="input-field custom-dropdown" id="platform-dropdown">
+                                <div class="upload-form__input-wrapper" data-tooltip="Выберите платформу для вашей игры">
+                                    <div class="custom-dropdown" id="platform-dropdown">
                                         <input type="hidden" id="game-platform" name="platform" required>
-                                        <div class="custom-dropdown__selected" tabindex="0" aria-haspopup="listbox"
-                                                aria-label="Выберите платформу">
+                                        <div class="custom-dropdown__selected" tabindex="0" aria-haspopup="listbox" aria-label="Выберите платформу">
                                             <span>Выберите платформу</span>
-                                            <img src="icon/chevron-down.svg" alt="" class="custom-dropdown__icon">
+                                            <img src="icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
                                         </div>
                                         <ul class="custom-dropdown__list" role="listbox" hidden>
-                                            <li class="custom-dropdown__item" role="option" data-value="web-mobile">
-                                                Web-Mobile
-                                            </li>
-                                            <li class="custom-dropdown__item" role="option"
-                                                data-value="web-desktop">Web-Desktop</li>
-                                            <li class="custom-dropdown__item" role="option" data-value="desktop">
-                                                Desktop
-                                            </li>
+                                            <li class="custom-dropdown__item" role="option" data-value="web-mobile">Web-Mobile</li>
+                                            <li class="custom-dropdown__item" role="option" data-value="web-desktop">Web-Desktop</li>
+                                            <li class="custom-dropdown__item" role="option" data-value="desktop">Desktop</li>
+                                            <li class="custom-dropdown__item" data-value="select-all" role="option" aria-selected="false">Web-Mobile</li>
                                         </ul>
                                     </div>
                                     <span id="platform-error" class="error-message"></span>
