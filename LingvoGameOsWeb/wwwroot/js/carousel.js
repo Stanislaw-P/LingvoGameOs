@@ -1,79 +1,102 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // User Added Games Carousel
-    const userGamesCarousel = document.querySelector('.user-added-games__carousel');
-    if (userGamesCarousel) {
-        const userGamesList = userGamesCarousel.querySelector('.user-added-games__list');
-        const userGamesItems = userGamesList.querySelectorAll('.user-added-games__item');
-        const prevButtonUser = userGamesCarousel.querySelector('.user-added-games__prev');
-        const nextButtonUser = userGamesCarousel.querySelector('.user-added-games__next');
-        let currentIndexUser = 0;
-        const itemsPerViewUser = window.innerWidth <= 480 ? 1 : 2;
+export function initializeCarousel() {
+    // Helper function to initialize a carousel
+    function setupCarousel(carouselSelector, listSelector, prevSelector, nextSelector, counterSelector, itemsPerViewFn) {
+        const carousel = document.querySelector(carouselSelector);
+        if (!carousel) {
+            console.warn(`Carousel not found: ${carouselSelector}`);
+            return;
+        }
 
-        const updateUserCarousel = () => {
-            const itemWidth = userGamesItems[0].offsetWidth + 24; // Include gap
-            userGamesList.style.transform = `translateX(-${currentIndexUser * itemWidth}px)`;
-            prevButtonUser.disabled = currentIndexUser === 0;
-            nextButtonUser.disabled = currentIndexUser >= userGamesItems.length - itemsPerViewUser;
-        };
+        const list = carousel.querySelector(listSelector);
+        const items = list.querySelectorAll(`${listSelector} > *`);
+        const prevButton = carousel.querySelector(prevSelector);
+        const nextButton = carousel.querySelector(nextSelector);
+        const pageCounter = carousel.querySelector(counterSelector);
+        if (!items.length || !prevButton || !nextButton || !pageCounter) {
+            console.warn(`Carousel setup failed for ${carouselSelector}: missing elements (items=${items.length}, prev=${!!prevButton}, next=${!!nextButton}, counter=${!!pageCounter})`);
+            return;
+        }
 
-        prevButtonUser.addEventListener('click', () => {
-            if (currentIndexUser > 0) {
-                currentIndexUser--;
-                updateUserCarousel();
+        let currentPage = 0;
+
+        function updateCarousel() {
+            const itemsPerView = itemsPerViewFn();
+            const totalPages = Math.ceil(items.length / itemsPerView);
+            currentPage = Math.max(0, Math.min(currentPage, totalPages - 1));
+
+            const itemWidth = items[0].offsetWidth + 24; // Include gap
+            list.style.transform = `translateX(-${currentPage * itemWidth * itemsPerView}px)`;
+
+            // Update page counter
+            pageCounter.textContent = `${currentPage + 1}/${totalPages}`;
+
+            // Update button states
+            prevButton.disabled = currentPage === 0;
+            nextButton.disabled = currentPage >= totalPages - 1;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                updateCarousel();
             }
         });
 
-        nextButtonUser.addEventListener('click', () => {
-            if (currentIndexUser < userGamesItems.length - itemsPerViewUser) {
-                currentIndexUser++;
-                updateUserCarousel();
+        nextButton.addEventListener('click', () => {
+            const itemsPerView = itemsPerViewFn();
+            if (currentPage < Math.ceil(items.length / itemsPerView) - 1) {
+                currentPage++;
+                updateCarousel();
             }
         });
 
         window.addEventListener('resize', () => {
-            currentIndexUser = 0;
-            updateUserCarousel();
+            currentPage = 0;
+            updateCarousel();
         });
 
-        updateUserCarousel();
+        // Initial update
+        updateCarousel();
+
+        // Return reinitialize function for dynamic content
+        return () => {
+            currentPage = 0;
+            updateCarousel();
+        };
     }
+
+    // User Added Games Carousel
+    const reinitializeUserGames = setupCarousel(
+        '.user-added-games__carousel',
+        '.user-added-games__list',
+        '.user-added-games__prev',
+        '.user-added-games__next',
+        '.user-added-games__page-counter',
+        () => window.innerWidth <= 480 ? 1 : 2
+    );
 
     // Recent Games Carousel
+    const reinitializeRecentGames = setupCarousel(
+        '.recent-games__carousel',
+        '.recent-games__list',
+        '.recent-games__prev',
+        '.recent-games__next',
+        '.recent-games__page-counter',
+        () => window.innerWidth <= 480 ? 2 : 3
+    );
+
+    // MutationObserver for dynamic content
+    const observer = new MutationObserver(() => {
+        if (reinitializeUserGames) reinitializeUserGames();
+        if (reinitializeRecentGames) reinitializeRecentGames();
+    });
+
+    const userGamesCarousel = document.querySelector('.user-added-games__carousel');
     const recentGamesCarousel = document.querySelector('.recent-games__carousel');
-    if (recentGamesCarousel) {
-        const recentGamesList = recentGamesCarousel.querySelector('.recent-games__list');
-        const recentGamesItems = recentGamesList.querySelectorAll('.recent-games__item');
-        const prevButtonRecent = recentGamesCarousel.querySelector('.recent-games__prev');
-        const nextButtonRecent = recentGamesCarousel.querySelector('.recent-games__next');
-        let currentIndexRecent = 0;
-        const itemsPerViewRecent = window.innerWidth <= 480 ? 2 : 3;
-
-        const updateRecentCarousel = () => {
-            const itemWidth = recentGamesItems[0].offsetWidth + 24; // Include gap
-            recentGamesList.style.transform = `translateX(-${currentIndexPrevious * itemWidth}px)`;
-            prevButtonRecent.disabled = currentIndexRecent === 0;
-            nextButtonRecent.disabled = currentIndexRecent >= recentGamesItems.length - itemsPerViewRecent;
-        };
-
-        prevButtonRecent.addEventListener('click', () => {
-            if (currentIndexRecent > 0) {
-                currentIndexRecent--;
-                updateRecentCarousel();
-            }
-        });
-
-        nextButtonRecent.addEventListener('click', () => {
-            if (currentIndexRecent < recentGamesItems.length - itemsPerViewRecent) {
-                currentIndexRecent++;
-                updateRecentCarousel();
-            }
-        });
-
-        window.addEventListener('resize', () => {
-            currentIndexRecent = 0;
-            updateRecentCarousel();
-        });
-
-        updateRecentCarousel();
+    if (userGamesCarousel) {
+        observer.observe(userGamesCarousel, { childList: true, subtree: true });
     }
-});
+    if (recentGamesCarousel) {
+        observer.observe(recentGamesCarousel, { childList: true, subtree: true });
+    }
+}

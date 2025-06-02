@@ -7,6 +7,7 @@ import { showNotification } from './notifications.js';
 import { initializeSlider } from './slider.js';
 import { initializeProfileModal } from './profileModal.js';
 import { initializeGameBlocks } from './gameBlocks.js';
+import { initializeCarousel } from './carousel.js';
 
 // Основная инициализация страницы
 document.addEventListener('DOMContentLoaded', () => {
@@ -99,6 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeGameBlocks();
         } catch (error) {
             console.error('Ошибка при инициализации блоков с играми:', error);
+        }
+    }
+
+    // Инициализация карусели для блоков с играми
+    if (document.querySelector('.user-added-games__carousel') || document.querySelector('.recent-games__carousel')) {
+        console.log('Инициализация карусели для блоков с играми');
+        try {
+            initializeCarousel();
+        } catch (error) {
+            console.error('Ошибка при инициализации карусели:', error);
         }
     }
 });
