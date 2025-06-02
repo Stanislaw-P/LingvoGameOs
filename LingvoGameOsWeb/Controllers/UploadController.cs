@@ -57,12 +57,12 @@ namespace LingvoGameOs.Controllers
                         ImagesURLs = imagesPaths,
                         PublicationDate = DateTime.Now,
                         LastUpdateDate = DateTime.Now,
-
+                        // TODO: Нужно придумать как получить из формы выбранные скилы для игры
                     };
                 }
                 else
                 {
-
+                    // TODO: Если игра не десктоп, то она веб...
                 }
             }
 
