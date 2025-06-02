@@ -1,21 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using LingvoGameOs.Db.Models;
-using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace LingvoGameOs.Db
 {
     public class IdentityInitializer
     {
-        public static void Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
+        public static async Task Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
         {
             using (DatabaseContext context = new DatabaseContext(dbContextOptions))
             {
                 // создаем роли, если их нет
-                _CreateRole(roleManager, Constants.AdminRoleName);
-                _CreateRole(roleManager, Constants.PlayerRoleName);
-                _CreateRole(roleManager, Constants.DevRoleName);
+                await _CreateRole(roleManager, Constants.AdminRoleName);
+                await _CreateRole(roleManager, Constants.PlayerRoleName);
+                await _CreateRole(roleManager, Constants.DevRoleName);
 
                 // инициализация пользователей
                 var password = "Aa123456_";
@@ -51,40 +49,42 @@ namespace LingvoGameOs.Db
                 };
 
                 // создаем пользователя, если его нет
-                _CreateUser(userManager, adminUser, password, Constants.AdminRoleName);
-                _CreateUser(userManager, devMarat, password, Constants.DevRoleName);
-                _CreateUser(userManager, devDavid, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
+                await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
 
 
                 // Далее инициализация и добавление в БД данных
-                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Начинающий" };
-                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Средний" };
-                var languageLevelPro = new LanguageLevel { Id = 3, Name = "Продвинутый" };
-                if (!context.LanguageLevels.Any())
+                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
+                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Юный нарт", Description = "«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка." };
+                var languageLevelAdvanced = new LanguageLevel { Id = 3, Name = "Кавказский орёл", Description = "«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор." };
+                var languageLevelPro = new LanguageLevel { Id = 4, Name = "Старейшина, который говорит тосты", Description = "«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы." };
+                var languageLevelGrandMaster = new LanguageLevel { Id = 5, Name = "Хранитель языка", Description = "«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков." };
+                if (!await context.LanguageLevels.AnyAsync())
                 {
-                    context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelPro);
-                    context.SaveChanges();
+                    context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelAdvanced, languageLevelPro, languageLevelGrandMaster);
+                    await context.SaveChangesAsync();
                 }
 
-                var gameType1 = new GameType { Id = 1, Name = "Словарный запас" };
-                var gameType2 = new GameType { Id = 2, Name = "Грамматика" };
-                var gameType3 = new GameType { Id = 3, Name = "Аудирование" };
-                var gameType4 = new GameType { Id = 4, Name = "Чтение" };
-                var gameType5 = new GameType { Id = 5, Name = "Говорение" };
-                var gameType6 = new GameType { Id = 6, Name = "Головоломка" };
-                if (!context.GameTypes.Any())
+                var gameType1 = new SkillLearning { Id = 1, Name = "Словарный запас" };
+                var gameType2 = new SkillLearning { Id = 2, Name = "Грамматика" };
+                var gameType3 = new SkillLearning { Id = 3, Name = "Аудирование" };
+                var gameType4 = new SkillLearning { Id = 4, Name = "Чтение" };
+                var gameType5 = new SkillLearning { Id = 5, Name = "Говорение" };
+                var gameType6 = new SkillLearning { Id = 6, Name = "Диктанта" };
+                if (!context.SkillsLearning.Any())
                 {
-                    context.GameTypes.AddRange(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
-                    context.SaveChanges();
+                    await context.SkillsLearning.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
+                    await context.SaveChangesAsync();
                 }
 
                 var platform1 = new Platform { Id = 1, Name = "Web-Desktop" };
                 var platform2 = new Platform { Id = 2, Name = "Desktop" };
                 var platform3 = new Platform { Id = 3, Name = "Web-Mobile" };
-                if (!context.Platforms.Any())
+                if (!await context.Platforms.AnyAsync())
                 {
-                    context.Platforms.AddRange(platform1, platform2, platform3);
-                    context.SaveChanges();
+                    await context.Platforms.AddRangeAsync(platform1, platform2, platform3);
+                    await context.SaveChangesAsync();
                 }
 
                 var game1 = new Game
@@ -100,9 +100,14 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.6,
                     RaitingTeachers = 4.8,
-                    CoverImageURL = "/img/games/mountain labyrinth-banner.png",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/mountain-labyrinth-banner-1.png",
+                        "/img/games/mountain-labyrinth-banner-2.png",
+                        "/img/games/mountain-labyrinth-banner-3.png"
+                    },
                     GameURL = "/home/index",
-                    GameTypes = new List<GameType> { gameType1, gameType2 },
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2 },
                     NumberDownloads = 1000
                 };
 
@@ -119,9 +124,14 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform1.Id,
                     RaitingPlayers = 4.4,
                     RaitingTeachers = 4,
-                    CoverImageURL = "/img/games/art-object-banner.png",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/art-object-1.png",
+                        "/img/games/art-object-2.jpeg",
+                        "/img/games/art-object-3.png"
+                    },
                     GameURL = "/home/index",
-                    GameTypes = new List<GameType> { gameType3, gameType4 },
+                    SkillsLearning = new List<SkillLearning> { gameType3, gameType4 },
                     NumberDownloads = 241
                 };
                 var game3 = new Game
@@ -137,9 +147,14 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
                     RaitingTeachers = 4.3,
-                    CoverImageURL = "/img/games/gameplay-animal.png",
-                    GameURL = "http://84.201.144.125:5001",
-                    GameTypes = new List<GameType> { gameType1, gameType3 },
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/gameplay-animal.png",
+                        "/img/games/gameplay-animal-1.jpg",
+                        "/img/games/gameplay-animal-2.jpg"
+                    },
+                    GameURL = "http://158.160.131.69:5001",
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5
                 };
                 var game4 = new Game
@@ -148,7 +163,7 @@ namespace LingvoGameOs.Db
                     Title = "Кроссворд осетинских слов",
                     Description = "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
                     Rules = "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n" +
-                    "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
+                "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
                     AuthorId = devDavid.Id,
                     PublicationDate = DateTime.UtcNow,
                     LastUpdateDate = DateTime.UtcNow,
@@ -156,37 +171,41 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,
                     RaitingTeachers = 4.9,
-                    CoverImageURL = "/img/games/93a62f0945389b9_920x0.jpg",
+                    ImagesURLs = new List<string>
+                    {
+                        "/img/games/93a62f0945389b9_920x0.jpg",
+                        "/img/games/cross-1.jpg"
+                    },
                     GameURL = "https://ossetian-crosswords.glitch.me/",
-                    GameTypes = new List<GameType> { gameType1, gameType2, gameType4 },
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10
                 };
 
-                if (!context.Games.Any())
+                if (!await context.Games.AnyAsync())
                 {
-                    context.AddRange(game1, game2, game3, game4);
-                    context.SaveChanges();
+                    await context.AddRangeAsync(game1, game2, game3, game4);
+                    await context.SaveChangesAsync();
                 }
             }
         }
 
-        private static void _CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
+        private static async Task _CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
         {
             // создаем роль, если ее нет
-            if (roleManager.FindByNameAsync(roleName).Result == null)
+            if (await roleManager.FindByNameAsync(roleName) == null)
             {
-                roleManager.CreateAsync(new IdentityRole(roleName)).Wait();
+                await roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
 
-        private static void _CreateUser(UserManager<User> userManager, User user, string pass, string roleName)
+        private static async Task _CreateUserAsync(UserManager<User> userManager, User user, string pass, string roleName)
         {
-            if (userManager.FindByEmailAsync(user.Email).Result == null)
+            if (await userManager.FindByEmailAsync(user.Email) == null)
             {
-                var result = userManager.CreateAsync(user, pass).Result;
+                var result = await userManager.CreateAsync(user, pass);
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, roleName).Wait();
+                    await userManager.AddToRoleAsync(user, roleName);
                 }
             }
         }

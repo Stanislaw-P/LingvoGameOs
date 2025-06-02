@@ -12,36 +12,38 @@ namespace LingvoGameOs.Db
 			this.databaseContext = newDatabaseContext;
 		}
 
-		public List<Game> GetAll()
+		public async Task<List<Game>> GetAllAsync()
 		{
-			return databaseContext.Games.ToList();
+			return await databaseContext.Games
+				.Include(g => g.GamePlatform)
+				.ToListAsync();
 		}
 
-		public Game? TryGetById(int idGame)
+		public async Task<Game?> TryGetByIdAsync(int idGame)
 		{
-			return databaseContext.Games
-				.Include(g => g.GameTypes)
+			return await databaseContext.Games
+				.Include(g => g.SkillsLearning)
 				.Include(g => g.LanguageLevel)
 				.Include(g => g.GamePlatform)
 				.Include(g => g.Players)
 				.Include(g => g.Author)
 				.ThenInclude(a => a.DevGames)
-				.FirstOrDefault(game => game.Id == idGame);
+				.FirstOrDefaultAsync(game => game.Id == idGame);
 		}
 
-		public void Add(Game newGame)
+		public async Task AddAsync(Game newGame)
 		{
-			databaseContext.Games.Add(newGame);
-			databaseContext.SaveChanges();
+			await databaseContext.Games.AddAsync(newGame);
+			await databaseContext.SaveChangesAsync();
 		}
 
-		public void Remove(Game game)
+		public async Task RemoveAsync(Game game)
 		{
 			databaseContext.Games.Remove(game);
-			databaseContext.SaveChanges();
+			await databaseContext.SaveChangesAsync();
 		}
 		
-		public void AddPlayerToGameHistory(Game game, User player)
+		public async Task AddPlayerToGameHistoryAsync(Game game, User player)
 		{
 			if (game == null || player == null)
 				return;
@@ -52,24 +54,24 @@ namespace LingvoGameOs.Db
 				if(!game.Players.Any(u => u.Id == player.Id))
                     game.Players.Add(player);
             }
-            databaseContext.SaveChanges();
+            await databaseContext.SaveChangesAsync();
 		}
 
-		public List<Game>? TryGetUserGameHistory(User user)
+		public async Task<List<Game>?> TryGetUserGameHistoryAsync(User user)
 		{
-			var existingUser = databaseContext.Users
+			var existingUser = await databaseContext.Users
 				.Include(u => u.PlayerGames)
-				.FirstOrDefault(u => u.Id == user.Id);
+				.FirstOrDefaultAsync(u => u.Id == user.Id);
 			if (existingUser == null)
 				return null;
 			return existingUser.PlayerGames;
 		}
 
-        public List<Game>? TryGetUserDevGames(User user)
+        public async Task<List<Game>?> TryGetUserDevGamesAsync(User user)
 		{
-            var existingUser = databaseContext.Users
+            var existingUser = await databaseContext.Users
 				.Include(u => u.DevGames)
-                .FirstOrDefault(u => u.Id == user.Id);
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUser == null)
                 return null;
             return existingUser.DevGames;

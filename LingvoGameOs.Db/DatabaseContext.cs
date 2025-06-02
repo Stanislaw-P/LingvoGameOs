@@ -1,20 +1,14 @@
 ﻿using LingvoGameOs.Db.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+
 
 namespace LingvoGameOs.Db
 {
     public class DatabaseContext : IdentityDbContext<User>
     {
         public DbSet<Game> Games { get; set; }
-        public DbSet<GameType> GameTypes { get; set; }
+        public DbSet<SkillLearning> SkillsLearning { get; set; }
         public DbSet<LanguageLevel> LanguageLevels { get; set; }
         public DbSet<Technology> Technologys { get; set; }
         public DbSet<Platform> Platforms { get; set; }
@@ -28,7 +22,7 @@ namespace LingvoGameOs.Db
         {
             base.OnModelCreating(modelBuilder);
 
-            // Настройка связи
+            // Настройка связей
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.Author)
                 .WithMany(a => a.DevGames)
@@ -38,12 +32,12 @@ namespace LingvoGameOs.Db
             modelBuilder.Entity<Game>()
                 .HasMany(g => g.Players)
                 .WithMany(u => u.PlayerGames)
-                .UsingEntity<UserGame>();
+                .UsingEntity<PlayerGame>();
 
             modelBuilder.Entity<Game>()
-                .HasMany(g => g.GameTypes)
+                .HasMany(g => g.SkillsLearning)
                 .WithMany(gt => gt.Games)
-                .UsingEntity<GameGameType>(
+                .UsingEntity<GameSkillLearning>(
                     j => j
                         .HasOne(gt => gt.GameType)  // Настраиваем связь с GameType
                         .WithMany()
@@ -55,7 +49,7 @@ namespace LingvoGameOs.Db
                         .HasForeignKey(g => g.GameId),  // Явно указываем внешний ключ
 
                     j => j
-                        .ToTable("GameGameType")
+                        .ToTable("GameSkillLearning")
                         .HasKey(t => new { t.GameId, t.GameTypeId }) // Составной первичный ключ
                 );
         }

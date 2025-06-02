@@ -17,10 +17,10 @@ public class HomeController : Controller
         this.newDatabaseContext = newDatabaseContext;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var games = gamesRepository.GetAll();
-        ViewBag.GameTypes = newDatabaseContext.GameTypes.Select(type => type.Name);
+        var games = await gamesRepository.GetAllAsync();
+        ViewBag.GameTypes = newDatabaseContext.SkillsLearning.Select(type => type.Name);
         return View(games);
     }
 }

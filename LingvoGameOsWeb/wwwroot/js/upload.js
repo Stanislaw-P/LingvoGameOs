@@ -5,7 +5,7 @@ import { showError } from './dom.js';
  * Initializes the upload form and modal functionality
  */
 function initializeUploadForm() {
-    // ... (previous variable declarations remain unchanged)
+    // Form and dropdown elements
     const form = document.querySelector('#upload-game-form');
     const categoriesDropdown = document.querySelector('#categories-dropdown');
     const categoriesSelected = categoriesDropdown.querySelector('.custom-dropdown__selected');
@@ -25,191 +25,110 @@ function initializeUploadForm() {
     const modalOverlay = document.querySelector('#qualityModalOverlay');
     const modalCloseButton = document.querySelector('#qualityModalClose');
     const openModalLink = document.querySelector('#open-quality-modal');
-    const platformInput = document.querySelector('#game-platform');
-    const fileUrlGroup = document.querySelector('#game-file-url-group');
-    const fileUploadGroup = document.querySelector('#game-file-upload-group');
     const platformDropdown = document.querySelector('#platform-dropdown');
     const platformSelected = platformDropdown.querySelector('.custom-dropdown__selected');
-    const platformList = platformDropdown.querySelector('.custom-dropdown__list');
-    const platformItems = platformList.querySelectorAll('.custom-dropdown__item');
+    const platformMenu = platformDropdown.querySelector('.custom-dropdown__menu');
+    const platformSearch = platformDropdown.querySelector('.custom-dropdown__search');
+    const platformOptions = platformDropdown.querySelectorAll('.custom-dropdown__option');
+    const selectedPlatformsList = document.querySelector('#selected-platforms-list');
+    const platformInput = document.querySelector('#game-platform');
+    const platformError = document.querySelector('#platform-error');
+    const fileUrlGroup = document.querySelector('#game-file-url-group');
+    const fileUploadGroup = document.querySelector('#game-file-upload-group');
     let lastFocusedElement = null;
     let selectedCategories = [];
+    let selectedPlatforms = [];
 
-    // Allowed game file types and extensions
+    // Allowed file types and sizes
     const ALLOWED_GAME_TYPES = [
         'application/zip',
         'application/x-rar-compressed',
         'application/x-7z-compressed',
-        'application/vnd.android.package-archive' // APK
+        'application/vnd.android.package-archive'
     ];
     const ALLOWED_GAME_EXTENSIONS = ['.zip', '.rar', '.7z', '.apk', '.exe', '.app', '.dmg'];
     const MAX_GAME_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
-
-    // Allowed cover image types
     const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     const MAX_COVER_SIZE = 30 * 1024 * 1024; // 30MB
 
-    // Custom dropdown functionality for platforms
-    function togglePlatformDropdown() {
-        const isOpen = !platformList.hasAttribute('hidden');
-        platformList.toggleAttribute('hidden', isOpen);
-        platformSelected.setAttribute('aria-expanded', !isOpen);
+    // Toggle dropdown (generic for both categories and platforms)
+    function toggleDropdown(selected, menu) {
+        const isActive = selected.classList.contains('active');
+        selected.classList.toggle('active', !isActive);
+        menu.classList.toggle('active', !isActive);
+        selected.setAttribute('aria-expanded', !isActive);
+        menu.setAttribute('aria-hidden', isActive);
+        if (!isActive) {
+            menu.querySelector('.custom-dropdown__search')?.focus();
+        }
     }
 
-    function selectPlatform(value, text) {
-        platformInput.value = value;
-        platformSelected.querySelector('span').textContent = text;
-        platformList.setAttribute('hidden', '');
-        platformSelected.setAttribute('aria-expanded', 'false');
-        const event = new Event('change', { bubbles: true });
-        platformInput.dispatchEvent(event);
-    }
+    // Update selected items (generic for categories and platforms)
+    function updateSelectedItems(list, input, selectedItems, options, placeholderElement) {
+        list.innerHTML = '';
+        input.value = selectedItems.join(',');
+        placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформы' : 'категории'}`;
 
-    platformSelected.addEventListener('click', togglePlatformDropdown);
-
-    platformItems.forEach(item => {
-        item.addEventListener('click', () => {
-            selectPlatform(item.dataset.value, item.textContent);
-        });
-    });
-
-    platformSelected.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            togglePlatformDropdown();
-        }
-    });
-
-    platformList.addEventListener('keydown', (e) => {
-        const items = Array.from(platformItems);
-        const current = items.find(item => item === document.activeElement);
-        const index = current ? items.indexOf(current) : -1;
-
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            const next = index < items.length - 1 ? items[index + 1] : items[0];
-            next.focus();
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            const prev = index > 0 ? items[index - 1] : items[items.length - 1];
-            prev.focus();
-        } else if (e.key === 'Enter' && current) {
-            e.preventDefault();
-            selectPlatform(current.dataset.value, current.textContent);
-        } else if (e.key === 'Escape') {
-            platformList.setAttribute('hidden', '');
-            platformSelected.setAttribute('aria-expanded', 'false');
-            platformSelected.focus();
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!platformDropdown.contains(e.target)) {
-            platformList.setAttribute('hidden', '');
-            platformSelected.setAttribute('aria-expanded', 'false');
-        }
-        if (!categoriesDropdown.contains(e.target)) {
-            categoriesSelected.setAttribute('aria-expanded', 'false');
-            categoriesMenu.setAttribute('aria-hidden', 'true');
-        }
-    });
-
-    // Handle platform selection
-    platformInput.addEventListener('change', () => {
-        const platform = platformInput.value;
-        fileUrlGroup.style.display = 'none';
-        fileUploadGroup.style.display = 'none';
-
-        if (platform === 'web-mobile' || platform === 'web-desktop') {
-            fileUrlGroup.style.display = 'block';
-        } else if (platform === 'desktop') {
-            fileUploadGroup.style.display = 'block';
-        }
-    });
-
-    // Handle categories selection
-    function updateSelectedCategories() {
-        selectedCategoriesList.innerHTML = '';
-        categoriesInput.value = selectedCategories.join(',');
-        categoriesSelected.querySelector('.custom-dropdown__placeholder').textContent =
-            selectedCategories.length ? `${selectedCategories.length} выбрано` : 'Выберите категории';
-
-        selectedCategories.forEach(value => {
-            const option = Array.from(categoriesOptions).find(opt => opt.dataset.value === value);
+        selectedItems.forEach(value => {
+            const option = Array.from(options).find(opt => opt.dataset.value === value);
             if (option) {
-                const categoryItem = document.createElement('div');
-                categoryItem.className = 'selected-category-item';
-                categoryItem.dataset.value = value;
-                categoryItem.innerHTML = `
-                    ${option.textContent}
-                    <span class="selected-category-item__remove" role="button" aria-label="Удалить ${option.textContent}" tabindex="0">×</span>
-                `;
-                selectedCategoriesList.appendChild(categoryItem);
+                const item = document.createElement('span');
+                item.className = 'selected-item';
+                item.dataset.value = value;
+                item.textContent = option.textContent.trim();
+                list.appendChild(item);
             }
         });
 
-        categoriesOptions.forEach(option => {
-            option.setAttribute('aria-selected', selectedCategories.includes(option.dataset.value));
+        options.forEach(option => {
+            option.classList.toggle('selected', selectedItems.includes(option.dataset.value));
         });
+    }
 
-        if (selectedCategories.length > 0) {
-            categoriesError.classList.remove('error-message--visible');
-            categoriesError.textContent = '';
+    // Add item (generic for categories and platforms)
+    function addItem(value, text, selectedItems, options, list, input, placeholderElement) {
+        if (value === 'select-all') {
+            selectedItems.length = 0;
+            Array.from(options)
+                .filter(opt => opt.dataset.value !== 'select-all')
+                .forEach(opt => selectedItems.push(opt.dataset.value));
+        } else if (!selectedItems.includes(value)) {
+            selectedItems.push(value);
         }
+        updateSelectedItems(list, input, selectedItems, options, placeholderElement);
     }
 
-    function toggleCategoriesDropdown() {
-        const isExpanded = categoriesSelected.getAttribute('aria-expanded') === 'true';
-        categoriesSelected.setAttribute('aria-expanded', !isExpanded);
-        categoriesMenu.setAttribute('aria-hidden', isExpanded);
-        categoriesMenu.style.display = isExpanded ? 'none' : 'block';
-        if (!isExpanded) {
-            categoriesSearch.focus();
-            categoriesMenu.classList.add('custom-dropdown__menu--open');
-        } else {
-            categoriesMenu.classList.remove('custom-dropdown__menu--open');
-        }
+    // Remove item (generic for categories and platforms)
+    function removeItem(value, selectedItems, options, list, input, placeholderElement) {
+        selectedItems.splice(selectedItems.indexOf(value), 1);
+        updateSelectedItems(list, input, selectedItems, options, placeholderElement);
     }
 
-    function addCategory(value, text) {
-        if (!selectedCategories.includes(value)) {
-            selectedCategories.push(value);
-            updateSelectedCategories();
-            const newTag = selectedCategoriesList.lastElementChild;
-            if (newTag) {
-                newTag.classList.add('selected-category-item--added');
-                setTimeout(() => newTag.classList.remove('selected-category-item--added'), 300);
-            }
-        }
-    }
-
-    function removeCategory(value) {
-        selectedCategories = selectedCategories.filter(cat => cat !== value);
-        updateSelectedCategories();
-    }
-
-    function filterCategories() {
-        const query = categoriesSearch.value.toLowerCase();
-        categoriesOptions.forEach(option => {
+    // Filter items (generic for categories and platforms)
+    function filterItems(searchInput, options) {
+        const query = searchInput.value.toLowerCase();
+        options.forEach(option => {
             const text = option.textContent.toLowerCase();
-            option.style.display = text.includes(query) ? 'block' : 'none';
+            option.style.display = text.includes(query) || option.dataset.value === 'select-all' ? '' : 'none';
         });
     }
 
-    categoriesSelected.addEventListener('click', toggleCategoriesDropdown);
+    // Categories event listeners
+    categoriesSelected.addEventListener('click', () => toggleDropdown(categoriesSelected, categoriesMenu));
     categoriesSelected.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            toggleCategoriesDropdown();
+            toggleDropdown(categoriesSelected, categoriesMenu);
         }
     });
 
-    categoriesSearch.addEventListener('input', filterCategories);
+    categoriesSearch.addEventListener('input', () => filterItems(categoriesSearch, categoriesOptions));
     categoriesSearch.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            categoriesSelected.classList.remove('active');
+            categoriesMenu.classList.remove('active');
             categoriesSelected.setAttribute('aria-expanded', 'false');
             categoriesMenu.setAttribute('aria-hidden', 'true');
-            categoriesMenu.style.display = 'none';
             categoriesSelected.focus();
         }
     });
@@ -217,50 +136,134 @@ function initializeUploadForm() {
     categoriesOptions.forEach(option => {
         option.addEventListener('click', () => {
             const value = option.dataset.value;
-            const text = option.textContent;
-            addCategory(value, text);
+            const text = option.textContent.trim();
+            addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const value = option.dataset.value;
-                const text = option.textContent;
-                addCategory(value, text);
+                const text = option.textContent.trim();
+                addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const items = Array.from(categoriesOptions);
+                const index = items.indexOf(option);
+                const next = index < items.length - 1 ? items[index + 1] : items[0];
+                next.focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const items = Array.from(categoriesOptions);
+                const index = items.indexOf(option);
+                const prev = index > 0 ? items[index - 1] : items[items.length - 1];
+                prev.focus();
             }
         });
     });
 
     selectedCategoriesList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('selected-category-item__remove')) {
-            const tag = e.target.parentElement;
-            const value = tag.dataset.value;
-            removeCategory(value);
+        const item = e.target.closest('.selected-item');
+        if (item) {
+            const value = item.dataset.value;
+            removeItem(value, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
         }
     });
 
-    selectedCategoriesList.addEventListener('keydown', (e) => {
-        if (e.target.classList.contains('selected-category-item__remove') && (e.key === 'Enter' || e.key === ' ')) {
+    // Platforms event listeners
+    platformSelected.addEventListener('click', () => toggleDropdown(platformSelected, platformMenu));
+    platformSelected.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            const tag = e.target.parentElement;
-            const value = tag.dataset.value;
-            removeCategory(value);
+            toggleDropdown(platformSelected, platformMenu);
+        }
+    });
+
+    platformSearch.addEventListener('input', () => filterItems(platformSearch, platformOptions));
+    platformSearch.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            platformSelected.classList.remove('active');
+            platformMenu.classList.remove('active');
+            platformSelected.setAttribute('aria-expanded', 'false');
+            platformMenu.setAttribute('aria-hidden', 'true');
+            platformSelected.focus();
+        }
+    });
+
+    platformOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.dataset.value;
+            const text = option.textContent.trim();
+            addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'));
+        });
+        option.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const value = option.dataset.value;
+                const text = option.textContent.trim();
+                addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'));
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const items = Array.from(platformOptions);
+                const index = items.indexOf(option);
+                const next = index < items.length - 1 ? items[index + 1] : items[0];
+                next.focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const items = Array.from(platformOptions);
+                const index = items.indexOf(option);
+                const prev = index > 0 ? items[index - 1] : items[items.length - 1];
+                prev.focus();
+            }
+        });
+    });
+
+    selectedPlatformsList.addEventListener('click', (e) => {
+        const item = e.target.closest('.selected-item');
+        if (item) {
+            const value = item.dataset.value;
+            removeItem(value, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'));
         }
     });
 
     document.addEventListener('click', (e) => {
-        if (!categoriesDropdown.contains(e.target) && categoriesSelected.getAttribute('aria-expanded') === 'true') {
+        if (!categoriesDropdown.contains(e.target)) {
+            categoriesSelected.classList.remove('active');
+            categoriesMenu.classList.remove('active');
             categoriesSelected.setAttribute('aria-expanded', 'false');
             categoriesMenu.setAttribute('aria-hidden', 'true');
-            categoriesMenu.style.display = 'none';
+        }
+        if (!platformDropdown.contains(e.target)) {
+            platformSelected.classList.remove('active');
+            platformMenu.classList.remove('active');
+            platformSelected.setAttribute('aria-expanded', 'false');
+            platformMenu.setAttribute('aria-hidden', 'true');
         }
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && categoriesSelected.getAttribute('aria-expanded') === 'true') {
+        if (e.key === 'Escape') {
+            categoriesSelected.classList.remove('active');
+            categoriesMenu.classList.remove('active');
             categoriesSelected.setAttribute('aria-expanded', 'false');
             categoriesMenu.setAttribute('aria-hidden', 'true');
-            categoriesMenu.style.display = 'none';
-            categoriesSelected.focus();
+            platformSelected.classList.remove('active');
+            platformMenu.classList.remove('active');
+            platformSelected.setAttribute('aria-expanded', 'false');
+            platformMenu.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    // Handle platform selection
+    platformInput.addEventListener('change', () => {
+        const platforms = platformInput.value.split(',').filter(p => p);
+        fileUrlGroup.style.display = 'none';
+        fileUploadGroup.style.display = 'none';
+
+        if (platforms.includes('web-mobile') || platforms.includes('web-desktop')) {
+            fileUrlGroup.style.display = 'block';
+        }
+        if (platforms.includes('desktop')) {
+            fileUploadGroup.style.display = 'block';
         }
     });
 
@@ -280,7 +283,7 @@ function initializeUploadForm() {
         }
     });
 
-    // Handle file uploads with improved validation
+    // Handle file uploads
     setupFileUpload(
         coverDropzone,
         coverFileInput,
@@ -358,58 +361,54 @@ function initializeUploadForm() {
 
         const formData = new FormData(form);
         const keywords = Array.from(keywordsList.querySelectorAll('.category-item')).map(item => item.dataset.value);
-        const platform = formData.get('platform');
+        const platforms = formData.get('platform').split(',').filter(p => p);
 
         // Validate required fields
         if (!formData.get('title').trim()) {
-            showFormError('title-error', 'Game title is required');
+            showFormError('title-error', 'Название игры обязательно');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
         if (!formData.get('short-description').trim()) {
-            showFormError('short-description-error', 'Short description is required');
+            showFormError('short-description-error', 'Краткое описание обязательно');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
         if (formData.get('short-description').length > 200) {
-            showFormError('short-description-error', 'Short description must be 200 characters or less');
+            showFormError('short-description-error', 'Краткое описание должно быть не длиннее 200 символов');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
         if (!formData.get('description').trim()) {
-            showFormError('description-error', 'Game description is required');
+            showFormError('description-error', 'Описание игры обязательно');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
         if (!formData.get('rules').trim()) {
-            showFormError('rules-error', 'Game rules are required');
+            showFormError('rules-error', 'Правила игры обязательны');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
         if (selectedCategories.length === 0) {
-            showFormError('categories-error', 'At least one category is required');
+            showFormError('categories-error', 'Необходимо выбрать хотя бы одну категорию');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (!formData.get('level')) {
-            showFormError('level-error', 'Please select a level');
+        if (selectedPlatforms.length === 0) {
+            showFormError('platform-error', 'Необходимо выбрать хотя бы одну платформу');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (!platform) {
-            showFormError('platform-error', 'Please select a platform');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (platform === 'web-mobile' || platform === 'web-desktop') {
+        if (platforms.includes('web-mobile') || platforms.includes('web-desktop')) {
             if (!formData.get('file-url').trim()) {
-                showFormError('file-url-error', 'Game URL is required for web platforms');
+                showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
+            }
         }
-        } else if (platform === 'desktop') {
+        if (platforms.includes('desktop')) {
             if (!formData.get('file-file')) {
-                showFormError('file-error', 'Game file is required for desktop platform');
+                showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
             }
@@ -417,7 +416,7 @@ function initializeUploadForm() {
             if (gameFile) {
                 const fileExtension = gameFile.name.slice(gameFile.name.lastIndexOf('.')).toLowerCase();
                 if (!ALLOWED_GAME_EXTENSIONS.includes(fileExtension)) {
-                    showFormError('file-error', `Invalid file extension. Allowed: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
+                    showFormError('file-error', `Недопустимое расширение файла. Разрешено: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
                     submitButton.setAttribute('aria-busy', 'false');
                     return;
                 }
@@ -426,6 +425,7 @@ function initializeUploadForm() {
 
         formData.set('categories', JSON.stringify(selectedCategories));
         formData.set('keywords', JSON.stringify(keywords));
+        formData.set('platform', JSON.stringify(platforms));
 
         try {
             const response = await fetch(`${API_URL}/games/upload`, {
@@ -435,28 +435,31 @@ function initializeUploadForm() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to upload game');
+                throw new Error(errorData.message || 'Ошибка загрузки игры');
             }
 
-            showNotification('Game uploaded successfully!', 'success');
+            showNotification('Игра успешно загружена!', 'success');
             form.reset();
             selectedCategories = [];
-            updateSelectedCategories();
+            selectedPlatforms = [];
+            updateSelectedItems(selectedCategoriesList, categoriesInput, selectedCategories, categoriesOptions, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+            updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
             keywordsList.innerHTML = '';
             document.querySelector('#cover-preview').innerHTML = '';
             document.querySelector('#file-preview').innerHTML = '';
             fileUrlGroup.style.display = 'none';
             fileUploadGroup.style.display = 'none';
-            platformSelected.querySelector('span').textContent = 'Выберите платформу';
-            platformInput.value = '';
-            categoriesSelected.querySelector('.custom-dropdown__placeholder').textContent = 'Выберите категории';
         } catch (error) {
-            showNotification(error.message || 'Failed to upload game. Please try again.', 'error');
+            showNotification(error.message || 'Не удалось загрузить игру. Попробуйте снова.', 'error');
             console.error('Upload error:', error);
         } finally {
             submitButton.setAttribute('aria-busy', 'false');
         }
     });
+
+    // Initialize dropdowns
+    updateSelectedItems(selectedCategoriesList, categoriesInput, selectedCategories, categoriesOptions, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+    updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
 }
 
 /**
@@ -471,7 +474,7 @@ function addTag(list, value, type) {
     tag.dataset.value = value;
     tag.innerHTML = `
         ${value}
-        <span class="category-item__remove" role="button" aria-label="Remove ${value}">×</span>
+        <span class="category-item__remove" role="button" aria-label="Удалить ${value}">×</span>
     `;
     list.appendChild(tag);
 }
@@ -521,17 +524,17 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
     if (!file) return;
 
     const fileExtension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
-    
+
     // Check file extension
     if (allowedExtensions && !allowedExtensions.includes(fileExtension)) {
-        showNotification(`Invalid file extension. Allowed: ${allowedExtensions.join(', ')}`, 'error');
+        showNotification(`Недопустимое расширение файла. Разрешено: ${allowedExtensions.join(', ')}`, 'error');
         fileInput.value = '';
         return;
     }
 
     // Check MIME type
     if (allowedTypes && !allowedTypes.includes(file.type)) {
-        showNotification(`Invalid file type. Allowed: ${allowedTypes.join(', ')}`, 'error');
+        showNotification(`Недопустимый тип файла. Разрешено: ${allowedTypes.join(', ')}`, 'error');
         fileInput.value = '';
         return;
     }
@@ -540,7 +543,7 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
     if (file.size > maxSize) {
         const maxSizeMB = maxSize / (1024 * 1024);
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-        showNotification(`File too large (${fileSizeMB}MB). Max size: ${maxSizeMB}MB`, 'error');
+        showNotification(`Файл слишком большой (${fileSizeMB}MB). Максимальный размер: ${maxSizeMB}MB`, 'error');
         fileInput.value = '';
         return;
     }
@@ -552,7 +555,7 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
     fileItem.innerHTML = `
         <span class="file-upload__file-name">${file.name}</span>
         <span class="file-upload__file-size">${formatFileSize(file.size)}</span>
-        <img src="icon/trash.svg" alt="Remove file" class="file-upload__file-trash" role="button" aria-label="Remove ${file.name}" />
+        <img src="icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${file.name}" />
     `;
     preview.appendChild(fileItem);
 
@@ -563,7 +566,7 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
             const img = document.createElement('img');
             img.src = e.target.result;
             img.className = 'file-upload__preview-image';
-            img.alt = 'Game cover preview';
+            img.alt = 'Превью обложки игры';
             preview.appendChild(img);
         };
         reader.readAsDataURL(file);

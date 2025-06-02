@@ -12,27 +12,21 @@
     <div class="game-hero__content">
         <div class="game-hero__carousel">
             <div class="game-hero__slides" style="display: flex; overflow: hidden;">
-                <!-- Обложка игры (первая) -->
-                <div class="game-hero__slide">
-                    <img src="@Model.CoverImageURL" alt="Game screenshot 1"
-                    class="game-hero__slide-image">
-                </div>
+                <!-- Элементы карусели (скрины игр)-->
+                @foreach (var imgUrl in Model.ImagesURLs)
+                {
+                    <div class="game-hero__slide">
+                        <img src="@imgUrl" alt="Game screenshot"
+                        class="game-hero__slide-image">
+                    </div>
+                }
+
                 <!-- Видео с VK (вторая) -->
                 <div class="game-hero__slide game-hero__video-slide">
                     <iframe src="https://vkvideo.ru/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
                     width="640" height="360"
                     allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
                     frameborder="0" allowfullscreen></iframe>
-                </div>
-                <!-- Скриншот 2 (третий) -->
-                <div class="game-hero__slide">
-                    <img src="/img/screenshot2.png" alt="Game screenshot 2"
-                    class="game-hero__slide-image">
-                </div>
-                <!-- Скриншот 3 (четвертый) -->
-                <div class="game-hero__slide">
-                    <img src="/img/screenshot3.png" alt="Game screenshot 3"
-                    class="game-hero__slide-image">
                 </div>
             </div>
             <!-- Навигационные кнопки -->
@@ -53,9 +47,19 @@
         <div class="game-hero__info">
             <h1 class="game-hero__title">@Model.Title</h1>
             <div class="game-hero__actions">
-                <button class="game-hero__button profile__button">
-                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Начать игру
-                </button>
+                @if (Model.GamePlatform.Name == "Desktop")
+                {
+                    <a role="button" href="#" class="game-hero__button profile__button">
+                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Скачать
+                    </a>
+                }
+                else
+                {
+                    <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model.Id" class="game-hero__button profile__button">
+                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Играть
+                    </a>
+                }
+                
                 <button class="game-hero__share profile__button">
                     <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
                 </button>
@@ -94,10 +98,10 @@
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">
                     <img src="/icon/categories.svg" alt="Categories" class="game-info__metadata-icon">
-                    <h4 class="game-info__metadata-title">Категории</h4>
+                    <h4 class="game-info__metadata-title">Развиваемые навыки</h4>
                 </div>
                 <div class="game-info__metadata-list">
-                    @foreach(var gameType in Model.GameTypes)
+                    @foreach (var gameType in Model.SkillsLearning)
                     {
                         <span class="game-info__metadata-tag">@gameType.Name</span>
                     }

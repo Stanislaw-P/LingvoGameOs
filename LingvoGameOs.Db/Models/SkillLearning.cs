@@ -1,6 +1,6 @@
 ﻿namespace LingvoGameOs.Db.Models
 {
-	public class GameType
+	public class SkillLearning
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

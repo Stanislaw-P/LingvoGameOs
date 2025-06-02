@@ -44,38 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Кнопка запуска игры
-    const playButton = document.querySelector('.game-hero__button');
-    if (playButton) {
-        playButton.addEventListener('click', () => {
-            showNotification('Игра запускается! (Функционал в разработке)');
-        });
-    }
+    //const playButton = document.querySelector('.game-hero__button');
+    //if (playButton) playButton.addEventListener('click', () => alert('Игра запускается! (Функционал в разработке)'));
 
-    // Кнопка для отображения модального окна отзывов
     const reviewButton = document.querySelector('.game-reviews__button');
-    if (reviewButton) {
-        reviewButton.addEventListener('click', showReviewModal);
-    }
+    if (reviewButton) reviewButton.addEventListener('click', showReviewModal);
 
-    // Инициализация отзывов
-    if (document.querySelector('.game-reviews__container')) {
-        initializeReviews();
-    }
+    if (document.querySelector('.game-reviews__container')) initializeReviews();
 
-    // Кнопка "лайка" игры
     const gameLikeButton = document.querySelector('.header__like');
     if (gameLikeButton && window.location.pathname.includes('game.html')) {
-        const gameData = JSON.parse(gameLikeButton.dataset.game || '{}');
-        if (gameData.id) {
-            gameLikeButton.addEventListener('click', () => toggleFavorite(gameData.id, gameData));
-            if (getFavorites().some(game => game.id === gameData.id)) {
-                const img = gameLikeButton.querySelector('img');
-                if (img) img.src = 'icon/like-filled.svg';
-            }
-        } else {
-            console.warn('Данные игры не найдены в data-game атрибуте');
-        }
+        const gameData = { id: 'game1', name: 'Сокровища Осетии', image: 'img/game-banner.png' };
+        gameLikeButton.addEventListener('click', () => toggleFavorite(gameData.id, gameData));
+        if (getFavorites().some(game => game.id === gameData.id)) gameLikeButton.querySelector('img').src = 'icon/like-filled.svg';
     }
 
     // Обновление страницы избранного

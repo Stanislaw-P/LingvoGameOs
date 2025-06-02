@@ -3,6 +3,7 @@ using System;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250530195527_FixNameRable")]
+    partial class FixNameRable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
@@ -27,6 +30,10 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CoverImageURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(201)
@@ -36,10 +43,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("GameURL")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImagesURLs")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -165,7 +168,7 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SkillsLearning");
+                    b.ToTable("GameTypes");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Technology", b =>

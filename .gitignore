@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+LingvoGameOsWeb/lingvo.db
+LingvoGameOsWeb/lingvo.db-shm
+LingvoGameOsWeb/lingvo.db-wal
