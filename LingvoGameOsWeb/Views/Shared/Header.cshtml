@@ -1,50 +1,53 @@
 ﻿@using System.Security.Claims
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LingvoGameOs</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        {
-                            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userId">@User.Identity.Name</a>
-                            </li>
-                        }
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Upload" asp-action="Index">Загрузить игру</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
-                        </li>
-                    }
-
-                    @if (User.IsInRole(Constants.AdminRoleName))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Для админа кнопка</a>
-                        </li>
-                    }
-                </ul>
+<header class="header">
+    <div class="header__container _container">
+        <a class="header__logo" asp-controller="Home" asp-action="Index">
+            <img src="~/img/Logo.png" alt="Логотип" class="logo-image" />
+        </a>
+        <nav class="header__menu menu">
+            <ul class="menu__list">
+                <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="Index">Главная</a></li>
+                <li class="menu__item"><a class="menu__link" asp-controller="Game" asp-action="Index">Все игры</a></li>
+                <li class="menu__item"><a class="menu__link" asp-controller="News" asp-action="News">Новости</a></li>
+            </ul>
+        </nav>
+        <button class="header__like" aria-label="Избранное">
+            <img src="~/icon/like.svg" alt="Избранное" class="like-icon"/>
+        </button>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+            var username = User.Identity?.Name ?? "Пользователь";
+            <div class="header__user-profile user-profile">
+                <div class="user-profile__container">
+                    <div class="user-profile__content">
+                        <div class="user-profile__avatar-wrapper">
+                            <img src="~/img/avatar.png" alt="Аватар" class="user-profile__avatar" />
+                        </div>
+                        <div class="user-profile__user-info">
+                            <span class="user-profile__username">@username</span>
+                            <span class="user-profile__level">1 уровень</span>
+                        </div>
+                        <div class="user-profile__dropdown">
+                            <div class="user-profile__toggle">
+                                <img src="~/icon/more.svg" alt="Открыть меню" class="user-profile__more" />
+                            </div>
+                            <div class="user-profile__menu">
+                                <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userId">Профиль</a></div>
+                                <div class="user-profile__menu-item" data-target="game-stats"><a class="menu__link" asp-controller="Profile" asp-action="GameStats">Рейтинг в играх</a></div>
+                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Favorites">Рекомендуемые игры</a></div>
+                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Settings">Настройки</a></div>
+                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Account" asp-action="Logout">Выйти</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
+        }
+        else
+        {
+            <a class="header__logout" asp-controller="Account" asp-action="Login">Войти</a>
+        }
+    </div>
 </header>
