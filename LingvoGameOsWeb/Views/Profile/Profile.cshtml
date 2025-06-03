@@ -415,9 +415,9 @@
 <div class="custom-modal" id="edit-profile-modal">
     <div class="modal__content">
         <button class="modal__close" id="close-edit-modal" aria-label="Закрыть модальное окно">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="4" stroke-linecap="round" stroke="inherit" stroke-linecap="round">
-                <line x1="18" y1="6" x2="0" y2="0"></line>
-                <line x1="6" y1="6" x2="18" x2="18"></line>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
         <h2 class="modal__title">Редактировать профиль</h2>
@@ -425,7 +425,7 @@
             <div class="modal__field">
                 <label class="modal__label" for="modal-avatar">Аватар</label>
                 <div class="modal__avatar-wrapper">
-                    <img src="@(Model.ImageURL ?? "/img/avatar100.png")" alt="Аватар пользователя" class="modal__avatar-image" id="modal-avatar-img">
+                    <img src="@(Model.ImageURL ?? "/img/avatar100.png")" alt="Аватар пользователя" class="modal__avatar-image" id="modal-avatar-preview">
                     <input type="file" class="modal__avatar-input" id="modal-avatar" accept="image/*">
                     <label for="modal-avatar" class="modal__upload-button">Загрузить новое фото</label>
                 </div>
@@ -454,4 +454,4 @@
         </form>
     </div>
 </div>
-<script type="module" src="/js/carousel.js"></script>
+@* <script type="module" src="/js/script.js"></script> *@
