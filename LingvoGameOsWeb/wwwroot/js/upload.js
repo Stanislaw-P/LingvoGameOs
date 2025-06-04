@@ -28,7 +28,7 @@ function initializeUploadForm() {
     const platformDropdown = document.querySelector('#platform-dropdown');
     const platformSelected = platformDropdown.querySelector('.custom-dropdown__selected');
     const platformMenu = platformDropdown.querySelector('.custom-dropdown__menu');
-    const platformSearch = platformDropdown.querySelector('.custom-dropdown__search');
+    const platformSearch = platformDropdown.querySelector('.custom-dropdown__search') || null;
     const platformOptions = platformDropdown.querySelectorAll('.custom-dropdown__option');
     const selectedPlatformsList = document.querySelector('#selected-platforms-list');
     const platformInput = document.querySelector('#game-platform');
@@ -53,13 +53,14 @@ function initializeUploadForm() {
 
     // Toggle dropdown (generic for both categories and platforms)
     function toggleDropdown(selected, menu) {
+        if (!selected || !menu) return; // Prevent null errors
         const isActive = selected.classList.contains('active');
         selected.classList.toggle('active', !isActive);
         menu.classList.toggle('active', !isActive);
         selected.setAttribute('aria-expanded', !isActive);
         menu.setAttribute('aria-hidden', isActive);
-        if (!isActive) {
-            menu.querySelector('.custom-dropdown__search')?.focus();
+        if (!isActive && platformSearch) {
+            platformSearch.focus();
         }
     }
 
@@ -67,7 +68,7 @@ function initializeUploadForm() {
     function updateSelectedItems(list, input, selectedItems, options, placeholderElement) {
         list.innerHTML = '';
         input.value = selectedItems.join(',');
-        placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформы' : 'категории'}`;
+        placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформу' : 'категории'}`;
 
         selectedItems.forEach(value => {
             const option = Array.from(options).find(opt => opt.dataset.value === value);
@@ -75,7 +76,10 @@ function initializeUploadForm() {
                 const item = document.createElement('span');
                 item.className = 'selected-item';
                 item.dataset.value = value;
-                item.textContent = option.textContent.trim();
+                item.innerHTML = `
+                    ${option.textContent.trim()}
+                    <span class="selected-item__remove" role="button" aria-label="Удалить ${option.textContent.trim()}">×</span>
+                `;
                 list.appendChild(item);
             }
         });
@@ -83,19 +87,42 @@ function initializeUploadForm() {
         options.forEach(option => {
             option.classList.toggle('selected', selectedItems.includes(option.dataset.value));
         });
+
+        // Update visibility of file input fields for platforms
+        if (input.id === 'game-platform') {
+            fileUrlGroup.style.display = 'none';
+            fileUploadGroup.style.display = 'none';
+            if (selectedItems.includes('web-mobile') || selectedItems.includes('web-desktop')) {
+                fileUrlGroup.style.display = 'block';
+            }
+            if (selectedItems.includes('desktop')) {
+                fileUploadGroup.style.display = 'block';
+            }
+        }
     }
 
     // Add item (generic for categories and platforms)
-    function addItem(value, text, selectedItems, options, list, input, placeholderElement) {
-        if (value === 'select-all') {
+    function addItem(value, text, selectedItems, options, list, input, placeholderElement, isPlatform = false, selected = null, menu = null) {
+        if (value === 'select-all' && !isPlatform) {
             selectedItems.length = 0;
             Array.from(options)
                 .filter(opt => opt.dataset.value !== 'select-all')
                 .forEach(opt => selectedItems.push(opt.dataset.value));
-        } else if (!selectedItems.includes(value)) {
-            selectedItems.push(value);
+            if (selected && menu) {
+                toggleDropdown(selected, menu); // Close dropdown for categories on "select-all"
+            }
+        } else {
+            if (isPlatform) {
+                selectedItems.length = 0; // Clear previous platform selection
+                selectedItems.push(value);
+            } else if (!selectedItems.includes(value)) {
+                selectedItems.push(value);
+            }
         }
         updateSelectedItems(list, input, selectedItems, options, placeholderElement);
+        if (isPlatform && selected && menu) {
+            toggleDropdown(selected, menu); // Close platform dropdown
+        }
     }
 
     // Remove item (generic for categories and platforms)
@@ -106,6 +133,7 @@ function initializeUploadForm() {
 
     // Filter items (generic for categories and platforms)
     function filterItems(searchInput, options) {
+        if (!searchInput) return; // Skip if no search input
         const query = searchInput.value.toLowerCase();
         options.forEach(option => {
             const text = option.textContent.toLowerCase();
@@ -137,14 +165,15 @@ function initializeUploadForm() {
         option.addEventListener('click', () => {
             const value = option.dataset.value;
             const text = option.textContent.trim();
-            addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+            addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'), false, categoriesSelected, categoriesMenu);
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const value = option.dataset.value;
                 const text = option.textContent.trim();
-                addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+                addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'), false, categoriesSelected, categoriesMenu);
+                toggleDropdown(categoriesSelected, categoriesMenu); // Close dropdown on Enter
             } else if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 const items = Array.from(categoriesOptions);
@@ -162,8 +191,9 @@ function initializeUploadForm() {
     });
 
     selectedCategoriesList.addEventListener('click', (e) => {
-        const item = e.target.closest('.selected-item');
-        if (item) {
+        const removeButton = e.target.closest('.selected-item__remove');
+        if (removeButton) {
+            const item = removeButton.parentElement;
             const value = item.dataset.value;
             removeItem(value, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
         }
@@ -178,29 +208,31 @@ function initializeUploadForm() {
         }
     });
 
-    platformSearch.addEventListener('input', () => filterItems(platformSearch, platformOptions));
-    platformSearch.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            platformSelected.classList.remove('active');
-            platformMenu.classList.remove('active');
-            platformSelected.setAttribute('aria-expanded', 'false');
-            platformMenu.setAttribute('aria-hidden', 'true');
-            platformSelected.focus();
-        }
-    });
+    if (platformSearch) {
+        platformSearch.addEventListener('input', () => filterItems(platformSearch, platformOptions));
+        platformSearch.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                platformSelected.classList.remove('active');
+                platformMenu.classList.remove('active');
+                platformSelected.setAttribute('aria-expanded', 'false');
+                platformMenu.setAttribute('aria-hidden', 'true');
+                platformSelected.focus();
+            }
+        });
+    }
 
     platformOptions.forEach(option => {
         option.addEventListener('click', () => {
             const value = option.dataset.value;
             const text = option.textContent.trim();
-            addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'));
+            addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true, platformSelected, platformMenu);
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const value = option.dataset.value;
                 const text = option.textContent.trim();
-                addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'));
+                addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true, platformSelected, platformMenu);
             } else if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 const items = Array.from(platformOptions);
@@ -218,8 +250,9 @@ function initializeUploadForm() {
     });
 
     selectedPlatformsList.addEventListener('click', (e) => {
-        const item = e.target.closest('.selected-item');
-        if (item) {
+        const removeButton = e.target.closest('.selected-item__remove');
+        if (removeButton) {
+            const item = removeButton.parentElement;
             const value = item.dataset.value;
             removeItem(value, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'));
         }
@@ -250,20 +283,6 @@ function initializeUploadForm() {
             platformMenu.classList.remove('active');
             platformSelected.setAttribute('aria-expanded', 'false');
             platformMenu.setAttribute('aria-hidden', 'true');
-        }
-    });
-
-    // Handle platform selection
-    platformInput.addEventListener('change', () => {
-        const platforms = platformInput.value.split(',').filter(p => p);
-        fileUrlGroup.style.display = 'none';
-        fileUploadGroup.style.display = 'none';
-
-        if (platforms.includes('web-mobile') || platforms.includes('web-desktop')) {
-            fileUrlGroup.style.display = 'block';
-        }
-        if (platforms.includes('desktop')) {
-            fileUploadGroup.style.display = 'block';
         }
     });
 
