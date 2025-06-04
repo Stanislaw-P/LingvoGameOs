@@ -84,10 +84,10 @@
                         <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
                     </div>
                     <ul class="games__dropdown-list">
-                        @foreach (var gameType in ViewBag.GameTypes)
+                        @foreach (var skill in ViewBag.SkillsLearning)
                         {
                             <li class="games__dropdown-item" data-filter="category" data-value="reading">
-                                @gameType
+                                @skill
                             </li>
                         }
                     </ul>

@@ -19,7 +19,7 @@
                             </a>
                             перед публикацией вашего проекта.
                         </p>
-                        <form class="upload-form" id="upload-game-form" enctype="multipart/form-data">
+                        <form method="post" class="upload-form" id="upload-game-form" enctype="multipart/form-data">
                             <div class="upload-form__group">
                                 <label for="game-title" class="upload-form__label">
                                     Название игры <span class="required">*</span>
@@ -41,9 +41,9 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
                                         <textarea id="game-short-description" name="short-description"
-                                                    class="input-field__textarea"
-                                                    placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
-                                                    required></textarea>
+                                                  class="input-field__textarea"
+                                                  placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
+                                                  required></textarea>
                                     </div>
                                     <span id="short-description-error" class="error-message"></span>
                                 </div>
@@ -56,8 +56,8 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
                                         <textarea id="game-description" name="description"
-                                                    class="input-field__textarea" placeholder="Расскажите подробнее об игре"
-                                                    required></textarea>
+                                                  class="input-field__textarea" placeholder="Расскажите подробнее об игре"
+                                                  required></textarea>
                                     </div>
                                     <span id="description-error" class="error-message"></span>
                                 </div>
@@ -70,7 +70,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
                                         <textarea id="game-rules" name="rules" class="input-field__textarea"
-                                                    placeholder="Опишите правила игры" required></textarea>
+                                                  placeholder="Опишите правила игры" required></textarea>
                                     </div>
                                     <span id="rules-error" class="error-message"></span>
                                 </div>
@@ -84,18 +84,16 @@
                                     <div class="custom-dropdown" id="categories-dropdown">
                                         <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите категории">
                                             <span class="custom-dropdown__placeholder">Выберите категории</span>
-                                            <img src="icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
+                                            <img src="/icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
                                         </div>
                                         <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
                                             <input type="text" class="custom-dropdown__search" placeholder="Поиск категорий..." aria-label="Поиск категорий">
                                             <ul class="custom-dropdown__options">
                                                 <li class="custom-dropdown__option" data-value="select-all" role="option" aria-selected="false">Выбрать все</li>
-                                                <li class="custom-dropdown__option" data-value="vocabulary" role="option" aria-selected="false">Словарный запас</li>
-                                                <li class="custom-dropdown__option" data-value="grammar" role="option" aria-selected="false">Грамматика</li>
-                                                <li class="custom-dropdown__option" data-value="listening" role="option" aria-selected="false">Аудирование</li>
-                                                <li class="custom-dropdown__option" data-value="reading" role="option" aria-selected="false">Чтение</li>
-                                                <li class="custom-dropdown__option" data-value="speaking" role="option" aria-selected="false">Говорение</li>
-                                                <li class="custom-dropdown__option" data-value="puzzle" role="option" aria-selected="false">Головоломка</li>
+                                                @foreach (var skill in ViewBag.SkillsLearning)
+                                                {
+                                                    <li class="custom-dropdown__option" data-value="@skill" role="option" aria-selected="false">@skill</li>
+                                                }
                                             </ul>
                                         </div>
                                         <div class="selected-categories-list" id="selected-categories-list"></div>
@@ -110,7 +108,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="text" id="game-keywords" class="input-field__input"
-                                                placeholder="Введите ключевое слово и нажмите Enter">
+                                               placeholder="Введите ключевое слово и нажмите Enter">
                                     </div>
                                     <div class="categories-list" id="keywords-list"></div>
                                     <span id="keywords-error" class="error-message"></span>
@@ -124,7 +122,7 @@
                                         <label class="level-item">
                                             <span class="level-item__input">
                                                 <input type="radio" name="level" value="beginner"
-                                                        class="level-item__radio" required>
+                                                       class="level-item__radio" required>
                                             </span>
                                             <span class="level-item__text">
                                                 «Барашек, который пытается говорить» –
@@ -134,7 +132,7 @@
                                         <label class="level-item">
                                             <span class="level-item__input">
                                                 <input type="radio" name="level" value="elementary"
-                                                        class="level-item__radio">
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Юный нарт» – уже умеешь составлять
@@ -144,7 +142,7 @@
                                         <label class="level-item">
                                             <span class="level-item__input">
                                                 <input type="radio" name="level" value="intermediate"
-                                                        class="level-item__radio">
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Кавказский орёл» – уверенно говоришь,
@@ -154,7 +152,7 @@
                                         <label class="level-item">
                                             <span class="level-item__input">
                                                 <input type="radio" name="level" value="advanced"
-                                                        class="level-item__radio">
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Старейшина, который говорит тосты» –
@@ -165,7 +163,7 @@
                                         <label class="level-item">
                                             <span class="level-item__input">
                                                 <input type="radio" name="level" value="master"
-                                                        class="level-item__radio">
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.
@@ -206,7 +204,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" id="game-file-url" name="file-url"
-                                                class="input-field__input" placeholder="Введите URL игры">
+                                               class="input-field__input" placeholder="Введите URL игры">
                                     </div>
                                     <span id="file-url-error" class="error-message"></span>
                                 </div>
@@ -229,8 +227,8 @@
                                                     </div>
                                                 </div>
                                                 <input type="file" id="game-file-file" name="file-file"
-                                                        class="input-field__input"
-                                                        accept=".zip,.rar,.7z,.apk,.exe,.app,.dmg" hidden>
+                                                       class="input-field__input"
+                                                       accept=".zip,.rar,.7z,.apk,.exe,.app,.dmg" hidden>
                                             </div>
                                         </label>
                                         <div class="file-upload__previews" id="file-preview"></div>
@@ -247,7 +245,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" id="game-cover-url" name="cover-url"
-                                                class="input-field__input" placeholder="Введите URL обложки">
+                                               class="input-field__input" placeholder="Введите URL обложки">
                                     </div>
                                     <span id="cover-url-error" class="error-message"></span>
                                 </div>
@@ -265,7 +263,7 @@
                                                 </div>
                                             </div>
                                             <input type="file" id="game-cover-file" name="cover-file"
-                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
+                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
                                     </label>
                                     <div class="file-upload__previews" id="cover-preview"></div>
@@ -281,7 +279,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="text" id="game-video" name="video" class="input-field__input"
-                                                placeholder="Вставьте код видео">
+                                               placeholder="Вставьте код видео">
                                     </div>
                                     <span id="video-error" class="error-message"></span>
                                 </div>
@@ -295,7 +293,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" id="game-screenshots-url" name="screenshots-url"
-                                                class="input-field__input" placeholder="Введите URL скриншотов">
+                                               class="input-field__input" placeholder="Введите URL скриншотов">
                                     </div>
                                     <span id="screenshots-url-error" class="error-message"></span>
                                 </div>
@@ -313,8 +311,8 @@
                                                 </div>
                                             </div>
                                             <input type="file" id="game-screenshots-file" name="screenshots-file"
-                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
-                                                    hidden>
+                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
+                                                   hidden>
                                         </div>
                                     </label>
                                     <div class="file-upload__previews" id="screenshots-preview"></div>
@@ -322,7 +320,7 @@
                                 <span id="screenshots-error" class="error-message"></span>
                             </div>
 
-                            <button type="submit" class="upload-form__submit" aria-busy="false">
+                            <button type="submit" asp-controller="Upload" asp-action="Index" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>
                             </button>
                         </form>

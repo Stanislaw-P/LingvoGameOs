@@ -447,7 +447,7 @@ function initializeUploadForm() {
         formData.set('platform', JSON.stringify(platforms));
 
         try {
-            const response = await fetch(`${API_URL}/games/upload`, {
+            const response = await fetch(`${API_URL}/upload/index`, {
                 method: 'POST',
                 body: formData
             });
@@ -574,7 +574,7 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
     fileItem.innerHTML = `
         <span class="file-upload__file-name">${file.name}</span>
         <span class="file-upload__file-size">${formatFileSize(file.size)}</span>
-        <img src="icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${file.name}" />
+        <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${file.name}" />
     `;
     preview.appendChild(fileItem);
 

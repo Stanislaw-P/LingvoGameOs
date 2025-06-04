@@ -20,7 +20,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var games = await gamesRepository.GetAllAsync();
-        ViewBag.GameTypes = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
         return View(games);
     }
 }
