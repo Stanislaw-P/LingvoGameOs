@@ -24,7 +24,7 @@ namespace LingvoGameOs.Models
         public string LanguageLevel { get; set; }
         
         [Required(ErrorMessage ="Обязательное поле")]
-        public List<string> SkillsLearning { get; set; }
+        public string SkillsLearning { get; set; }
         
         [Required(ErrorMessage ="Обязательное поле")]
         public IFormFile[] UploadedImages { get; set; }

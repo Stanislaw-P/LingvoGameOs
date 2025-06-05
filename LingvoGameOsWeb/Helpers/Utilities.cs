@@ -13,16 +13,11 @@ namespace LingvoGameOs.Helpers
             _databaseContext = databaseContext;
         }
 
-        public async Task<List<SkillLearning>> GetSkillsAsync(string selectedSkills)
+        public async Task<List<SkillLearning>> GetSkillsAsync(List<string> selectedSkills)
         {
-            List<string> selectedSkillNames = selectedSkills.Split(',')
-                .Select(s => s.Trim())
-                .Where(s => !string.IsNullOrEmpty(s))
-                .ToList();
-
             // Получаем соответствующие записи из базы данных
             var resultSkills = await _databaseContext.SkillsLearning
-                .Where(skill => selectedSkillNames.Contains(skill.Name))
+                .Where(skill => selectedSkills.Contains(skill.Name))
                 .ToListAsync();
 
             return resultSkills;

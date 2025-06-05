@@ -1,7 +1,7 @@
 ﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
-using LingvoGameOs.Models;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,9 +35,10 @@ namespace LingvoGameOs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string categories)
+        public async Task<IActionResult> Index([FromForm] string categories)
         {
-            var skills = await _utilities.GetSkillsAsync(categories);
+            var items = JsonSerializer.Deserialize<List<string>>(categories);           
+            var skills = await _utilities.GetSkillsAsync(items);
             return View();
         }
 

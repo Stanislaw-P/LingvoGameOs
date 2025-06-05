@@ -447,7 +447,8 @@ function initializeUploadForm() {
         formData.set('platform', JSON.stringify(platforms));
 
         try {
-            const response = await fetch(`${API_URL}/upload/index`, {
+            //const response = await fetch(`${API_URL}/upload/index`, {
+            const response = await fetch(`/upload/index`, {
                 method: 'POST',
                 body: formData
             });
