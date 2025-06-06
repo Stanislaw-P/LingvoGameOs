@@ -92,10 +92,10 @@ function initializeUploadForm() {
         if (input.id === 'game-platform') {
             fileUrlGroup.style.display = 'none';
             fileUploadGroup.style.display = 'none';
-            if (selectedItems.includes('web-mobile') || selectedItems.includes('web-desktop')) {
+            if (selectedItems.includes('Web-Mobile') || selectedItems.includes('Web-Desktop')) {
                 fileUrlGroup.style.display = 'block';
             }
-            if (selectedItems.includes('desktop')) {
+            if (selectedItems.includes('Desktop')) {
                 fileUploadGroup.style.display = 'block';
             }
         }
@@ -418,14 +418,14 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (platforms.includes('web-mobile') || platforms.includes('web-desktop')) {
+        if (platforms.includes('Web-Mobile') || platforms.includes('Web-Desktop')) {
             if (!formData.get('file-url').trim()) {
                 showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
             }
         }
-        if (platforms.includes('desktop')) {
+        if (platforms.includes('Desktop')) {
             if (!formData.get('file-file')) {
                 showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
                 submitButton.setAttribute('aria-busy', 'false');
