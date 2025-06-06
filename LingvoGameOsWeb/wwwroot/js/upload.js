@@ -41,12 +41,10 @@ function initializeUploadForm() {
 
     // Allowed file types and sizes
     const ALLOWED_GAME_TYPES = [
-        'application/zip',
-        'application/x-rar-compressed',
-        'application/x-7z-compressed',
-        'application/vnd.android.package-archive'
+        'application/x-msi',
+        'image/jpeg'
     ];
-    const ALLOWED_GAME_EXTENSIONS = ['.zip', '.rar', '.7z', '.apk', '.exe', '.app', '.dmg'];
+    const ALLOWED_GAME_EXTENSIONS = ['.msi', '.jpg'];
     const MAX_GAME_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
     const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     const MAX_COVER_SIZE = 30 * 1024 * 1024; // 30MB
@@ -419,14 +417,14 @@ function initializeUploadForm() {
             return;
         }
         if (platforms.includes('Web-Mobile') || platforms.includes('Web-Desktop')) {
-            if (!formData.get('file-url').trim()) {
+            if (!formData.get('GameURL').trim()) {
                 showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
             }
         }
         if (platforms.includes('Desktop')) {
-            if (!formData.get('file-file')) {
+            if (!formData.get('UploadedGame')) {
                 showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
@@ -458,6 +456,7 @@ function initializeUploadForm() {
                 throw new Error(errorData.message || 'Ошибка загрузки игры');
             }
 
+            // Срабатывает, когда игры не загружена по причине валидации серверной
             showNotification('Игра успешно загружена!', 'success');
             form.reset();
             selectedSkillsLearning = [];

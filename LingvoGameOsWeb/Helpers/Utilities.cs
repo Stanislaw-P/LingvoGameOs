@@ -23,10 +23,16 @@ namespace LingvoGameOs.Helpers
             return resultSkills;
         }
 
-        public async Task<Platform?> GetGamePlatformAsync(string platformName)
+        public async Task<Platform> GetGamePlatformAsync(string platformName)
         {
             // Получаем соответствующую запись из базы данных
             return await _databaseContext.Platforms.FirstOrDefaultAsync(p => p.Name == platformName);
+        }
+
+        public async Task<LanguageLevel> GetLanguageLevelAsync(string languageLevel)
+        {
+            // Получаем соответствующую запись из базы данных
+            return await _databaseContext.LanguageLevels.FirstOrDefaultAsync(p => p.Name == languageLevel);
         }
     }
 }
