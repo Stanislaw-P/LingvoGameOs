@@ -60,12 +60,15 @@ namespace LingvoGameOs.Controllers
             if (ModelState.IsValid)
             {
                 var imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, ImageFolders.Games);
-                
+
                 // Получаем из БД выбранные скиллы и платформу
                 List<string>? selectedSkills = JsonSerializer.Deserialize<List<string>>(gameViewModel.SkillsLearning);
                 List<SkillLearning> skills = await _utilities.GetSkillsLearningAsync(selectedSkills);
                 var platform = await _utilities.GetGamePlatformAsync(gameViewModel.GamePlatform);
                 var languageLvl = await _utilities.GetLanguageLevelAsync(gameViewModel.LanguageLevel);
+
+                string? authorId = _userManager.GetUserId(User);
+
                 if (gameViewModel.UploadedGame != null) // Если файл загруженной игры не пустой, то она десктоп
                 {
                     Game newGame = new Game
@@ -73,18 +76,42 @@ namespace LingvoGameOs.Controllers
                         Title = gameViewModel.Title,
                         Description = gameViewModel.Description,
                         Rules = gameViewModel.Rules,
-                        AuthorId = _userManager.GetUserId(User),
+                        AuthorId = authorId,
                         ImagesURLs = imagesPaths,
                         PublicationDate = DateTime.Now,
                         LastUpdateDate = DateTime.Now,
+                        GamePlatform = platform,
                         SkillsLearning = skills,
-                        GamePlatform = platform
-                        
+                        LanguageLevel = languageLvl
                     };
+                    string? gameUrl = await _fileProvider.SafeFileAsync(gameViewModel.UploadedGame, newGame.Id, newGame.Title);
+                    newGame.GameURL = gameUrl;
+
+                    await _gamesRepository.AddAsync(newGame);
+                    //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
+                    return RedirectToAction("Profile", "Profile", new { userId = authorId });
                 }
                 else // Инача - игра веб
                 {
-                    // TODO: Если игра не десктоп, то она веб...
+                    Game newGame = new Game
+                    {
+                        Title = gameViewModel.Title,
+                        Description = gameViewModel.Description,
+                        Rules = gameViewModel.Rules,
+                        AuthorId = authorId,
+                        ImagesURLs = imagesPaths,
+                        PublicationDate = DateTime.Now,
+                        LastUpdateDate = DateTime.Now,
+                        GamePlatform = platform,
+                        SkillsLearning = skills,
+                        LanguageLevel = languageLvl,
+                        GameURL = gameViewModel.GameURL
+                    };
+
+                    await _gamesRepository.AddAsync(newGame);
+
+                    //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
+                    return RedirectToAction("Profile", "Profile", new { userId = authorId });
                 }
             }
 
