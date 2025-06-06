@@ -13,7 +13,7 @@ namespace LingvoGameOs.Helpers
             _databaseContext = databaseContext;
         }
 
-        public async Task<List<SkillLearning>> GetSkillsAsync(List<string> selectedSkills)
+        public async Task<List<SkillLearning>> GetSkillsLearningAsync(List<string> selectedSkills)
         {
             // Получаем соответствующие записи из базы данных
             var resultSkills = await _databaseContext.SkillsLearning
@@ -21,6 +21,12 @@ namespace LingvoGameOs.Helpers
                 .ToListAsync();
 
             return resultSkills;
+        }
+
+        public async Task<Platform?> GetGamePlatformAsync(string platformName)
+        {
+            // Получаем соответствующую запись из базы данных
+            return await _databaseContext.Platforms.FirstOrDefaultAsync(p => p.Name == platformName);
         }
     }
 }

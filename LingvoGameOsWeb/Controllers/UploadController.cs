@@ -5,6 +5,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using LingvoGameOs.Models;
 
 namespace LingvoGameOs.Controllers
 {
@@ -29,16 +30,15 @@ namespace LingvoGameOs.Controllers
         public IActionResult Index()
         {
             ViewBag.SkillsLearning = _databaseContext.SkillsLearning.Select(type => type.Name);
-
-            
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] string categories)
+        public async Task<IActionResult> Index([FromForm] AddGameViewModel gameViewModel)
         {
-            var items = JsonSerializer.Deserialize<List<string>>(categories);           
-            var skills = await _utilities.GetSkillsAsync(items);
+            //var items = JsonSerializer.Deserialize<List<string>>(gameViewModel.SkillsLearning);
+            //var skills = await _utilities.GetSkillsAsync(items);
+            //var platform = await _utilities.GetGamePlatformAsync(gameViewModel.GamePlatform);
             return View();
         }
 
