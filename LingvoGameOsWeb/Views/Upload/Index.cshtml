@@ -1,7 +1,7 @@
-﻿@model UploadViewModel
+﻿@model AddGameViewModel
 
 @{
-ViewData["Title"] = "Загрузка игры";
+    ViewData["Title"] = "Загрузка игры";
 }
 
 <div class="wrapper">
@@ -15,25 +15,28 @@ ViewData["Title"] = "Загрузка игры";
                         <p class="upload-hero__info">
                             Ознакомьтесь с нашими
                             <a href="#" id="open-quality-modal" class="upload-hero__info--highlight">
-                                рекомендациями
-                                по обеспечению качества
+                                рекомендациями по обеспечению качества
                             </a>
                             перед публикацией вашего проекта.
                         </p>
-                        <form class="upload-form" id="upload-game-form" enctype="multipart/form-data">
+                        <form method="post" class="upload-form" id="upload-game-form" enctype="multipart/form-data">
+                            <!--Не работает валидация-->
+                            <div asp-validation-summary="All" style="color:red"></div>
+
                             <div class="upload-form__group">
                                 <label for="game-title" class="upload-form__label">
                                     Название игры <span class="required">*</span>
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-title" name="title" class="input-field__input"
-                                                placeholder="Введите название игры" required>
+                                        <input type="text" asp-for="Title" id="game-title" name="title" class="input-field__input"
+                                               placeholder="Введите название игры" required>
                                     </div>
                                     <span id="title-error" class="error-message"></span>
                                 </div>
                             </div>
 
+                            <!--У нас только одно короткое (до 200) описание игры-->
                             <div class="upload-form__group">
                                 <label for="game-short-description" class="upload-form__label">
                                     Краткое описание игры
@@ -41,15 +44,16 @@ ViewData["Title"] = "Загрузка игры";
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
-                                        <textarea id="game-short-description" name="short-description"
-                                                    class="input-field__textarea"
-                                                    placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
-                                                    required></textarea>
+                                        <textarea asp-for="Description" id="game-short-description" name="short-description"
+                                                  class="input-field__textarea"
+                                                  placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
+                                                  required></textarea>
                                     </div>
                                     <span id="short-description-error" class="error-message"></span>
                                 </div>
                             </div>
 
+                            <!--Это нужно удалить вместе с js, от сюда-->
                             <div class="upload-form__group">
                                 <label for="game-description" class="upload-form__label">
                                     Описание игры <span class="required">*</span>
@@ -57,12 +61,13 @@ ViewData["Title"] = "Загрузка игры";
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
                                         <textarea id="game-description" name="description"
-                                                    class="input-field__textarea" placeholder="Расскажите подробнее об игре"
-                                                    required></textarea>
+                                                  class="input-field__textarea" placeholder="Расскажите подробнее об игре"
+                                                  required></textarea>
                                     </div>
                                     <span id="description-error" class="error-message"></span>
                                 </div>
                             </div>
+                            <!--Это нужно удалить, до сюда-->
 
                             <div class="upload-form__group">
                                 <label for="game-rules" class="upload-form__label">
@@ -70,50 +75,50 @@ ViewData["Title"] = "Загрузка игры";
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
-                                        <textarea id="game-rules" name="rules" class="input-field__textarea"
-                                                    placeholder="Опишите правила игры" required></textarea>
+                                        <textarea asp-for="Rules" id="game-rules" name="rules" class="input-field__textarea"
+                                                  placeholder="Опишите правила игры" required></textarea>
                                     </div>
                                     <span id="rules-error" class="error-message"></span>
                                 </div>
                             </div>
 
+                            <!--categories у нас не категории, а скиллы. SkillsLearning-->
                             <div class="upload-form__group">
-                                <label for="game-categories" class="upload-form__label">
-                                    Категории <span class="required">*</span>
+                                <label for="game-skillsLearning" class="upload-form__label">
+                                    Развиваемые навыки <span class="required">*</span>
                                 </label>
-                                <div class="upload-form__input-wrapper" data-tooltip="Выберите категории, соответствующие вашей игре">
-                                    <div class="custom-dropdown" id="categories-dropdown">
-                                        <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите категории">
-                                            <span class="custom-dropdown__placeholder">Выберите категории</span>
-                                            <img src="icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
+                                <div class="upload-form__input-wrapper" data-tooltip="Выберите развиваемые навыки, соответствующие вашей игре">
+                                    <div class="custom-dropdown" id="skillsLearning-dropdown">
+                                        <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите развиваемые навыки">
+                                            <span class="custom-dropdown__placeholder">Выберите развиваемые навыки</span>
+                                            <img src="/icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
                                         </div>
                                         <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
-                                            <input type="text" class="custom-dropdown__search" placeholder="Поиск категорий..." aria-label="Поиск категорий">
+                                            <input type="text" class="custom-dropdown__search" placeholder="Поиск навыков..." aria-label="Поиск навыков">
                                             <ul class="custom-dropdown__options">
                                                 <li class="custom-dropdown__option" data-value="select-all" role="option" aria-selected="false">Выбрать все</li>
-                                                <li class="custom-dropdown__option" data-value="vocabulary" role="option" aria-selected="false">Словарный запас</li>
-                                                <li class="custom-dropdown__option" data-value="grammar" role="option" aria-selected="false">Грамматика</li>
-                                                <li class="custom-dropdown__option" data-value="listening" role="option" aria-selected="false">Аудирование</li>
-                                                <li class="custom-dropdown__option" data-value="reading" role="option" aria-selected="false">Чтение</li>
-                                                <li class="custom-dropdown__option" data-value="speaking" role="option" aria-selected="false">Говорение</li>
-                                                <li class="custom-dropdown__option" data-value="puzzle" role="option" aria-selected="false">Головоломка</li>
+                                                @foreach (var skill in ViewBag.SkillsLearning)
+                                                {
+                                                    <li class="custom-dropdown__option" data-value="@skill" role="option" aria-selected="false">@skill</li>
+                                                }
                                             </ul>
                                         </div>
-                                        <div class="selected-categories-list" id="selected-categories-list"></div>
-                                        <input type="hidden" id="game-categories" name="categories" required>
+                                        <div class="selected-skillsLearning-list" id="selected-skillsLearning-list"></div>
+                                        <input asp-for="SkillsLearning" type="hidden" id="game-skillsLearning" name="skillsLearning" required>
                                     </div>
-                                    <span id="categories-error" class="error-message"></span>
+                                    <span id="skillsLearning-error" class="error-message"></span>
                                 </div>
                             </div>
 
+                            <!--Пока что просто висит-->
                             <div class="upload-form__group">
                                 <label for="game-keywords" class="upload-form__label">Ключевые слова</label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="text" id="game-keywords" class="input-field__input"
-                                                placeholder="Введите ключевое слово и нажмите Enter">
+                                               placeholder="Введите ключевое слово и нажмите Enter">
                                     </div>
-                                    <div class="categories-list" id="keywords-list"></div>
+                                    <div class="skillsLearning-list" id="keywords-list"></div>
                                     <span id="keywords-error" class="error-message"></span>
                                 </div>
                             </div>
@@ -124,8 +129,8 @@ ViewData["Title"] = "Загрузка игры";
                                     <div class="level-list">
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" name="level" value="beginner"
-                                                        class="level-item__radio" required>
+                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Барашек, который пытается говорить"
+                                                       class="level-item__radio" required>
                                             </span>
                                             <span class="level-item__text">
                                                 «Барашек, который пытается говорить» –
@@ -134,8 +139,8 @@ ViewData["Title"] = "Загрузка игры";
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" name="level" value="elementary"
-                                                        class="level-item__radio">
+                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Юный нарт"
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Юный нарт» – уже умеешь составлять
@@ -144,8 +149,8 @@ ViewData["Title"] = "Загрузка игры";
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" name="level" value="intermediate"
-                                                        class="level-item__radio">
+                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Кавказский орёл"
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Кавказский орёл» – уверенно говоришь,
@@ -154,8 +159,8 @@ ViewData["Title"] = "Загрузка игры";
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" name="level" value="advanced"
-                                                        class="level-item__radio">
+                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Старейшина, который говорит тосты"
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Старейшина, который говорит тосты» –
@@ -163,10 +168,10 @@ ViewData["Title"] = "Загрузка игры";
                                                 нюансы.
                                             </span>
                                         </label>
-                                         <label class="level-item">
+                                        <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" name="level" value="advanced"
-                                                        class="level-item__radio">
+                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Хранитель языка"
+                                                       class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
                                                 «Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.
@@ -183,17 +188,19 @@ ViewData["Title"] = "Загрузка игры";
                                 </label>
                                 <div class="upload-form__input-wrapper" data-tooltip="Выберите платформу для вашей игры">
                                     <div class="custom-dropdown" id="platform-dropdown">
-                                        <input type="hidden" id="game-platform" name="platform" required>
-                                        <div class="custom-dropdown__selected" tabindex="0" aria-haspopup="listbox" aria-label="Выберите платформу">
-                                            <span>Выберите платформу</span>
+                                        <input type="hidden" asp-for="GamePlatform" id="game-platform" name="GamePlatform" required>
+                                        <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите платформу">
+                                            <span class="custom-dropdown__placeholder">Выберите платформу</span>
                                             <img src="icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
                                         </div>
-                                        <ul class="custom-dropdown__list" role="listbox" hidden>
-                                            <li class="custom-dropdown__item" role="option" data-value="web-mobile">Web-Mobile</li>
-                                            <li class="custom-dropdown__item" role="option" data-value="web-desktop">Web-Desktop</li>
-                                            <li class="custom-dropdown__item" role="option" data-value="desktop">Desktop</li>
-                                            <li class="custom-dropdown__item" data-value="select-all" role="option" aria-selected="false">Web-Mobile</li>
-                                        </ul>
+                                        <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
+                                            <ul class="custom-dropdown__options">
+                                                <li class="custom-dropdown__option" role="option" data-value="Web-Mobile" aria-selected="false">Web-Mobile</li>
+                                                <li class="custom-dropdown__option" role="option" data-value="Web-Desktop" aria-selected="false">Web-Desktop</li>
+                                                <li class="custom-dropdown__option" role="option" data-value="Desktop" aria-selected="false">Desktop</li>
+                                            </ul>
+                                        </div>
+                                        <div class="selected-platforms-list" id="selected-platforms-list"></div>
                                     </div>
                                     <span id="platform-error" class="error-message"></span>
                                 </div>
@@ -205,8 +212,8 @@ ViewData["Title"] = "Загрузка игры";
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="url" id="game-file-url" name="file-url"
-                                                class="input-field__input" placeholder="Введите URL игры">
+                                        <input type="url" asp-for="GameURL" id="game-file-url" name="GameURL"
+                                               class="input-field__input" placeholder="Введите URL игры">
                                     </div>
                                     <span id="file-url-error" class="error-message"></span>
                                 </div>
@@ -223,14 +230,14 @@ ViewData["Title"] = "Загрузка игры";
                                                     <div class="file-upload__info">
                                                         <p class="file-upload__info-text">
                                                             Загрузите или перетащите
-                                                            игру сюда (ZIP, RAR, APK)
+                                                            игру сюда (MSI)
                                                         </p>
                                                         <p class="file-upload__size">Максимальный размер 2 ГБ</p>
                                                     </div>
                                                 </div>
-                                                <input type="file" id="game-file-file" name="file-file"
-                                                        class="input-field__input"
-                                                        accept=".zip,.rar,.7z,.apk,.exe,.app,.dmg" hidden>
+                                                <input type="file" asp-for="UploadedGame" id="game-file-file" name="UploadedGame"
+                                                       class="input-field__input"
+                                                       accept=".msi,.jpg" hidden>
                                             </div>
                                         </label>
                                         <div class="file-upload__previews" id="file-preview"></div>
@@ -247,7 +254,7 @@ ViewData["Title"] = "Загрузка игры";
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" id="game-cover-url" name="cover-url"
-                                                class="input-field__input" placeholder="Введите URL обложки">
+                                               class="input-field__input" placeholder="Введите URL обложки">
                                     </div>
                                     <span id="cover-url-error" class="error-message"></span>
                                 </div>
@@ -265,7 +272,7 @@ ViewData["Title"] = "Загрузка игры";
                                                 </div>
                                             </div>
                                             <input type="file" id="game-cover-file" name="cover-file"
-                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
+                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
                                     </label>
                                     <div class="file-upload__previews" id="cover-preview"></div>
@@ -275,13 +282,12 @@ ViewData["Title"] = "Загрузка игры";
 
                             <div class="upload-form__group">
                                 <label for="game-video" class="upload-form__label">
-                                    Код для вставки видео из
-                                    VK
+                                    Ссылка на видео из VK
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" id="game-video" name="video" class="input-field__input"
-                                                placeholder="Вставьте код видео">
+                                        <input type="url" asp-for="VideoUrl" id="game-video" name="VideoUrl" class="input-field__input"
+                                               placeholder="Вставьте URL адресс видео">
                                     </div>
                                     <span id="video-error" class="error-message"></span>
                                 </div>
@@ -295,7 +301,7 @@ ViewData["Title"] = "Загрузка игры";
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" id="game-screenshots-url" name="screenshots-url"
-                                                class="input-field__input" placeholder="Введите URL скриншотов">
+                                               class="input-field__input" placeholder="Введите URL скриншотов">
                                     </div>
                                     <span id="screenshots-url-error" class="error-message"></span>
                                 </div>
@@ -304,7 +310,7 @@ ViewData["Title"] = "Загрузка игры";
                                     <label class="file-upload" id="screenshots-dropzone">
                                         <div class="file-upload__dropzone">
                                             <div class="file-upload__text">
-                                                <img src="icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
                                                 <div class="file-upload__info">
                                                     <p class="file-upload__info-text">
                                                         Загрузите или перетащите файлы
@@ -312,9 +318,9 @@ ViewData["Title"] = "Загрузка игры";
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" id="game-screenshots-file" name="screenshots-file"
-                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
-                                                    hidden>
+                                            <input type="file" asp-for="UploadedImages" id="game-screenshots-file" name="UploadedImages"
+                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
+                                                   hidden>
                                         </div>
                                     </label>
                                     <div class="file-upload__previews" id="screenshots-preview"></div>
@@ -322,7 +328,7 @@ ViewData["Title"] = "Загрузка игры";
                                 <span id="screenshots-error" class="error-message"></span>
                             </div>
 
-                            <button type="submit" class="upload-form__submit" aria-busy="false">
+                            <button type="submit" asp-controller="Upload" asp-action="Index" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>
                             </button>
                         </form>
@@ -351,65 +357,35 @@ ViewData["Title"] = "Загрузка игры";
                         </p>
                     </div>
                     <div class="quality-modal__section">
-
-
-                        <div class="quality-modal__overlay" id="qualityModalOverlay">
-                            <div class="quality-modal">
-                                <button class="quality-modal__close" id="qualityModalClose"
-                                        aria-label="Закрыть модальное окно">
-                                    <img src="icon/close.svg" alt="Закрыть" class="quality-modal__close-icon">
-                                </button>
-                                <h2 class="quality-modal__title">Рекомендации по обеспечению качества</h2>
-                                <div class="quality-modal__section">
-                                    <h3 class="quality-modal__subtitle">Соответствие осетинской культуре</h3>
-                                    <p class="quality-modal__text">
-                                        Убедитесь, что контент игры уважает осетинские
-                                        традиции.
-                                        Используйте аутентичные слова, фразы и мотивы.
-                                    </p>
-                                </div>
-                                <div class="quality-modal__section">
-                                    <h3 class="quality-modal__subtitle">Образовательная ценность</h3>
-                                    <p class="quality-modal__text">
-                                        Игра должна способствовать изучению языка.
-                                        Включите задания
-                                        на словарный запас, грамматику или аудирование.
-                                    </p>
-                                </div>
-                                <div class="quality-modal__section">
-                                    <h3 class="quality-modal__subtitle">Качество метаданных</h3>
-                                    <p class="quality-modal__text">
-                                        Укажите точное название, описание и теги. Обложка
-                                        должна быть
-                                        привлекательной.
-                                    </p>
-                                </div>
-                                <div class="quality-modal__section">
-                                    <h3 class="quality-modal__subtitle">Техническая интеграция</h3>
-                                    <p class="quality-modal__text">
-                                        Используйте HTML5 для встраивания через iframe.
-                                        Проверьте
-                                        игру на отсутствие ошибок.
-                                    </p>
-                                </div>
-                                <div class="quality-modal__section">
-                                    <h3 class="quality-modal__subtitle">Доступность и интерактивность</h3>
-                                    <p class="quality-modal__text">
-                                        Обеспечьте адаптивность для всех устройств и
-                                        мгновенную
-                                        обратную связь.
-                                    </p>
-                                </div>
-                                <div class="quality-modal__section">
-                                    <h3 class="quality-modal__subtitle">Соответствие стандартам</h3>
-                                    <p class="quality-modal__text">
-                                        Проверьте игру на соответствие WCAG и
-                                        безопасность контента.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <h3 class="quality-modal__subtitle">Качество метаданных</h3>
+                        <p class="quality-modal__text">
+                            Укажите точное название, описание и теги. Обложка должна быть
+                            привлекательной.
+                        </p>
                     </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Техническая интеграция</h3>
+                        <p class="quality-modal__text">
+                            Используйте HTML5 для встраивания через iframe. Проверьте
+                            игру на отсутствие ошибок.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Доступность и интерактивность</h3>
+                        <p class="quality-modal__text">
+                            Обеспечьте адаптивность для всех устройств и мгновенную
+                            обратную связь.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Соответствие стандартам</h3>
+                        <p class="quality-modal__text">
+                            Проверьте игру на соответствие WCAG и безопасность контента.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <div id="footer-placeholder"></div>
 </div>

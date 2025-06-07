@@ -49,8 +49,8 @@
             <div class="game-hero__actions">
                 @if (Model.GamePlatform.Name == "Desktop")
                 {
-                    <a role="button" href="#" class="game-hero__button profile__button">
-                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Скачать
+                    <a role="button" href="@Model.GameURL" download class="game-hero__button profile__button">
+                        <img src="/icon/play.svg" alt="Download" class="game-hero__play-icon"> Скачать
                     </a>
                 }
                 else

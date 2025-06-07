@@ -3632,6 +3632,7 @@ margin-top: 10px;
     font-family: "Axiforma", sans-serif;
     font-weight: 600;
     line-height: 24px;
+    padding: 0px 20px;
 }
 
 .upload-hero__info--highlight {
@@ -3677,12 +3678,10 @@ margin-top: 10px;
     width: 100%;
 }
 
-
-/* Custom Dropdown for Categories and Platforms */
+/* Custom Dropdown for SkillsLearning and Platforms */
 .custom-dropdown {
     position: relative;
-    flex: 1;
-    min-width: 200px;
+    width: 100%;
     font-family: "Axiforma", sans-serif;
 }
 
@@ -3690,15 +3689,15 @@ margin-top: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 40px;
-    padding: 0 16px;
+    padding: 12px 16px;
     border: 1px solid var(--border-light);
-    border-radius: 20px;
+    border-radius: 73px;
     color: var(--border-light);
     font: 600 14px "Axiforma", sans-serif;
     cursor: pointer;
     background: none;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .custom-dropdown__selected:hover {
@@ -3798,8 +3797,46 @@ margin-top: 10px;
     background: var(--bg-light);
 }
 
-/* Selected Categories and Platforms Tags */
-.selected-categories-list,
+.custom-dropdown__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font: 400 14px "Axiforma", sans-serif;
+    color: var(--text-primary);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.custom-dropdown__item:hover {
+    background: var(--bg-light);
+    color: var(--accent-1);
+}
+
+.custom-dropdown__item.selected {
+    font-weight: 500;
+    color: var(--accent-2);
+    background: var(--bg-light);
+}
+
+.file-upload__file-size {
+    color: var(--text-body);
+}
+
+/* Selected SkillsLearning and Platforms Tags */
+.selected-skillsLearning-list,
 .selected-platforms-list {
     display: flex;
     flex-wrap: wrap;
@@ -3808,50 +3845,22 @@ margin-top: 10px;
 }
 
 .selected-item {
-    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
     border: 1px solid var(--border-light);
-    border-radius: 4px;
+    border-radius: 20px;
     font: 400 12px "Axiforma", sans-serif;
     color: var(--text-primary);
     background: var(--bg-light);
-    cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.selected-item:hover {
-    background: var(--secondary-3);
-}
-
-/* #region Upload*/
-
-.selected-categories-list {
+.selected-item:hover .selected-item__remove {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
 }
 
-.selected-category-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-    background: var(--bg-light);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    color: var(--text-primary);
-    transition: background-color 0.3s ease;
-}
-
-.selected-category-item:hover {
-    background-color: var(--accent-3);
-    color: var(--text-light);
-}
-
-.selected-category-item__remove {
-    display: flex;
+.selected-item__remove {
+    display: none;
     align-items: center;
     justify-content: center;
     width: 16px;
@@ -3859,13 +3868,15 @@ margin-top: 10px;
     font-size: 12px;
     color: var(--text-body);
     cursor: pointer;
+    margin-left: 8px;
     transition: color 0.3s ease;
 }
 
-.selected-category-item__remove:hover {
+.selected-item__remove:hover {
     color: var(--accent-red);
 }
 
+/* Upload */
 .upload-form__label .required {
     color: var(--accent-red);
 }
@@ -3948,12 +3959,12 @@ margin-top: 10px;
 
 .input-field__input {
     border-radius: 73px;
-    padding: 20px 20px;
+    padding: 12px 16px;
 }
 
 .input-field__textarea {
     border-radius: 10px 70px;
-    padding: 20px 20px;
+    padding: 12px 16px;
 }
 
 .input-field__textarea {
@@ -3977,14 +3988,14 @@ margin-top: 10px;
     border: 1px solid var(--success-color);
 }
 
-.categories-list {
+.skillsLearning-list {
     gap: 8px;
     display: flex;
     flex-wrap: wrap;
     align-self: stretch;
 }
 
-.category-item {
+.skillsLearning-item {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -3997,21 +4008,26 @@ margin-top: 10px;
     font-weight: 400;
     line-height: 24px;
     background-color: var(--bg-light);
-    transition: background-color 0.3s ease;
 }
 
-.category-item:hover {
-    background-color: var(--accent-3);
-    color: var(--text-light);
+.skillsLearning-item:hover .skillsLearning-item__remove {
+    display: flex;
 }
 
-.category-item__remove {
-    cursor: pointer;
-    font-size: 16px;
+.skillsLearning-item__remove {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
     color: var(--text-body);
+    cursor: pointer;
+    margin-left: 8px;
+    transition: color 0.3s ease;
 }
 
-.category-item__remove:hover {
+.skillsLearning-item__remove:hover {
     color: var(--accent-red);
 }
 
@@ -4384,9 +4400,6 @@ margin-top: 10px;
 }
 
 /* #endregion */
-
-/* #endregion */
-
 
 /* #region Стили страницы игр */
 
@@ -5616,7 +5629,7 @@ game-pause-modal {
     }
 }
 
-#categories-options-list label.category-label {
+#skillsLearning-options-list label.skillsLearning-label {
     display: inline-block;
     padding: 8px 12px;
     margin: 4px;
@@ -5627,17 +5640,17 @@ game-pause-modal {
     transition: background-color 0.2s, border-color 0.2s;
 }
 
-#categories-options-list label.category-label:hover {
+#skillsLearning-options-list label.skillsLearning-label:hover {
     background-color: #e0e0e0;
 }
 
-#categories-options-list label.category-label.selected {
+#skillsLearning-options-list label.skillsLearning-label.selected {
     background-color: #4CAF50;
     color: white;
     border-color: #4CAF50;
 }
 
-#categories-options-list label.category-label:focus {
+#skillsLearning-options-list label.skillsLearning-label:focus {
     outline: 2px solid #4CAF50;
     outline-offset: 2px;
 }

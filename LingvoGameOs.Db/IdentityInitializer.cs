@@ -71,7 +71,7 @@ namespace LingvoGameOs.Db
                 var gameType3 = new SkillLearning { Id = 3, Name = "Аудирование" };
                 var gameType4 = new SkillLearning { Id = 4, Name = "Чтение" };
                 var gameType5 = new SkillLearning { Id = 5, Name = "Говорение" };
-                var gameType6 = new SkillLearning { Id = 6, Name = "Диктанта" };
+                var gameType6 = new SkillLearning { Id = 6, Name = "Диктант" };
                 if (!context.SkillsLearning.Any())
                 {
                     await context.SkillsLearning.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);

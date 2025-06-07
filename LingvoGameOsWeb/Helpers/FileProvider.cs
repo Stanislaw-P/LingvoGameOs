@@ -11,8 +11,6 @@ namespace LingvoGameOs.Helpers
             _appEnvironment = appEnvironment;
         }
 
-
-
         public async Task<List<string>> SafeImagesFilesAsync(IFormFile[] files, ImageFolders folder)
         {
             var imagePaths = new List<string>();
@@ -45,15 +43,15 @@ namespace LingvoGameOs.Helpers
         }
 
         // Для файлов игр
-        public async Task<string?> SafeFile(IFormFile uploadedFile, Game game)
+        public async Task<string?> SafeFileAsync(IFormFile uploadedFile, int gameId, string gameTitle)
         {
             if (uploadedFile == null)
                 return null;
-            string folderPath = Path.Combine(_appEnvironment.WebRootPath + "/games/" + game.Id);
+            string folderPath = Path.Combine(_appEnvironment.WebRootPath + "/games/" + gameId);
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
-            string fileName = game.Id + "." + uploadedFile.FileName.Split('.').Last();
+            string fileName = gameTitle + "." + uploadedFile.FileName.Split('.').Last();
             string path = Path.Combine(folderPath, fileName);
 
             using (var fileStream = new FileStream(path, FileMode.Create))
@@ -61,7 +59,7 @@ namespace LingvoGameOs.Helpers
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            return "/games/" + game.Id + "/" + fileName;
+            return "/games/" + gameId + "/" + fileName;
         }
     }
 }
