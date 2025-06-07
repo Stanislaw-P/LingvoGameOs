@@ -41,8 +41,12 @@ function initializeUploadForm() {
 
     // Allowed file types and sizes
     const ALLOWED_GAME_TYPES = [
-        'application/x-msi',
-        'image/jpeg'
+        'image/jpeg', // Это я тестил работу загрузки файла. Можно убрать уже
+        //Все типы ниже не работают у меня
+        'application/x-msdownload',  // Основной MIME-тип для .msi
+        'application/x-msi',        // Альтернативный MIME-тип для .msi
+        'application/octet-stream'  // Общий тип для бинарных файлов (на случай, если .msi определится так)
+
     ];
     const ALLOWED_GAME_EXTENSIONS = ['.msi', '.jpg'];
     const MAX_GAME_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
