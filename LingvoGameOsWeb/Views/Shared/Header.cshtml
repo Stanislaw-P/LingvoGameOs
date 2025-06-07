@@ -7,8 +7,8 @@
         <nav class="header__menu menu">
             <ul class="menu__list">
                 <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="Index">Главная</a></li>
-                <li class="menu__item"><a class="menu__link" asp-controller="Game" asp-action="Index">Все игры</a></li>
-                <li class="menu__item"><a class="menu__link" asp-controller="News" asp-action="News">Новости</a></li>
+                <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="Index">Все игры</a></li>
+                <li class="menu__item"><a class="menu__link" asp-controller="" asp-action="">Новости</a></li>
             </ul>
         </nav>
         <button class="header__like" aria-label="Избранное">
@@ -37,7 +37,7 @@
                                 <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userId">Профиль</a></div>
                                 <div class="user-profile__menu-item" data-target="game-stats"><a class="menu__link" asp-controller="Profile" asp-action="GameStats">Рейтинг в играх</a></div>
                                 <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Favorites">Рекомендуемые игры</a></div>
-                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Settings">Настройки</a></div>
+                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Settings" asp-route-userId="@userId">Настройки</a></div>
                                 <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Account" asp-action="Logout">Выйти</a></div>
                             </div>
                         </div>

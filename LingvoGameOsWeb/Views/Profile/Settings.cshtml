@@ -1,0 +1,144 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = $"Настройки профиля {Model.Name} {Model.Surname}";
+}
+
+<div class="content__row">
+    <aside class="content__sidebar">
+        <!-- Профиль пользователя -->
+        <div class="profile">
+            <h3 class="profile__title">Профиль пользователя</h3>
+            <div class="profile__avatar">
+                <div class="profile__avatar-wrapper">
+                    @if (Model.ImageURL != null)
+                    {
+                        <img src="@Model.ImageURL" alt="Аватар пользователя" class="profile__image">
+                    }
+                    else
+                    {
+                        <img src="/img/avatar100.png" alt="Аватар пользователя" class="profile__image">
+                    }
+                </div>
+            </div>
+            <form class="profile__form" method="post">
+                <div class="profile__field">
+                    <label asp-for="Name" class="profile__label">Имя</label>
+                    <input asp-for="Name" type="text" class="profile__input" id="firstName" value="@Model.Name" required>
+                    <span asp-validation-for="Name" />                    
+                </div>
+                <div class="profile__field">
+                    <label asp-for="Surname" class="profile__label">Фамилия</label>
+                    <input asp-for="Surname" type="text" class="profile__input" id="lastName" value="@Model.Surname" required>
+                    <span asp-validation-for="Surname" />
+                </div>
+                <div class="profile__field">
+                    <label asp-for="UserName" class="profile__label">Email</label>
+                    <input asp-for="UserName" type="email" class="profile__input" id="email" value="@Model.UserName" required>
+                    <span asp-validation-for="UserName" />
+                </div>
+                <div class="profile__field">
+                    <label class="profile__label" for="level">Уровень</label>
+                    <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
+                </div>
+                <div class="profile__field profile__field--bio">
+                    <label asp-for="Description" class="profile__label">О себе</label>
+                    <textarea asp-for="Description" class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе">@Model.Description</textarea>
+                    <span asp-validation-for="Description" />
+                </div>
+
+                <input asp-for="Id" type="hidden" value="@Model.Id">
+
+                <input asp-for="ImageURL" type="hidden" value="@Model.ImageURL">
+
+                <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+
+                <button type="submit" asp-controller="Profile" asp-action="Settings" class="profile__button">
+                    Сохранить изменения
+                </button>
+            </form>
+        </div>
+        
+        
+    </aside>
+    <section class="content__main">
+        <!-- Блок добавленных пользователем игр -->
+        <div class="games-block">
+            <!-- Блок добавленных пользователем игр -->
+            <section class="user-added-games">
+                <header class="user-added-games__header">
+                    <h3 class="user-added-games__title">Ваши игры</h3>
+                    <div class="user-added-games__controls">
+                        <a type="button" class="user-added-games__upload-button" asp-controller="Upload" asp-action="Index">Загрузить игру</a>
+                        @if (Model.DevGames != null && Model.DevGames.Any())
+                        {
+                            <div class="carousel-controls">
+                                <button class="carousel-control carousel-control--prev user-added-games__prev" aria-label="Предыдущие игры">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="15 18 9 12 15 6"></polyline>
+                                    </svg>
+                                </button>
+                                <span class="carousel-page-counter user-added-games__page-counter">1 из 1</span>
+                                <button class="carousel-control carousel-control--next user-added-games__next" aria-label="Следующие игры">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </header>
+                @if (Model.DevGames != null && Model.DevGames.Any())
+                {
+                    <div class="user-added-games__carousel">
+                        <div class="user-added-games__list">
+                            @foreach (var game in Model.DevGames)
+                            {
+                                <article class="user-added-games__item">
+                                    <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__link">
+                                        <img src="@(game.ImagesURLs?.FirstOrDefault() ?? "/img/default-game.png")" alt="Обложка @game.Title" class="user-added-games__image" loading="lazy">
+                                        <div class="user-added-games__content">
+                                            <h4 class="user-added-games__name">@game.Title</h4>
+                                            <div class="user-added-games__stats">
+                                                <span class="user-added-games__rating">
+                                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
+                                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
+                                                    <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
+                                                </span>
+                                                <span class="user-added-games__likes">
+                                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
+                                                </span>
+                                                <span class="user-added-games__views">
+                                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="user-added-games__actions">
+                                        <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
+                                        <a href="analytics_game@(game.Id).html" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
+                                        <a href="edit_mygame@(game.Id).html" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                            <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
+                                        </a>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="user-added-games__empty">
+                        <p class="user-added-games__empty-text">Создайте свою первую игру!</p>
+                        @if (User.IsInRole(Constants.DevRoleName))
+                        {
+                            <button type="button" class="user-added-games__upload-button">Создать игру</button>
+                        }
+                    </div>
+                }
+            </section>
+        </div>
+    </section>
+</div>

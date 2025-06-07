@@ -31,7 +31,7 @@
                     <input type="text" class="profile__input" id="lastName" value="@Model.Surname" disabled>
                 </div>
                 <div class="profile__field">
-                    <label class="profile__label" for="email">Email*</label>
+                    <label class="profile__label" for="email">Email</label>
                     <input type="email" class="profile__input" id="email" value="@Model.Email" disabled>
                 </div>
                 <div class="profile__field">
@@ -42,14 +42,11 @@
                     <label class="profile__label" for="bio">О себе</label>
                     <textarea class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
                 </div>
-                <button type="button" class="profile__button" id="open-edit-modal">
-                    Изменить профиль
-                </button>
             </form>
         </div>
         <!-- Прогресс уровней -->
         <div class="level-progress">
-            <h3 class="level-progress__title">Ваш прогресс</h3>
+            <h3 class="level-progress__title">Прогресс уровней</h3>
             <div class="level-progress__overview">
                 <span class="level-progress__total">Всего баллов: 450</span>
                 <span class="level-progress__to-next">До следующего уровня: 50</span>
@@ -151,12 +148,9 @@
             <!-- Блок добавленных пользователем игр -->
             <section class="user-added-games">
                 <header class="user-added-games__header">
-                    <h3 class="user-added-games__title">Ваши игры</h3>
+                    <h3 class="user-added-games__title">Созданные игры</h3>
                     <div class="user-added-games__controls">
-                        @if (User.IsInRole(Constants.DevRoleName))
-                        {
-                            <button type="button" class="user-added-games__upload-button" asp-controller="Upload" asp-action="Index">Загрузить игру</button>
-                        }
+                        <a type="button" class="user-added-games__upload-button" asp-controller="Upload" asp-action="Index">Загрузить игру</a>
                         @if (Model.DevGames != null && Model.DevGames.Any())
                         {
                             <div class="carousel-controls">
