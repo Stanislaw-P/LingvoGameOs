@@ -155,14 +155,16 @@
 
             <div class="game-info__metadata-item">
                 <h4 class="game-info__metadata-title">Разработчик</h4>
-                <div class="game-info__developer">
-                    <img src="@Model.Author.ImageURL" alt="@Model.Author.Name"
-                         class="game-info__developer-avatar">
-                    <div class="game-info__developer-details">
-                        <span class="game-info__developer-name">@Model.Author.Name @Model.Author.Surname</span>
-                        <span class="game-info__developer-games">Количество игр: @Model.Author.DevGames.Count</span>
+                <a asp-controller="Profile" asp-action="Profile" asp-route-userId="@Model.Author.Id">
+                    <div class="game-info__developer">
+                        <img src="@Model.Author.ImageURL" alt="@Model.Author.Name"
+                             class="game-info__developer-avatar">
+                        <div class="game-info__developer-details">
+                            <span class="game-info__developer-name">@Model.Author.Name @Model.Author.Surname</span>
+                            <span class="game-info__developer-games">Количество игр: @Model.Author.DevGames.Count</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <a href="leaderboard_game-id.html" class="game-info__leaderboard profile__button">

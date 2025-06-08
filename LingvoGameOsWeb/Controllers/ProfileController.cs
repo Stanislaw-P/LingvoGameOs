@@ -52,7 +52,15 @@ namespace LingvoGameOs.Controllers
             {
                 var games = await gamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevGames = games;
-                return View(user);
+
+                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
+                
+                if (userId == userManager.GetUserAsync(User).Result.Id)
+                {
+                    userViewModel.IsMyProfile = true;
+                }
+
+                return View(userViewModel);
             }
             return RedirectToAction("Index", "Home");
         }
