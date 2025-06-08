@@ -3588,10 +3588,9 @@ margin-top: 10px;
 
 /* #endregion */
 
-
-/* #region Стили страницы загрузки игры */
+/* Стили страницы загрузки игры */
 .upload-hero {
-    padding: 0px 0;
+    padding: 0;
     display: flex;
     align-self: stretch;
     align-items: center;
@@ -3607,10 +3606,7 @@ margin-top: 10px;
 
 .upload-hero__title {
     color: var(--text-light);
-    font-size: 36px;
-    font-family: "Arkhip", sans-serif;
-    font-weight: 700;
-    line-height: 120%;
+    font: 700 36px/120% "Arkhip", sans-serif;
     text-align: left;
 }
 
@@ -3622,17 +3618,14 @@ margin-top: 10px;
     align-items: flex-start;
     border-radius: 10px 90px;
     flex-direction: column;
-    background-color: var(--bg-white);
+    background: var(--bg-white);
     box-shadow: var(--shadow);
 }
 
 .upload-hero__info {
     color: var(--text-body);
-    font-size: 16px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 600;
-    line-height: 24px;
-    padding: 0px 20px;
+    font: 600 16px/24px "Axiforma", sans-serif;
+    padding: 0 20px;
 }
 
 .upload-hero__info--highlight {
@@ -3662,11 +3655,9 @@ margin-top: 10px;
 }
 
 .upload-form__label {
-    font-size: 16px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 500;
+    font: 500 16px "Axiforma", sans-serif;
     color: var(--text-primary);
-    padding: 0px 20px;
+    padding: 0 20px;
 }
 
 .required {
@@ -3676,6 +3667,21 @@ margin-top: 10px;
 .upload-form__input-wrapper {
     position: relative;
     width: 100%;
+}
+
+.upload-form__input-wrapper[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--text-primary);
+    color: var(--text-light);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font: 400 12px "Axiforma", sans-serif;
+    white-space: normal;
+    width: 200px;
+    z-index: 10;
 }
 
 /* Custom Dropdown for SkillsLearning and Platforms */
@@ -3733,11 +3739,11 @@ margin-top: 10px;
     border-radius: 12px;
     padding: 16px;
     z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .custom-dropdown__menu.active {
@@ -3797,44 +3803,6 @@ margin-top: 10px;
     background: var(--bg-light);
 }
 
-.custom-dropdown__list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.custom-dropdown__item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    font: 400 14px "Axiforma", sans-serif;
-    color: var(--text-primary);
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.custom-dropdown__item:hover {
-    background: var(--bg-light);
-    color: var(--accent-1);
-}
-
-.custom-dropdown__item.selected {
-    font-weight: 500;
-    color: var(--accent-2);
-    background: var(--bg-light);
-}
-
-.file-upload__file-size {
-    color: var(--text-body);
-}
-
 /* Selected SkillsLearning and Platforms Tags */
 .selected-skillsLearning-list,
 .selected-platforms-list {
@@ -3876,73 +3844,18 @@ margin-top: 10px;
     color: var(--accent-red);
 }
 
-/* Upload */
-.upload-form__label .required {
-    color: var(--accent-red);
-}
-
-.upload-form__input-wrapper {
-    gap: 20px;
-    display: flex;
-    align-self: stretch;
-    align-items: flex-start;
-    flex-direction: column;
-    position: relative;
-}
-
-.upload-form__input-wrapper[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--text-primary);
-    color: var(--text-light);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    white-space: normal;
-    width: 200px;
-    z-index: 10;
-    opacity: 0;
-    animation: fadeIn 0.3s ease forwards;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .input-field {
     gap: 12px;
     display: flex;
     align-self: stretch;
     align-items: center;
     border-radius: 73px;
-    background-color: var(--bg-light);
+    background: var(--bg-light);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-field--textarea {
     border-radius: 10px 70px;
-}
-
-.input-field--with-icon {
-    position: relative;
-    background-image: url('search.svg');
-    background-repeat: no-repeat;
-    background-position: 12px center;
-    background-size: 20px 20px;
-}
-
-.input-field--with-icon .input-field__input {
-    padding-left: 40px;
 }
 
 .input-field__input,
@@ -3951,10 +3864,7 @@ margin-top: 10px;
     border: none;
     background: transparent;
     color: var(--secondary-3);
-    font-size: 16px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 24px;
+    font: 400 16px/24px "Axiforma", sans-serif;
 }
 
 .input-field__input {
@@ -3965,9 +3875,6 @@ margin-top: 10px;
 .input-field__textarea {
     border-radius: 10px 70px;
     padding: 12px 16px;
-}
-
-.input-field__textarea {
     height: 120px;
     resize: vertical;
 }
@@ -4003,11 +3910,8 @@ margin-top: 10px;
     border: 1px solid var(--border-light);
     border-radius: 17px;
     color: var(--text-primary);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 24px;
-    background-color: var(--bg-light);
+    font: 400 14px/24px "Axiforma", sans-serif;
+    background: var(--bg-light);
 }
 
 .skillsLearning-item:hover .skillsLearning-item__remove {
@@ -4047,12 +3951,12 @@ margin-top: 10px;
     align-items: center;
     border: 1px solid var(--border-light);
     border-radius: 20px;
-    background-color: var(--bg-white);
+    background: var(--bg-white);
     transition: background-color 0.3s ease;
 }
 
 .level-item:hover {
-    background-color: var(--bg-light);
+    background: var(--bg-light);
 }
 
 .level-item__input {
@@ -4065,16 +3969,13 @@ margin-top: 10px;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: var(--bg-light);
+    background: var(--bg-light);
     cursor: pointer;
 }
 
 .level-item__text {
     color: var(--text-body);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 130%;
+    font: 400 14px/130% "Axiforma", sans-serif;
 }
 
 .upload-form__file-upload {
@@ -4087,10 +3988,7 @@ margin-top: 10px;
 
 .upload-form__file-label {
     color: var(--secondary-3);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 110%;
+    font: 400 14px/110% "Axiforma", sans-serif;
 }
 
 .file-upload {
@@ -4102,13 +4000,13 @@ margin-top: 10px;
     border: 2px dashed var(--border-light);
     border-radius: 10px;
     flex-direction: column;
-    background-color: var(--bg-light);
+    background: var(--bg-light);
     transition: border-color 0.3s ease;
 }
 
 .file-upload--active {
     border-color: var(--accent-2);
-    background-color: var(--accent-3);
+    background: var(--accent-3);
 }
 
 .file-upload__dropzone {
@@ -4131,11 +4029,6 @@ margin-top: 10px;
     height: 32px;
 }
 
-.search-upload__icon {
-    width: 22px;
-    height: 22px;
-}
-
 .file-upload__info {
     display: flex;
     align-items: center;
@@ -4145,10 +4038,7 @@ margin-top: 10px;
 
 .file-upload__info-text {
     color: var(--accent-2);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 500;
-    line-height: 150%;
+    font: 500 14px/150% "Axiforma", sans-serif;
 }
 
 .file-upload__info-text span {
@@ -4158,18 +4048,7 @@ margin-top: 10px;
 
 .file-upload__size {
     color: var(--text-body);
-    font-size: 12px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 150%;
-}
-
-.file-upload__actions {
-    gap: 16px;
-    display: flex;
-    align-self: stretch;
-    align-items: flex-start;
-    flex-direction: column;
+    font: 400 12px/150% "Axiforma", sans-serif;
 }
 
 .file-upload__previews {
@@ -4185,15 +4064,16 @@ margin-top: 10px;
     align-items: center;
     padding: 8px;
     border-radius: 8px;
-    background-color: var(--bg-white);
+    background: var(--bg-white);
 }
 
 .file-upload__file-name {
     color: var(--accent-2);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 150%;
+    font: 400 14px/150% "Axiforma", sans-serif;
+}
+
+.file-upload__file-size {
+    color: var(--text-body);
 }
 
 .file-upload__file-trash {
@@ -4223,55 +4103,35 @@ margin-top: 10px;
     align-items: center;
     border-radius: 73px;
     justify-content: center;
-    background-color: var(--accent-2);
+    background: var(--accent-2);
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 .upload-form__submit:hover {
-    background-color: var(--accent-1);
+    background: var(--accent-1);
     transform: scale(1.02);
 }
 
 .upload-form__submit[aria-busy="true"] {
-    background-color: var(--accent-3);
+    background: var(--accent-3);
     position: relative;
     color: transparent;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spinner"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>');
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>');
     background-position: center;
     background-repeat: no-repeat;
     background-size: 16px 16px;
 }
 
-.upload-form__submit[aria-busy="true"] .spinner {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 .upload-form__submit-text {
     color: var(--text-light);
-    font-size: 16px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 600;
-    line-height: normal;
+    font: 600 16px "Axiforma", sans-serif;
 }
 
 .error-message {
     color: var(--error-color);
-    font-size: 12px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 150%;
+    font: 400 12px/150% "Axiforma", sans-serif;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -4286,9 +4146,7 @@ margin-top: 10px;
     right: 20px;
     padding: 12px 24px;
     border-radius: 8px;
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
+    font: 400 14px "Axiforma", sans-serif;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -4301,12 +4159,12 @@ margin-top: 10px;
 }
 
 .notification--success {
-    background-color: var(--success-color);
+    background: var(--success-color);
     color: var(--text-light);
 }
 
 .notification--error {
-    background-color: var(--error-color);
+    background: var(--error-color);
     color: var(--text-light);
 }
 
@@ -4361,7 +4219,7 @@ margin-top: 10px;
 }
 
 .quality-modal__close:hover {
-    background-color: var(--bg-light);
+    background: var(--bg-light);
 }
 
 .quality-modal__close-icon {
@@ -4371,10 +4229,7 @@ margin-top: 10px;
 
 .quality-modal__title {
     color: var(--text-primary);
-    font-size: 24px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 700;
-    line-height: 120%;
+    font: 700 24px/120% "Axiforma", sans-serif;
     margin-bottom: 24px;
 }
 
@@ -4384,23 +4239,14 @@ margin-top: 10px;
 
 .quality-modal__subtitle {
     color: var(--text-primary);
-    font-size: 18px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 600;
-    line-height: 130%;
+    font: 600 18px/130% "Axiforma", sans-serif;
     margin-bottom: 8px;
 }
 
 .quality-modal__text {
     color: var(--text-body);
-    font-size: 14px;
-    font-family: "Axiforma", sans-serif;
-    font-weight: 400;
-    line-height: 150%;
+    font: 400 14px/150% "Axiforma", sans-serif;
 }
-
-/* #endregion */
-
 /* #region Стили страницы игр */
 
 .games {

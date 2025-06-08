@@ -20,7 +20,6 @@
                             перед публикацией вашего проекта.
                         </p>
                         <form method="post" class="upload-form" id="upload-game-form" enctype="multipart/form-data">
-                            <!--Не работает валидация-->
                             <div asp-validation-summary="All" style="color:red"></div>
 
                             <div class="upload-form__group">
@@ -36,7 +35,6 @@
                                 </div>
                             </div>
 
-                            <!--У нас только одно короткое (до 200) описание игры-->
                             <div class="upload-form__group">
                                 <label for="game-short-description" class="upload-form__label">
                                     Краткое описание игры
@@ -53,22 +51,6 @@
                                 </div>
                             </div>
 
-                            <!--Это нужно удалить вместе с js, от сюда-->
-                            <div class="upload-form__group">
-                                <label for="game-description" class="upload-form__label">
-                                    Описание игры <span class="required">*</span>
-                                </label>
-                                <div class="upload-form__input-wrapper">
-                                    <div class="input-field input-field--textarea">
-                                        <textarea id="game-description" name="description"
-                                                  class="input-field__textarea" placeholder="Расскажите подробнее об игре"
-                                                  required></textarea>
-                                    </div>
-                                    <span id="description-error" class="error-message"></span>
-                                </div>
-                            </div>
-                            <!--Это нужно удалить, до сюда-->
-
                             <div class="upload-form__group">
                                 <label for="game-rules" class="upload-form__label">
                                     Правила игры <span class="required">*</span>
@@ -82,7 +64,6 @@
                                 </div>
                             </div>
 
-                            <!--categories у нас не категории, а скиллы. SkillsLearning-->
                             <div class="upload-form__group">
                                 <label for="game-skillsLearning" class="upload-form__label">
                                     Развиваемые навыки <span class="required">*</span>
@@ -110,7 +91,6 @@
                                 </div>
                             </div>
 
-                            <!--Пока что просто висит-->
                             <div class="upload-form__group">
                                 <label for="game-keywords" class="upload-form__label">Ключевые слова</label>
                                 <div class="upload-form__input-wrapper">
@@ -237,7 +217,7 @@
                                                 </div>
                                                 <input type="file" asp-for="UploadedGame" id="game-file-file" name="UploadedGame"
                                                        class="input-field__input"
-                                                       accept=".msi,.jpg" hidden>
+                                                       accept=".msi" hidden>
                                             </div>
                                         </label>
                                         <div class="file-upload__previews" id="file-preview"></div>
@@ -287,7 +267,7 @@
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
                                         <input type="url" asp-for="VideoUrl" id="game-video" name="VideoUrl" class="input-field__input"
-                                               placeholder="Вставьте URL адресс видео">
+                                               placeholder="Вставьте URL адрес видео">
                                     </div>
                                     <span id="video-error" class="error-message"></span>
                                 </div>
