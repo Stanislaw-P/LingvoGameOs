@@ -11,7 +11,7 @@ namespace LingvoGameOs.Db.Models
 		public int GameId { get; set; }
 		public Game? Game { get; set; }
 
-		public int GameTypeId { get; set; }
-		public SkillLearning? GameType { get; set; }
+		public int SkillLearningId { get; set; }
+		public SkillLearning? SkillLearning { get; set; }
 	}
 }
