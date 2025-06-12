@@ -39,9 +39,9 @@ namespace LingvoGameOs.Db
                 .WithMany(gt => gt.Games)
                 .UsingEntity<GameSkillLearning>(
                     j => j
-                        .HasOne(gt => gt.GameType)  // Настраиваем связь с GameType
+                        .HasOne(gt => gt.SkillLearning)  // Настраиваем связь с GameType
                         .WithMany()
-                        .HasForeignKey(gt => gt.GameTypeId),  // Явно указываем внешний ключ
+                        .HasForeignKey(gt => gt.SkillLearningId),  // Явно указываем внешний ключ
 
                     j => j
                         .HasOne(g => g.Game)  // Настраиваем связь с Game
@@ -50,7 +50,7 @@ namespace LingvoGameOs.Db
 
                     j => j
                         .ToTable("GameSkillLearning")
-                        .HasKey(t => new { t.GameId, t.GameTypeId }) // Составной первичный ключ
+                        .HasKey(t => new { t.GameId, t.SkillLearningId }) // Составной первичный ключ
                 );
         }
     }

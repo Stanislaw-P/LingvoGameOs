@@ -52,15 +52,80 @@ namespace LingvoGameOs.Controllers
             {
                 var games = await gamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevGames = games;
-                return View(user);
+
+                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
+                
+                if (userId == userManager.GetUserAsync(User).Result.Id)
+                {
+                    userViewModel.IsMyProfile = true;
+                }
+
+                return View(userViewModel);
             }
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        public IActionResult Profile(ProfileViewModel profile)
+        public async Task<IActionResult> SettingsAsync(string userId)
         {
-            return View();
+            var user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
+                user.DevGames = games;
+                if (userId == userManager.GetUserAsync(User).Result.Id)
+                {
+                    return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames});
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> SettingsAsync(UserViewModel settings)
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var games = await gamesRepository.TryGetUserDevGamesAsync(user);
+            user.DevGames = games;
+            settings.PlayerGames = user.PlayerGames;
+            settings.UserGames = user.UserGames;
+            settings.DevGames = user.DevGames;
+            if (ModelState.IsValid)
+            {
+                if (user.UserName != settings.UserName)
+                {
+                    var newEmailUser = await userManager.FindByEmailAsync(settings.UserName);
+                    if (newEmailUser == null)
+                    {
+                        var token = await userManager.GenerateChangeEmailTokenAsync(user, settings.UserName);
+                        var result = await userManager.ChangeEmailAsync(user, settings.UserName, token);
+                        user.UserName = settings.UserName;
+                        user.NormalizedUserName = userManager.NormalizeName(settings.UserName);
+                        user.EmailConfirmed = false;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("EmailIsNotAvailable", "Такой email уже используется");
+                    }
+                }
+                if (user.Name != settings.Name)
+                {
+                    user.Name = settings.Name;
+                }
+                if (user.Surname != settings.Surname)
+                {
+                    user.Surname = settings.Surname;
+                }
+                if (user.Description != settings.Description)
+                {
+                    user.Description = settings.Description;
+                }
+                await userManager.UpdateAsync(user);
+                await signInManager.RefreshSignInAsync(user);
+            }
+            return View(settings);
         }
     }
 }

@@ -7,14 +7,14 @@ import { showError } from './dom.js';
 function initializeUploadForm() {
     // Form and dropdown elements
     const form = document.querySelector('#upload-game-form');
-    const categoriesDropdown = document.querySelector('#categories-dropdown');
-    const categoriesSelected = categoriesDropdown.querySelector('.custom-dropdown__selected');
-    const categoriesMenu = categoriesDropdown.querySelector('.custom-dropdown__menu');
-    const categoriesSearch = categoriesDropdown.querySelector('.custom-dropdown__search');
-    const categoriesOptions = categoriesDropdown.querySelectorAll('.custom-dropdown__option');
-    const selectedCategoriesList = document.querySelector('#selected-categories-list');
-    const categoriesInput = document.querySelector('#game-categories');
-    const categoriesError = document.querySelector('#categories-error');
+    const skillsLearningDropdown = document.querySelector('#skillsLearning-dropdown'); //m
+    const skillsLearningSelected = skillsLearningDropdown.querySelector('.custom-dropdown__selected');
+    const skillsLearningMenu = skillsLearningDropdown.querySelector('.custom-dropdown__menu');
+    const skillsLearningSearch = skillsLearningDropdown.querySelector('.custom-dropdown__search');
+    const skillsLearningOptions = skillsLearningDropdown.querySelectorAll('.custom-dropdown__option');
+    const selectedskillsLearningList = document.querySelector('#selected-skillsLearning-list'); //m
+    const skillsLearningInput = document.querySelector('#game-skillsLearning');//m
+    const skillsLearningError = document.querySelector('#skillsLearning-error');//m
     const keywordsInput = document.querySelector('#game-keywords');
     const keywordsList = document.querySelector('#keywords-list');
     const coverDropzone = document.querySelector('#cover-dropzone');
@@ -36,22 +36,24 @@ function initializeUploadForm() {
     const fileUrlGroup = document.querySelector('#game-file-url-group');
     const fileUploadGroup = document.querySelector('#game-file-upload-group');
     let lastFocusedElement = null;
-    let selectedCategories = [];
+    let selectedSkillsLearning = [];
     let selectedPlatforms = [];
 
     // Allowed file types and sizes
     const ALLOWED_GAME_TYPES = [
-        'application/zip',
-        'application/x-rar-compressed',
-        'application/x-7z-compressed',
-        'application/vnd.android.package-archive'
+        'image/jpeg', // Это я тестил работу загрузки файла. Можно убрать уже
+        //Все типы ниже не работают у меня
+        'application/x-msdownload',  // Основной MIME-тип для .msi
+        'application/x-msi',        // Альтернативный MIME-тип для .msi
+        'application/octet-stream'  // Общий тип для бинарных файлов (на случай, если .msi определится так)
+
     ];
-    const ALLOWED_GAME_EXTENSIONS = ['.zip', '.rar', '.7z', '.apk', '.exe', '.app', '.dmg'];
+    const ALLOWED_GAME_EXTENSIONS = ['.msi', '.jpg'];
     const MAX_GAME_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
     const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     const MAX_COVER_SIZE = 30 * 1024 * 1024; // 30MB
 
-    // Toggle dropdown (generic for both categories and platforms)
+    // Toggle dropdown (generic for both skillsLearning and platforms)   
     function toggleDropdown(selected, menu) {
         if (!selected || !menu) return; // Prevent null errors
         const isActive = selected.classList.contains('active');
@@ -64,11 +66,11 @@ function initializeUploadForm() {
         }
     }
 
-    // Update selected items (generic for categories and platforms)
+    // Update selected items (generic for skillsLearning and platforms)  //m
     function updateSelectedItems(list, input, selectedItems, options, placeholderElement) {
         list.innerHTML = '';
         input.value = selectedItems.join(',');
-        placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформу' : 'категории'}`;
+        placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформу' : 'навыки'}`;
 
         selectedItems.forEach(value => {
             const option = Array.from(options).find(opt => opt.dataset.value === value);
@@ -92,16 +94,16 @@ function initializeUploadForm() {
         if (input.id === 'game-platform') {
             fileUrlGroup.style.display = 'none';
             fileUploadGroup.style.display = 'none';
-            if (selectedItems.includes('web-mobile') || selectedItems.includes('web-desktop')) {
+            if (selectedItems.includes('Web-Mobile') || selectedItems.includes('Web-Desktop')) {
                 fileUrlGroup.style.display = 'block';
             }
-            if (selectedItems.includes('desktop')) {
+            if (selectedItems.includes('Desktop')) {
                 fileUploadGroup.style.display = 'block';
             }
         }
     }
 
-    // Add item (generic for categories and platforms)
+    // Add item (generic for skillsLearning and platforms)  
     function addItem(value, text, selectedItems, options, list, input, placeholderElement, isPlatform = false, selected = null, menu = null) {
         if (value === 'select-all' && !isPlatform) {
             selectedItems.length = 0;
@@ -109,8 +111,8 @@ function initializeUploadForm() {
                 .filter(opt => opt.dataset.value !== 'select-all')
                 .forEach(opt => selectedItems.push(opt.dataset.value));
             if (selected && menu) {
-                toggleDropdown(selected, menu); // Close dropdown for categories on "select-all"
-            }
+                toggleDropdown(selected, menu); // Close dropdown for skillsLearning on "select-all" 
+            } 
         } else {
             if (isPlatform) {
                 selectedItems.length = 0; // Clear previous platform selection
@@ -125,13 +127,13 @@ function initializeUploadForm() {
         }
     }
 
-    // Remove item (generic for categories and platforms)
+    // Remove item (generic for skillsLearning and platforms) 
     function removeItem(value, selectedItems, options, list, input, placeholderElement) {
         selectedItems.splice(selectedItems.indexOf(value), 1);
         updateSelectedItems(list, input, selectedItems, options, placeholderElement);
     }
 
-    // Filter items (generic for categories and platforms)
+    // Filter items (generic for skillsLearning and platforms)  
     function filterItems(searchInput, options) {
         if (!searchInput) return; // Skip if no search input
         const query = searchInput.value.toLowerCase();
@@ -141,48 +143,48 @@ function initializeUploadForm() {
         });
     }
 
-    // Categories event listeners
-    categoriesSelected.addEventListener('click', () => toggleDropdown(categoriesSelected, categoriesMenu));
-    categoriesSelected.addEventListener('keydown', (e) => {
+    // SkillsLearning event listeners  
+    skillsLearningSelected.addEventListener('click', () => toggleDropdown(skillsLearningSelected, skillsLearningMenu));
+    skillsLearningSelected.addEventListener('keydown', (e) => { 
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            toggleDropdown(categoriesSelected, categoriesMenu);
+            toggleDropdown(skillsLearningSelected, skillsLearningMenu);
         }
     });
 
-    categoriesSearch.addEventListener('input', () => filterItems(categoriesSearch, categoriesOptions));
-    categoriesSearch.addEventListener('keydown', (e) => {
+    skillsLearningSearch.addEventListener('input', () => filterItems(skillsLearningSearch, skillsLearningOptions));
+    skillsLearningSearch.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            categoriesSelected.classList.remove('active');
-            categoriesMenu.classList.remove('active');
-            categoriesSelected.setAttribute('aria-expanded', 'false');
-            categoriesMenu.setAttribute('aria-hidden', 'true');
-            categoriesSelected.focus();
+            skillsLearningSelected.classList.remove('active');
+            skillsLearningMenu.classList.remove('active');
+            skillsLearningSelected.setAttribute('aria-expanded', 'false');
+            skillsLearningMenu.setAttribute('aria-hidden', 'true');
+            skillsLearningSelected.focus();
         }
     });
 
-    categoriesOptions.forEach(option => {
+    skillsLearningOptions.forEach(option => {
         option.addEventListener('click', () => {
             const value = option.dataset.value;
             const text = option.textContent.trim();
-            addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'), false, categoriesSelected, categoriesMenu);
+            addItem(value, text, selectedSkillsLearning, skillsLearningOptions, selectedskillsLearningList, skillsLearningInput, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'), false, skillsLearningSelected, skillsLearningMenu);
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const value = option.dataset.value;
                 const text = option.textContent.trim();
-                addItem(value, text, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'), false, categoriesSelected, categoriesMenu);
-                toggleDropdown(categoriesSelected, categoriesMenu); // Close dropdown on Enter
+                addItem(value, text, selectedSkillsLearning, skillsLearningOptions, selectedskillsLearningList, skillsLearningInput, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'), false, skillsLearningSelected, skillsLearningMenu);
+                toggleDropdown(skillsLearningSelected, skillsLearningMenu); // Close dropdown on Enter
             } else if (e.key === 'ArrowDown') {
                 e.preventDefault();
-                const items = Array.from(categoriesOptions);
+                const items = Array.from(skillsLearningOptions);
                 const index = items.indexOf(option);
                 const next = index < items.length - 1 ? items[index + 1] : items[0];
                 next.focus();
             } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
-                const items = Array.from(categoriesOptions);
+                const items = Array.from(skillsLearningOptions);
                 const index = items.indexOf(option);
                 const prev = index > 0 ? items[index - 1] : items[items.length - 1];
                 prev.focus();
@@ -190,12 +192,12 @@ function initializeUploadForm() {
         });
     });
 
-    selectedCategoriesList.addEventListener('click', (e) => {
+    selectedskillsLearningList.addEventListener('click', (e) => {
         const removeButton = e.target.closest('.selected-item__remove');
         if (removeButton) {
             const item = removeButton.parentElement;
             const value = item.dataset.value;
-            removeItem(value, selectedCategories, categoriesOptions, selectedCategoriesList, categoriesInput, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+            removeItem(value, selectedSkillsLearning, skillsLearningOptions, selectedskillsLearningList, skillsLearningInput, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
         }
     });
 
@@ -259,11 +261,11 @@ function initializeUploadForm() {
     });
 
     document.addEventListener('click', (e) => {
-        if (!categoriesDropdown.contains(e.target)) {
-            categoriesSelected.classList.remove('active');
-            categoriesMenu.classList.remove('active');
-            categoriesSelected.setAttribute('aria-expanded', 'false');
-            categoriesMenu.setAttribute('aria-hidden', 'true');
+        if (!skillsLearningDropdown.contains(e.target)) {
+            skillsLearningSelected.classList.remove('active');
+            skillsLearningMenu.classList.remove('active');
+            skillsLearningSelected.setAttribute('aria-expanded', 'false');
+            skillsLearningMenu.setAttribute('aria-hidden', 'true');
         }
         if (!platformDropdown.contains(e.target)) {
             platformSelected.classList.remove('active');
@@ -275,10 +277,10 @@ function initializeUploadForm() {
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            categoriesSelected.classList.remove('active');
-            categoriesMenu.classList.remove('active');
-            categoriesSelected.setAttribute('aria-expanded', 'false');
-            categoriesMenu.setAttribute('aria-hidden', 'true');
+            skillsLearningSelected.classList.remove('active');
+            skillsLearningMenu.classList.remove('active');
+            skillsLearningSelected.setAttribute('aria-expanded', 'false');
+            skillsLearningMenu.setAttribute('aria-hidden', 'true');
             platformSelected.classList.remove('active');
             platformMenu.classList.remove('active');
             platformSelected.setAttribute('aria-expanded', 'false');
@@ -297,7 +299,7 @@ function initializeUploadForm() {
 
     // Handle tag removal from keywordsList
     keywordsList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('category-item__remove')) {
+        if (e.target.classList.contains('skillsLearning-item__remove')) {
             e.target.parentElement.remove();
         }
     });
@@ -379,8 +381,8 @@ function initializeUploadForm() {
         clearErrors();
 
         const formData = new FormData(form);
-        const keywords = Array.from(keywordsList.querySelectorAll('.category-item')).map(item => item.dataset.value);
-        const platforms = formData.get('platform').split(',').filter(p => p);
+        const keywords = Array.from(keywordsList.querySelectorAll('.skillsLearning-item')).map(item => item.dataset.value);
+        const platforms = formData.get('GamePlatform').split(',').filter(p => p);
 
         // Validate required fields
         if (!formData.get('title').trim()) {
@@ -408,8 +410,8 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (selectedCategories.length === 0) {
-            showFormError('categories-error', 'Необходимо выбрать хотя бы одну категорию');
+        if (selectedSkillsLearning.length === 0) {
+            showFormError('skillsLearning-error', 'Необходимо выбрать хотя б один навык');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
@@ -418,15 +420,15 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (platforms.includes('web-mobile') || platforms.includes('web-desktop')) {
-            if (!formData.get('file-url').trim()) {
+        if (platforms.includes('Web-Mobile') || platforms.includes('Web-Desktop')) {
+            if (!formData.get('GameURL').trim()) {
                 showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
             }
         }
-        if (platforms.includes('desktop')) {
-            if (!formData.get('file-file')) {
+        if (platforms.includes('Desktop')) {
+            if (!formData.get('UploadedGame')) {
                 showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
                 submitButton.setAttribute('aria-busy', 'false');
                 return;
@@ -442,12 +444,13 @@ function initializeUploadForm() {
             }
         }
 
-        formData.set('categories', JSON.stringify(selectedCategories));
+        formData.set('skillsLearning', JSON.stringify(selectedSkillsLearning)); 
         formData.set('keywords', JSON.stringify(keywords));
         formData.set('platform', JSON.stringify(platforms));
 
         try {
-            const response = await fetch(`${API_URL}/games/upload`, {
+            //const response = await fetch(`${API_URL}/upload/index`, {
+            const response = await fetch(`/upload/index`, {
                 method: 'POST',
                 body: formData
             });
@@ -457,11 +460,12 @@ function initializeUploadForm() {
                 throw new Error(errorData.message || 'Ошибка загрузки игры');
             }
 
+            // Срабатывает, когда игры не загружена по причине валидации серверной
             showNotification('Игра успешно загружена!', 'success');
             form.reset();
-            selectedCategories = [];
+            selectedSkillsLearning = [];
             selectedPlatforms = [];
-            updateSelectedItems(selectedCategoriesList, categoriesInput, selectedCategories, categoriesOptions, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+            updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
             updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
             keywordsList.innerHTML = '';
             document.querySelector('#cover-preview').innerHTML = '';
@@ -477,7 +481,7 @@ function initializeUploadForm() {
     });
 
     // Initialize dropdowns
-    updateSelectedItems(selectedCategoriesList, categoriesInput, selectedCategories, categoriesOptions, categoriesSelected.querySelector('.custom-dropdown__placeholder'));
+    updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
     updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
 }
 
@@ -485,15 +489,15 @@ function initializeUploadForm() {
  * Adds a tag to the specified list
  * @param {HTMLElement} list - The list to add the tag to
  * @param {string} value - The tag value
- * @param {string} type - The type of tag (category/keyword)
+ * @param {string} type - The type of tag (skillsLearning/keyword)
  */
 function addTag(list, value, type) {
     const tag = document.createElement('span');
-    tag.className = 'category-item';
+    tag.className = 'skillsLearning-item';
     tag.dataset.value = value;
     tag.innerHTML = `
         ${value}
-        <span class="category-item__remove" role="button" aria-label="Удалить ${value}">×</span>
+        <span class="skillsLearning-item__remove" role="button" aria-label="Удалить ${value}">×</span> 
     `;
     list.appendChild(tag);
 }
@@ -574,7 +578,7 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
     fileItem.innerHTML = `
         <span class="file-upload__file-name">${file.name}</span>
         <span class="file-upload__file-size">${formatFileSize(file.size)}</span>
-        <img src="icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${file.name}" />
+        <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${file.name}" />
     `;
     preview.appendChild(fileItem);
 

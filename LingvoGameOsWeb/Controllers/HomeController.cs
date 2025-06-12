@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LingvoGameOs.Models;
 using LingvoGameOs.Db;
+using System.Text.RegularExpressions;
 
 
 namespace LingvoGameOs.Controllers;
@@ -20,7 +21,25 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var games = await gamesRepository.GetAllAsync();
-        ViewBag.GameTypes = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
         return View(games);
+    }
+
+    public async Task<IActionResult> Search(string gameName)
+    {
+        var games = await gamesRepository.GetAllAsync();
+        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+
+        if (gameName != null)
+        {
+            games = games.Where(game => Regex.IsMatch(game.Title, gameName, RegexOptions.IgnoreCase)).ToList();
+            ViewBag.GameName = gameName;
+        }
+        return View("Index", games);
+    }
+
+    public async Task<IActionResult> News()
+    {
+        return View();
     }
 }

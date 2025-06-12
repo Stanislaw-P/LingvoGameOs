@@ -36,7 +36,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("GameURL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImagesURLs")
@@ -85,12 +84,12 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("GameTypeId")
+                    b.Property<int>("SkillLearningId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("GameId", "GameTypeId");
+                    b.HasKey("GameId", "SkillLearningId");
 
-                    b.HasIndex("GameTypeId");
+                    b.HasIndex("SkillLearningId");
 
                     b.ToTable("GameSkillLearning", (string)null);
                 });
@@ -424,15 +423,15 @@ namespace LingvoGameOs.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LingvoGameOs.Db.Models.SkillLearning", "GameType")
+                    b.HasOne("LingvoGameOs.Db.Models.SkillLearning", "SkillLearning")
                         .WithMany()
-                        .HasForeignKey("GameTypeId")
+                        .HasForeignKey("SkillLearningId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Game");
 
-                    b.Navigation("GameType");
+                    b.Navigation("SkillLearning");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.PlayerGame", b =>

@@ -71,7 +71,7 @@ namespace LingvoGameOs.Db
                 var gameType3 = new SkillLearning { Id = 3, Name = "Аудирование" };
                 var gameType4 = new SkillLearning { Id = 4, Name = "Чтение" };
                 var gameType5 = new SkillLearning { Id = 5, Name = "Говорение" };
-                var gameType6 = new SkillLearning { Id = 6, Name = "Диктанта" };
+                var gameType6 = new SkillLearning { Id = 6, Name = "Диктант" };
                 if (!context.SkillsLearning.Any())
                 {
                     await context.SkillsLearning.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
@@ -94,8 +94,8 @@ namespace LingvoGameOs.Db
                     Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
                     Rules = "Есть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
                     AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.UtcNow,
-                    LastUpdateDate = DateTime.UtcNow,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.6,
@@ -118,8 +118,8 @@ namespace LingvoGameOs.Db
                     Description = "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
                     Rules = "Слушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
                     AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.UtcNow,
-                    LastUpdateDate = DateTime.UtcNow,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform1.Id,
                     RaitingPlayers = 4.4,
@@ -141,8 +141,8 @@ namespace LingvoGameOs.Db
                     Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
                     Rules = "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
                     AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.UtcNow,
-                    LastUpdateDate = DateTime.UtcNow,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
                     LanguageLevelId = languageLevelIntermediate.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
@@ -165,8 +165,8 @@ namespace LingvoGameOs.Db
                     Rules = "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n" +
                 "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
                     AuthorId = devDavid.Id,
-                    PublicationDate = DateTime.UtcNow,
-                    LastUpdateDate = DateTime.UtcNow,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,

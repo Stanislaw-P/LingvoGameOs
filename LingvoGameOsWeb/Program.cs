@@ -18,7 +18,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // указываем тип пользователя и роли
 builder.Services.AddIdentity<User, IdentityRole>()
                 // устанавливаем тип хранилища - наш контекст
-                .AddEntityFrameworkStores<DatabaseContext>();
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
 
 // подключение контекста бд
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionString));
