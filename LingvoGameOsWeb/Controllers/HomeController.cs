@@ -23,4 +23,9 @@ public class HomeController : Controller
         ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
         return View(games);
     }
+
+    public async Task<IActionResult> News()
+    {
+        return View();
+    }
 }

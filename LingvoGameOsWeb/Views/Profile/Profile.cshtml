@@ -210,8 +210,8 @@
                                         <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
                                         @if (Model.IsMyProfile)
                                         {
-                                            <a href="analytics_game@(game.Id).html" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                            <a href="edit_mygame@(game.Id).html" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                            <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
+                                            <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
                                                 <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
                                             </a>
                                         }
@@ -238,7 +238,7 @@
                 <header class="recent-games__header">
                     <h3 class="recent-games__title">Недавние игры</h3>
                     <div class="recent-games__controls">
-                        <a href="/games" class="recent-games__view-all-button">Посмотреть все</a>
+                        <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
                         @{
                             var placeholderGames = new[]
                             {
@@ -306,21 +306,21 @@
             <span class="game-stats__points">Баллы: 1200</span>
             <span class="game-stats__ranking">Рейтинг: 1523</span>
             <span class="game-stats__level">Уровень: 3</span>
-            <a href="leaderboard_game1.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
+            <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
         </div>
         <div class="game-stats__item">
             <span class="game-stats__name">"Игра 2: Грамматический Штурм"</span>
             <span class="game-stats__points">Баллы: 900</span>
             <span class="game-stats__ranking">Рейтинг: 1345</span>
             <span class="game-stats__level">Уровень: 2</span>
-            <a href="leaderboard_game2.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
+            <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
         </div>
         <div class="game-stats__item">
             <span class="game-stats__name">"Игра 3: Уши на Макушке"</span>
             <span class="game-stats__points">Баллы: 600</span>
             <span class="game-stats__ranking">Рейтинг: 987</span>
             <span class="game-stats__level">Уровень: 1</span>
-            <a href="leaderboard_game3.html" class="game-stats__leaderboard-link">Таблица лидеров</a>
+            <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
         </div>
     </div>
 </div>

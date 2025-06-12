@@ -2142,7 +2142,7 @@ margin-top: 10px;
 /* #region Стили подвала */
 .footer {
     margin-top: 100px;
-    margin-bottom: 50px;
+/*    margin-bottom: 50px;*/
     width: 100%;
     left: 0;
     top: 0;
@@ -2150,12 +2150,16 @@ margin-top: 10px;
 }
 
 .footer__container {
+    max-width: 100vw;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     background-color: var(--bg-light);
-    padding: 69px 54px 69px 110px;
-    border-radius: 10px 90px 10px 90px;
+    padding-right: 54px;
+    padding-left: 220px;
+    padding-top: 69px;
+/*    padding-bottom: 69px;*/
+    /*    border-radius: 10px 90px 10px 90px;*/
 }
 
 .footer__info {

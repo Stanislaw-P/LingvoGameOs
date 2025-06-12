@@ -32,7 +32,7 @@
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     
-    @await Html.PartialAsync("_ValidationScriptsPartial");
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 
     @await RenderSectionAsync("Scripts", required: false)
     <script asp-src-include="~/js/**/*.js" type="module"></script>
