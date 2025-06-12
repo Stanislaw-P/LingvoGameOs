@@ -18,21 +18,21 @@
             <div class="game-hero__slides" style="display: flex; overflow: hidden;">
                 <div class="game-hero__slide">
                     <img src="/img/game-banner.png" alt="Game screenshot 1"
-                         class="game-hero__slide-image">
+                    class="game-hero__slide-image">
                 </div>
                 <div class="game-hero__slide game-hero__video-slide">
                     <iframe src="https://vk.com/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
-                            width="640" height="360"
-                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                            frameborder="0" allowfullscreen></iframe>
+                    width="640" height="360"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                    frameborder="0" allowfullscreen></iframe>
                 </div>
                 <div class="game-hero__slide">
                     <img src="/img/games/mountain-labyrinth-banner-2.png" alt="Game screenshot 2"
-                         class="game-hero__slide-image">
+                    class="game-hero__slide-image">
                 </div>
                 <div class="game-hero__slide">
                     <img src="/img/games/mountain-labyrinth-banner-3.png" alt="Game screenshot 3"
-                         class="game-hero__slide-image">
+                    class="game-hero__slide-image">
                 </div>
             </div>
             <button class="game-hero__carousel-button game-hero__carousel-prev">
@@ -68,11 +68,20 @@
 
 <section class="games">
     <div class="games__filter">
-        <div class="games__filter-search">
-            <input type="text" class="email-prompt-text-style games__search-input"
-                   placeholder="Найти игру...">
-            <button class="games__search-button">Найти</button>
-        </div>
+        <form method="post" asp-controller="Home" asp-action="Search" class="games__filter-search">
+            @if (ViewBag.GameName != null)
+            {
+                <input type="text" class="email-prompt-text-style games__search-input"
+                placeholder="Найти игру..." name="gameName" value="@ViewBag.GameName">
+            }
+            else
+            {
+                <input type="text" class="email-prompt-text-style games__search-input"
+                placeholder="Найти игру..." name="gameName">
+            }
+
+            <button type="submit" class="games__search-button">Найти</button>
+        </form>
         <div class="games__filter-dropdowns">
             <div class="games__dropdown">
                 <button class="games__dropdown-toggle">
@@ -118,7 +127,7 @@
             <div class="games__dropdown">
                 <button class="games__dropdown-toggle">
                     <span>Рейтинг</span>
-                    <img src="icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
                 </button>
                 <div class="games__dropdown-menu">
                     <ul class="games__dropdown-list">
@@ -136,7 +145,14 @@
             </div>
         </div>
     </div>
-    <h2 class="games__title">Все игры</h2>
+    @if (ViewBag.GameName != null)
+    {
+        <h2 class="games__title">Игры по запросу: @ViewBag.GameName</h2>
+    }
+    else
+    {
+        <h2 class="games__title">Все игры</h2>
+    }
     <div class="games__list">
         @foreach (var game in Model)
         {
