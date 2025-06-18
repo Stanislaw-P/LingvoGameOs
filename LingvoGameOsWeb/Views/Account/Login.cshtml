@@ -1,40 +1,270 @@
 ﻿@model LoginViewModel
 
 @{
+    Layout = null; // Remove header and footer for this page only
     ViewData["Title"] = "Вход";
 }
 
-<div class="content__row">
-    <!-- Профиль пользователя -->
-    <div class="profile">
-        <h3 class="profile__title">Вход</h3>
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+body {
+    min-height: 100vh;
+    min-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    background: url('/img/b11ed6d9-17da-4307-9a85-eebe93cdb78e.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center; /* Вертикальное центрирование */
+    justify-content: center; /* Горизонтальное центрирование */
+}
 
-        <form method="post" class="profile__form">
+.login-main-block {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
+    border-radius: 10px 70px 10px 70px;
+    padding: 40px 32px 32px 32px;
+    width: 80%; /* Ограничиваем ширину, например, 80% от viewport */
+    max-width: 1200px; /* Максимальная ширина для больших экранов */
+    max-height: calc(100vh - 48px); /* Ограничиваем высоту */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 32px;
+    font-family: 'Axiforma', Arial, sans-serif;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+.login-main-left {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    min-width: 0;
+    font-family: 'Axiforma', Arial, sans-serif;
+    overflow: hidden;
+}
+.login-main-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 50%;
+    overflow: hidden;
+}
+.login-photo-inside {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 651/716;
+    border-radius: 10px 70px 10px 70px;
+    object-fit: cover;
+    box-shadow: 0 4px 24px rgba(44, 81, 174, 0.10);
+    border: 3px solid #f8fafe;
+    background: #f8fafe;
+    display: block;
+}
+.login-back-btn {
+    position: absolute;
+    top: 32px;
+    left: 40px;
+    background: #f8fafe;
+    color: #2c51ae;
+    font-family: 'Axiforma', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 73px;
+    padding: 12px 32px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(44, 81, 174, 0.08);
+    transition: background 0.2s, color 0.2s;
+    z-index: 2;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.login-back-btn:hover {
+    background: #e6ecfa;
+    color: #4666d0;
+}
+.login-logo-img {
+    width: 60px;
+    height: auto;
+    margin-bottom: 4px;
+}
+.login-logo-text {
+    font-family: 'Axiforma', Arial, sans-serif;
+    font-size: 22px;
+    color: #2c51ae;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+.login-title {
+    font-size: 32px;
+    color: #2c51ae;
+    font-family: 'Axiforma', Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12px;
+}
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-label {
+    font-size: 15px;
+    color: #7a7a7a;
+    font-weight: 500;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 73px;
+    border: 1px solid #e6ecfa;
+    background: #f8fafe;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.2s;
+    box-sizing: border-box;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-input:focus {
+    border: 1.5px solid #2c51ae;
+}
+.login-btn-main {
+    width: 100%;
+    background: #2c51ae;
+    color: #fff;
+    border: none;
+    border-radius: 73px;
+    padding: 15px 0;
+    font-size: 19px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(44, 81, 174, 0.08);
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-btn-main:hover {
+    background: #4666d0;
+}
+.login-btn-vk {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #f8fafe;
+    color: #2c51ae;
+    border: 1.5px solid #e6ecfa;
+    border-radius: 73px;
+    padding: 13px 0;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 2px;
+    transition: border 0.2s, background 0.2s;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-btn-vk:hover {
+    border: 1.5px solid #2c51ae;
+    background: #e6ecfa;
+}
+.login-btn-icon {
+    width: 40px;
+    height: 40px;
+}
+.login-agreement {
+    font-size: 12px;
+    color: #7a7a7a;
+    text-align: center;
+    margin-top: 2px;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-agreement a {
+    color: #2c51ae;
+    text-decoration: underline;
+}
+.login-bottom-link {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 15px;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-bottom-link a {
+    color: #2c51ae;
+    text-decoration: underline;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+.login-validation {
+    color: #e74c3c;
+    font-size: 13px;
+    font-family: 'Axiforma', Arial, sans-serif;
+}
+</style>
+
+<div class="login-main-block">
+    <a href="/" class="login-back-btn">Назад</a>
+    <div class="login-main-left">
+        <h1 class="login-title">Вход</h1>
+        <form method="post" class="login-form">
             <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
-
-            <div class="profile__field">
-                <label asp-for="UserName" class="profile__label">Email</label><br />
-                <input type="email" asp-for="UserName" class="profile__input" required />
-                <span asp-validation-for="UserName" />
+            <div class="login-field">
+                <label asp-for="UserName" class="login-label">Введите электронную почту</label>
+                <input type="email" asp-for="UserName" class="login-input" placeholder="Введите электронную почту" required />
+                <span asp-validation-for="UserName" class="login-validation" />
             </div>
-
-            <div class="profile__field">
-                <label asp-for="Password" class="profile__label">Пароль</label><br />
-                <input type="password" asp-for="Password" class="profile__input" required />
-                <span asp-validation-for="Password" />
+            <div class="login-field">
+                <label asp-for="Password" class="login-label">Введите пароль</label>
+                <input type="password" asp-for="Password" class="login-input" required />
+                <span asp-validation-for="Password" class="login-validation" />
             </div>
-
-            <div class="profile__field">
-                <label asp-for="RememberMe" class="profile__label">Запомнить меня <input type="checkbox" asp-for="RememberMe" name="RememberMe" class="form-check-input" value="true" checked /></label>
-            </div>
-
-            <div class="profile__field">
-                <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрировать новый аккаунт</a>
-            </div>
-
+            <button type="submit" asp-controller="Account" asp-action="Login" class="login-btn-main">Продолжить</button>
+            <button type="button" class="login-btn-vk">
+                <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
+            </button>
+           
             <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
-
-            <button type="submit" asp-controller="Account" asp-action="Login" class="profile__button">Войти</button>
         </form>
+        <div class="login-bottom-link">
+            Ещё не зарегистрированы? <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрироваться</a>
+        </div>
+    </div>
+    <div class="login-main-right">
+        <img src="~/img/Registration.png" alt="Историческая сцена" class="login-photo-inside" />
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Password field is now always visible, so no JS needed for reveal
+    </script>
+}
