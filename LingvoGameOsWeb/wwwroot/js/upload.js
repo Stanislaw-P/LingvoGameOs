@@ -7,14 +7,14 @@ import { showError } from './dom.js';
 function initializeUploadForm() {
     // Form and dropdown elements
     const form = document.querySelector('#upload-game-form');
-    const skillsLearningDropdown = document.querySelector('#skillsLearning-dropdown'); //m
+    const skillsLearningDropdown = document.querySelector('#skillsLearning-dropdown');
     const skillsLearningSelected = skillsLearningDropdown.querySelector('.custom-dropdown__selected');
     const skillsLearningMenu = skillsLearningDropdown.querySelector('.custom-dropdown__menu');
     const skillsLearningSearch = skillsLearningDropdown.querySelector('.custom-dropdown__search');
     const skillsLearningOptions = skillsLearningDropdown.querySelectorAll('.custom-dropdown__option');
-    const selectedskillsLearningList = document.querySelector('#selected-skillsLearning-list'); //m
-    const skillsLearningInput = document.querySelector('#game-skillsLearning');//m
-    const skillsLearningError = document.querySelector('#skillsLearning-error');//m
+    const selectedskillsLearningList = document.querySelector('#selected-skillsLearning-list');
+    const skillsLearningInput = document.querySelector('#game-skillsLearning');
+    const skillsLearningError = document.querySelector('#skillsLearning-error');
     const keywordsInput = document.querySelector('#game-keywords');
     const keywordsList = document.querySelector('#keywords-list');
     const coverDropzone = document.querySelector('#cover-dropzone');
@@ -40,22 +40,14 @@ function initializeUploadForm() {
     let selectedPlatforms = [];
 
     // Allowed file types and sizes
-    const ALLOWED_GAME_TYPES = [
-        'image/jpeg', // Это я тестил работу загрузки файла. Можно убрать уже
-        //Все типы ниже не работают у меня
-        'application/x-msdownload',  // Основной MIME-тип для .msi
-        'application/x-msi',        // Альтернативный MIME-тип для .msi
-        'application/octet-stream'  // Общий тип для бинарных файлов (на случай, если .msi определится так)
-
-    ];
-    const ALLOWED_GAME_EXTENSIONS = ['.msi', '.jpg'];
+    const ALLOWED_GAME_EXTENSIONS = ['.msi'];
     const MAX_GAME_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
     const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     const MAX_COVER_SIZE = 30 * 1024 * 1024; // 30MB
 
-    // Toggle dropdown (generic for both skillsLearning and platforms)   
+    // Toggle dropdown (generic for both skillsLearning and platforms)
     function toggleDropdown(selected, menu) {
-        if (!selected || !menu) return; // Prevent null errors
+        if (!selected || !menu) return;
         const isActive = selected.classList.contains('active');
         selected.classList.toggle('active', !isActive);
         menu.classList.toggle('active', !isActive);
@@ -66,7 +58,7 @@ function initializeUploadForm() {
         }
     }
 
-    // Update selected items (generic for skillsLearning and platforms)  //m
+    // Update selected items (generic for skillsLearning and platforms)
     function updateSelectedItems(list, input, selectedItems, options, placeholderElement) {
         list.innerHTML = '';
         input.value = selectedItems.join(',');
@@ -103,7 +95,7 @@ function initializeUploadForm() {
         }
     }
 
-    // Add item (generic for skillsLearning and platforms)  
+    // Add item (generic for skillsLearning and platforms)
     function addItem(value, text, selectedItems, options, list, input, placeholderElement, isPlatform = false, selected = null, menu = null) {
         if (value === 'select-all' && !isPlatform) {
             selectedItems.length = 0;
@@ -111,11 +103,11 @@ function initializeUploadForm() {
                 .filter(opt => opt.dataset.value !== 'select-all')
                 .forEach(opt => selectedItems.push(opt.dataset.value));
             if (selected && menu) {
-                toggleDropdown(selected, menu); // Close dropdown for skillsLearning on "select-all" 
-            } 
+                toggleDropdown(selected, menu);
+            }
         } else {
             if (isPlatform) {
-                selectedItems.length = 0; // Clear previous platform selection
+                selectedItems.length = 0;
                 selectedItems.push(value);
             } else if (!selectedItems.includes(value)) {
                 selectedItems.push(value);
@@ -123,19 +115,19 @@ function initializeUploadForm() {
         }
         updateSelectedItems(list, input, selectedItems, options, placeholderElement);
         if (isPlatform && selected && menu) {
-            toggleDropdown(selected, menu); // Close platform dropdown
+            toggleDropdown(selected, menu);
         }
     }
 
-    // Remove item (generic for skillsLearning and platforms) 
+    // Remove item (generic for skillsLearning and platforms)
     function removeItem(value, selectedItems, options, list, input, placeholderElement) {
         selectedItems.splice(selectedItems.indexOf(value), 1);
         updateSelectedItems(list, input, selectedItems, options, placeholderElement);
     }
 
-    // Filter items (generic for skillsLearning and platforms)  
+    // Filter items (generic for skillsLearning and platforms)
     function filterItems(searchInput, options) {
-        if (!searchInput) return; // Skip if no search input
+        if (!searchInput) return;
         const query = searchInput.value.toLowerCase();
         options.forEach(option => {
             const text = option.textContent.toLowerCase();
@@ -143,9 +135,9 @@ function initializeUploadForm() {
         });
     }
 
-    // SkillsLearning event listeners  
+    // SkillsLearning event listeners
     skillsLearningSelected.addEventListener('click', () => toggleDropdown(skillsLearningSelected, skillsLearningMenu));
-    skillsLearningSelected.addEventListener('keydown', (e) => { 
+    skillsLearningSelected.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleDropdown(skillsLearningSelected, skillsLearningMenu);
@@ -175,7 +167,7 @@ function initializeUploadForm() {
                 const value = option.dataset.value;
                 const text = option.textContent.trim();
                 addItem(value, text, selectedSkillsLearning, skillsLearningOptions, selectedskillsLearningList, skillsLearningInput, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'), false, skillsLearningSelected, skillsLearningMenu);
-                toggleDropdown(skillsLearningSelected, skillsLearningMenu); // Close dropdown on Enter
+                toggleDropdown(skillsLearningSelected, skillsLearningMenu);
             } else if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 const items = Array.from(skillsLearningOptions);
@@ -227,14 +219,14 @@ function initializeUploadForm() {
         option.addEventListener('click', () => {
             const value = option.dataset.value;
             const text = option.textContent.trim();
-            addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true, platformSelected, platformMenu);
+            addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true);
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const value = option.dataset.value;
                 const text = option.textContent.trim();
-                addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true, platformSelected, platformMenu);
+                addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true);
             } else if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 const items = Array.from(platformOptions);
@@ -319,7 +311,7 @@ function initializeUploadForm() {
         gameFileInput,
         '#file-preview',
         MAX_GAME_SIZE,
-        ALLOWED_GAME_TYPES,
+        null, // No MIME type check for .msi
         ALLOWED_GAME_EXTENSIONS
     );
 
@@ -400,18 +392,13 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (!formData.get('description').trim()) {
-            showFormError('description-error', 'Описание игры обязательно');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
         if (!formData.get('rules').trim()) {
             showFormError('rules-error', 'Правила игры обязательны');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
         if (selectedSkillsLearning.length === 0) {
-            showFormError('skillsLearning-error', 'Необходимо выбрать хотя б один навык');
+            showFormError('skillsLearning-error', 'Необходимо выбрать хотя бы один навык');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
@@ -444,12 +431,11 @@ function initializeUploadForm() {
             }
         }
 
-        formData.set('skillsLearning', JSON.stringify(selectedSkillsLearning)); 
+        formData.set('skillsLearning', JSON.stringify(selectedSkillsLearning));
         formData.set('keywords', JSON.stringify(keywords));
         formData.set('platform', JSON.stringify(platforms));
 
         try {
-            //const response = await fetch(`${API_URL}/upload/index`, {
             const response = await fetch(`/upload/index`, {
                 method: 'POST',
                 body: formData
@@ -460,7 +446,6 @@ function initializeUploadForm() {
                 throw new Error(errorData.message || 'Ошибка загрузки игры');
             }
 
-            // Срабатывает, когда игры не загружена по причине валидации серверной
             showNotification('Игра успешно загружена!', 'success');
             form.reset();
             selectedSkillsLearning = [];
@@ -497,7 +482,7 @@ function addTag(list, value, type) {
     tag.dataset.value = value;
     tag.innerHTML = `
         ${value}
-        <span class="skillsLearning-item__remove" role="button" aria-label="Удалить ${value}">×</span> 
+        <span class="skillsLearning-item__remove" role="button" aria-label="Удалить ${value}">×</span>
     `;
     list.appendChild(tag);
 }
@@ -555,7 +540,7 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
         return;
     }
 
-    // Check MIME type
+    // Check MIME type only for cover images
     if (allowedTypes && !allowedTypes.includes(file.type)) {
         showNotification(`Недопустимый тип файла. Разрешено: ${allowedTypes.join(', ')}`, 'error');
         fileInput.value = '';
