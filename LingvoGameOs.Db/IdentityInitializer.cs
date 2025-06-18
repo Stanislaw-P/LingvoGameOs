@@ -137,7 +137,7 @@ namespace LingvoGameOs.Db
                 var game3 = new Game
                 {
                     Id = 3,
-                    Title = "Собери животное",
+                    Title = "Мир по кусочкам",
                     Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
                     Rules = "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
                     AuthorId = devMarat.Id,
@@ -153,7 +153,7 @@ namespace LingvoGameOs.Db
                         "/img/games/gameplay-animal-1.jpg",
                         "/img/games/gameplay-animal-2.jpg"
                     },
-                    GameURL = "http://158.160.131.69:5001",
+                    GameURL = "http://158.160.104.26:5001",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5
                 };
