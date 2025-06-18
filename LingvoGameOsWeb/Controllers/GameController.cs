@@ -38,7 +38,7 @@ namespace LingvoGameOs.Controllers
 
 
             // TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
-            string runningScript = Path.Combine("/home/stas/games/", "lingvo-piece-by-piece", "run.sh");
+            string runningScript = Path.Combine("/home/gameportal/games/lingvo-piece-by-piece", "lingvo-piece-by-piece", "run.sh");
 
             if (!System.IO.File.Exists(runningScript))
                 return View();
