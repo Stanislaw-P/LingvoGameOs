@@ -2361,6 +2361,7 @@ margin-top: 10px;
 .game-hero__text {
     flex: 1;
     padding-right: 44px;
+    padding-top: 10px;
 }
 
 .game-hero__content {
@@ -2378,7 +2379,7 @@ margin-top: 10px;
 }
 
 .game-hero__main-title {
-    font: 400 42px "Arkhip", sans-serif;
+    font: 400 68px "Arkhip", sans-serif;
     color: var(--text-light);
     margin-bottom: 20px;
     line-height: 1.2;
@@ -2866,6 +2867,7 @@ margin-top: 10px;
     width: 23px;
     background: var(--accent-2);
 }
+
 
 /* === Стили модального окна для отзывов === */
 .review-modal {
@@ -4602,7 +4604,6 @@ margin-top: 10px;
 .games__list {
     display: flex;
     gap: 30px;
-    flex-wrap: wrap;
 }
 
 .games__item {
