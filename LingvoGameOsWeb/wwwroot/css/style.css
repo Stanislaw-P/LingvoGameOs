@@ -283,7 +283,6 @@ body {
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-
 .user-profile__toggle:active {
     transform: scale(0.98);
 }
@@ -291,23 +290,26 @@ body {
 .user-profile__menu {
     position: absolute;
     top: 100%;
-    left: 100%;
+    right: 0; /* Изменил с left: 100% на right: 0 для выравнивания справа */
     background: var(--bg-white);
     border: 1px solid var(--border-light);
     border-radius: 10px 30px;
     box-shadow: var(--shadow);
     min-width: 290px;
+    max-width: 290px; /* Добавлено для ограничения ширины */
     padding: 12px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
     z-index: 100;
+    transform-origin: top right; /* Изменил точку трансформации */
 }
 
 .user-profile__menu.active {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-100%) translateY(3%);
+    transform: translateY(3%); /* Убрал translateX(-100%), так как right: 0 решает проблему */
+    overflow-x: hidden;
 }
 
 .user-profile__menu-item {
@@ -356,7 +358,6 @@ body {
 }
 
 /* #endregion */
-
 /* #region Стили контента */
 .content {
     flex: 1 1 auto;
