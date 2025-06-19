@@ -2379,10 +2379,11 @@ margin-top: 10px;
 }
 
 .game-hero__main-title {
-    font: 400 68px "Arkhip", sans-serif;
+    font: 400 64px "Arkhip", sans-serif;
     color: var(--text-light);
     margin-bottom: 20px;
     line-height: 1.2;
+    text-transform: uppercase;
 }
 
 .game-hero__main-description {
