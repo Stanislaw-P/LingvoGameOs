@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="data\**" />
+    <Compile Remove="Views\Upload\**" />
     <Content Remove="data\**" />
+    <Content Remove="Views\Upload\**" />
     <EmbeddedResource Remove="data\**" />
+    <EmbeddedResource Remove="Views\Upload\**" />
     <None Remove="data\**" />
+    <None Remove="Views\Upload\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LingvoGameOs.Db\LingvoGameOs.Db.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Upload\" />
   </ItemGroup>
 
 </Project>
