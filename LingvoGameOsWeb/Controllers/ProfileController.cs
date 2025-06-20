@@ -40,12 +40,7 @@ namespace LingvoGameOs.Controllers
         //    return new ProfileViewModel();
         //}
 
-        public IActionResult Index()
-        {
-            return RedirectToAction(nameof(ProfileAsync));
-        }
-
-        public async Task<IActionResult> ProfileAsync(string userId)
+        public async Task<IActionResult> IndexAsync(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user != null)

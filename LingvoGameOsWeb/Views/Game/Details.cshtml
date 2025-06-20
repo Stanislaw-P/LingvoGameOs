@@ -155,7 +155,7 @@
 
             <div class="game-info__metadata-item">
                 <h4 class="game-info__metadata-title">Разработчик</h4>
-                <a asp-controller="Profile" asp-action="Profile" asp-route-userId="@Model.Author.Id">
+                <a asp-controller="Profile" asp-action="index" asp-route-userId="@Model.Author.Id">
                     <div class="game-info__developer">
                         <img src="@Model.Author.ImageURL" alt="@Model.Author.Name"
                              class="game-info__developer-avatar">

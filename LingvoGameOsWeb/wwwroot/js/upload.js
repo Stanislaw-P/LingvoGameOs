@@ -382,13 +382,13 @@ function initializeUploadForm() {
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (!formData.get('short-description').trim()) {
-            showFormError('short-description-error', 'Краткое описание обязательно');
+        if (!formData.get('description').trim()) {
+            showFormError('description-error', 'Краткое описание обязательно');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
-        if (formData.get('short-description').length > 200) {
-            showFormError('short-description-error', 'Краткое описание должно быть не длиннее 200 символов');
+        if (formData.get('description').length > 200) {
+            showFormError('description-error', 'Краткое описание должно быть не длиннее 200 символов');
             submitButton.setAttribute('aria-busy', 'false');
             return;
         }
@@ -436,7 +436,7 @@ function initializeUploadForm() {
         formData.set('platform', JSON.stringify(platforms));
 
         try {
-            const response = await fetch(`/upload/index`, {
+            const response = await fetch(`/game/upload`, {
                 method: 'POST',
                 body: formData
             });

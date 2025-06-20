@@ -38,6 +38,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
+builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbRepository>();
+builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
+builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbRepository>();
 
 var app = builder.Build();
 

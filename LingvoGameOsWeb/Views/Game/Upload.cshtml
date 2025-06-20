@@ -42,7 +42,7 @@
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
-                                        <textarea asp-for="Description" id="game-short-description" name="short-description"
+                                        <textarea asp-for="Description" id="game-short-description" name="description"
                                                   class="input-field__textarea"
                                                   placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
                                                   required></textarea>
@@ -171,7 +171,7 @@
                                         <input type="hidden" asp-for="GamePlatform" id="game-platform" name="GamePlatform" required>
                                         <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите платформу">
                                             <span class="custom-dropdown__placeholder">Выберите платформу</span>
-                                            <img src="icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
+                                            <img src="/icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
                                         </div>
                                         <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
                                             <ul class="custom-dropdown__options">
@@ -206,7 +206,7 @@
                                         <label class="file-upload" id="file-dropzone">
                                             <div class="file-upload__dropzone">
                                                 <div class="file-upload__text">
-                                                    <img src="icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                    <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
                                                     <div class="file-upload__info">
                                                         <p class="file-upload__info-text">
                                                             Загрузите или перетащите
@@ -237,7 +237,7 @@
                                     <label class="file-upload" id="cover-dropzone">
                                         <div class="file-upload__dropzone">
                                             <div class="file-upload__text">
-                                                <img src="icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
                                                 <div class="file-upload__info">
                                                     <p class="file-upload__info-text">
                                                         Загрузите или перетащите файлы
@@ -313,7 +313,7 @@
             <div class="quality-modal__overlay" id="qualityModalOverlay">
                 <div class="quality-modal">
                     <button class="quality-modal__close" id="qualityModalClose" aria-label="Закрыть модальное окно">
-                        <img src="icon/close.svg" alt="Закрыть" class="quality-modal__close-icon">
+                        <img src="/icon/close.svg" alt="Закрыть" class="quality-modal__close-icon">
                     </button>
                     <h2 class="quality-modal__title">Рекомендации по обеспечению качества</h2>
                     <div class="quality-modal__section">

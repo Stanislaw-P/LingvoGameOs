@@ -158,7 +158,7 @@
                     <div class="user-added-games__controls">
                         @if (Model.IsMyProfile)
                         {
-                            <a type="button" class="user-added-games__upload-button" asp-controller="Upload" asp-action="Index">Загрузить игру</a>
+                            <a type="button" class="user-added-games__upload-button" asp-controller="Game" asp-action="Upload">Загрузить игру</a>
                         }
                         @if (Model.DevGames != null && Model.DevGames.Any())
                         {
@@ -207,7 +207,14 @@
                                         </div>
                                     </a>
                                     <div class="user-added-games__actions">
-                                        <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
+                                        @if (game.GamePlatform.Name == "Desktop")
+                                        {
+                                            <a role="button" href="@game.GameURL" download class="user-added-games__button">Скачать</a>
+                                        }
+                                        else
+                                        {
+                                            <a role="button" asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
+                                        }
                                         @if (Model.IsMyProfile)
                                         {
                                             <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
