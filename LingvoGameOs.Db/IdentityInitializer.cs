@@ -100,7 +100,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.6,
                     RaitingTeachers = 4.8,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/mountain-labyrinth-banner-1.png",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/mountain-labyrinth-banner-1.png",
                         "/img/games/mountain-labyrinth-banner-2.png",
@@ -124,7 +125,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform1.Id,
                     RaitingPlayers = 4.4,
                     RaitingTeachers = 4,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/art-object-1.png",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/art-object-1.png",
                         "/img/games/art-object-2.jpeg",
@@ -147,7 +149,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
                     RaitingTeachers = 4.3,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/gameplay-animal.png",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/gameplay-animal.png",
                         "/img/games/gameplay-animal-1.jpg",
@@ -171,7 +174,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,
                     RaitingTeachers = 4.9,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/93a62f0945389b9_920x0.jpg",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/93a62f0945389b9_920x0.jpg",
                         "/img/games/cross-1.jpg"

@@ -15,7 +15,6 @@ namespace LingvoGameOs.Db.Models
         public Game Game { get; set; }
 
         public DateTime LastLaunch { get; set; }
-        public double AssignedRating { get; set; }
         public int PointsReceived { get; set; }
     }
 }

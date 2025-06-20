@@ -109,8 +109,9 @@ namespace LingvoGameOs.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, ImageFolders.Games);
-
+                    string? coverImagePath = await _fileProvider.SafeFileAsync(gameViewModel.CoverImage, ImageFolders.Games);
+                    List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, ImageFolders.Games);
+                    
                     // Получаем из БД выбранные скиллы и платформу
                     List<string>? selectedSkills = JsonSerializer.Deserialize<List<string>>(gameViewModel.SkillsLearning);
                     List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
@@ -126,13 +127,14 @@ namespace LingvoGameOs.Controllers
                             Title = gameViewModel.Title,
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
-                            AuthorId = authorId,
-                            ImagesURLs = imagesPaths,
+                            AuthorId = authorId!,
+                            CoverImagePath = coverImagePath!,
+                            ImagesPaths = imagesPaths,
                             PublicationDate = DateTime.Now,
                             LastUpdateDate = DateTime.Now,
-                            GamePlatform = platform,
+                            GamePlatform = platform!,
                             SkillsLearning = skills,
-                            LanguageLevel = languageLvl
+                            LanguageLevel = languageLvl!
                         };
                         await _gamesRepository.AddAsync(newGame); // После выполнения этой строки код выбрасывает с ошибкой
 
@@ -155,14 +157,15 @@ namespace LingvoGameOs.Controllers
                             Title = gameViewModel.Title,
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
-                            AuthorId = authorId,
-                            ImagesURLs = imagesPaths,
+                            AuthorId = authorId!,
+                            CoverImagePath = coverImagePath!,
+                            ImagesPaths = imagesPaths,
                             PublicationDate = DateTime.Now,
                             LastUpdateDate = DateTime.Now,
-                            GamePlatform = platform,
+                            GamePlatform = platform!,
                             SkillsLearning = skills,
-                            LanguageLevel = languageLvl,
-                            GameURL = gameViewModel.GameURL
+                            LanguageLevel = languageLvl!,
+                            GameURL = gameViewModel.GameURL!
                         };
 
                         await _gamesRepository.AddAsync(newGame);

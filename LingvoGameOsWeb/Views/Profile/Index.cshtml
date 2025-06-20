@@ -186,7 +186,7 @@
                             {
                                 <article class="user-added-games__item">
                                     <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__link">
-                                        <img src="@(game.ImagesURLs?.FirstOrDefault() ?? "/img/default-game.png")" alt="Обложка @game.Title" class="user-added-games__image" loading="lazy">
+                                        <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="Обложка @game.Title" class="user-added-games__image" loading="lazy">
                                         <div class="user-added-games__content">
                                             <h4 class="user-added-games__name">@game.Title</h4>
                                             <div class="user-added-games__stats">

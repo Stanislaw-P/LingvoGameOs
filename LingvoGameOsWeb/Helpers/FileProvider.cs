@@ -17,7 +17,8 @@ namespace LingvoGameOs.Helpers
             foreach (var file in files)
             {
                 var imagePath = await SafeFileAsync(file, folder);
-                imagePaths.Add(imagePath);
+                if(imagePath != null)
+                    imagePaths.Add(imagePath);
             }
             return imagePaths;
         }

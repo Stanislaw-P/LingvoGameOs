@@ -13,7 +13,7 @@
         <div class="game-hero__carousel">
             <div class="game-hero__slides" style="display: flex; overflow: hidden;">
                 <!-- Элементы карусели (скрины игр)-->
-                @foreach (var imgUrl in Model.ImagesURLs)
+                @foreach (var imgUrl in Model.ImagesPaths)
                 {
                     <div class="game-hero__slide">
                         <img src="@imgUrl" alt="Game screenshot"
