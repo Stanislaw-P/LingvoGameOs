@@ -68,7 +68,7 @@ using (var serviceScope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<User>>();
     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var dbContextOptions = services.GetRequiredService<DbContextOptions<DatabaseContext>>();
-    IdentityInitializer.Initialize(userManager, rolesManager, dbContextOptions);
+    await IdentityInitializer.InitializeAsync(userManager, rolesManager, dbContextOptions);
 }
 
 app.MapControllerRoute(

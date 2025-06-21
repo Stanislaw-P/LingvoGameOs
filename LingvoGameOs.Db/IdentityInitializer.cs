@@ -6,7 +6,7 @@ namespace LingvoGameOs.Db
 {
     public class IdentityInitializer
     {
-        public static async Task Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
+        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
         {
             using (DatabaseContext context = new DatabaseContext(dbContextOptions))
             {
