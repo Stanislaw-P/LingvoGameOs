@@ -69,7 +69,7 @@
                 <header class="user-added-games__header">
                     <h3 class="user-added-games__title">Ваши игры</h3>
                     <div class="user-added-games__controls">
-                        <a type="button" class="user-added-games__upload-button" asp-controller="Upload" asp-action="Index">Загрузить игру</a>
+                        <a type="button" class="user-added-games__upload-button" asp-controller="Game" asp-action="Upload">Загрузить игру</a>
                         @if (Model.DevGames != null && Model.DevGames.Any())
                         {
                             <div class="carousel-controls">
