@@ -53,10 +53,7 @@ namespace LingvoGameOs.Controllers
             string runningScript = Path.Combine("/home/gameportal/games/", "lingvo-piece-by-piece", "run.sh");
 
             if (!System.IO.File.Exists(runningScript))
-            {
-                ViewBag.GameUrl = null;
                 return View();
-            }
 
             var runningProcess = new ProcessStartInfo
             {

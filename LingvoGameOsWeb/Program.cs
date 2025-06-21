@@ -3,7 +3,6 @@ using LingvoGameOs.Db.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using System;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -24,10 +23,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
 // подключение контекста бд
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionString));
 
-// Полключение и настройка Serilog
-builder.Host.UseSerilog((context, configuration) => configuration
-    .ReadFrom.Configuration(context.Configuration)
-    .Enrich.WithProperty("ApplicationName", "Lingvo Game Os"));
+
 
 // настройка cookie
 builder.Services.ConfigureApplicationCookie(options =>
@@ -64,9 +60,6 @@ app.UseAuthentication();
 
 // подключение авторизации
 app.UseAuthorization();
-
-// Подключение логирование (Serilog)
-app.UseSerilogRequestLogging();
 
 // инициализация администратора
 using (var serviceScope = app.Services.CreateScope())
