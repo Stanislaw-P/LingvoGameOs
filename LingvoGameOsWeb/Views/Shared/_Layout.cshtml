@@ -29,12 +29,12 @@
 
     @await Html.PartialAsync("Footer", false)
     @* Удаляем ссылку на jQuery и Bootstrap JS, если они больше не нужны *@
-    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    @await RenderSectionAsync("Scripts", required: false)
+    @Html.RenderUnobtrusiveAjaxScript()
     <script asp-src-include="~/js/**/*.js" type="module"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

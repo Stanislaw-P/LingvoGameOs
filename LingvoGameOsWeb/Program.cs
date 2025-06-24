@@ -1,3 +1,4 @@
+using AspNetCore.Unobtrusive.Ajax;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using Microsoft.AspNetCore.Identity;
@@ -42,6 +43,9 @@ builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbReposit
 builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
 builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbRepository>();
 
+// Добавление ненавязчивого Ajax
+builder.Services.AddUnobtrusiveAjax();
+
 var app = builder.Build();
 
 
@@ -60,6 +64,9 @@ app.UseAuthentication();
 
 // подключение авторизации
 app.UseAuthorization();
+
+// Подключение ненавязчивого Ajax
+app.UseUnobtrusiveAjax();
 
 // инициализация администратора
 using (var serviceScope = app.Services.CreateScope())

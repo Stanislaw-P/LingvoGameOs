@@ -28,14 +28,21 @@ public class HomeController : Controller
     public async Task<IActionResult> Search(string gameName)
     {
         var games = await gamesRepository.GetAllAsync();
-        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
 
         if (gameName != null)
         {
             games = games.Where(game => Regex.IsMatch(game.Title, gameName, RegexOptions.IgnoreCase)).ToList();
             ViewBag.GameName = gameName;
         }
-        return View("Index", games);
+
+        Thread.Sleep(2000); // Демонстрация "поиска игр"
+        return PartialView("_GamesListPartial", games);
+    }
+
+    public async Task<IActionResult> FullGamesList()
+    {
+        var games = await gamesRepository.GetAllAsync();
+        return PartialView("_GamesListPartial", games);
     }
 
     public async Task<IActionResult> News()
