@@ -35,7 +35,7 @@ public class HomeController : Controller
             ViewBag.GameName = gameName;
         }
 
-        Thread.Sleep(2000); // Демонстрация "поиска игр"
+       /* Thread.Sleep(2000);*/ // Демонстрация "поиска игр"
         return PartialView("_GamesListPartial", games);
     }
 
