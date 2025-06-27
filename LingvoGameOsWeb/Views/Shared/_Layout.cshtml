@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LingvoGameOs.styles.css" asp-append-version="true" />
+    <link rel="icon" href="~/img/Logo.png" type="image/x-icon" />
     @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
 </head>
 <body>
@@ -29,12 +30,12 @@
 
     @await Html.PartialAsync("Footer", false)
     @* Удаляем ссылку на jQuery и Bootstrap JS, если они больше не нужны *@
-    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    @await RenderSectionAsync("Scripts", required: false)
+    @Html.RenderUnobtrusiveAjaxScript()
     <script asp-src-include="~/js/**/*.js" type="module"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -48,11 +48,21 @@ namespace LingvoGameOs.Db
                     Email = "DavidTest@gmail.com"
                 };
 
+                var devIlona = new User
+                {
+                    Name = "Илона",
+                    Surname = "Бекоева",
+                    ImageURL = "/img/avatar100.png",
+                    Description = "Окончила СОГУ с красным дипломом. Вложила душу в проект платформы. Обладательница премии 'Лучшая игра на WinForms' в 2022 году.",
+                    UserName = "IlonaBekoeva@gmail.com",
+                    Email = "IlonaBekoeva@gmail.com"
+                };
+
                 // создаем пользователя, если его нет
                 await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
                 await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
-
+                await _CreateUserAsync(userManager, devIlona, password, Constants.DevRoleName);
 
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
