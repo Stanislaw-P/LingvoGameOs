@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace LingvoGameOs.Controllers
@@ -150,6 +151,8 @@ namespace LingvoGameOs.Controllers
                             await _gamesRepository.ChangeGameUrl(gameUrl, newGame);
                         }
 
+                        // смена роли игрока на разработчика
+                        await ChangeRolePlayerToDevAsync();
                         //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
                         return Json(new { success = true, redirectUrl = Url.Action("Index", "Profile", new { userId = authorId }) });
                     }
@@ -173,6 +176,8 @@ namespace LingvoGameOs.Controllers
 
                         await _gamesRepository.AddAsync(newGame);
 
+                        // смена роли игрока на разработчика
+                        await ChangeRolePlayerToDevAsync();
                         //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
                         return RedirectToAction("Index", "Profile", new { userId = authorId });
                     }
@@ -187,6 +192,25 @@ namespace LingvoGameOs.Controllers
             {
                 // Нужно сделать логирование
                 return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // смена роли игрока на разработчика
+        private async Task ChangeRolePlayerToDevAsync()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                // если есть роль игрока, то удаляю ее
+                if (await _userManager.IsInRoleAsync(currentUser, Constants.PlayerRoleName))
+                {
+                    await _userManager.RemoveFromRoleAsync(currentUser, Constants.PlayerRoleName);
+                }
+                // если нет роли разработчика, то добавляю ее
+                if (!await _userManager.IsInRoleAsync(currentUser, Constants.DevRoleName))
+                {
+                    await _userManager.AddToRoleAsync(currentUser, Constants.DevRoleName);
+                }
             }
         }
     }
