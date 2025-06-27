@@ -204,7 +204,7 @@
                         <div class="games__actions">
                             @if (game.GamePlatform.Name == "Desktop")
                             {
-                                <a href="#" role="button" class="games__button">Скачать</a>
+                                <a href="@game.GameURL" download role="button" class="games__button">Скачать</a>
                             }
                             else
                             {
