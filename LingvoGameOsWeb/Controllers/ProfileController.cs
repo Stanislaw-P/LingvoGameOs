@@ -40,9 +40,25 @@ namespace LingvoGameOs.Controllers
         //    return new ProfileViewModel();
         //}
 
-        public IActionResult Index()
+
+        public async Task<IActionResult> IndexAsync(string userId)
         {
-            return RedirectToAction(nameof(ProfileAsync));
+            var user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
+                user.DevGames = games;
+
+                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
+                
+                if (userId == userManager.GetUserAsync(User).Result.Id)
+                {
+                    userViewModel.IsMyProfile = true;
+                }
+
+                return View(userViewModel);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> SettingsAsync(string userId)

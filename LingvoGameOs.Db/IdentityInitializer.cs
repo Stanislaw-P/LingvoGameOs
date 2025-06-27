@@ -6,7 +6,7 @@ namespace LingvoGameOs.Db
 {
     public class IdentityInitializer
     {
-        public static async Task Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
+        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
         {
             using (DatabaseContext context = new DatabaseContext(dbContextOptions))
             {
@@ -48,11 +48,21 @@ namespace LingvoGameOs.Db
                     Email = "DavidTest@gmail.com"
                 };
 
+                var devIlona = new User
+                {
+                    Name = "Илона",
+                    Surname = "Бекоева",
+                    ImageURL = "/img/avatar100.png",
+                    Description = "Окончила СОГУ с красным дипломом. Вложила душу в проект платформы. Обладательница премии 'Лучшая игра на WinForms' в 2022 году.",
+                    UserName = "IlonaBekoeva@gmail.com",
+                    Email = "IlonaBekoeva@gmail.com"
+                };
+
                 // создаем пользователя, если его нет
                 await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
                 await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
-
+                await _CreateUserAsync(userManager, devIlona, password, Constants.DevRoleName);
 
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
@@ -100,7 +110,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.6,
                     RaitingTeachers = 4.8,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/mountain-labyrinth-banner-1.png",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/mountain-labyrinth-banner-1.png",
                         "/img/games/mountain-labyrinth-banner-2.png",
@@ -124,7 +135,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform1.Id,
                     RaitingPlayers = 4.4,
                     RaitingTeachers = 4,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/art-object-1.png",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/art-object-1.png",
                         "/img/games/art-object-2.jpeg",
@@ -147,7 +159,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
                     RaitingTeachers = 4.3,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/gameplay-animal.png",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/gameplay-animal.png",
                         "/img/games/gameplay-animal-1.jpg",
@@ -171,7 +184,8 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,
                     RaitingTeachers = 4.9,
-                    ImagesURLs = new List<string>
+                    CoverImagePath = "/img/games/93a62f0945389b9_920x0.jpg",
+                    ImagesPaths = new List<string>
                     {
                         "/img/games/93a62f0945389b9_920x0.jpg",
                         "/img/games/cross-1.jpg"

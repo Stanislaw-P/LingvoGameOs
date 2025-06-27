@@ -2528,6 +2528,11 @@ margin-top: 10px;
     margin-bottom: 20px;
 }
 
+.game-hero__secondary {
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
 .game-hero__actions {
     display: flex;
     justify-content: center;

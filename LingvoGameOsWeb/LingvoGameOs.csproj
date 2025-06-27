@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="data\**" />
+    <Compile Remove="Views\Upload\**" />
     <Content Remove="data\**" />
+    <Content Remove="Views\Upload\**" />
     <EmbeddedResource Remove="data\**" />
+    <EmbeddedResource Remove="Views\Upload\**" />
     <None Remove="data\**" />
+    <None Remove="Views\Upload\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Unobtrusive.Ajax" Version="3.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,10 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LingvoGameOs.Db\LingvoGameOs.Db.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\games\" />
   </ItemGroup>
 
 </Project>

@@ -70,11 +70,18 @@ namespace LingvoGameOs.Db
         public async Task<List<Game>?> TryGetUserDevGamesAsync(User user)
 		{
             var existingUser = await databaseContext.Users
-				.Include(u => u.DevGames)
+                .Include(u => u.DevGames!)
+                .ThenInclude(g => g.GamePlatform)
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUser == null)
                 return null;
             return existingUser.DevGames;
         }
+
+		public async Task ChangeGameUrl(string newGameUrl, Game game)
+		{
+			game.GameURL = newGameUrl;
+			await databaseContext.SaveChangesAsync();
+		}
     }
 }

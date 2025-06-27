@@ -27,6 +27,10 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CoverImagePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(201)
@@ -38,7 +42,7 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<string>("GameURL")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImagesURLs")
+                    b.Property<string>("ImagesPaths")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -136,9 +140,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("AssignedRating")
-                        .HasColumnType("REAL");
-
                     b.Property<DateTime>("LastLaunch")
                         .HasColumnType("TEXT");
 
@@ -165,21 +166,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SkillsLearning");
-                });
-
-            modelBuilder.Entity("LingvoGameOs.Db.Models.Technology", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Technologys");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>

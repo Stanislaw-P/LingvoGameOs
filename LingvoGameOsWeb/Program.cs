@@ -1,3 +1,4 @@
+using AspNetCore.Unobtrusive.Ajax;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using Microsoft.AspNetCore.Identity;
@@ -38,6 +39,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
+builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbRepository>();
+builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
+builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbRepository>();
+
+// Добавление ненавязчивого Ajax
+builder.Services.AddUnobtrusiveAjax();
 
 var app = builder.Build();
 
@@ -58,6 +65,9 @@ app.UseAuthentication();
 // подключение авторизации
 app.UseAuthorization();
 
+// Подключение ненавязчивого Ajax
+app.UseUnobtrusiveAjax();
+
 // инициализация администратора
 using (var serviceScope = app.Services.CreateScope())
 {
@@ -65,7 +75,7 @@ using (var serviceScope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<User>>();
     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var dbContextOptions = services.GetRequiredService<DbContextOptions<DatabaseContext>>();
-    IdentityInitializer.Initialize(userManager, rolesManager, dbContextOptions);
+    await IdentityInitializer.InitializeAsync(userManager, rolesManager, dbContextOptions);
 }
 
 app.MapControllerRoute(
