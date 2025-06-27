@@ -4,321 +4,256 @@
     ViewData["Title"] = "Главная";
 }
 
-
-<section class="game-hero" data-page-id="home">
-    <div class="game-hero__text">
-        <h1 class="game-hero__main-title">ОСЕТИНСКИЙ ЯЗЫК БЛИЖЕ, ЧЕМ ТЫ ДУМАЕШЬ</h1>
-        <p class="game-hero__main-description">
-            На нашей платформе ты найдешь игры для любого возраста и уровня подготовки. Учи слова, грамматику, слушай
-            осетинскую речь и погружайся в культуру Осетии – все в игровой форме!
-        </p>
-    </div>
-    <div class="game-hero__content">
-        <div class="game-hero__carousel">
-            <div class="game-hero__slides" style="display: flex; overflow: hidden;">
-                <div class="game-hero__slide">
-                    <img src="/img/hero-banner-1.png" alt="Баннер 1" class="game-hero__slide-image" />
-                </div>
-                <div class="game-hero__slide game-hero__video-slide">
-                    <iframe src="https://vk.com/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
-                            width="640" height="360"
-                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                            frameborder="0" allowfullscreen></iframe>
-                </div>
-                <div class="game-hero__slide">
-                    <img src="/img/hero-banner-2.png" alt="Баннер 2" class="game-hero__slide-image" />
-                </div>
-            </div>
-            <button class="game-hero__carousel-button game-hero__carousel-prev">
-                <img src="/icon/prev.svg" alt="Previous" />
-            </button>
-            <button class="game-hero__carousel-button game-hero__carousel-next">
-                <img src="/icon/next.svg" alt="Next" />
-            </button>
-            <div class="game-hero__carousel-indicators">
-                <span class="game-hero__indicator active"></span>
-                <span class="game-hero__indicator"></span>
-                <span class="game-hero__indicator"></span>
-            </div>
-        </div>
-        <div class="game-hero__info">
-            <h1 class="game-hero__title">Популярная игра</h1>
-            <p class="game-hero__description">
-                Начни свое путешествие по осетинскому языку с этой увлекательной игры, полной головоломок и приключений!
+<div style="background-image: url('/img/mainBG.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <section class="game-hero" data-page-id="home">
+        <div class="game-hero__text">
+            <h1 class="game-hero__main-title">Осетинский язык ближе, чем ты думаешь</h1>
+            <p class="game-hero__main-description">
+                Учи осетинский язык через увлекательные игры для любого возраста и уровня. Погружайся в слова, грамматику и культуру Осетии!
             </p>
             <div class="game-hero__actions">
-                <button class="game-hero__button profile__button">
-                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon" /> Начать игру
-                </button>
-                <button class="game-hero__share profile__button">
-                    <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon" />
-                </button>
+                <a href="#games" class="game-hero__button profile__button">
+                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon" /> Исследовать игры
+                </a>
+                <a href="/register" class="game-hero__button game-hero__button--secondary">Присоединиться</a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <!-- Секция CTA -->
+    <section class="cta">
+        <h2 class="cta__title">Создай игру для осетинского языка!</h2>
+        <p class="cta__description">
+            Присоединяйся к сообществу разработчиков и создавай игры для сохранения языка.
+        </p>
+        <a asp-controller="Upload" asp-action="Index" class="cta__button">Загрузить игру</a>
+    </section>
+</div>
+
+<!-- Секция категорий -->
 <section class="categories">
     <div class="categories__container">
         <div class="categories__text">
-            <h2 class="categories__title">Найди игру по своим интересам!</h2>
+            <h2 class="categories__title">Выбери игру по интересам</h2>
             <p class="categories__description">
-                Мы разделили игры по категориям, чтобы тебе было проще найти то, что тебе нравится.
+                Исследуй категории, чтобы найти идеальную игру для изучения осетинского языка.
             </p>
         </div>
         <div class="categories__controls">
-            <button class="categories__button"><img src="/icon/prev.svg" alt="Назад" /></button>
-            <div class="categories__indicators">
-                <span class="categories__indicator active"></span>
-                <span class="categories__indicator"></span>
-                <span class="categories__indicator"></span>
-                <span class="categories__indicator"></span>
-            </div>
-            <button class="categories__button"><img src="/icon/next.svg" alt="Вперед" /></button>
+            <button class="carousel-control categories__prev">
+                <img src="/icon/prev.svg" alt="Назад" />
+            </button>
+            <span class="carousel-page-counter"></span>
+            <button class="carousel-control categories__next">
+                <img src="/icon/next.svg" alt="Вперед" />
+            </button>
         </div>
     </div>
-    <div class="categories__cards">
-        <div class="category-card">
-            <div class="category-card__images">
-                <img src="/img/category-culture-1.png" alt="Культура" class="category-card__image" />
-                <img src="/img/category-culture-2.png" alt="Культура" class="category-card__image" />
-            </div>
-            <div class="category-card__info">
-                <h3 class="category-card__title">Культура</h3>
-                <img src="/icon/culture.svg" alt="Иконка культуры" class="category-card__icon" />
-            </div>
-        </div>
-        <div class="category-card">
-            <div class="category-card__images">
-                <img src="/img/category-reading-1.png" alt="Чтение" class="category-card__image" />
-                <img src="/img/category-reading-2.png" alt="Чтение" class="category-card__image" />
-            </div>
-            <div class="category-card__info">
-                <h3 class="category-card__title">Чтение</h3>
-                <img src="/icon/reading.svg" alt="Иконка чтения" class="category-card__icon" />
-            </div>
-        </div>
-        <div class="category-card">
-            <div class="category-card__images">
-                <img src="/img/category-vocab-1.png" alt="Словарный запас" class="category-card__image" />
-                <img src="/img/category-vocab-2.png" alt="Словарный запас" class="category-card__image" />
-            </div>
-            <div class="category-card__info">
-                <h3 class="category-card__title">Словарный запас</h3>
-                <img src="/icon/vocab.svg" alt="Иконка словарного запаса" class="category-card__icon" />
-            </div>
-        </div>
-        <div class="category-card">
-            <div class="category-card__images">
-                <img src="/img/category-grammar-1.png" alt="Грамматика" class="category-card__image" />
-                <img src="/img/category-grammar-2.png" alt="Грамматика" class="category-card__image" />
-            </div>
-            <div class="category-card__info">
-                <h3 class="category-card__title">Грамматика</h3>
-                <img src="/icon/grammar.svg" alt="Иконка грамматики" class="category-card__icon" />
-            </div>
+    <div class="categories__carousel">
+        <div class="categories__list">
+            @foreach (var category in new[] { 
+                new { Title = "Культура", Icons = new[] { "/img/category-culture-1.png", "/img/category-culture-2.png" }, Icon = "/icon/culture.svg" },
+                new { Title = "Чтение", Icons = new[] { "/img/category-reading-1.png", "/img/category-reading-2.png" }, Icon = "/icon/reading.svg" },
+                new { Title = "Словарный запас", Icons = new[] { "/img/category-vocab-1.png", "/img/category-vocab-2.png" }, Icon = "/icon/vocab.svg" },
+                new { Title = "Грамматика", Icons = new[] { "/img/category-grammar-1.png", "/img/category-grammar-2.png" }, Icon = "/icon/grammar.svg" }
+            })
+            {
+                <div class="categories__item">
+                    <div class="category-card">
+                        <div class="category-card__images">
+                            <img src="@category.Icons[0]" alt="@category.Title" class="category-card__image" />
+                            <img src="@category.Icons[1]" alt="@category.Title" class="category-card__image" />
+                        </div>
+                        <div class="category-card__info">
+                            <h3 class="category-card__title">@category.Title</h3>
+                            <img src="@category.Icon" alt="Иконка @category.Title" class="category-card__icon" />
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </section>
 
-<section class="games">
-    <div class="games__filter">
-        <form method="post" asp-controller="Home" asp-action="Search" class="games__filter-search">
-            @if (ViewBag.GameName != null)
-            {
-                <input type="text" class="email-prompt-text-style games__search-input"
-                       placeholder="Найти игру..." name="gameName" value="@ViewBag.GameName" />
-            }
-            else
-            {
-                <input type="text" class="email-prompt-text-style games__search-input"
-                       placeholder="Найти игру..." name="gameName" />
-            }
-            <button type="submit" class="games__search-button">Найти</button>
-        </form>
-        <div class="games__filter-dropdowns">
-            <div class="games__dropdown">
-                <button class="games__dropdown-toggle">
-                    <span>Категории</span>
-                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron" />
-                </button>
-                <div class="games__dropdown-menu">
-                    <div class="games__dropdown-search">
-                        <input type="text" class="games__dropdown-search-input" placeholder="Поиск..." />
-                    </div>
-                    <ul class="games__dropdown-list">
-                        @foreach (var skill in ViewBag.SkillsLearning ?? new List<string> { "Культура", "Чтение", "Словарный запас", "Грамматика" })
-                        {
-                            <li class="games__dropdown-item" data-filter="category" data-value="@skill.ToLower()">@skill</li>
-                        }
-                    </ul>
-                </div>
-            </div>
-            <div class="games__dropdown">
-                <button class="games__dropdown-toggle">
-                    <span>Ключевые слова</span>
-                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron" />
-                </button>
-                <div class="games__dropdown-menu">
-                    <div class="games__dropdown-search">
-                        <input type="text" class="games__dropdown-search-input" placeholder="Поиск..." />
-                    </div>
-                    <ul class="games__dropdown-list">
-                        <li class="games__dropdown-item" data-filter="keyword" data-value="culture">Культура</li>
-                        <li class="games__dropdown-item" data-filter="keyword" data-value="history">История</li>
-                        <li class="games__dropdown-item" data-filter="keyword" data-value="language">Язык</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="games__dropdown">
-                <button class="games__dropdown-toggle">
-                    <span>Рейтинг</span>
-                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron" />
-                </button>
-                <div class="games__dropdown-menu">
-                    <ul class="games__dropdown-list">
-                        <li class="games__dropdown-item" data-filter="rating" data-value="5">
-                            <img src="/icon/star.svg" alt="Star" class="rating-star filled" /> 5
-                        </li>
-                        <li class="games__dropdown-item" data-filter="rating" data-value="4">
-                            <img src="/icon/star.svg" alt="Star" class="rating-star filled" /> 4
-                        </li>
-                        <li class="games__dropdown-item" data-filter="rating" data-value="3">
-                            <img src="/icon/star.svg" alt="Star" class="rating-star filled" /> 3
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<!-- Секция популярных игр -->
+<section class="games" id="games">
+    <div class="games__header">
+        <div class="games__text">
+            <h2 class="games__title">Популярные игры</h2>
+            <p class="games__description">Найди лучшую игру для изучения осетинского языка!</p>
+        </div>
+        <div class="games__controls">
+            <button class="carousel-control games__prev">
+                <img src="/icon/prev.svg" alt="Назад" />
+            </button>
+            <span class="carousel-page-counter"></span>
+            <button class="carousel-control games__next">
+                <img src="/icon/next.svg" alt="Вперед" />
+            </button>
         </div>
     </div>
-    <h2 class="games__title">Популярные игры</h2>
-    <div class="games__list">
-        @foreach (var game in Model)
-        {
-            <div class="games__item" data-rating="@game.RaitingPlayers">
-                <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
-                <div class="games__content">
-                    <h3 class="games__name">@game.Title</h3>
-                    <div class="games__stats">
-                        <span class="games__rating">
-                            @for (int i = 0; i < 5; i++)
-                            {
-                                <img src="/icon/star.svg" alt="Star" class="@(i < game.RaitingPlayers ? "rating-star filled" : "rating-star")" />
-                            }
-                            @game.RaitingPlayers
-                        </span>
-                        <span class="games__likes">
-                            <img src="/icon/like2.svg" alt="Like" class="stat-icon favorite-toggle" /> 120
-                        </span>
-                        <span class="games__views">
-                            <img src="/icon/eye.svg" alt="View" class="stat-icon" /> @game.NumberDownloads
-                        </span>
+    
+
+    <section class="games">
+
+        <div class="games__list" id="all-games">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var game in Model)
+                {
+                    <div class="games__item"
+                        data-rating="@game.RaitingPlayers">
+                        <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
+                        <div class="games__content">
+                            <h3 class="games__name">@game.Title</h3>
+                            <div class="games__stats">
+                                <span class="games__rating">
+                                    <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                    <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                    <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                    <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                    <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
+                                </span>
+                                <span class="games__likes">
+                                    <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> 120
+                                </span>
+                                <span class="games__views">
+                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> @game.NumberDownloads
+                                </span>
+                            </div>
+                            <div class="games__actions">
+                                @if (game.GamePlatform.Name == "Desktop")
+                                {
+                                    <a href="@game.GameURL" download role="button" class="games__button">Скачать</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                                }
+                                <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="games__actions">
-                        @if (game.GamePlatform.Name == "Desktop")
-                        {
-                            <a href="#" role="button" class="games__button">Скачать</a>
-                        }
-                        else
-                        {
-                            <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
-                        }
-                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
-                    </div>
+                }
+            }
+        </div>
+    </section>
+    <a href="/games" class="games__view-all user-added-games__button">Показать все</a>
+</section>
+
+<!-- Отзывы -->
+<section class="game-reviews">
+    <div class="game-reviews__header">
+        <h2 class="game-reviews__title">Отзывы</h2>
+        <button class="game-reviews__button profile__button">
+            <img src="/icon/write.svg" alt="Write" class="game-reviews__icon"> Написать отзыв
+        </button>
+    </div>
+    <div class="game-reviews__container">
+        <article class="game-reviews__card">
+            <div class="game-reviews__reviewer">
+                <img src="/img/avatar.png" alt="Reviewer" class="game-reviews__avatar">
+                <div class="game-reviews__reviewer-details">
+                    <span class="game-reviews__reviewer-name">Viezh Robert</span>
+                    <span class="game-reviews__reviewer-location">Warsaw, Poland</span>
                 </div>
+                <div class="game-reviews__rating">
+                    <span class="game-reviews__rating-score">4.5</span>
+                    <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
+                </div>
+            </div>
+            <p class="game-reviews__text">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </article>
+        <article class="game-reviews__card">
+            <div class="game-reviews__reviewer">
+                <img src="/img/avatar.png" alt="Reviewer" class="game-reviews__avatar">
+                <div class="game-reviews__reviewer-details">
+                    <span class="game-reviews__reviewer-name">Viezh Robert</span>
+                    <span class="game-reviews__reviewer-location">Warsaw, Poland</span>
+                </div>
+                <div class="game-reviews__rating">
+                    <span class="game-reviews__rating-score">4.5</span>
+                    <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
+                </div>
+            </div>
+            <p class="game-reviews__text">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </article>
+        <article class="game-reviews__card">
+            <div class="game-reviews__reviewer">
+                <img src="/img/avatar.png" alt="Reviewer" class="game-reviews__avatar">
+                <div class="game-reviews__reviewer-details">
+                    <span class="game-reviews__reviewer-name">Viezh Robert</span>
+                    <span class="game-reviews__reviewer-location">Warsaw, Poland</span>
+                </div>
+                <div class="game-reviews__rating">
+                    <span class="game-reviews__rating-score">4.5</span>
+                    <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
+                </div>
+            </div>
+            <p class="game-reviews__text">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </article>
+    </div>
+    <div class="game-reviews__navigation">
+        <button class="game-reviews__nav-button game-reviews__prev">
+            <img src="/icon/prev.svg" alt="Previous">
+        </button>
+        <div class="game-reviews__indicators">
+            <span class="game-reviews__indicator active"></span>
+            <span class="game-reviews__indicator"></span>
+            <span class="game-reviews__indicator"></span>
+            <span class="game-reviews__indicator"></span>
+        </div>
+        <button class="game-reviews__nav-button game-reviews__next">
+            <img src="/icon/next.svg" alt="Next">
+        </button>
+    </div>
+</section>
+
+
+
+<!-- Секция FAQ -->
+<section class="faq">
+    <h2 class="faq__title">Часто задаваемые вопросы</h2>
+    <p class="faq__description">Ответы на популярные вопросы о платформе.</p>
+    <div class="faq__items">
+        @foreach (var faq in new[] {
+            new { Question = "Как зарегистрироваться?", Answer = "Нажмите 'Регистрация' вверху, заполните поля и подтвердите email по ссылке." },
+            new { Question = "Как найти игру?", Answer = "Используйте строку поиска или фильтры по категориям и рейтингу." },
+            new { Question = "Платформа бесплатна?", Answer = "Да, базовый доступ бесплатен, с возможностью дополнительных функций." }
+        })
+        {
+            <div class="faq__item">
+                <div class="faq__question">
+                    <h3 class="faq__question-title">@faq.Question</h3>
+                    <img src="/icon/chevron-down.svg" alt="Развернуть" class="faq__icon" />
+                </div>
+                <p class="faq__answer">@faq.Answer</p>
             </div>
         }
-    </div>
-</section>
-
-<section class="reviews">
-    <p class="reviews__subtitle">Почитайте, что говорят о нашей платформе другие пользователи</p>
-    <h2 class="reviews__title">Отзывы пользователей</h2>
-    <div class="reviews__container">
-        <div class="reviews__card">
-            <div class="reviews__reviewer">
-                <img src="/img/avatar-1.png" alt="Аватар" class="reviews__avatar" />
-                <div class="reviews__reviewer-details">
-                    <span class="reviews__reviewer-name">Viezh Robert</span>
-                    <span class="reviews__reviewer-location">Warsaw, Poland</span>
-                </div>
-                <div class="reviews__rating">
-                    <span class="reviews__rating-score">4.5</span>
-                    <img src="/icon/star-filled.svg" alt="Star" class="reviews__star" />
-                </div>
-            </div>
-            <p class="reviews__text">
-                Эта платформа помогла мне начать изучать осетинский язык в увлекательной форме! Игры действительно затягивают.
-            </p>
-        </div>
-        <div class="reviews__card">
-            <div class="reviews__reviewer">
-                <img src="/img/avatar-2.png" alt="Аватар" class="reviews__avatar" />
-                <div class="reviews__reviewer-details">
-                    <span class="reviews__reviewer-name">Yessica Christy</span>
-                    <span class="reviews__reviewer-location">Shanxi, China</span>
-                </div>
-                <div class="reviews__rating">
-                    <span class="reviews__rating-score">4.5</span>
-                    <img src="/icon/star-filled.svg" alt="Star" class="reviews__star" />
-                </div>
-            </div>
-            <p class="reviews__text">
-                Отличный способ учить язык через игры. Рекомендую всем, кто хочет погрузиться в культуру Осетии!
-            </p>
-        </div>
-    </div>
-    <div class="reviews__navigation">
-        <button class="reviews__nav-button"><img src="/icon/prev.svg" alt="Назад" /></button>
-        <div class="reviews__indicators">
-            <span class="reviews__indicator active"></span>
-            <span class="reviews__indicator"></span>
-        </div>
-        <button class="reviews__nav-button"><img src="/icon/next.svg" alt="Вперед" /></button>
-    </div>
-</section>
-
-<section class="cta">
-    <h2 class="cta__title">Внеси свой вклад в развитие осетинского языка!</h2>
-    <p class="cta__description">
-        Мечтаешь о своей игре, которая поможет сохранить и продвинуть осетинский язык? Присоединяйся к нашему сообществу разработчиков и создавай игры, которые будут учить и развлекать.
-    </p>
-    <a asp-controller="Upload" asp-action="Index" class="cta__button">Загрузить игру</a>
-</section>
-
-<section class="faq">
-    <h2 class="faq__title">Нужна помощь? Посмотри здесь!</h2>
-    <p class="faq__description">Здесь мы собрали ответы на самые популярные вопросы о нашей платформе.</p>
-    <div class="faq__items">
-        <div class="faq__item">
-            <div class="faq__question">
-                <h3 class="faq__question-title">Как зарегистрироваться на платформе?</h3>
-                <img src="/icon/chevron-down.svg" alt="Развернуть" class="faq__icon" />
-            </div>
-            <p class="faq__answer">
-                Чтобы зарегистрироваться, нажмите кнопку 'Регистрация' в правом верхнем углу страницы и заполните необходимые поля. После этого подтвердите свой email, перейдя по ссылке в письме.
-            </p>
-        </div>
-        <div class="faq__item">
-            <div class="faq__question">
-                <h3 class="faq__question-title">Как найти игру?</h3>
-                <img src="/icon/chevron-down.svg" alt="Развернуть" class="faq__icon" />
-            </div>
-        </div>
-        <div class="faq__item">
-            <div class="faq__question">
-                <h3 class="faq__question-title">Платформа бесплатна?</h3>
-                <img src="/icon/chevron-down.svg" alt="Развернуть" class="faq__icon" />
-            </div>
-        </div>
     </div>
     <a asp-controller="Support" asp-action="Index" class="faq__button">Задать вопрос</a>
 </section>
 
+<!-- Модальное окно для отзывов -->
 <div class="review-modal" style="display: none;">
     <div class="review-modal__content">
         <h2 class="review-modal__title">Оставить отзыв</h2>
         <form class="review-modal__form" asp-controller="Reviews" asp-action="Submit">
+            <div class="review-modal__field">
+                <label class="review-modal__label">Игра</label>
+                <select class="review-modal__select" name="gameId">
+                    @foreach (var game in Model)
+                    {
+                        <option value="@game.Id">@game.Title</option>
+                    }
+                </select>
+            </div>
             <div class="review-modal__field">
                 <label class="review-modal__label">Рейтинг</label>
                 <div class="review-modal__stars">
@@ -333,8 +268,8 @@
                 <textarea class="review-modal__textarea" name="comment" placeholder="Опишите ваш опыт..."></textarea>
             </div>
             <div class="review-modal__actions">
-                <button type="button" class="review-modal__close">Закрыть</button>
-                <button type="submit" class="review-modal__button">Отправить</button>
+                <button type="button" class="review-modal__close user-added-games__button user-added-games__button--secondary">Закрыть</button>
+                <button type="submit" class="review-modal__button user-added-games__button">Отправить</button>
             </div>
         </form>
     </div>
