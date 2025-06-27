@@ -7,7 +7,7 @@
         <nav class="header__menu menu">
             <ul class="menu__list">
                 <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="Index">Главная</a></li>
-                <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="Index">Все игры</a></li>
+                <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="Games">Все игры</a></li>
                 <li class="menu__item"><a class="menu__link" asp-controller="Home" asp-action="News">Новости</a></li>
             </ul>
         </nav>
@@ -23,10 +23,17 @@
                 <div class="user-profile__container">
                     <div class="user-profile__content">
                         <div class="user-profile__avatar-wrapper">
-                            <img src="~/img/avatar.png" alt="Аватар" class="user-profile__avatar" />
+                            @if (!string.IsNullOrEmpty(ViewData["UserImageURL"] as string))
+                            {
+                                <img src="@ViewData["UserImageURL"]" alt="Аватар пользователя" class="user-profile__avatar">
+                            }
+                            else
+                            {
+                                <img src="/img/avatar100.png" alt="Аватар пользователя" class="user-profile__avatar">
+                            }
                         </div>
                         <div class="user-profile__user-info">
-                            <span class="user-profile__username">@username</span>
+                            <span class="user-profile__username">@(ViewData["Username"] ?? "Пользователь")</span>
                             <span class="user-profile__level">1 уровень</span>
                         </div>
                         <div class="user-profile__dropdown">
@@ -34,16 +41,17 @@
                                 <img src="~/icon/more.svg" alt="Открыть меню" class="user-profile__more" />
                             </div>
                             <div class="user-profile__menu">
-                                <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userId">Профиль</a></div>
-                                <div class="user-profile__menu-item" data-target="game-stats"><a class="menu__link" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userId">Рейтинг в играх</a></div>
+                                <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userIdClaim?.Value">Профиль</a></div>
+                                <div class="user-profile__menu-item" data-target="game-stats"><a class="menu__link" asp-controller="Profile" asp-action="Profile" asp-route-userId="@userIdClaim?.Value">Рейтинг в играх</a></div>
                                 <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Home" asp-action="Index">Рекомендуемые игры</a></div>
-                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Settings" asp-route-userId="@userId">Настройки</a></div>
+                                <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Profile" asp-action="Settings" asp-route-userId="@userIdClaim?.Value">Настройки</a></div>
                                 <div class="user-profile__menu-item"><a class="menu__link" asp-controller="Account" asp-action="Logout">Выйти</a></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+                
         }
         else
         {

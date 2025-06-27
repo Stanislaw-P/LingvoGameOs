@@ -42,4 +42,11 @@ public class HomeController : Controller
     {
         return View();
     }
+
+    public async Task<IActionResult> Games()
+    {
+        var games = await gamesRepository.GetAllAsync();
+        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        return View(games);
+    }
 }

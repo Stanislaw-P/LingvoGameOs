@@ -45,26 +45,6 @@ namespace LingvoGameOs.Controllers
             return RedirectToAction(nameof(ProfileAsync));
         }
 
-        public async Task<IActionResult> ProfileAsync(string userId)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
-                user.DevGames = games;
-
-                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
-                
-                if (userId == userManager.GetUserAsync(User).Result.Id)
-                {
-                    userViewModel.IsMyProfile = true;
-                }
-
-                return View(userViewModel);
-            }
-            return RedirectToAction("Index", "Home");
-        }
-
         public async Task<IActionResult> SettingsAsync(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -126,6 +106,42 @@ namespace LingvoGameOs.Controllers
                 await signInManager.RefreshSignInAsync(user);
             }
             return View(settings);
+        }
+
+        public async Task<IActionResult> ProfileAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
+                user.DevGames = games;
+
+                var currentUser = await userManager.GetUserAsync(User);
+                ViewData["UserImageURL"] = currentUser?.ImageURL; // Передаем URL аватара текущего пользователя
+                ViewData["Username"] = currentUser?.UserName ?? "Пользователь"; // Передаем имя
+
+                var userViewModel = new UserViewModel
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    UserName = user.UserName,
+                    Level = 1,
+                    Description = user.Description,
+                    ImageURL = user.ImageURL,
+                    DevGames = user.DevGames,
+                    PlayerGames = user.PlayerGames,
+                    UserGames = user.UserGames
+                };
+
+                if (userId == userManager.GetUserAsync(User).Result.Id)
+                {
+                    userViewModel.IsMyProfile = true;
+                }
+
+                return View(userViewModel);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

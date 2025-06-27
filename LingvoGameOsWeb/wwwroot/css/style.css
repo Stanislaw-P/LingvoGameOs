@@ -232,7 +232,9 @@ body {
 
 .user-profile__avatar {
     width: 43px;
-    height: 43px;
+    height: auto;
+    border-radius: 50%;
+
 }
 
 .user-profile__user-info {
@@ -5645,4 +5647,476 @@ game-pause-modal {
     }
 }
 
+/* #endregion */
+
+
+
+/* #region Стили категорий */
+.categories {
+    padding: 40px 100px;
+}
+
+.categories__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.categories__text {
+    flex: 1;
+}
+
+.categories__title {
+    font-family: "Axiforma-SemiBold", sans-serif;
+    font-size: 48px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+.categories__description {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    color: var(--text-gray);
+    line-height: 24px;
+}
+
+.categories__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--border-dark);
+    border-radius: 5px 25px;
+}
+
+.categories__button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.categories__button img {
+    width: 45px;
+    height: 45px;
+}
+
+.categories__indicators {
+    display: flex;
+    gap: 3px;
+}
+
+.categories__indicator {
+    width: 18px;
+    height: 4px;
+    background: var(--border-outline-dark);
+    border-radius: 100px;
+}
+
+.categories__indicator.active {
+    background: var(--accent-1);
+}
+
+.categories__cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+.category-card {
+    flex: 0 0 294px;
+    padding: 30px;
+    border: 1px solid var(--border-dark);
+    border-radius: 10px 70px;
+    box-shadow: var(--shadow);
+}
+
+.category-card__images {
+    display: flex;
+    gap: 5px;
+    height: 252px;
+    overflow: hidden;
+    border-radius: 10px 70px;
+}
+
+.category-card__image {
+    flex: 1;
+    object-fit: cover;
+}
+
+.category-card__info {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    margin-top: 17px;
+}
+
+.category-card__title {
+    font-family: "Axiforma-SemiBold", sans-serif;
+    font-size: 20px;
+    color: var(--text-light);
+    flex: 1;
+}
+
+.category-card__icon {
+    width: 30px;
+    height: 30px;
+}
+/* #endregion */
+
+/* #region Стили новых игр */
+.new-games {
+    padding: 40px 100px;
+}
+
+.new-games__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+
+.new-games__text {
+    flex: 1;
+}
+
+.new-games__title {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-weight: 400;
+    color: var(--text-light);
+    font-size: 58px;
+    line-height: normal;
+}
+
+.new-games__description {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-weight: 400;
+    color: var(--text-gray);
+    font-size: 16px;
+    line-height: 30px;
+    margin-top: 10px;
+}
+
+.new-games__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 32px;
+    background-color: var(--bg-light);
+    border-radius: 73px;
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    color: var(--accent-2);
+    text-decoration: none;
+}
+
+.new-games__button:hover {
+    background-color: var(--accent-2);
+    color: var(--text-light);
+}
+
+.new-games__list {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+.new-games__item {
+    flex: 0 0 auto;
+    width: 355px;
+}
+
+.new-games__card {
+    position: relative;
+    width: 100%;
+    height: 297px;
+    border-radius: 10px 70px;
+    overflow: hidden;
+}
+
+.new-games__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.new-games__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(24, 32, 50, 0.05) 0%, rgba(0, 1, 2, 0.7) 100%);
+    border-radius: 10px 70px;
+}
+
+.new-games__name {
+    position: absolute;
+    top: 250px;
+    left: 53px;
+    font-family: "Axiforma-SemiBold", sans-serif;
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 20px;
+    line-height: 36px;
+}
+
+.new-games__date {
+    position: absolute;
+    top: 228px;
+    left: 53px;
+    font-family: "Axiforma-Regular", sans-serif;
+    font-weight: 400;
+    color: var(--text-gray);
+    font-size: 16px;
+    line-height: 36px;
+}
+/* #endregion */
+
+/* #region Стили отзывов */
+.reviews {
+    padding: 40px 100px;
+    background: rgba(62, 104, 209, 0.2);
+}
+
+.reviews__subtitle {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.reviews__title {
+    font-family: "Axiforma-SemiBold", sans-serif;
+    font-size: 48px;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.reviews__container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+.reviews__card {
+    flex: 0 0 400px;
+    background: var(--bg-light);
+    border: 2px solid var(--accent-2);
+    padding: 30px;
+    border-radius: 10px 70px;
+    box-shadow: var(--shadow);
+}
+
+.reviews__reviewer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.reviews__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.reviews__reviewer-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 15px;
+}
+
+.reviews__reviewer-name {
+    font-family: "Axiforma-Medium", sans-serif;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.reviews__reviewer-location {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 14px;
+    color: var(--text-body);
+}
+
+.reviews__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.reviews__rating-score {
+    font-family: "Axiforma-Medium", sans-serif;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.reviews__star {
+    width: 16px;
+    height: 16px;
+}
+
+.reviews__text {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 22px;
+}
+
+.reviews__navigation {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.reviews__nav-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.reviews__nav-button img {
+    width: 40px;
+    height: 40px;
+}
+
+.reviews__indicators {
+    display: flex;
+    gap: 5px;
+}
+
+.reviews__indicator {
+    width: 16px;
+    height: 4px;
+    background: var(--border-outline-dark);
+    border-radius: 2px;
+}
+
+.reviews__indicator.active {
+    width: 23px;
+    background: var(--accent-2);
+}
+/* #endregion */
+
+/* #region Стили призыва к действию */
+.cta {
+    padding: 40px 100px;
+    text-align: center;
+}
+
+.cta__title {
+    font-family: "Axiforma-SemiBold", sans-serif;
+    font-size: 48px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.cta__description {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 18px;
+    color: var(--text-gray);
+    line-height: 27px;
+    margin-bottom: 20px;
+}
+
+.cta__button {
+    padding: 16px 32px;
+    background: var(--accent-2);
+    color: var(--text-light);
+    border: none;
+    border-radius: 73px;
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.cta__button:hover {
+    background: var(--accent-1);
+}
+/* #endregion */
+
+/* #region Стили FAQ */
+.faq {
+    padding: 40px 100px;
+}
+
+.faq__title {
+    font-family: "Axiforma-SemiBold", sans-serif;
+    font-size: 48px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+.faq__description {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    color: var(--text-gray);
+    margin-bottom: 30px;
+}
+
+.faq__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.faq__item {
+    padding: 20px;
+    border: 1px solid var(--border-dark);
+    border-radius: 40px;
+    box-shadow: var(--shadow);
+}
+
+.faq__question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq__question-title {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 20px;
+    color: var(--text-light);
+}
+
+.faq__icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.faq__answer {
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    color: var(--text-light);
+    line-height: 24px;
+    margin-top: 10px;
+    display: none;
+}
+
+.faq__item.active .faq__answer {
+    display: block;
+}
+
+.faq__button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 16px 32px;
+    background: var(--accent-2);
+    color: var(--text-light);
+    border: none;
+    border-radius: 73px;
+    font-family: "Axiforma-Regular", sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.faq__button:hover {
+    background: var(--accent-1);
+}
 /* #endregion */
