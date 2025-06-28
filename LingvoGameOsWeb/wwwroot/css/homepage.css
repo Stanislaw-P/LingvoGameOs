@@ -353,7 +353,7 @@ body {
     background: var(--accent-1);
     color: var(--text-light);
     padding: 12px 24px;
-    border-radius: var(--radius);
+    border-radius: 100px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -384,7 +384,7 @@ body {
 .homepage-category-card {
     position: relative;
     background: var(--bg-white);
-    border-radius: var(--radius);
+    border-radius: 10px 70px;
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -501,6 +501,7 @@ body {
 }
 
 .homepage-category-card__overlay {
+    border-radius: 70px 10px;
     position: absolute;
     top: 0;
     left: 0;
@@ -1218,6 +1219,7 @@ body {
 
     .homepage-categories__item {
         min-width: 250px;
+        border-radius: 70px 10px;
     }
 
     .homepage-games__list {

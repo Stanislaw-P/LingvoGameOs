@@ -68,6 +68,7 @@ public class HomeController : Controller
     {
         var games = await gamesRepository.GetAllAsync();
         var filteredGames = games.Where(game => 
+            game.SkillsLearning != null && 
             game.SkillsLearning.Any(skill => 
                 skill.Name.Equals(category, StringComparison.OrdinalIgnoreCase)
             )
