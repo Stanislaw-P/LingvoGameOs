@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using LingvoGameOs.Models;
 using LingvoGameOs.Db;
 using System.Text.RegularExpressions;
+using X.PagedList.Extensions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 namespace LingvoGameOs.Controllers;
@@ -18,14 +20,21 @@ public class HomeController : Controller
         this.newDatabaseContext = newDatabaseContext;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? page)
     {
         var games = await gamesRepository.GetAllAsync();
         ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
-        return View(games);
+
+        // Пагинация
+        var pageNumber = page ?? 1;
+        var pageSize = 2;
+
+        var gamesPagination = games.ToPagedList(pageNumber, pageSize);
+        
+        return View(gamesPagination);
     }
 
-    public async Task<IActionResult> Search(string gameName)
+    public async Task<IActionResult> Search(string gameName, int? page)
     {
         var games = await gamesRepository.GetAllAsync();
 
@@ -35,8 +44,14 @@ public class HomeController : Controller
             ViewBag.GameName = gameName;
         }
 
-       /* Thread.Sleep(2000);*/ // Демонстрация "поиска игр"
-        return PartialView("_GamesListPartial", games);
+        // Пагинация
+        var pageNumber = page ?? 1;
+        var pageSize = 2;
+
+        var gamesPagination = games.ToPagedList(pageNumber, pageSize);
+
+        /* Thread.Sleep(2000);*/ // Демонстрация "поиска игр"
+        return PartialView("_GamesListPartial", gamesPagination);
     }
 
     public async Task<IActionResult> FullGamesList()

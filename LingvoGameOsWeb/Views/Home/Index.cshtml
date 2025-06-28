@@ -1,4 +1,4 @@
-﻿@model List<Game>
+﻿@model IPagedList<Game>
 
 @{
     ViewData["Title"] = "Сипсок игр";
@@ -18,21 +18,21 @@
             <div class="game-hero__slides" style="display: flex; overflow: hidden;">
                 <div class="game-hero__slide">
                     <img src="/img/game-banner.png" alt="Game screenshot 1"
-                         class="game-hero__slide-image">
+                    class="game-hero__slide-image">
                 </div>
                 <div class="game-hero__slide game-hero__video-slide">
                     <iframe src="https://vk.com/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
-                            width="640" height="360"
-                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                            frameborder="0" allowfullscreen></iframe>
+                    width="640" height="360"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                    frameborder="0" allowfullscreen></iframe>
                 </div>
                 <div class="game-hero__slide">
                     <img src="/img/games/mountain-labyrinth-banner-2.png" alt="Game screenshot 2"
-                         class="game-hero__slide-image">
+                    class="game-hero__slide-image">
                 </div>
                 <div class="game-hero__slide">
                     <img src="/img/games/mountain-labyrinth-banner-3.png" alt="Game screenshot 3"
-                         class="game-hero__slide-image">
+                    class="game-hero__slide-image">
                 </div>
             </div>
             <button class="game-hero__carousel-button game-hero__carousel-prev">
@@ -68,7 +68,7 @@
 
 <section class="games">
     <div class="games__filter">
-        @using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
+        @using (Html.AjaxBeginForm("Search", "Home", new Microsoft.AspNetCore.Mvc.Rendering.AjaxOptions
          {
              HttpMethod = "get",
              UpdateTargetId = "all-games",
@@ -79,7 +79,7 @@
                 @if (ViewBag.GameName != null)
                 {
                     <input type="text" name="gameName" id="search-input" required value="@ViewBag.GameName" class="email-prompt-text-style games__search-input"
-                           placeholder="Найти игру...">
+                    placeholder="Найти игру...">
                 }
                 else
                 {
@@ -91,7 +91,7 @@
             </div>
         }
 
-        
+
 
         <div class="games__filter-dropdowns">
             <div class="games__dropdown">
@@ -182,7 +182,7 @@
             @foreach (var game in Model)
             {
                 <div class="games__item"
-                     data-rating="@game.RaitingPlayers">
+                data-rating="@game.RaitingPlayers">
                     <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
                     <div class="games__content">
                         <h3 class="games__name">@game.Title</h3>
@@ -218,6 +218,37 @@
         }
     </div>
 </section>
+
+<!-- Пагинация -->
+<br />
+<br />
+
+@if (!string.IsNullOrEmpty(ViewBag.GameName))
+{
+    @Html.PagedListPager(
+                (IPagedList)Model,
+                        page => Url.Action("Search", new { page = page, searchString = ViewBag.GameName }),
+                new X.PagedList.Mvc.Core.PagedListRenderOptions
+        {
+            ContainerDivClasses = new[] { "navigation" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        }
+            )
+}
+else
+{
+    @Html.PagedListPager(
+                (IPagedList)Model,
+                page => Url.Action("Index", new { page = page }),
+                new X.PagedList.Mvc.Core.PagedListRenderOptions
+        {
+            ContainerDivClasses = new[] { "navigation" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        }
+            )
+}
 
 @section Scripts {
     <script>
