@@ -22,7 +22,7 @@ namespace LingvoGameOs.Db
                 {
                     Email = "admin@gmail.com",
                     UserName = "admin@gmail.com",
-                    ImageURL = "/img/avatars/admin-avatar-11.png",
+                    AvatarImgPath = "/img/avatars/admin-avatar-11.png",
                     Name = "Админ",
                     Surname = "Админов",
                     Description = "Администрация сайта"
@@ -32,7 +32,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Марат",
                     Surname = "Дзиов",
-                    ImageURL = "/img/avatars/MaraAva.jpg",
+                    AvatarImgPath = "/img/avatars/MaraAva.jpg",
                     Description = "Выпускниц яндекс лицея. В совершенстве знает python и даже был в офисе Яндекс.",
                     UserName = "MaratTest@gmail.com",
                     Email = "MaratTest@gmail.com"
@@ -42,7 +42,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Дэвид",
                     Surname = "Кадиев",
-                    ImageURL = "/img/avatars/DavaAva.jpg",
+                    AvatarImgPath = "/img/avatars/DavaAva.jpg",
                     Description = "Лучший составитель тестов и кроссвордов. Сдал ЕГЭ по информатике на 98 баллов и теперь пишет игры для Осетии.",
                     UserName = "DavidTest@gmail.com",
                     Email = "DavidTest@gmail.com"
@@ -52,7 +52,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Илона",
                     Surname = "Бекоева",
-                    ImageURL = "/img/avatar100.png",
+                    AvatarImgPath = "/img/avatars/Ilona-ava933.jpg",
                     Description = "Окончила СОГУ с красным дипломом. Вложила душу в проект платформы. Обладательница премии 'Лучшая игра на WinForms' в 2022 году.",
                     UserName = "IlonaBekoeva@gmail.com",
                     Email = "IlonaBekoeva@gmail.com"
