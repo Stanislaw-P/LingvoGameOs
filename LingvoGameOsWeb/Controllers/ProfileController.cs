@@ -133,7 +133,7 @@ namespace LingvoGameOs.Controllers
                 user.DevGames = games;
 
                 var currentUser = await userManager.GetUserAsync(User);
-                ViewData["UserImageURL"] = currentUser?.ImageURL; // Передаем URL аватара текущего пользователя
+                ViewData["UserImageURL"] = currentUser?.AvatarImgPath; // Передаем URL аватара текущего пользователя
                 ViewData["Username"] = currentUser?.UserName ?? "Пользователь"; // Передаем имя
 
                 var userViewModel = new UserViewModel
@@ -144,7 +144,7 @@ namespace LingvoGameOs.Controllers
                     UserName = user.UserName,
                     Level = 1,
                     Description = user.Description,
-                    ImageURL = user.ImageURL,
+                    ImageURL = user.AvatarImgPath,
                     DevGames = user.DevGames,
                     PlayerGames = user.PlayerGames,
                     UserGames = user.UserGames
