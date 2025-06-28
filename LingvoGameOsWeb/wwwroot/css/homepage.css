@@ -45,10 +45,6 @@ body {
     color: var(--text-light);
     background-color: var(--bg-body) !important;
     font-family: "Axiforma", sans-serif;
-    background: url('/img/mainBG.png') no-repeat center top;
-    background-size: cover;
-    background-attachment: fixed;
-    position: relative;
 }
 
 .wrapper {
@@ -200,6 +196,18 @@ body {
     color: var(--homepage-white);
     margin-top: -80px;
     margin-bottom: 0;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(20, 28, 48, 0.3) 40%,
+        rgba(20, 28, 48, 0.7) 70%,
+        var(--bg-body) 100%
+    ),
+    url('/img/mainBG.png') no-repeat center top;
+    background-size: 100% auto;
 }
 
 .homepage-hero__content {
