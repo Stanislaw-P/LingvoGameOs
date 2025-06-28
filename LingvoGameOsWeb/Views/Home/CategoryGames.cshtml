@@ -1,0 +1,132 @@
+@model List<Game>
+
+@{
+    ViewData["Title"] = $"Игры категории {ViewBag.Category}";
+}
+
+<link rel="stylesheet" href="/css/category-games.css" />
+
+<!-- Category Hero Section -->
+<section class="category-hero">
+    <div class="category-hero__container">
+        <div class="category-hero__content">
+            <div class="category-hero__breadcrumb">
+                <a href="/Home/Categories" class="category-hero__breadcrumb-link">Категории</a>
+                <span class="category-hero__breadcrumb-separator">/</span>
+                <span class="category-hero__breadcrumb-current">@ViewBag.Category</span>
+            </div>
+            <h1 class="category-hero__title">@ViewBag.Category</h1>
+            <p class="category-hero__description">
+                Игры для изучения @ViewBag.Category.ToLower() в осетинском языке
+            </p>
+            <div class="category-hero__stats">
+                <span class="category-hero__game-count">@Model.Count игр</span>
+                <span class="category-hero__total-games">всего в категории</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Games List Section -->
+<section class="category-games">
+    <div class="category-games__container">
+        @if (Model != null && Model.Any())
+        {
+            <div class="category-games__list">
+                @foreach (var game in Model)
+                {
+                    <div class="category-games__item">
+                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" class="category-games__link">
+                            <div class="category-games__image-wrapper">
+                                <img class="category-games__image" src="@game.CoverImagePath" alt="@game.Title" loading="lazy">
+                                <div class="category-games__overlay">
+                                    <div class="category-games__overlay-content">
+                                        <span class="category-games__play-text">Играть</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="category-games__content">
+                                <h3 class="category-games__name">@game.Title</h3>
+                                <p class="category-games__description">@game.Description</p>
+                                <div class="category-games__stats">
+                                    <div class="category-games__rating">
+                                        <div class="category-games__stars">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= game.RaitingPlayers)
+                                                {
+                                                    <img src="/icon/star-filled.svg" alt="star" class="category-games__star filled">
+                                                }
+                                                else
+                                                {
+                                                    <img src="/icon/star-empty.svg" alt="star" class="category-games__star">
+                                                }
+                                            }
+                                        </div>
+                                        <span class="category-games__rating-value">@game.RaitingPlayers</span>
+                                    </div>
+                                    <div class="category-games__meta">
+                                        <span class="category-games__downloads">
+                                            <img src="/icon/cloud-download.svg" alt="downloads" class="category-games__meta-icon">
+                                            @game.NumberDownloads
+                                        </span>
+                                        <span class="category-games__platform">@game.GamePlatform.Name</span>
+                                    </div>
+                                </div>
+                                <div class="category-games__skills">
+                                    @foreach (var skill in game.SkillsLearning.Take(3))
+                                    {
+                                        <span class="category-games__skill-tag">@skill.Name</span>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="category-games__empty">
+                <div class="category-games__empty-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
+                </div>
+                <h3 class="category-games__empty-title">Пока нет игр в этой категории</h3>
+                <p class="category-games__empty-description">
+                    Мы работаем над добавлением новых игр для изучения @ViewBag.Category.ToLower()
+                </p>
+                <a href="/Home/Categories" class="category-games__empty-button">Вернуться к категориям</a>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Related Categories Section -->
+<section class="related-categories">
+    <div class="related-categories__container">
+        <h2 class="related-categories__title">Другие категории</h2>
+        <div class="related-categories__list">
+            @{
+                var allCategories = new[] { "Культура", "Чтение", "Словарный запас", "Грамматика", "Аудирование", "Произношение" };
+                var otherCategories = allCategories.Where(c => c != ViewBag.Category).Take(3);
+            }
+            
+            @foreach (var category in otherCategories)
+            {
+                <a href="@Url.Action("CategoryGames", "Home", new { category = category })" class="related-categories__item">
+                    <span class="related-categories__name">@category</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<script src="/js/category-games.js"></script> 

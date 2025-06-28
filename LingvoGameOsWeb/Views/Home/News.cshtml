@@ -1,92 +1,181 @@
-﻿<div class="primary-content-container">
+﻿@{
+    ViewData["Title"] = "Новости - LingvoGameOs";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/news.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/news.js" asp-append-version="true"></script>
+}
+
+<div class="news-page">
     <!-- Заголовок будет вставлен сюда -->
     <div id="header-placeholder"></div>
 
-    <div class="news-update-container">
-        <div class="news-update-section">
-            <div class="news-section-container">
-                <div class="news-updates-container">
-                    <div class="news-updates-container1">
-                        <p class="news-title-text-style">Последние новости и обновления</p>
-                        <p class="news-update-text-style">Узнайте первыми о наших новых играх, обновлениях и
-                            событиях.</p>
+    <div class="news-container">
+        <!-- Заголовок секции -->
+        <div class="news-header">
+            <div class="news-header__badge">
+                <img src="/icon/calendar.svg" alt="Новости" class="news-header__badge-icon">
+                <span>Актуально</span>
+            </div>
+            <h1 class="news-header__title">Новости и обновления</h1>
+        </div>
+
+       
+        <!-- Основной контент -->
+        <div class="news-main">
+            <!-- Основные новости -->
+            <div class="news-featured">
+                <!-- Новость 1 -->
+                <article class="news-card">
+                    <img src="/img/games/mountain-labyrinth-banner-1.png" alt="Новая игра: Горный лабиринт" class="news-card__image">
+                    <div class="news-card__content">
+                        <div class="news-card__meta">
+                            <span class="news-card__date">15.01.2025</span>
+                            <span class="news-card__category">Новая игра</span>
+                        </div>
+                        <h3 class="news-card__title">Вышла новая игра "Горный лабиринт" для изучения осетинского языка</h3>
+                        <p class="news-card__excerpt">
+                            Представляем вам новую захватывающую игру для изучения осетинского языка! "Горный лабиринт" 
+                            сочетает в себе элементы головоломки и приключений, помогая игрокам освоить базовую лексику 
+                            и грамматику в увлекательной форме.
+                        </p>
+                        <div class="news-card__author">
+                            <img src="/img/avatars/admin-avatar-11.png" alt="Администратор" class="news-card__author-avatar">
+                            <div class="news-card__author-info">
+                                <span class="news-card__author-name">Команда LingvoGameOs</span>
+                                <span class="news-card__author-role">Разработчики</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Новость 2 -->
+                <article class="news-card">
+                    <img src="/img/games/gameplay-animal-1.jpg" alt="Обновление платформы" class="news-card__image">
+                    <div class="news-card__content">
+                        <div class="news-card__meta">
+                            <span class="news-card__date">10.01.2025</span>
+                            <span class="news-card__category">Обновление</span>
+                        </div>
+                        <h3 class="news-card__title">Большое обновление платформы: новые функции и улучшения</h3>
+                        <p class="news-card__excerpt">
+                            Мы рады представить масштабное обновление платформы LingvoGameOs! Добавлена система 
+                            достижений, улучшен интерфейс, добавлены новые категории игр и многое другое. 
+                            Теперь обучение стало еще более эффективным и увлекательным.
+                        </p>
+                        <div class="news-card__author">
+                            <img src="/img/avatars/MaraAva.jpg" alt="Мария" class="news-card__author-avatar">
+                            <div class="news-card__author-info">
+                                <span class="news-card__author-name">Мария Петрова</span>
+                                <span class="news-card__author-role">Руководитель проекта</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Новость 3 -->
+                <article class="news-card">
+                    <img src="/img/games/art-object-1.png" alt="Конкурс разработчиков" class="news-card__image">
+                    <div class="news-card__content">
+                        <div class="news-card__meta">
+                            <span class="news-card__date">05.01.2025</span>
+                            <span class="news-card__category">Событие</span>
+                        </div>
+                        <h3 class="news-card__title">Конкурс разработчиков игр для изучения языков</h3>
+                        <p class="news-card__excerpt">
+                            Объявляем конкурс для разработчиков! Создайте игру для изучения любого языка 
+                            и получите призовой фонд в размере 100,000 рублей. Лучшие работы будут 
+                            размещены на платформе LingvoGameOs.
+                        </p>
+                        <div class="news-card__author">
+                            <img src="/img/avatars/DavaAva.jpg" alt="Давид" class="news-card__author-avatar">
+                            <div class="news-card__author-info">
+                                <span class="news-card__author-name">Давид Абаев</span>
+                                <span class="news-card__author-role">Технический директор</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Боковая панель -->
+            <div class="news-sidebar">
+                <!-- Популярные новости -->
+                <div class="news-sidebar__section">
+                    <h3 class="news-sidebar__title">Популярные новости</h3>
+                    <div class="news-sidebar__list">
+                        <div class="news-sidebar__item">
+                            <img src="/img/games/cross-1.jpg" alt="Крестики-нолики" class="news-sidebar__item-image">
+                            <div class="news-sidebar__item-content">
+                                <h4 class="news-sidebar__item-title">Новая версия игры "Крестики-нолики" с осетинскими словами</h4>
+                                <span class="news-sidebar__item-date">28.12.2024</span>
+                            </div>
+                        </div>
+                        <div class="news-sidebar__item">
+                            <img src="/img/games/gameplay-animal.png" alt="Животные" class="news-sidebar__item-image">
+                            <div class="news-sidebar__item-content">
+                                <h4 class="news-sidebar__item-title">Добавлена новая категория "Животные" в игры</h4>
+                                <span class="news-sidebar__item-date">20.12.2024</span>
+                            </div>
+                        </div>
+                        <div class="news-sidebar__item">
+                            <img src="/img/games/art-object-2.jpeg" alt="Обновление" class="news-sidebar__item-image">
+                            <div class="news-sidebar__item-content">
+                                <h4 class="news-sidebar__item-title">Улучшена система рейтинга игроков</h4>
+                                <span class="news-sidebar__item-date">15.12.2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категории -->
+                <div class="news-sidebar__section">
+                    <h3 class="news-sidebar__title">Категории</h3>
+                    <div class="news-categories">
+                        <span class="news-category active">Все</span>
+                        <span class="news-category">Новые игры</span>
+                        <span class="news-category">Обновления</span>
+                        <span class="news-category">События</span>
+                        <span class="news-category">Разработка</span>
+                        <span class="news-category">Обучение</span>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="news-sidebar__section">
+                    <h3 class="news-sidebar__title">Статистика</h3>
+                    <div style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">
+                        <p>📊 <strong>1,247</strong> активных игроков</p>
+                        <p>🎮 <strong>15</strong> игр на платформе</p>
+                        <p>📚 <strong>8</strong> языков для изучения</p>
+                        <p>⭐ <strong>4.8</strong> средний рейтинг</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Форма подписки -->
-            <div class="email-form-container">
-                <div class="email-input-container1">
-                    <div class="email-input-container">
-                        <input type="email" class="email-prompt-text-style" placeholder="Введите ваш email"
-                            required>
-                    </div>
-                    <button class="email-button">Подписаться</button>
-                </div>
-            </div>
-
-            <!-- Контент новостей -->
-            @* <div class="content-container"> *@
-            @*     <div class="flex-container-with-author-info"> *@
-            @*         <!-- Основные статьи --> *@
-            @*         <div class="article-container"> *@
-            @*             <div class="presidential-card"> *@
-            @*                 <img src="assets/image_d7b7fd4a.jpeg" class="cover-image-container" alt="Новость 1"> *@
-            @*                 <div class="profile-card1"> *@
-            @*                     <p class="date-info-text-style">13.06.2024</p> *@
-            @*                 </div> *@
-            @*                 <p class="golden-text-styler">Lorem Ipsum is simply dummy text</p> *@
-            @*                 <p class="gilroy-text-block">Lorem Ipsum is simply dummy text of the printing and *@
-            @*                     typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever *@
-            @*                     since the 1500s...</p> *@
-            @*             </div> *@
-            @*             <div class="profile-card2"> *@
-            @*                 <img src="assets/image_60dca0f5.jpeg" class="cover-image-container" alt="Новость 2"> *@
-            @*                 <div class="profile-card1"> *@
-            @*                     <p class="date-info-text-style1">12.06.2024</p> *@
-            @*                 </div> *@
-            @*                 <p class="golden-text-heading">Lorem Ipsum is simply dummy text</p> *@
-            @*                 <p class="elegant-text-block">Lorem Ipsum is simply dummy text of the printing and *@
-            @*                     typesetting industry...</p> *@
-            @*             </div> *@
-            @*         </div> *@
-
-            @*         <!-- Краткие обновления --> *@
-            @*         <div class="article-card1"> *@
-            @*             <div *@
-            @*                 class="author-update-snippet-container article-card author-update-snippet-container:first-child"> *@
-            @*                 <img class="author-card" src="assets/image_eb6038eb.png" alt="Автор"> *@
-            @*                 <div class="article-snippet-container"> *@
-            @*                     <div class="author-info-container"> *@
-            @*                         <div class="author-info-container1"> *@
-            @*                             <p class="author-name-container">Владимир В.</p> *@
-            @*                         </div> *@
-            @*                         <p class="article-date-text-style">22.05.2024</p> *@
-            @*                     </div> *@
-            @*                     <p class="article-snippet-text-style">Lorem Ipsum is simply dummy text?</p> *@
-            @*                 </div> *@
-            @*             </div> *@
-            @*             <div class="author-update-snippet-container article-card"> *@
-            @*                 <img class="author-card" src="assets/image_4cb8d63.png" alt="Автор"> *@
-            @*                 <div class="article-snippet-container"> *@
-            @*                     <div class="author-info-container"> *@
-            @*                         <div class="author-info-container1"> *@
-            @*                             <p class="author-name-container">Владимир В.</p> *@
-            @*                         </div> *@
-            @*                         <p class="article-date-text-style">18.05.2024</p> *@
-            @*                     </div> *@
-            @*                     <p class="article-snippet-text-style">Lorem Ipsum is simply dummy text?</p> *@
-            @*                 </div> *@
-            @*             </div> *@
-            @*             <!-- Добавь остальные по необходимости --> *@
-            @*         </div> *@
-            @*     </div> *@
-            @* </div> *@
-
-
+        <!-- Пагинация -->
+        <div class="news-pagination">
+            <button class="news-pagination__button" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+            </button>
+            <button class="news-pagination__button active">1</button>
+            <button class="news-pagination__button">2</button>
+            <button class="news-pagination__button">3</button>
+            <button class="news-pagination__button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+            </button>
         </div>
     </div>
-
+    
     <!-- Подвал будет вставлен сюда -->
     <div id="footer-placeholder"></div>
 </div>

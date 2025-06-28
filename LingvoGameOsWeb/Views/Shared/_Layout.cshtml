@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
     <link rel="stylesheet" href="~/LingvoGameOs.styles.css" asp-append-version="true" />
     <link rel="icon" href="~/img/Logo.png" type="image/x-icon" />
+    @await RenderSectionAsync("Styles", required: false)
     @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
 </head>
 <body>

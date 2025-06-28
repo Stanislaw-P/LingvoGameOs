@@ -1,0 +1,165 @@
+@model List<Game>
+
+@{
+    ViewData["Title"] = "Категории игр";
+}
+
+<link rel="stylesheet" href="/css/categories-page.css" />
+
+<!-- Hero Section -->
+<section class="categories-hero">
+    <div class="categories-hero__container">
+        <div class="categories-hero__content">
+            <h1 class="categories-hero__title">Изучай осетинский язык по категориям</h1>
+            <p class="categories-hero__description">
+                Выбери интересующую тебя категорию и найди игры, которые помогут тебе развить конкретные навыки
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Grid -->
+<section class="categories-grid">
+    <div class="categories-grid__container">
+        <div class="categories-grid__header">
+            <h2 class="categories-grid__title">Все категории</h2>
+            <p class="categories-grid__description">Выбери категорию для изучения</p>
+        </div>
+        
+        <div class="categories-grid__list">
+            @{
+                var categories = new[] {
+                    new { 
+                        Name = "Культура", 
+                        Description = "Изучай традиции, обычаи и культурные особенности Осетии",
+                        Icon = "/icon/categories.svg",
+                        Color = "#FF6B6B",
+                        Images = new[] { "/img/games/art-object-1.png", "/img/games/art-object-2.jpeg" },
+                        GameCount = Model?.Count(g => g.SkillsLearning.Any(s => s.Name.Contains("Культура"))) ?? 0
+                    },
+                    new { 
+                        Name = "Чтение", 
+                        Description = "Развивай навыки чтения и понимания осетинских текстов",
+                        Icon = "/icon/categories.svg",
+                        Color = "#4ECDC4",
+                        Images = new[] { "/img/games/art-object-3.png", "/img/games/cross-1.jpg" },
+                        GameCount = Model?.Count(g => g.SkillsLearning.Any(s => s.Name.Contains("Чтение"))) ?? 0
+                    },
+                    new { 
+                        Name = "Словарный запас", 
+                        Description = "Расширяй свой словарный запас и изучай новые слова",
+                        Icon = "/icon/categories.svg",
+                        Color = "#45B7D1",
+                        Images = new[] { "/img/games/gameplay-animal-1.jpg", "/img/games/gameplay-animal-2.jpg" },
+                        GameCount = Model?.Count(g => g.SkillsLearning.Any(s => s.Name.Contains("Словарный"))) ?? 0
+                    },
+                    new { 
+                        Name = "Грамматика", 
+                        Description = "Изучай правила грамматики и структуру предложений",
+                        Icon = "/icon/categories.svg",
+                        Color = "#96CEB4",
+                        Images = new[] { "/img/games/gameplay-animal.png", "/img/games/mountain-labyrinth-banner-1.png" },
+                        GameCount = Model?.Count(g => g.SkillsLearning.Any(s => s.Name.Contains("Грамматика"))) ?? 0
+                    },
+                    new { 
+                        Name = "Аудирование", 
+                        Description = "Тренируй восприятие осетинской речи на слух",
+                        Icon = "/icon/categories.svg",
+                        Color = "#FFEAA7",
+                        Images = new[] { "/img/games/mountain-labyrinth-banner-2.png", "/img/games/mountain-labyrinth-banner-3.png" },
+                        GameCount = Model?.Count(g => g.SkillsLearning.Any(s => s.Name.Contains("Аудирование"))) ?? 0
+                    },
+                    new { 
+                        Name = "Произношение", 
+                        Description = "Улучшай произношение и интонацию",
+                        Icon = "/icon/categories.svg",
+                        Color = "#DDA0DD",
+                        Images = new[] { "/img/games/art-object-1.png", "/img/games/art-object-2.jpeg" },
+                        GameCount = Model?.Count(g => g.SkillsLearning.Any(s => s.Name.Contains("Произношение"))) ?? 0
+                    }
+                };
+            }
+            
+            @foreach (var category in categories)
+            {
+                <div class="category-card" style="--category-color: @category.Color">
+                    <a href="@Url.Action("CategoryGames", "Home", new { category = category.Name })" class="category-card__link">
+                        <div class="category-card__images">
+                            <img src="@category.Images[0]" alt="@category.Name" class="category-card__image category-card__image--primary" loading="lazy">
+                            <img src="@category.Images[1]" alt="@category.Name" class="category-card__image category-card__image--secondary" loading="lazy">
+                        </div>
+                        <div class="category-card__content">
+                            <div class="category-card__header">
+                                <h3 class="category-card__title">@category.Name</h3>
+                                <div class="category-card__icon-wrapper">
+                                    <img src="@category.Icon" alt="Иконка @category.Name" class="category-card__icon">
+                                </div>
+                            </div>
+                            <p class="category-card__description">@category.Description</p>
+                            <div class="category-card__stats">
+                                <span class="category-card__game-count">@category.GameCount игр</span>
+                                <div class="category-card__arrow">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-card__overlay"></div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Games Section -->
+<section class="featured-games">
+    <div class="featured-games__container">
+        <div class="featured-games__header">
+            <h2 class="featured-games__title">Популярные игры</h2>
+            <p class="featured-games__description">Попробуй самые популярные игры на платформе</p>
+        </div>
+        
+        <div class="featured-games__list">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var game in Model.Take(4).OrderByDescending(g => g.RaitingPlayers))
+                {
+                    <div class="featured-games__item">
+                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" class="featured-games__link">
+                            <img class="featured-games__image" src="@game.CoverImagePath" alt="@game.Title" loading="lazy">
+                            <div class="featured-games__content">
+                                <h3 class="featured-games__name">@game.Title</h3>
+                                <div class="featured-games__stats">
+                                    <span class="featured-games__rating">
+                                        <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                        <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                        <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                        <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                        <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
+                                    </span>
+                                    <span class="featured-games__views">
+                                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> @game.NumberDownloads
+                                    </span>
+                                </div>
+                                <div class="featured-games__categories">
+                                    @foreach (var skill in game.SkillsLearning.Take(2))
+                                    {
+                                        <span class="featured-games__category-tag">@skill.Name</span>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+        
+        <div class="featured-games__actions">
+            <a href="/Home/Games" class="featured-games__view-all">Посмотреть все игры</a>
+        </div>
+    </div>
+</section>
+
+<script src="/js/categories-page.js"></script> 

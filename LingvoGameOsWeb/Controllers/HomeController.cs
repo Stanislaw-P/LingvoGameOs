@@ -35,7 +35,7 @@ public class HomeController : Controller
             ViewBag.GameName = gameName;
         }
 
-       /* Thread.Sleep(2000);*/ // Демонстрация "поиска игр"
+       /* Thread.Sleep(2000);*/ // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"
         return PartialView("_GamesListPartial", games);
     }
 
@@ -55,5 +55,26 @@ public class HomeController : Controller
         var games = await gamesRepository.GetAllAsync();
         ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
         return View(games);
+    }
+
+    public async Task<IActionResult> Categories()
+    {
+        var games = await gamesRepository.GetAllAsync();
+        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        return View(games);
+    }
+
+    public async Task<IActionResult> CategoryGames(string category)
+    {
+        var games = await gamesRepository.GetAllAsync();
+        var filteredGames = games.Where(game => 
+            game.SkillsLearning.Any(skill => 
+                skill.Name.Equals(category, StringComparison.OrdinalIgnoreCase)
+            )
+        ).ToList();
+        
+        ViewBag.Category = category;
+        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        return View(filteredGames);
     }
 }
