@@ -325,7 +325,6 @@
 /* Related Categories Section */
 .related-categories {
     padding: 60px 0;
-    background: linear-gradient(135deg, var(--bg-body) 0%, #1a2332 100%);
 }
 
 .related-categories__container {

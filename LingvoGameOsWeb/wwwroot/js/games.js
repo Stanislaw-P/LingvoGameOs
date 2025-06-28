@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     // Карусель
     const prevButton = document.querySelector('.game-hero__carousel-prev');
@@ -7,47 +6,52 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSlide = 0;
     let autoSlideInterval;
 
+    if (prevButton && nextButton && indicators.length > 0) {
+        const startAutoSlide = () => {
+            autoSlideInterval = setInterval(() => {
+                goToSlide(currentSlide + 1);
+            }, 5000);
+        };
 
-    const startAutoSlide = () => {
-        autoSlideInterval = setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, 5000);
-    };
+        const stopAutoSlide = () => {
+            clearInterval(autoSlideInterval);
+        };
 
-    const stopAutoSlide = () => {
-        clearInterval(autoSlideInterval);
-    };
-
-    prevButton.addEventListener('click', () => {
-        stopAutoSlide();
-        goToSlide(currentSlide - 1);
-        startAutoSlide();
-    });
-
-    nextButton.addEventListener('click', () => {
-        stopAutoSlide();
-        goToSlide(currentSlide + 1);
-        startAutoSlide();
-    });
-
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
+        prevButton.addEventListener('click', () => {
             stopAutoSlide();
-            goToSlide(index);
+            goToSlide(currentSlide - 1);
             startAutoSlide();
         });
-    });
 
-    startAutoSlide();
+        nextButton.addEventListener('click', () => {
+            stopAutoSlide();
+            goToSlide(currentSlide + 1);
+            startAutoSlide();
+        });
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                stopAutoSlide();
+                goToSlide(index);
+                startAutoSlide();
+            });
+        });
+
+        startAutoSlide();
+    }
 
     // Dropdowns
     const dropdownToggles = document.querySelectorAll('.games__dropdown-toggle');
     dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             const menu = toggle.nextElementSibling;
             const isActive = menu.classList.contains('active');
+            
+            // Закрываем все остальные dropdown
             document.querySelectorAll('.games__dropdown-menu').forEach(m => m.classList.remove('active'));
             document.querySelectorAll('.games__dropdown-toggle').forEach(t => t.classList.remove('active'));
+            
             if (!isActive) {
                 menu.classList.add('active');
                 toggle.classList.add('active');
@@ -66,8 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Фильтрация
     const gameItems = document.querySelectorAll('.games__item');
     const dropdownItems = document.querySelectorAll('.games__dropdown-item');
-    const searchInput = document.querySelector('.games__search-input');
-    const notification = document.querySelector('.notification');
+    const searchInput = document.querySelector('#search-input');
+    const activeFiltersContainer = document.getElementById('active-filters');
+    const activeFiltersList = document.getElementById('active-filters-list');
+    
     const filters = JSON.parse(localStorage.getItem('gameFilters')) || {
         category: [],
         keyword: [],
@@ -75,10 +81,31 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const showNotification = (message, type = 'info') => {
+        // Создаем уведомление если его нет
+        let notification = document.querySelector('.notification');
+        if (!notification) {
+            notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            document.body.appendChild(notification);
+        }
+
         notification.textContent = message;
         notification.className = `notification notification--${type}`;
         notification.style.display = 'block';
         notification.style.opacity = '1';
+        
         setTimeout(() => {
             notification.style.opacity = '0';
             setTimeout(() => {
@@ -91,25 +118,76 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('gameFilters', JSON.stringify(filters));
     };
 
+    const updateActiveFiltersDisplay = () => {
+        const allFilters = [...filters.category, ...filters.keyword, ...filters.rating];
+        
+        if (allFilters.length > 0) {
+            activeFiltersList.innerHTML = '';
+            allFilters.forEach(filter => {
+                const filterTag = document.createElement('span');
+                filterTag.className = 'games__filter-tag';
+                filterTag.textContent = filter;
+                filterTag.style.cssText = `
+                    display: inline-block;
+                    background: var(--accent-2);
+                    color: white;
+                    padding: 4px 8px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                    margin: 2px;
+                `;
+                activeFiltersList.appendChild(filterTag);
+            });
+            activeFiltersContainer.style.display = 'flex';
+        } else {
+            activeFiltersContainer.style.display = 'none';
+        }
+    };
+
     const applyFilters = () => {
         let visibleItems = 0;
+        
         gameItems.forEach(item => {
-            const categories = item.dataset.categories.split(',');
-            const keywords = item.dataset.keywords.split(',');
-            const rating = parseInt(item.dataset.rating);
+            const categories = item.dataset.categories ? item.dataset.categories.split(',').map(c => c.trim()) : [];
+            const keywords = item.dataset.keywords ? item.dataset.keywords.split(',').map(k => k.trim()) : [];
+            const rating = parseInt(item.dataset.rating) || 0;
             let isVisible = true;
 
-            if (filters.category.length > 0 && !filters.category.some(cat => categories.includes(cat))) {
-                isVisible = false;
+            // Фильтр по категориям
+            if (filters.category.length > 0) {
+                const hasMatchingCategory = filters.category.some(cat => 
+                    categories.some(itemCat => itemCat.toLowerCase() === cat.toLowerCase())
+                );
+                if (!hasMatchingCategory) {
+                    isVisible = false;
+                }
             }
-            if (filters.keyword.length > 0 && !filters.keyword.some(kw => keywords.includes(kw))) {
-                isVisible = false;
+
+            // Фильтр по ключевым словам
+            if (filters.keyword.length > 0 && isVisible) {
+                const hasMatchingKeyword = filters.keyword.some(keyword => 
+                    keywords.some(itemKeyword => itemKeyword.toLowerCase() === keyword.toLowerCase())
+                );
+                if (!hasMatchingKeyword) {
+                    isVisible = false;
+                }
             }
-            if (filters.rating.length > 0 && !filters.rating.includes(rating.toString())) {
-                isVisible = false;
+
+            // Фильтр по рейтингу
+            if (filters.rating.length > 0 && isVisible) {
+                const hasMatchingRating = filters.rating.some(r => rating >= parseInt(r));
+                if (!hasMatchingRating) {
+                    isVisible = false;
+                }
             }
-            if (searchInput.value && !item.querySelector('.games__name').textContent.toLowerCase().includes(searchInput.value.toLowerCase())) {
-                isVisible = false;
+
+            // Поиск по названию
+            if (searchInput && searchInput.value && isVisible) {
+                const gameName = item.querySelector('.games__name').textContent.toLowerCase();
+                const searchTerm = searchInput.value.toLowerCase();
+                if (!gameName.includes(searchTerm)) {
+                    isVisible = false;
+                }
             }
 
             item.style.display = isVisible ? 'flex' : 'none';
@@ -118,13 +196,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (visibleItems === 0) {
             showNotification('Игры не найдены. Попробуйте изменить фильтры.', 'warning');
+        } else if (visibleItems < gameItems.length) {
+            showNotification(`Найдено игр: ${visibleItems}`, 'success');
         }
     };
 
+    // Инициализация фильтров
     dropdownItems.forEach(item => {
-        if (filters[item.dataset.filter].includes(item.dataset.value)) {
+        const filterType = item.dataset.filter;
+        const value = item.dataset.value;
+        
+        if (filters[filterType] && filters[filterType].includes(value)) {
             item.classList.add('selected');
         }
+        
         item.addEventListener('click', () => {
             const filterType = item.dataset.filter;
             const value = item.dataset.value;
@@ -133,20 +218,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isSelected) {
                 item.classList.remove('selected');
                 filters[filterType] = filters[filterType].filter(v => v !== value);
-                showNotification(`Фильтр ${filterType} удален: ${value}`, 'warning');
+                showNotification(`Фильтр удален: ${value}`, 'warning');
             } else {
                 item.classList.add('selected');
+                if (!filters[filterType]) {
+                    filters[filterType] = [];
+                }
                 filters[filterType].push(value);
-                showNotification(`Фильтр ${filterType} применен: ${value}`, 'success');
+                showNotification(`Фильтр применен: ${value}`, 'success');
             }
 
             applyFilters();
             saveFilters();
+            updateActiveFiltersDisplay();
         });
     });
-
-    searchInput.addEventListener('input', applyFilters);
-    applyFilters();
 
     // Поиск в dropdown
     const dropdownSearchInputs = document.querySelectorAll('.games__dropdown-search-input');
@@ -163,50 +249,69 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Поиск по названию
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    // Инициализация
+    applyFilters();
+    updateActiveFiltersDisplay();
+
     // Favorite button functionality
     const favoriteButtons = document.querySelectorAll('.game-hero__favorite');
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    
     const updateFavoriteIcons = () => {
         favoriteButtons.forEach(button => {
-            const gameTitle = button.closest('.game-hero__slide').querySelector('.game-hero__slide-title').textContent;
-            button.classList.toggle('filled', favorites.includes(gameTitle));
+            const gameTitle = button.closest('.game-hero__slide')?.querySelector('.game-hero__slide-title')?.textContent;
+            if (gameTitle) {
+                button.classList.toggle('filled', favorites.includes(gameTitle));
+            }
         });
+        
         document.querySelectorAll('.favorite-toggle').forEach(icon => {
-            const gameName = icon.closest('.games__item').querySelector('.games__name').textContent;
-            icon.classList.toggle('filled', favorites.includes(gameName));
+            const gameName = icon.closest('.games__item')?.querySelector('.games__name')?.textContent;
+            if (gameName) {
+                icon.classList.toggle('filled', favorites.includes(gameName));
+            }
         });
     };
 
     favoriteButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const gameTitle = button.closest('.game-hero__slide').querySelector('.game-hero__slide-title').textContent;
-            const index = favorites.indexOf(gameTitle);
-            if (index === -1) {
-                favorites.push(gameTitle);
-                showNotification(`Добавлено в избранное: ${gameTitle}`, 'success');
-            } else {
-                favorites.splice(index, 1);
-                showNotification(`Удалено из избранного: ${gameTitle}`, 'warning');
+            const gameTitle = button.closest('.game-hero__slide')?.querySelector('.game-hero__slide-title')?.textContent;
+            if (gameTitle) {
+                const index = favorites.indexOf(gameTitle);
+                if (index === -1) {
+                    favorites.push(gameTitle);
+                    showNotification(`Добавлено в избранное: ${gameTitle}`, 'success');
+                } else {
+                    favorites.splice(index, 1);
+                    showNotification(`Удалено из избранного: ${gameTitle}`, 'warning');
+                }
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                updateFavoriteIcons();
             }
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            updateFavoriteIcons();
         });
     });
 
     document.querySelectorAll('.favorite-toggle').forEach(icon => {
         icon.addEventListener('click', () => {
             const gameItem = icon.closest('.games__item');
-            const gameName = gameItem.querySelector('.games__name').textContent;
-            const index = favorites.indexOf(gameName);
-            if (index === -1) {
-                favorites.push(gameName);
-                showNotification(`Добавлено в избранное: ${gameName}`, 'success');
-            } else {
-                favorites.splice(index, 1);
-                showNotification(`Удалено из избранного: ${gameName}`, 'warning');
+            const gameName = gameItem?.querySelector('.games__name')?.textContent;
+            if (gameName) {
+                const index = favorites.indexOf(gameName);
+                if (index === -1) {
+                    favorites.push(gameName);
+                    showNotification(`Добавлено в избранное: ${gameName}`, 'success');
+                } else {
+                    favorites.splice(index, 1);
+                    showNotification(`Удалено из избранного: ${gameName}`, 'warning');
+                }
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                updateFavoriteIcons();
             }
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            updateFavoriteIcons();
         });
     });
 
