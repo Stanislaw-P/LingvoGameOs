@@ -1035,7 +1035,11 @@ body {
     width: 43px;
     height: auto;
     border-radius: 50%;
+}
 
+.user-profile__avatar-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .user-profile__user-info {
