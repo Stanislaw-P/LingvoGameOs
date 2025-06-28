@@ -48,7 +48,7 @@ namespace LingvoGameOs.Controllers
                 var games = await gamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevGames = games;
 
-                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
+                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
                 
                 if (userId == userManager.GetUserAsync(User).Result.Id)
                 {
@@ -69,7 +69,7 @@ namespace LingvoGameOs.Controllers
                 user.DevGames = games;
                 if (userId == userManager.GetUserAsync(User).Result.Id)
                 {
-                    return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.ImageURL, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames});
+                    return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames});
                 }
             }
             return RedirectToAction("Index", "Home");

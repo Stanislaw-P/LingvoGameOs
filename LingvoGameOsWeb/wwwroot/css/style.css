@@ -233,6 +233,12 @@ body {
 .user-profile__avatar {
     width: 43px;
     height: 43px;
+    object-fit: cover;
+}
+
+.user-profile__avatar-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .user-profile__user-info {

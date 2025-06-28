@@ -1,5 +1,4 @@
-﻿@using System.Security.Claims
-<header class="header">
+﻿<header class="header">
     <div class="header__container _container">
         <a class="header__logo" asp-controller="Home" asp-action="Index">
             <img src="~/img/Logo.png" alt="Логотип" class="logo-image" />
@@ -12,7 +11,7 @@
             </ul>
         </nav>
         <button class="header__like" aria-label="Избранное">
-            <img src="~/icon/like.svg" alt="Избранное" class="like-icon"/>
+            <img src="~/icon/like.svg" alt="Избранное" class="like-icon" />
         </button>
         @if (User.Identity?.IsAuthenticated == true)
         {
@@ -23,8 +22,9 @@
                 <div class="user-profile__container">
                     <div class="user-profile__content">
                         <div class="user-profile__avatar-wrapper">
-                            <img src="~/img/avatar.png" alt="Аватар" class="user-profile__avatar" />
+                            <img src="@await Component.InvokeAsync("Avatar")" alt="Аватар" class="user-profile__avatar" />
                         </div>
+                        
                         <div class="user-profile__user-info">
                             <span class="user-profile__username">@username</span>
                             <span class="user-profile__level">1 уровень</span>
