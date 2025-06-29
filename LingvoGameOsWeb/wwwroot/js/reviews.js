@@ -1,10 +1,30 @@
-// Примерные отзывы
-const sampleReviews = [
-    { name: "Алан Д.", location: "Владикавказ, Россия", rating: "4.5", text: "Игра просто потрясающая! Открывать сундуки и учить осетинский язык одновременно — это гениально. Иногда задания кажутся сложноватыми, но это только подогревает интерес!" },
-    { name: "Мария К.", location: "Москва, Россия", rating: "5", text: "Очень увлекательная игра, особенно для тех, кто хочет погрузиться в культуру Осетии. Графика приятная, а головоломки заставляют думать. Рекомендую всем!" },
-    { name: "Тимур Б.", location: "Тбилиси, Грузия", rating: "4", text: "Интересный способ учить язык через игру. Понравилось, как вплетены элементы истории Осетии. Хотелось бы больше уровней и разнообразия в артефактах." },
-    { name: "Елена С.", location: "Санкт-Петербург, Россия", rating: "4.5", text: "Отличная идея — бегать по горам и решать лингвистические задачки. Иногда интерфейс немного тормозит, но в целом впечатления супер!" },
-    { name: "Заур Т.", location: "Нальчик, Россия", rating: "5", text: "Игра затягивает с первых минут! Особенно круто узнавать про нартские сказания и осетинскую культуру. Спасибо разработчикам за такой проект!" }
+// Доступные аватарки с именами
+const avatarMapping = {
+    'Олина': '/img/avatars/olina.jpg',
+    'Вова': '/img/avatars/vova.jpg',
+    'Вероника': '/img/avatars/veronichka.jpg',
+    'Стас': '/img/avatars/stasek.jpg',
+    'Сос': '/img/avatars/sos.jpg'
+};
+
+// Функция для получения аватарки по имени
+function getAvatarByName(name) {
+    return avatarMapping[name] || '/img/avatars/olina.jpg'; // fallback
+}
+
+// Функция для получения случайной аватарки (для новых отзывов)
+function getRandomAvatar() {
+    const avatars = Object.values(avatarMapping);
+    return avatars[Math.floor(Math.random() * avatars.length)];
+}
+
+// Примерные отзывы (без аватарок, они будут добавляться динамически)
+const sampleReviewsData = [
+    { name: "Олина", location: "Гизель-Греция", rating: "4.5", text: "Игра просто потрясающая! Открывать сундуки и учить осетинский язык одновременно — это гениально. Иногда задания кажутся сложноватыми, но это только подогревает интерес!" },
+    { name: "Вова", location: "Греция-Гизель", rating: "5", text: "Очень увлекательная игра, особенно для тех, кто хочет погрузиться в культуру Осетии. Графика приятная, а головоломки заставляют думать. Рекомендую всем!" },
+    { name: "Вероника", location: "Тбилиси, Грузия", rating: "4", text: "Интересный способ учить язык через игру. Понравилось, как вплетены элементы истории Осетии. Хотелось бы больше уровней и разнообразия в артефактах." },
+    { name: "Стас", location: "Не определился", rating: "4.5", text: "Отличная идея — бегать по горам и решать лингвистические задачки. Иногда интерфейс немного тормозит, но в целом впечатления супер!" },
+    { name: "Сос", location: "Кадгарон", rating: "5", text: "Игра затягивает с первых минут! Особенно круто узнавать про нартские сказания и осетинскую культуру. Спасибо разработчикам за такой проект!" }
 ];
 
 // Отображение модального окна для отзыва
@@ -55,7 +75,13 @@ export function showReviewModal() {
         e.preventDefault();
         const comment = modal.querySelector('.review-modal__textarea').value;
         if (rating && comment) {
-            addReviewToList({ name: 'Вы', location: 'Ваше местоположение', rating, text: comment });
+            addReviewToList({ 
+                name: 'Вы', 
+                location: 'Ваше местоположение', 
+                rating, 
+                text: comment,
+                avatar: getRandomAvatar() // Используем случайную аватарку для новых отзывов
+            });
             modal.remove();
         } else {
             alert('Пожалуйста, выберите рейтинг и напишите комментарий.');
@@ -70,9 +96,13 @@ export function addReviewToList(review) {
 
     const reviewCard = document.createElement('article');
     reviewCard.className = 'game-reviews__card';
+    
+    // Определяем аватарку: если есть avatar в review, используем её, иначе ищем по имени
+    const avatarSrc = review.avatar || getAvatarByName(review.name);
+    
     reviewCard.innerHTML = `
         <div class="game-reviews__reviewer">
-            <img src="/img/avatar.png" alt="Reviewer" class="game-reviews__avatar">
+            <img src="${avatarSrc}" alt="Reviewer" class="game-reviews__avatar">
             <div class="game-reviews__reviewer-details">
                 <span class="game-reviews__reviewer-name">${review.name}</span>
                 <span class="game-reviews__reviewer-location">${review.location}</span>
@@ -94,7 +124,14 @@ export function initializeReviews() {
     if (!container) return;
 
     container.innerHTML = '';
-    sampleReviews.forEach(review => addReviewToList(review));
+    
+    // Создаем отзывы с соответствующими аватарками
+    const reviewsWithAvatars = sampleReviewsData.map(review => ({
+        ...review,
+        avatar: getAvatarByName(review.name)
+    }));
+    
+    reviewsWithAvatars.forEach(review => addReviewToList(review));
     updatePagination();
 }
 
