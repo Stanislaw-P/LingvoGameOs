@@ -169,7 +169,6 @@ namespace LingvoGameOs.Db
                         "/img/games/mountain-labyrinth-banner-2.png",
                         "/img/games/mountain-labyrinth-banner-3.png"
                     },
-                    GameURL = "/home/index",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2 },
                     NumberDownloads = 1000
                 };
@@ -194,7 +193,6 @@ namespace LingvoGameOs.Db
                         "/img/games/art-object-2.jpeg",
                         "/img/games/art-object-3.png"
                     },
-                    GameURL = "/home/index",
                     SkillsLearning = new List<SkillLearning> { gameType3, gameType4 },
                     NumberDownloads = 241
                 };
