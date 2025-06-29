@@ -34,8 +34,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
     @Html.RenderUnobtrusiveAjaxScript()
-    @* Временно отключаем автоматическую загрузку JS файлов *@
-    @* <script asp-src-include="~/js/**/*.js" type="module"></script> *@
+    <script asp-src-include="~/js/**/*.js" type="module"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
