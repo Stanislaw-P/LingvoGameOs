@@ -1,40 +1,106 @@
-﻿<footer class="border-top footer text-muted ">
+﻿<footer class="border-top footer text-muted">
     <div class="footer__container _container">
-        <div class="footer__info">
-            <div class="footer__text-block">
-                <a asp-controller="Home" asp-action="Index"><img src="/img/logo/Logo2.png" class="footer__logo" /></a>
-                <p class="footer__description">Ацы хъæзтытæ конд сты стыр уарзондзинадæй æмæ стыр бærцæй ирон бæгæныйæ</p>
+        <div class="footer__content">
+            <!-- Логотип и описание -->
+            <div class="footer__brand">
+                <a asp-controller="Home" asp-action="Index" class="footer__logo-link">
+                    <img src="/img/logo/Logo2.png" alt="LingvoGameOs Logo" class="footer__logo" />
+                </a>
+                <p class="footer__description">
+                    Ацы хъæзтытæ конд сты стыр уарзондзинадæй æмæ стыр бærцæй ирон бæгæныйæ
+                </p>
             </div>
-            <div class="footer__links links">
-                <div class="footer__column">
-                    <p class="footer__title"><a asp-controller="Home" asp-action="Index">Игры</a></p>
-                    <ul class="footer__list">
-                        <li class="footer__item"><a asp-controller="Home" asp-action="Index">Категории</a></li>
-                        <li class="footer__item"><a asp-controller="Home" asp-action="Index">Новинки</a></li>
-                        <li class="footer__item"><a asp-controller="Home" asp-action="Index">Популярные</a></li>
+
+            <!-- Навигационные ссылки -->
+            <div class="footer__navigation">
+                <div class="footer__nav-section">
+                    <h3 class="footer__section-title">Игры</h3>
+                    <ul class="footer__nav-list">
+                        <li><a asp-controller="Home" asp-action="Categories" class="footer__nav-link">Категории</a></li>
+                        <li><a asp-controller="Home" asp-action="News" class="footer__nav-link">Новинки</a></li>
+                        <li><a asp-controller="Home" asp-action="Games" class="footer__nav-link">Популярные</a></li>
                     </ul>
                 </div>
-                <div class="footer__column">
-                    <p class="footer__title"><a asp-controller="Home" asp-action="News">Новости</a></p>
-                    <ul class="footer__list">
-                        <li class="footer__item"><a asp-controller="Home" asp-action="News">Анонсы</a></li>
-                        <li class="footer__item"><a asp-controller="Home" asp-action="News">Премьеры</a></li>
-                        <li class="footer__item"><a asp-controller="Home" asp-action="News">Релизы</a></li>
+                
+                <div class="footer__nav-section">
+                    <h3 class="footer__section-title">Поддержка</h3>
+                    <ul class="footer__nav-list">
+                        <li><a asp-controller="Home" asp-action="Index" class="footer__nav-link">FAQ</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" class="footer__nav-link">Отзывы</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" class="footer__nav-link">Контакты</a></li>
                     </ul>
                 </div>
-                <div class="footer__column">
-                    <p class="footer__title"><a asp-controller="Home" asp-action="Index">Вопросы и отзывы</a></p>
-                    <ul class="footer__list">
-                        <li class="footer__item"><a asp-controller="Home" asp-action="Index">Часто задаваемые вопросы</a></li>
-                        <li class="footer__item"><a asp-controller="Home" asp-action="Index">Отзывы</a></li>
-                    </ul>
+            </div>
+
+            <!-- Команда разработчиков -->
+            <div class="footer__team">
+                <h3 class="footer__section-title">Наша команда</h3>
+                <div class="footer__team-grid">
+                    <!-- Сенсей -->
+                    <div class="footer__team-member footer__team-member--sensei">
+                        <div class="footer__member-info">
+                            <span class="footer__member-role">Наш сенсей</span>
+                            <a href="https://vk.com/makar_md" target="_blank" rel="noopener" class="footer__member-name">
+                                Макаренко М.Д.
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Дизайнер -->
+                    <div class="footer__team-member">
+                        <div class="footer__member-info">
+                            <span class="footer__member-role">Дизайнер и фронтенд</span>
+                            <a href="https://vk.com/id674366222" target="_blank" rel="noopener" class="footer__member-name">
+                                Бекоева Илона
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Разработчики -->
+                    <div class="footer__team-member">
+                        <div class="footer__member-info">
+                            <span class="footer__member-role">Крутой разработчик 1</span>
+                            <a href="https://vk.com/maieha" target="_blank" rel="noopener" class="footer__member-name">
+                                Персаев Станислав
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer__team-member">
+                        <div class="footer__member-info">
+                            <span class="footer__member-role">Крутой разработчик 2</span>
+                            <a href="https://vk.com/amletixq" target="_blank" rel="noopener" class="footer__member-name">
+                                Хугаев Давид
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer__team-member">
+                        <div class="footer__member-info">
+                            <span class="footer__member-role">Крутой разработчик 3</span>
+                            <a href="https://vk.com/istiik" target="_blank" rel="noopener" class="footer__member-name">
+                                Даурова Сюзана
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer__team-member">
+                        <div class="footer__member-info">
+                            <span class="footer__member-role">Крутой разработчик 4</span>
+                            <a href="https://vk.com/ddkhugaev" target="_blank" rel="noopener" class="footer__member-name">
+                                Назаров Амридин
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="footer__social">
-            <a href="#" class="footer__social-link footer__social--facebook"></a>
-            <a href="#" class="footer__social-link footer__social--twitter"></a>
-            <a href="#" class="footer__social-link footer__social--instagram"></a>
+        
+        <!-- Нижняя часть футера -->
+        <div class="footer__bottom">
+            <div class="footer__copyright">
+                <p>&copy; 2024 Æндекс игры. Все права защищены.</p>
+            </div>
         </div>
     </div>
 </footer>
