@@ -144,7 +144,7 @@ namespace LingvoGameOs.Db
                         "/img/games/93a62f0945389b9_920x0.jpg",
                         "/img/games/cross-1.jpg"
                     },
-                    GameURL = "https://ossetian-crosswords.glitch.me/",
+                    GameURL = "http://158.160.104.26:5002",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10
                 };
