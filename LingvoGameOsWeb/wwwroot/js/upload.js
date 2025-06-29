@@ -446,6 +446,12 @@ function initializeUploadForm() {
                 throw new Error(errorData.message || 'Ошибка загрузки игры');
             }
 
+            const successData = await response.json(); // Парсим успешный ответ
+            if (successData.success && successData.redirectUrl) {
+                window.location.href = successData.redirectUrl; // Перенаправляем
+                return; // Прерываем выполнение, так как происходит переход
+            }
+
             showNotification('Игра успешно загружена!', 'success');
             form.reset();
             selectedSkillsLearning = [];
