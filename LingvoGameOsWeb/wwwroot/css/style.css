@@ -422,7 +422,7 @@ body {
 }
 
 .profile__button {
-    
+    height: 50px;
     grid-column: span 2;
     padding: 14px;
     background: var(--accent-2);
@@ -1691,6 +1691,7 @@ body {
 .game-hero__actions {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 15px;
 }
 
