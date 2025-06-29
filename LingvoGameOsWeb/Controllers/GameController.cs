@@ -140,7 +140,8 @@ namespace LingvoGameOs.Controllers
                             LastUpdateDate = DateTime.Now,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
-                            LanguageLevel = languageLvl!
+                            LanguageLevel = languageLvl!,
+                            VideoUrl = gameViewModel.VideoUrl
                         };
                         await _gamesRepository.AddAsync(newGame); // После выполнения этой строки код выбрасывает с ошибкой
 
