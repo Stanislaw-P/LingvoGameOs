@@ -234,7 +234,7 @@
                         <p class="user-added-games__empty-text">Создайте свою первую игру!</p>
                         @if (User.IsInRole(Constants.DevRoleName))
                         {
-                            <button type="button" class="user-added-games__upload-button">Создать игру</button>
+                            <a type="button" asp-area="" asp-controller="Game" asp-action="Upload" class="user-added-games__upload-button">Создать игру</a>
                         }
                     </div>
                 }

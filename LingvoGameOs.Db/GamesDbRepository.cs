@@ -15,6 +15,7 @@ namespace LingvoGameOs.Db
 		public async Task<List<Game>> GetAllAsync()
 		{
 			return await databaseContext.Games
+				.Include(g => g.SkillsLearning)
 				.Include(g => g.GamePlatform)
 				.ToListAsync();
 		}
