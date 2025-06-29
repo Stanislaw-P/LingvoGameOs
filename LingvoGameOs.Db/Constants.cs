@@ -13,5 +13,6 @@ namespace LingvoGameOs.Db
         public const string PlayerRoleName = "Player";
         public const string DevRoleName = "Dev";
         public const string TeacherRoleName = "Teacher";
+        public const string GameFolderPath = "/home/gameportal/games/";
     }
 }

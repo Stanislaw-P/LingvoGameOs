@@ -20,17 +20,17 @@
                 {
                     <div class="game-hero__slide">
                         <img src="@imgUrl" alt="Game screenshot"
-                        class="game-hero__slide-image">
+                             class="game-hero__slide-image">
                     </div>
                 }
 
-                <!-- Видео с VK (вторая) -->
-                <div class="game-hero__slide game-hero__video-slide">
-                    <iframe src="https://vkvideo.ru/video_ext.php?oid=-176400722&id=456249867&hd=1&autoplay=1"
-                    width="640" height="360"
-                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                    frameborder="0" allowfullscreen></iframe>
-                </div>
+                @if (Model.VideoUrl != null)
+                {
+                    <!-- Видео с Rutube -->
+                    <div class="game-hero__slide game-hero__video-slide">
+                        <iframe width="720" height="405" src="@Model.VideoUrl" frameBorder="0" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                    </div>
+                }
             </div>
             <!-- Навигационные кнопки -->
             <button class="game-hero__carousel-button game-hero__carousel-prev">
@@ -62,7 +62,7 @@
                         <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Играть
                     </a>
                 }
-                
+
                 <button class="game-hero__share profile__button">
                     <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
                 </button>

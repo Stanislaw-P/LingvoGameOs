@@ -36,6 +36,9 @@ namespace LingvoGameOs.Db.Migrations
                         .HasMaxLength(201)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("GameFolderName")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("GamePlatformId")
                         .HasColumnType("INTEGER");
 
@@ -70,6 +73,9 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VideoUrl")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
