@@ -60,8 +60,12 @@ app.UseStaticFiles(new StaticFileOptions()
 {
     OnPrepareResponse = ctx =>
     {
-        ctx.Context.Response.Headers.Add("Cache-Controll", "public,max-age=600");
-    }
+        ctx.Context.Response.Headers.Append(
+            "Cache-Control",
+            "public,max-age=600" 
+        );
+    },
+    
 });
 
 app.UseRouting();
