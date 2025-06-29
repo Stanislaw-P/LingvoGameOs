@@ -33,8 +33,4 @@
     <ProjectReference Include="..\LingvoGameOs.Db\LingvoGameOs.Db.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\games\" />
-  </ItemGroup>
-
 </Project>

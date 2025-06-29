@@ -75,9 +75,6 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("VideoUrl")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
