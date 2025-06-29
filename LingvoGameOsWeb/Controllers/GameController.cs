@@ -99,17 +99,17 @@ namespace LingvoGameOs.Controllers
         {
             try
             {
-                if (gameViewModel.UploadedGame == null && gameViewModel.GameURL == null)
-                {
-                    ModelState.AddModelError("", "Необходимо добавить ссылку на игру, либо загрузить файл игры");
-                    return View(gameViewModel);
-                }
+                //if (gameViewModel.UploadedGame == null && gameViewModel.GameURL == null)
+                //{
+                //    ModelState.AddModelError("", "Необходимо добавить ссылку на игру, либо загрузить файл игры");
+                //    return View(gameViewModel);
+                //}
 
-                if (gameViewModel.UploadedGame != null && gameViewModel.GameURL != null)
-                {
-                    ModelState.AddModelError("", "Можно выбрать только одну платформу для игры");
-                    return View(gameViewModel);
-                }
+                //if (gameViewModel.UploadedGame != null && gameViewModel.GameURL != null)
+                //{
+                //    ModelState.AddModelError("", "Можно выбрать только одну платформу для игры");
+                //    return View(gameViewModel);
+                //}
 
                 if (ModelState.IsValid)
                 {
