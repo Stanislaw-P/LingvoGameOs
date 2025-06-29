@@ -30,5 +30,6 @@ namespace LingvoGameOs.Db.Models
 		public int NumberDownloads { get; set; }
         public List<User>? Players { get; set; }
 		public List<PlayerGame> UserGames { get; set; }
-	}
+        public string? GameFolderName { get; set; }
+    }
 }

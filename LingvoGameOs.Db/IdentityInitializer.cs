@@ -100,9 +100,61 @@ namespace LingvoGameOs.Db
                 var game1 = new Game
                 {
                     Id = 1,
+                    Title = "Мир по кусочкам",
+                    Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
+                    Rules = "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
+                    GameFolderName = "lingvo-piece-by-piece",
+                    AuthorId = devMarat.Id,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
+                    LanguageLevelId = languageLevelIntermediate.Id,
+                    GamePlatformId = platform3.Id,
+                    RaitingPlayers = 4.2,
+                    RaitingTeachers = 4.3,
+                    CoverImagePath = "/img/games/gameplay-animal.png",
+                    ImagesPaths = new List<string>
+                    {
+                        "/img/games/gameplay-animal.png",
+                        "/img/games/gameplay-animal-1.jpg",
+                        "/img/games/gameplay-animal-2.jpg"
+                    },
+                    GameURL = "http://158.160.104.26:5001",
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
+                    NumberDownloads = 5
+                };
+
+                var game2 = new Game
+                {
+                    Id = 2,
+                    Title = "Кроссворд осетинских слов",
+                    Description = "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
+                    Rules = "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n" +
+                "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
+                    GameFolderName = "crossword-ossetia",
+                    AuthorId = devDavid.Id,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
+                    LanguageLevelId = languageLevelBeginning.Id,
+                    GamePlatformId = platform3.Id,
+                    RaitingPlayers = 5,
+                    RaitingTeachers = 4.9,
+                    CoverImagePath = "/img/games/93a62f0945389b9_920x0.jpg",
+                    ImagesPaths = new List<string>
+                    {
+                        "/img/games/93a62f0945389b9_920x0.jpg",
+                        "/img/games/cross-1.jpg"
+                    },
+                    GameURL = "https://ossetian-crosswords.glitch.me/",
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
+                    NumberDownloads = 10
+                };
+
+                var game3 = new Game
+                {
+                    Id = 3,
                     Title = "Горный лабиринт",
                     Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
-                    Rules = "Есть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
+                    Rules = "ИГРА В РАЗРАБОТКЕ!\nЕсть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
                     AuthorId = devMarat.Id,
                     PublicationDate = DateTime.Now,
                     LastUpdateDate = DateTime.Now,
@@ -122,12 +174,12 @@ namespace LingvoGameOs.Db
                     NumberDownloads = 1000
                 };
 
-                var game2 = new Game
+                var game4 = new Game
                 {
-                    Id = 2,
+                    Id = 4,
                     Title = "Тур-викторина 'Арт объекты Осетии'",
                     Description = "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
-                    Rules = "Слушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
+                    Rules = "ИГРА В РАЗРАБОТКЕ!\nСлушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
                     AuthorId = devMarat.Id,
                     PublicationDate = DateTime.Now,
                     LastUpdateDate = DateTime.Now,
@@ -146,54 +198,8 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType3, gameType4 },
                     NumberDownloads = 241
                 };
-                var game3 = new Game
-                {
-                    Id = 3,
-                    Title = "Мир по кусочкам",
-                    Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
-                    Rules = "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
-                    AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
-                    LanguageLevelId = languageLevelIntermediate.Id,
-                    GamePlatformId = platform3.Id,
-                    RaitingPlayers = 4.2,
-                    RaitingTeachers = 4.3,
-                    CoverImagePath = "/img/games/gameplay-animal.png",
-                    ImagesPaths = new List<string>
-                    {
-                        "/img/games/gameplay-animal.png",
-                        "/img/games/gameplay-animal-1.jpg",
-                        "/img/games/gameplay-animal-2.jpg"
-                    },
-                    GameURL = "http://158.160.104.26:5001",
-                    SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
-                    NumberDownloads = 5
-                };
-                var game4 = new Game
-                {
-                    Id = 4,
-                    Title = "Кроссворд осетинских слов",
-                    Description = "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
-                    Rules = "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n" +
-                "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
-                    AuthorId = devDavid.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
-                    LanguageLevelId = languageLevelBeginning.Id,
-                    GamePlatformId = platform3.Id,
-                    RaitingPlayers = 5,
-                    RaitingTeachers = 4.9,
-                    CoverImagePath = "/img/games/93a62f0945389b9_920x0.jpg",
-                    ImagesPaths = new List<string>
-                    {
-                        "/img/games/93a62f0945389b9_920x0.jpg",
-                        "/img/games/cross-1.jpg"
-                    },
-                    GameURL = "https://ossetian-crosswords.glitch.me/",
-                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
-                    NumberDownloads = 10
-                };
+                
+                
 
                 if (!await context.Games.AnyAsync())
                 {

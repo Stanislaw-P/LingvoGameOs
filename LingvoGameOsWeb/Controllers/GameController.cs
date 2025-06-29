@@ -49,9 +49,11 @@ namespace LingvoGameOs.Controllers
             ViewBag.GameId = idGame;
             ViewBag.GameTitle = existingGame.Title;
 
+            if (existingGame.GameFolderName == null)
+                existingGame.GameFolderName = "temp";
 
             // TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
-            string runningScript = Path.Combine("/home/gameportal/games/", "lingvo-piece-by-piece", "run.sh");
+            string runningScript = Path.Combine(Constants.GameFolderPath, existingGame.GameFolderName, "run.sh");
 
             if (!System.IO.File.Exists(runningScript))
             {
