@@ -1,4 +1,6 @@
 // Homepage JavaScript - Interactive functionality
+import { showReviewModal, initializeReviews } from './reviews.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all homepage components
     initCarousels();
@@ -13,6 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize existing homepage functionality
     initializeHomepageFeatures();
+    
+    // Initialize reviews
+    if (document.querySelector('.game-reviews__container')) {
+        initializeReviews();
+    }
+    
+    // Add event listener for review button
+    const reviewButton = document.querySelector('.game-reviews__button');
+    if (reviewButton) {
+        reviewButton.addEventListener('click', showReviewModal);
+    }
 });
 
 // Carousel functionality

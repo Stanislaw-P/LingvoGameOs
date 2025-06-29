@@ -1,0 +1,662 @@
+/* #region Стили подвала */
+.footer {
+    margin-top: 100px;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-top: 1px solid #dee2e6;
+    z-index: 50;
+}
+
+.footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr;
+    gap: 60px;
+    padding: 60px 0 40px 0;
+    align-items: start;
+}
+
+/* Брендинг */
+.footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.footer__logo-link {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.footer__logo-link:hover {
+    transform: scale(1.05);
+}
+
+.footer__logo {
+    max-width: 180px;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.footer__description {
+    font: 300 14px/22px 'Axiforma', sans-serif;
+    color: #6c757d;
+    text-align: left;
+    max-width: 280px;
+    margin: 0;
+}
+
+/* Навигация */
+.footer__navigation {
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+}
+
+.footer__nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer__section-title {
+    font: 600 16px/24px 'Axiforma', sans-serif;
+    color: #212529;
+    margin: 0 0 8px 0;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.footer__section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    border-radius: 1px;
+}
+
+.footer__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer__nav-link {
+    font: 400 14px/20px 'Axiforma', sans-serif;
+    color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer__nav-link::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    width: 0;
+    height: 2px;
+    background: #007bff;
+    transition: width 0.3s ease;
+    transform: translateY(-50%);
+}
+
+.footer__nav-link:hover {
+    color: #007bff;
+    padding-left: 8px;
+}
+
+.footer__nav-link:hover::before {
+    width: 4px;
+}
+
+/* Команда */
+.footer__team {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.footer__team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.footer__team-member {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 123, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer__team-member::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.footer__team-member:hover::before {
+    left: 100%;
+}
+
+.footer__team-member:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 123, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+}
+
+.footer__team-member--sensei {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.1));
+    border: 1px solid rgba(0, 123, 255, 0.2);
+    grid-column: 1 / -1;
+}
+
+.footer__team-member--sensei:hover {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.15), rgba(0, 86, 179, 0.15));
+    border-color: rgba(0, 123, 255, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(0, 123, 255, 0.2);
+}
+
+.footer__member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer__member-role {
+    font: 600 11px/14px 'Axiforma', sans-serif;
+    color: #007bff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer__member-name {
+    font: 500 13px/16px 'Axiforma', sans-serif;
+    color: #212529;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer__member-name:hover {
+    color: #007bff;
+}
+
+/* Нижняя часть футера */
+.footer__bottom {
+    border-top: 1px solid #dee2e6;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer__copyright {
+    font: 400 12px/16px 'Axiforma', sans-serif;
+    color: #6c757d;
+}
+
+.footer__copyright p {
+    margin: 0;
+}
+
+/* Адаптивность */
+/* Большие планшеты и маленькие десктопы */
+@media (max-width: 1200px) {
+    .footer__container {
+        max-width: 1000px;
+        padding: 0 30px;
+    }
+    
+    .footer__content {
+        gap: 50px;
+        padding: 50px 0 35px 0;
+    }
+    
+    .footer__team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+    }
+}
+
+/* Планшеты */
+@media (max-width: 1024px) {
+    .footer__content {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 45px 0 30px 0;
+    }
+    
+    .footer__team {
+        grid-column: 1 / -1;
+        margin-top: 20px;
+    }
+    
+    .footer__team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+    }
+    
+    .footer__logo {
+        max-width: 160px;
+    }
+    
+    .footer__description {
+        font-size: 13px;
+        line-height: 20px;
+        max-width: 260px;
+    }
+}
+
+/* Большие мобильные устройства */
+@media (max-width: 768px) {
+    .footer {
+        margin-top: 80px;
+    }
+    
+    .footer__container {
+        padding: 0 25px;
+    }
+    
+    .footer__content {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        padding: 40px 0 25px 0;
+    }
+    
+    .footer__brand {
+        text-align: center;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .footer__logo {
+        max-width: 150px;
+    }
+    
+    .footer__description {
+        text-align: center;
+        max-width: 100%;
+        font-size: 14px;
+        line-height: 22px;
+    }
+    
+    .footer__navigation {
+        justify-content: space-around;
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+    
+    .footer__nav-section {
+        min-width: 140px;
+        text-align: center;
+    }
+    
+    .footer__team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        max-width: 500px;
+        margin: 0 auto;
+        gap: 10px;
+    }
+    
+    .footer__section-title {
+        text-align: center;
+        font-size: 15px;
+        line-height: 22px;
+    }
+    
+    .footer__section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer__team-member {
+        padding: 10px 12px;
+    }
+    
+    .footer__member-role {
+        font-size: 10px;
+        line-height: 13px;
+    }
+    
+    .footer__member-name {
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
+/* Средние мобильные устройства */
+@media (max-width: 600px) {
+    .footer__container {
+        padding: 0 20px;
+    }
+    
+    .footer__content {
+        gap: 30px;
+        padding: 35px 0 20px 0;
+    }
+    
+    .footer__navigation {
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+    }
+    
+    .footer__nav-section {
+        min-width: auto;
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .footer__team-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+        gap: 8px;
+    }
+    
+    .footer__team-member {
+        padding: 12px 16px;
+    }
+    
+    .footer__member-info {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .footer__member-role {
+        font-size: 11px;
+        line-height: 14px;
+        flex-shrink: 0;
+    }
+    
+    .footer__member-name {
+        font-size: 13px;
+        line-height: 16px;
+        text-align: right;
+    }
+}
+
+/* Маленькие мобильные устройства */
+@media (max-width: 480px) {
+    .footer {
+        margin-top: 60px;
+    }
+    
+    .footer__container {
+        padding: 0 15px;
+    }
+    
+    .footer__content {
+        gap: 25px;
+        padding: 30px 0 15px 0;
+    }
+    
+    .footer__logo {
+        max-width: 130px;
+    }
+    
+    .footer__description {
+        font-size: 13px;
+        line-height: 20px;
+    }
+    
+    .footer__navigation {
+        gap: 20px;
+    }
+    
+    .footer__nav-list {
+        gap: 8px;
+    }
+    
+    .footer__nav-link {
+        font-size: 13px;
+        line-height: 18px;
+        padding: 8px 0;
+        display: block;
+    }
+    
+    .footer__nav-link:hover {
+        padding-left: 0;
+        background: rgba(0, 123, 255, 0.05);
+        border-radius: 6px;
+        padding: 8px 12px;
+    }
+    
+    .footer__nav-link::before {
+        display: none;
+    }
+    
+    .footer__team-grid {
+        max-width: 100%;
+        gap: 6px;
+    }
+    
+    .footer__team-member {
+        padding: 10px 12px;
+        border-radius: 8px;
+    }
+    
+    .footer__member-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .footer__member-role {
+        font-size: 10px;
+        line-height: 12px;
+    }
+    
+    .footer__member-name {
+        font-size: 12px;
+        line-height: 14px;
+        text-align: left;
+    }
+    
+    .footer__section-title {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 6px;
+    }
+    
+    .footer__bottom {
+        padding: 15px 0;
+    }
+    
+    .footer__copyright {
+        font-size: 11px;
+        line-height: 14px;
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+    .footer__container {
+        padding: 0 10px;
+    }
+    
+    .footer__content {
+        gap: 20px;
+        padding: 25px 0 10px 0;
+    }
+    
+    .footer__logo {
+        max-width: 110px;
+    }
+    
+    .footer__description {
+        font-size: 12px;
+        line-height: 18px;
+    }
+    
+    .footer__team-member {
+        padding: 8px 10px;
+    }
+    
+    .footer__member-role {
+        font-size: 9px;
+        line-height: 11px;
+    }
+    
+    .footer__member-name {
+        font-size: 11px;
+        line-height: 13px;
+    }
+    
+    .footer__section-title {
+        font-size: 13px;
+        line-height: 18px;
+    }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+    .footer__content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 30px 0 20px 0;
+    }
+    
+    .footer__team {
+        grid-column: 1 / -1;
+    }
+    
+    .footer__team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        max-width: none;
+    }
+    
+    .footer__brand {
+        text-align: left;
+        align-items: flex-start;
+    }
+    
+    .footer__description {
+        text-align: left;
+    }
+    
+    .footer__navigation {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
+/* Высокие экраны (например, iPhone SE) */
+@media (max-width: 375px) and (min-height: 667px) {
+    .footer__content {
+        padding: 35px 0 20px 0;
+    }
+    
+    .footer__team-grid {
+        gap: 8px;
+    }
+}
+
+/* Поддержка темной темы (если понадобится в будущем) */
+@media (prefers-color-scheme: dark) {
+    .footer {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        border-top-color: #4a5568;
+    }
+    
+    .footer__section-title {
+        color: #e2e8f0;
+    }
+    
+    .footer__description,
+    .footer__nav-link,
+    .footer__copyright {
+        color: #a0aec0;
+    }
+    
+    .footer__team-member {
+        background: rgba(45, 55, 72, 0.7);
+        border-color: rgba(66, 153, 225, 0.2);
+    }
+    
+    .footer__member-name {
+        color: #e2e8f0;
+    }
+    
+    .footer__bottom {
+        border-top-color: #4a5568;
+    }
+}
+
+/* Улучшенные анимации для мобильных */
+@media (max-width: 768px) {
+    .footer__content > * {
+        animation-duration: 0.4s;
+    }
+    
+    .footer__team-member {
+        transition: all 0.2s ease;
+    }
+    
+    .footer__team-member:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+    }
+    
+    .footer__team-member--sensei:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+    }
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer__content > * {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.footer__brand {
+    animation-delay: 0.1s;
+}
+
+.footer__navigation {
+    animation-delay: 0.2s;
+}
+
+.footer__team {
+    animation-delay: 0.3s;
+}
+
+/* #endregion */

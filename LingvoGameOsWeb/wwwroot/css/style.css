@@ -156,116 +156,6 @@ body {
 
 /* #endregion */
 
-/* #region Стили шапки */
-.header {
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 50;
-}
-
-.header__container {
-    display: flex;
-    min-height: 119px;
-    align-items: center;
-}
-
-.header__logo {
-    max-width: 130px;
-}
-
-.logo-image {
-    max-width: 100%;
-}
-
-.header__menu {
-    margin-left: 100px;
-}
-
-.menu__list {
-    display: flex;
-}
-
-.menu__item:not(:last-child) {
-    margin-right: 21px;
-}
-
-.menu__link {
-    color: var(--text-body);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: calc(24 / 14 * 100%);
-}
-
-.header__like {
-    background-color: var(--bg-body);
-    margin-left: auto;
-}
-
-.like-icon {
-    background-color: transparent !important;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    margin-left: 25px;
-}
-
-.user-profile__container {
-    width: auto;
-    min-width: 150px;
-    height: 64px;
-    border-radius: 6px 20px;
-    padding: 10px 0px 10px 10px;
-    display: flex;
-    align-items: center;
-    background-color: var(--bg-white);
-    position: relative;
-}
-
-.user-profile__content {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-}
-
-.user-profile__avatar {
-    width: 43px;
-    height: auto;
-    border-radius: 50%;
-}
-
-.user-profile__user-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding-bottom: 1px;
-}
-
-.user-profile__username {
-    color: var(--accent-2);
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 14px;
-}
-
-.user-profile__level {
-    color: var(--border-outline-dark);
-    font-family: "Axiforma", sans-serif;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 18px;
-    white-space: nowrap;
-}
-
-.header__logout {
-    color: var(--accent-2);
-    margin-left: 32px;
-}
-
-/* #endregion */
-
 /* #region Выпадающее меню профиля */
 .user-profile__dropdown {
     position: relative;
@@ -532,7 +422,7 @@ body {
 }
 
 .profile__button {
-    
+    height: 50px;
     grid-column: span 2;
     padding: 14px;
     background: var(--accent-2);
@@ -808,7 +698,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border-radius: 10px 50px;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
@@ -1124,7 +1013,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border-radius: 10px 50px;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
@@ -1520,112 +1408,6 @@ body {
 }
 /* #endregion */
 
-/* #region Стили подвала */
-.footer {
-    margin-top: 100px;
-/*    margin-bottom: 50px;*/
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 50;
-}
-
-.footer__container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    background-color: var(--bg-light);
-    padding-right: 54px;
-    padding-left: 220px;
-    padding-top: 69px;
-}
-
-.footer__info {
-    display: flex;
-    justify-content: space-between;
-}
-
-.footer__text-block {
-    width: 260px;
-    height: 188px;
-}
-
-.footer__logo {
-    width: 106px;
-    height: 52px;
-    object-fit: cover;
-}
-
-.footer__description {
-    margin-top: 15px;
-    font: 300 12px/24px Axiforma;
-    color: var(--text-body);
-    text-align: left;
-}
-
-.footer__links {
-    display: flex;
-    gap: 80px;
-    margin: 0px 0px 0px 80px;
-}
-
-.footer__column {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.footer__title {
-    font: 600 16px/24px Axiforma;
-    color: var(--text-primary);
-    text-align: left;
-}
-
-.footer__list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.footer__item {
-    font: 300 14px Axiforma;
-    color: var(--text-body);
-    text-align: left;
-}
-
-.footer__social {
-    display: flex;
-    gap: 15px;
-    margin: 0px 0px 0px 78px;
-}
-
-.footer__social-link {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-outline);
-    border-radius: 50%;
-}
-
-.footer__social--facebook {
-    background: url('icon/facebook.svg') no-repeat center;
-    background-size: contain;
-}
-
-.footer__social--twitter {
-    background: url('icon/twitter.svg') no-repeat center;
-    background-size: contain;
-}
-
-.footer__social--instagram {
-    background: url('icon/instagram.svg') no-repeat center;
-    background-size: contain;
-}
-
-/* #endregion */
-
 /* #region Стили секции новостей */
 .news-update-container {
     display: flex;
@@ -1909,6 +1691,7 @@ body {
 .game-hero__actions {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 15px;
 }
 
