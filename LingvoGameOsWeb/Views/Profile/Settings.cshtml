@@ -11,9 +11,9 @@
             <h3 class="profile__title">Профиль пользователя</h3>
             <div class="profile__avatar">
                 <div class="profile__avatar-wrapper">
-                    @if (Model.ImageURL != null)
+                    @if (Model.AvatarImgPath != null)
                     {
-                        <img src="@Model.ImageURL" alt="Аватар пользователя" class="profile__image">
+                        <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image">
                     }
                     else
                     {
@@ -49,7 +49,7 @@
 
                 <input asp-for="Id" type="hidden" value="@Model.Id">
 
-                <input asp-for="ImageURL" type="hidden" value="@Model.ImageURL">
+                <input asp-for="AvatarImgPath" type="hidden" value="@Model.AvatarImgPath">
 
                 <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
 

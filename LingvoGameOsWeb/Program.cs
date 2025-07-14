@@ -62,10 +62,10 @@ app.UseStaticFiles(new StaticFileOptions()
     {
         ctx.Context.Response.Headers.Append(
             "Cache-Control",
-            "public,max-age=600" 
+            "public,max-age=600"
         );
     },
-    
+
 });
 
 app.UseRouting();
@@ -88,6 +88,10 @@ using (var serviceScope = app.Services.CreateScope())
     var dbContextOptions = services.GetRequiredService<DbContextOptions<DatabaseContext>>();
     await IdentityInitializer.InitializeAsync(userManager, rolesManager, dbContextOptions);
 }
+
+app.MapControllerRoute(
+    name: "MyAreas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
