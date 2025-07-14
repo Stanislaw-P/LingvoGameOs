@@ -1,14 +1,14 @@
-﻿@model UserViewModel
+﻿@model AdminViewModel
 
 @{
-    ViewData["Title"] = $"Профиль {Model.Name} {Model.Surname}";
+    ViewData["Title"] = $"Меню администратора";
 }
 
 <div class="content__row">
     <aside class="content__sidebar">
         <!-- Профиль пользователя -->
         <div class="profile">
-            <h3 class="profile__title">Профиль пользователя</h3>
+            <h3 class="profile__title">Профиль администратора</h3>
             <div class="profile__avatar">
                 <div class="profile__avatar-wrapper">
                     @if (Model.AvatarImgPath != null)
@@ -21,7 +21,7 @@
                     }
                 </div>
             </div>
-            <form class="profile__form">
+            <div class="profile__form">
                 <div class="profile__field">
                     <label class="profile__label" for="firstName">Имя</label>
                     <input type="text" class="profile__input" id="firstName" value="@Model.Name" disabled>
@@ -34,55 +34,47 @@
                     <label class="profile__label" for="email">Email</label>
                     <input type="email" class="profile__input" id="email" value="@Model.UserName" disabled>
                 </div>
-                <div class="profile__field">
-                    <label class="profile__label" for="level">Уровень</label>
-                    <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
-                </div>
                 <div class="profile__field profile__field--bio">
                     <label class="profile__label" for="bio">О себе</label>
                     <textarea class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
                 </div>
-                @if (Model.IsMyProfile)
-                {
-                    <a type="button" class="profile__button" asp-controller="Profile" asp-action="Settings" asp-route-userId="@Model.Id">
-                        Изменить профиль
-                    </a>
-                }
-            </form>
+            </div>
         </div>
-        <!-- Прогресс уровней -->
+
+        <!-- Информация по платформе -->
         <div class="level-progress">
-            <h3 class="level-progress__title">Прогресс уровней</h3>
+            <h3 class="level-progress__title">Информация по платформе</h3>
             <div class="level-progress__overview">
-                <span class="level-progress__total">Всего баллов: 450</span>
-                <span class="level-progress__to-next">До следующего уровня: 50</span>
+                <span class="level-progress__total">Активных игр: @Model?.DevGames?.Count</span>
+                <span class="level-progress__to-next">Игр на модерации: 7</span>
             </div>
             <div class="level-progress__bar">
                 <div class="level-progress__fill" style="width: 90%;"></div>
             </div>
             <div class="level-progress__levels">
                 <div class="level-progress__level" data-tooltip="0-300 баллов"
-                data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
+                     data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
                     1. Барашек, который пытается говорить
                 </div>
                 <div class="level-progress__level active" data-tooltip="300-600 баллов"
-                data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
+                     data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
                     2. Юный нарт
                 </div>
                 <div class="level-progress__level" data-tooltip="600-900 баллов"
-                data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
+                     data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
                     3. Кавказский орёл
                 </div>
                 <div class="level-progress__level" data-tooltip="900-1200 баллов"
-                data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
+                     data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
                     4. Старейшина, который говорит тосты
                 </div>
                 <div class="level-progress__level" data-tooltip="1200+ баллов"
-                data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
+                     data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
                     5. Хранитель языка
                 </div>
             </div>
         </div>
+
         <!-- Новый блок: Прогресс изучения языка -->
         <div class="language-progress">
             <h3 class="language-progress__title">Прогресс изучения</h3>
@@ -110,56 +102,19 @@
         </div>
     </aside>
     <section class="content__main">
-        <!-- Блок общей активности -->
-        <div class="activity">
-            <h3 class="activity__title">Общая активность</h3>
-            <div class="activity__chart">
-                <div class="activity__chart-grid">
-                    <!-- 365 ячеек для года, сгенерированных для примера -->
-                    <div class="activity__chart-cell"></div>
-                    <div class="activity__chart-cell active"></div>
-                    <div class="activity__chart-cell"></div>
-                    <div class="activity__chart-cell active"></div>
-                    <div class="activity__chart-cell"></div>
-                    <div class="activity__chart-cell active"></div>
-                    <div class="activity__chart-cell"></div>
-                    <div class="activity__chart-cell"></div>
-                    <div class="activity__chart-cell active"></div>
-                    <div class="activity__chart-cell"></div>
-                    <!-- Повторяется до 365 -->
-                </div>
-                <div class="activity__chart-labels">
-                    <span>янв.</span><span>фев.</span><span>мар.</span><span>апр.</span>
-                    <span>май</span><span>июн.</span><span>июл.</span><span>авг.</span>
-                    <span>сен.</span><span>окт.</span><span>ноя.</span><span>дек.</span>
-                </div>
-            </div>
-            <div class="activity__stats">
-                <div class="activity__stat">
-                    <span class="activity__stat-value">65</span>
-                    <span class="activity__stat-label">активных дней с момента регистрации</span>
-                </div>
-                <div class="activity__stat">
-                    <span class="activity__stat-value">363</span>
-                    <span class="activity__stat-label">балла заработано</span>
-                </div>
-                <div class="activity__stat">
-                    <span class="activity__stat-value">5</span>
-                    <span class="activity__stat-label">игр пройдено</span>
-                </div>
-            </div>
-        </div>
+
         <!-- Блок добавленных пользователем игр -->
         <div class="games-block">
             <!-- Блок добавленных пользователем игр -->
             <section class="user-added-games">
                 <header class="user-added-games__header">
-                    <h3 class="user-added-games__title">Созданные игры</h3>
+                    <h3 class="user-added-games__title">Игры на платформе</h3>
                     <div class="user-added-games__controls">
-                        @if (Model.IsMyProfile)
+                        <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
+                        @* @if (Model.IsMyProfile)
                         {
                             <a type="button" class="user-added-games__upload-button" asp-controller="Game" asp-action="Upload">Загрузить игру</a>
-                        }
+                        } *@
                         @if (Model.DevGames != null && Model.DevGames.Any())
                         {
                             <div class="carousel-controls">
@@ -195,13 +150,13 @@
                                                     <img src="/icon/shape.svg" alt="star" class="rating-star filled">
                                                     <img src="/icon/shape.svg" alt="star" class="rating-star filled">
                                                     <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                                    <img src="/icon/shape.svg" alt="star" class="rating-star"> @game.RaitingPlayers
+                                                    <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
                                                 </span>
                                                 <span class="user-added-games__likes">
-                                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 0
+                                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
                                                 </span>
                                                 <span class="user-added-games__views">
-                                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 130
+                                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
                                                 </span>
                                             </div>
                                         </div>
@@ -215,13 +170,11 @@
                                         {
                                             <a role="button" asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
                                         }
-                                        @if (Model.IsMyProfile)
-                                        {
-                                            <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                            <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
-                                                <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
-                                            </a>
-                                        }
+
+                                        <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
+                                        <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                            <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
+                                        </a>
                                     </div>
                                 </article>
                             }
@@ -243,17 +196,17 @@
             <!-- Recent Games Block -->
             <section class="recent-games">
                 <header class="recent-games__header">
-                    <h3 class="recent-games__title">Недавние игры</h3>
+                    <h3 class="recent-games__title">Игры на модерации</h3>
                     <div class="recent-games__controls">
                         <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
                         @{
                             var placeholderGames = new[]
                             {
-                                new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
-                                new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
-                                new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" },
-                                new { Id = 4, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
-                            };
+                                                new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
+                                                new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
+                                                new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" },
+                                                new { Id = 4, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
+                                                };
                         }
                         @if (placeholderGames.Any())
                         {

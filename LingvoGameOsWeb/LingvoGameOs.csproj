@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Area\**" />
     <Compile Remove="data\**" />
     <Compile Remove="Views\Upload\**" />
+    <Content Remove="Area\**" />
     <Content Remove="data\**" />
     <Content Remove="Views\Upload\**" />
+    <EmbeddedResource Remove="Area\**" />
     <EmbeddedResource Remove="data\**" />
     <EmbeddedResource Remove="Views\Upload\**" />
+    <None Remove="Area\**" />
     <None Remove="data\**" />
     <None Remove="Views\Upload\**" />
   </ItemGroup>
@@ -27,6 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
