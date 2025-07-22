@@ -58,11 +58,22 @@ namespace LingvoGameOs.Db
                     Email = "IlonaBekoeva@gmail.com"
                 };
 
+                var devNastya = new User
+                {
+                    Name = "Анастасия",
+                    Surname = "Чувенкова",
+                    AvatarImgPath = "/img/avatars/anastasia-ava.jpg",
+                    Description = "Ученица яндекс лицея.",
+                    UserName = "AnastasiaChuvenkova@gmail.com",
+                    Email = "AnastasiaChuvenkova@gmail.com"
+                };
+
                 // создаем пользователя, если его нет
                 await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
                 await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devIlona, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devNastya, password, Constants.DevRoleName);
 
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
@@ -152,6 +163,31 @@ namespace LingvoGameOs.Db
                 var game3 = new Game
                 {
                     Id = 3,
+                    Title = "Ребусы на осетинском",
+                    Description = "Игра развивает логическое мышление, расширяет словарный запас и предоставляет возможность для развлечения.",
+                    Rules = "Отгадайте ребус, используя подсказки. Для ввода ответа используйте кнопки с буквами осетинского алфавита. У вас есть 3 подсказки для каждого ребуса. За каждый правильный ответ вы получаете 20 очков.",
+                    AuthorId = devNastya.Id,
+                    PublicationDate = DateTime.Now,
+                    LastUpdateDate = DateTime.Now,
+                    LanguageLevelId = languageLevelBeginning.Id,
+                    GamePlatformId = platform3.Id,
+                    RaitingPlayers = 0,
+                    RaitingTeachers = 0,
+                    CoverImagePath = "/img/games/puzzle-1.jpg",
+                    ImagesPaths = new List<string>
+                    {
+                        "/img/games/puzzle-1.jpg",
+                        "/img/games/puzzle-2.png",
+                        "/img/games/puzzle-3.jpg"
+                    },
+                    GameURL = "http://158.160.104.26:5003",
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
+                    NumberDownloads = 0
+                };
+
+                var game4 = new Game
+                {
+                    Id = 4,
                     Title = "Горный лабиринт",
                     Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
                     Rules = "ИГРА В РАЗРАБОТКЕ!\nЕсть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
@@ -173,9 +209,9 @@ namespace LingvoGameOs.Db
                     NumberDownloads = 1000
                 };
 
-                var game4 = new Game
+                var game5 = new Game
                 {
-                    Id = 4,
+                    Id = 5,
                     Title = "Тур-викторина 'Арт объекты Осетии'",
                     Description = "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
                     Rules = "ИГРА В РАЗРАБОТКЕ!\nСлушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
@@ -193,7 +229,7 @@ namespace LingvoGameOs.Db
                         "/img/games/art-object-2.jpeg",
                         "/img/games/art-object-3.png"
                     },
-                    SkillsLearning = new List<SkillLearning> { gameType3, gameType4 },
+                    SkillsLearning = new List<SkillLearning> { gameType3, gameType5 },
                     NumberDownloads = 241
                 };
                 
@@ -201,7 +237,7 @@ namespace LingvoGameOs.Db
 
                 if (!await context.Games.AnyAsync())
                 {
-                    await context.AddRangeAsync(game1, game2, game3, game4);
+                    await context.AddRangeAsync(game1, game2, game3, game4, game5);
                     await context.SaveChangesAsync();
                 }
             }

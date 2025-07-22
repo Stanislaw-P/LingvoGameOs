@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LingvoGameOs.Controllers
 {
-    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<User> userManager;
@@ -50,8 +49,9 @@ namespace LingvoGameOs.Controllers
                 user.DevGames = games;
 
                 var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
-                
-                if (userId == userManager.GetUserAsync(User).Result.Id)
+                var currentUser = await userManager.GetUserAsync(User);
+
+                if (currentUser != null && userId == currentUser.Id)
                 {
                     userViewModel.IsMyProfile = true;
                 }
@@ -68,7 +68,8 @@ namespace LingvoGameOs.Controllers
             {
                 var games = await gamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevGames = games;
-                if (userId == userManager.GetUserAsync(User).Result.Id)
+                var currentUser = await userManager.GetUserAsync(User);
+                if (currentUser != null && userId == currentUser.Id)
                 {
                     return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, ImageURL = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames});
                 }
