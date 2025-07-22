@@ -23,7 +23,7 @@ namespace LingvoGameOs.Views.Shared.Components.Avatar
                 ViewBag.Name = currentUser.Name;
                 return View("Avatar");
             }
-            return null;
+            return View("Avatar");
         }
     }
 }
