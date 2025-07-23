@@ -166,6 +166,7 @@ namespace LingvoGameOs.Db
                     Title = "Ребусы на осетинском",
                     Description = "Игра развивает логическое мышление, расширяет словарный запас и предоставляет возможность для развлечения.",
                     Rules = "Отгадайте ребус, используя подсказки. Для ввода ответа используйте кнопки с буквами осетинского алфавита. У вас есть 3 подсказки для каждого ребуса. За каждый правильный ответ вы получаете 20 очков.",
+                    GameFolderName = "linvgo-puzzles_in_ossetian",
                     AuthorId = devNastya.Id,
                     PublicationDate = DateTime.Now,
                     LastUpdateDate = DateTime.Now,
