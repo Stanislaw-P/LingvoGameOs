@@ -1,423 +1,259 @@
 ﻿@model AdminViewModel
 
 @{
-    ViewData["Title"] = $"Меню администратора";
+    ViewData["Title"] = "Админ-панель LingvoGameOS";
 }
 
-<div class="content__row">
-    <aside class="content__sidebar">
-        <!-- Профиль пользователя -->
-        <div class="profile">
-            <h3 class="profile__title">Профиль администратора</h3>
-            <div class="profile__avatar">
-                <div class="profile__avatar-wrapper">
-                    @if (Model.AvatarImgPath != null)
-                    {
-                        <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image">
-                    }
-                    else
-                    {
-                        <img src="/img/avatar100.png" alt="Аватар пользователя" class="profile__image">
-                    }
-                </div>
+<!-- Admin Panel Header -->
+<div class="admin-header">
+    <div class="admin-header__container">
+        <div class="admin-header__logo">
+            <img src="/img/Logo.png" alt="LingvoGameOS" class="admin-header__logo-img">
+            <span class="admin-header__title">Админ-панель</span>
+        </div>
+        <div class="admin-header__user">
+            <span class="admin-header__user-name">@Model.Name @Model.Surname</span>
+            <span class="admin-header__user-role">Администратор</span>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div class="admin-dashboard">
+    <!-- Statistics Cards -->
+    <div class="admin-stats">
+        <div class="admin-stats__card">
+            <div class="admin-stats__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14,2 14,8 20,8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10,9 9,9 8,9"></polyline>
+                </svg>
             </div>
-            <div class="profile__form">
-                <div class="profile__field">
-                    <label class="profile__label" for="firstName">Имя</label>
-                    <input type="text" class="profile__input" id="firstName" value="@Model.Name" disabled>
-                </div>
-                <div class="profile__field">
-                    <label class="profile__label" for="lastName">Фамилия</label>
-                    <input type="text" class="profile__input" id="lastName" value="@Model.Surname" disabled>
-                </div>
-                <div class="profile__field">
-                    <label class="profile__label" for="email">Email</label>
-                    <input type="email" class="profile__input" id="email" value="@Model.UserName" disabled>
-                </div>
-                <div class="profile__field profile__field--bio">
-                    <label class="profile__label" for="bio">О себе</label>
-                    <textarea class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
-                </div>
+            <div class="admin-stats__content">
+                <span class="admin-stats__value">@Model?.DevGames?.Count</span>
+                <span class="admin-stats__label">Игр на платформе</span>
             </div>
         </div>
-
-        <!-- Информация по платформе -->
-        <div class="level-progress">
-            <h3 class="level-progress__title">Информация по платформе</h3>
-            <div class="level-progress__overview">
-                <span class="level-progress__total">Активных игр: @Model?.DevGames?.Count</span>
-                <span class="level-progress__to-next">Игр на модерации: 7</span>
+        <div class="admin-stats__card">
+            <div class="admin-stats__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
             </div>
-            <div class="level-progress__bar">
-                <div class="level-progress__fill" style="width: 90%;"></div>
-            </div>
-            <div class="level-progress__levels">
-                <div class="level-progress__level" data-tooltip="0-300 баллов"
-                     data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
-                    1. Барашек, который пытается говорить
-                </div>
-                <div class="level-progress__level active" data-tooltip="300-600 баллов"
-                     data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
-                    2. Юный нарт
-                </div>
-                <div class="level-progress__level" data-tooltip="600-900 баллов"
-                     data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
-                    3. Кавказский орёл
-                </div>
-                <div class="level-progress__level" data-tooltip="900-1200 баллов"
-                     data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
-                    4. Старейшина, который говорит тосты
-                </div>
-                <div class="level-progress__level" data-tooltip="1200+ баллов"
-                     data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
-                    5. Хранитель языка
-                </div>
+            <div class="admin-stats__content">
+                <span class="admin-stats__value">7</span>
+                <span class="admin-stats__label">На модерации</span>
             </div>
         </div>
-
-        <!-- Новый блок: Прогресс изучения языка -->
-        <div class="language-progress">
-            <h3 class="language-progress__title">Прогресс изучения</h3>
-            <div class="language-progress__item">
-                <span class="language-progress__label">Словарный запас</span>
-                <div class="language-progress__bar">
-                    <div class="language-progress__fill" style="width: 60%;"></div>
-                </div>
-                <span class="language-progress__value">60%</span>
+        <div class="admin-stats__card">
+            <div class="admin-stats__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
             </div>
-            <div class="language-progress__item">
-                <span class="language-progress__label">Грамматика</span>
-                <div class="language-progress__bar">
-                    <div class="language-progress__fill" style="width: 45%;"></div>
-                </div>
-                <span class="language-progress__value">45%</span>
-            </div>
-            <div class="language-progress__item">
-                <span class="language-progress__label">Аудирование</span>
-                <div class="language-progress__bar">
-                    <div class="language-progress__fill" style="width: 30%;"></div>
-                </div>
-                <span class="language-progress__value">30%</span>
+            <div class="admin-stats__content">
+                <span class="admin-stats__value">@Model?.DevGames?.Count</span>
+                <span class="admin-stats__label">Разработчиков</span>
             </div>
         </div>
-    </aside>
-    <section class="content__main">
+    </div>
 
-        <!-- Блок добавленных пользователем игр -->
-        <div class="games-block">
-            <!-- Блок добавленных пользователем игр -->
-            <section class="user-added-games">
-                <header class="user-added-games__header">
-                    <h3 class="user-added-games__title">Игры на платформе</h3>
-                    <div class="user-added-games__controls">
-                        <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
-                        @* @if (Model.IsMyProfile)
-                        {
-                            <a type="button" class="user-added-games__upload-button" asp-controller="Game" asp-action="Upload">Загрузить игру</a>
-                        } *@
-                        @if (Model.DevGames != null && Model.DevGames.Any())
-                        {
-                            <div class="carousel-controls">
-                                <button class="carousel-control carousel-control--prev user-added-games__prev" aria-label="Предыдущие игры">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="15 18 9 12 15 6"></polyline>
-                                    </svg>
-                                </button>
-                                <span class="carousel-page-counter user-added-games__page-counter">1 из 1</span>
-                                <button class="carousel-control carousel-control--next user-added-games__next" aria-label="Следующие игры">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="9 18 15 12 9 6"></polyline>
-                                    </svg>
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </header>
-                @if (Model.DevGames != null && Model.DevGames.Any())
+    <!-- Published Games Section -->
+    <div class="admin-section">
+        <div class="admin-section__header">
+            <h2 class="admin-section__title">Опубликованные игры</h2>
+            <div class="admin-section__controls">
+                <input type="search" class="admin-search" placeholder="Поиск игр..." id="published-search">
+                <select class="admin-select" id="published-sort">
+                    <option value="date">По дате</option>
+                    <option value="title">По названию</option>
+                    <option value="developer">По разработчику</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="admin-games-grid">
+            @if (Model?.DevGames != null && Model.DevGames.Any())
+            {
+                @foreach (var game in Model.DevGames)
                 {
-                    <div class="user-added-games__carousel">
-                        <div class="user-added-games__list">
-                            @foreach (var game in Model.DevGames)
+                    <div class="admin-game-card">
+                        <div class="admin-game-card__image">
+                            <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="@game.Title">
+                        </div>
+                        <div class="admin-game-card__content">
+                            <h3 class="admin-game-card__title">@game.Title</h3>
+                            <p class="admin-game-card__developer">@game.Author?.Name @game.Author?.Surname</p>
+                            <p class="admin-game-card__date">@game.PublicationDate.ToString("dd.MM.yyyy")</p>
+                        </div>
+                        <div class="admin-game-card__actions">
+                            @if (game.GamePlatform?.Name == "Desktop")
                             {
-                                <article class="user-added-games__item">
-                                    <a asp-area="" asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" class="user-added-games__link">
-                                        <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="Обложка @game.Title" class="user-added-games__image" loading="lazy">
-                                        <div class="user-added-games__content">
-                                            <h4 class="user-added-games__name">@game.Title</h4>
-                                            <div class="user-added-games__stats">
-                                                <span class="user-added-games__rating">
-                                                    <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                                    <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                                                    <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
-                                                </span>
-                                                <span class="user-added-games__likes">
-                                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                                                </span>
-                                                <span class="user-added-games__views">
-                                                    <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="user-added-games__actions">
-                                        @if (game.GamePlatform.Name == "Desktop")
-                                        {
-                                            <a role="button" href="@game.GameURL" download class="user-added-games__button">Скачать</a>
-                                        }
-                                        else
-                                        {
-                                            <a role="button" asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="user-added-games__button">Играть</a>
-                                        }
-
-                                        <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                        <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
-                                            <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
-                                        </a>
-                                    </div>
-                                </article>
+                                <a href="@game.GameURL" download class="admin-btn admin-btn--primary">Скачать</a>
                             }
+                            else
+                            {
+                                <a href="@Url.Action("Start", "Game", new { idGame = game.Id })" class="admin-btn admin-btn--primary">Играть</a>
+                            }
+                            <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(@game.Id)">Редактировать</button>
+                            <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button>
                         </div>
                     </div>
                 }
-                else
-                {
-                    <div class="user-added-games__empty">
-                        <p class="user-added-games__empty-text">Создайте свою первую игру!</p>
-                        @if (User.IsInRole(Constants.DevRoleName))
-                        {
-                            <a type="button" asp-area="" asp-controller="Game" asp-action="Upload" class="user-added-games__upload-button">Создать игру</a>
-                        }
-                    </div>
-                }
-            </section>
+            }
+            else
+            {
+                <div class="admin-empty">
+                    <p>Нет опубликованных игр</p>
+                </div>
+            }
+        </div>
+    </div>
 
-            <!-- Recent Games Block -->
-            <section class="recent-games">
-                <header class="recent-games__header">
-                    <h3 class="recent-games__title">Игры на модерации</h3>
-                    <div class="recent-games__controls">
-                        <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
-                        @{
-                            var placeholderGames = new[]
-                            {
-                                                new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
-                                                new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
-                                                new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" },
-                                                new { Id = 4, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
-                                                };
-                        }
-                        @if (placeholderGames.Any())
-                        {
-                            <div class="carousel-controls">
-                                <button class="carousel-control carousel-control--prev recent-games__prev" aria-label="Предыдущие игры">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="15 18 9 12 15 6"></polyline>
-                                    </svg>
-                                </button>
-                                <span class="carousel-page-counter recent-games__page-counter">1 из 1</span>
-                                <button class="carousel-control carousel-control--next recent-games__next" aria-label="Следующие игры">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="9 18 15 12 9 6"></polyline>
-                                    </svg>
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </header>
-                @if (placeholderGames.Any())
+    <!-- Pending Games Section -->
+    <div class="admin-section">
+        <div class="admin-section__header">
+            <h2 class="admin-section__title">Игры на модерации</h2>
+            <div class="admin-section__controls">
+                <input type="search" class="admin-search" placeholder="Поиск игр..." id="pending-search">
+                <select class="admin-select" id="pending-sort">
+                    <option value="date">По дате</option>
+                    <option value="title">По названию</option>
+                    <option value="developer">По разработчику</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="admin-games-grid">
+            @{
+                var pendingGames = new[]
                 {
-                    <div class="recent-games__carousel">
-                        <div class="recent-games__list">
-                            @foreach (var game in placeholderGames)
-                            {
-                                <article class="recent-games__item">
-                                    <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="recent-games__link">
-                                        <img src="@game.CoverImageURL" alt="Обложка @game.Title" class="recent-games__image" loading="lazy">
-                                        <div class="recent-games__content">
-                                            <h4 class="recent-games__name">@game.Title</h4>
-                                            <p class="recent-games__description">@game.Description</p>
-                                            <p class="recent-games__score">Баллы: 0</p>
-                                        </div>
-                                    </a>
-                                </article>
-                            }
-                        </div>
+                    new { Id = 1, Title = "Словарный Бой", Developer = "Иван Иванов", Date = "20.06.2024", Cover = "/img/game1.png" },
+                    new { Id = 2, Title = "Грамматический Штурм", Developer = "Мария Петрова", Date = "22.06.2024", Cover = "/img/game2.png" },
+                    new { Id = 3, Title = "Уши на Макушке", Developer = "Алексей Смирнов", Date = "25.06.2024", Cover = "/img/game3.png" }
+                };
+            }
+            
+            @foreach (var game in pendingGames)
+            {
+                <div class="admin-game-card admin-game-card--pending">
+                    <div class="admin-game-card__image">
+                        <img src="@game.Cover" alt="@game.Title">
+                        <div class="admin-game-card__status">На модерации</div>
                     </div>
-                }
-                else
-                {
-                    <div class="recent-games__empty">
-                        <p class="recent-games__empty-text">Откройте новые игры для изучения!</p>
-                        <a href="/games" class="recent-games__button">Найти игры</a>
+                    <div class="admin-game-card__content">
+                        <h3 class="admin-game-card__title">@game.Title</h3>
+                        <p class="admin-game-card__developer">@game.Developer</p>
+                        <p class="admin-game-card__date">@game.Date</p>
                     </div>
-                }
-            </section>
-        </div>
-    </section>
-</div>
-<!-- Блок рейтинга в играх -->
-<div class="game-stats">
-    <h3 class="game-stats__title">Рейтинг в играх</h3>
-    <div class="game-stats__list">
-        <div class="game-stats__item">
-            <span class="game-stats__name">"Игра 1: Словарный Бой"</span>
-            <span class="game-stats__points">Баллы: 1200</span>
-            <span class="game-stats__ranking">Рейтинг: 1523</span>
-            <span class="game-stats__level">Уровень: 3</span>
-            <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
-        </div>
-        <div class="game-stats__item">
-            <span class="game-stats__name">"Игра 2: Грамматический Штурм"</span>
-            <span class="game-stats__points">Баллы: 900</span>
-            <span class="game-stats__ranking">Рейтинг: 1345</span>
-            <span class="game-stats__level">Уровень: 2</span>
-            <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
-        </div>
-        <div class="game-stats__item">
-            <span class="game-stats__name">"Игра 3: Уши на Макушке"</span>
-            <span class="game-stats__points">Баллы: 600</span>
-            <span class="game-stats__ranking">Рейтинг: 987</span>
-            <span class="game-stats__level">Уровень: 1</span>
-            <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
+                    <div class="admin-game-card__actions">
+                        <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(@game.Id)">Детали</button>
+                        <button class="admin-btn admin-btn--outline" onclick="openFeedback(@game.Id)">Обратная связь</button>
+                        <button class="admin-btn admin-btn--success" onclick="approveGame(@game.Id)">Подтвердить</button>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
 
-<!-- Рекомендуемые игры -->
-<div class="recommended-games">
-    <h3 class="recommended-games__title">Рекомендуемые игры</h3>
-    <div class="recommended-games__list">
-        <div class="recommended-games__item">
-            <img src="/img/game1.png" alt="Игра" class="recommended-games__image">
-            <div class="recommended-games__content">
-                <h4 class="recommended-games__name">"Название игры"</h4>
-                <div class="recommended-games__stats">
-                    <span class="recommended-games__rating">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
-                    </span>
-                    <span class="recommended-games__likes">
-                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                    </span>
-                    <span class="recommended-games__views">
-                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                    </span>
+<!-- Game Details Modal -->
+<div id="game-details-modal" class="admin-modal" aria-hidden="true">
+    <div class="admin-modal__content">
+        <button class="admin-modal__close" onclick="closeGameDetails()">×</button>
+        <div class="admin-modal__header">
+            <h2>Детали игры</h2>
+        </div>
+        <div class="admin-modal__body">
+            <div class="game-details">
+                <div class="game-details__cover">
+                    <img id="modal-game-cover" src="" alt="Обложка игры">
+                </div>
+                <div class="game-details__info">
+                    <div class="game-details__field">
+                        <label>Разработчик</label>
+                        <input type="text" id="modal-game-developer" readonly>
+                    </div>
+                    <div class="game-details__field">
+                        <label>Название игры</label>
+                        <input type="text" id="modal-game-title">
+                    </div>
+                    <div class="game-details__field">
+                        <label>Описание</label>
+                        <textarea id="modal-game-description"></textarea>
+                    </div>
+                    <div class="game-details__field">
+                        <label>Правила</label>
+                        <textarea id="modal-game-rules"></textarea>
+                    </div>
+                    <div class="game-details__field">
+                        <label>Дата подачи</label>
+                        <input type="text" id="modal-game-date" readonly>
+                    </div>
+                    <div class="game-details__field">
+                        <label>Скриншоты</label>
+                        <div id="modal-game-screenshots" class="game-screenshots"></div>
+                    </div>
+                    <div class="game-details__field">
+                        <label>Файл игры</label>
+                        <a id="modal-game-file" href="#" class="admin-btn admin-btn--primary">Скачать/Играть</a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="recommended-games__item">
-            <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
-            <div class="recommended-games__content">
-                <h4 class="recommended-games__name">"Название игры"</h4>
-                <div class="recommended-games__stats">
-                    <span class="recommended-games__rating">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star"> 4.5
-                    </span>
-                    <span class="recommended-games__likes">
-                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                    </span>
-                    <span class="recommended-games__views">
-                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="recommended-games__item">
-            <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
-            <div class="recommended-games__content">
-                <h4 class="recommended-games__name">"Название игры"</h4>
-                <div class="recommended-games__stats">
-                    <span class="recommended-games__rating">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
-                    </span>
-                    <span class="recommended-games__likes">
-                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                    </span>
-                    <span class="recommended-games__views">
-                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="recommended-games__item">
-            <img src="/img/game2.png" alt="Игра" class="recommended-games__image">
-            <div class="recommended-games__content">
-                <h4 class="recommended-games__name">"Название игры"</h4>
-                <div class="recommended-games__stats">
-                    <span class="recommended-games__rating">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape2.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star filled">
-                        <img src="/icon/shape.svg" alt="star" class="rating-star"> 4.5
-                    </span>
-                    <span class="recommended-games__likes">
-                        <img src="/icon/like2.svg" alt="like" class="stat-icon"> 1.5K
-                    </span>
-                    <span class="recommended-games__views">
-                        <img src="/icon/eye.svg" alt="view" class="stat-icon"> 2.5K
-                    </span>
-                </div>
-            </div>
+        <div class="admin-modal__footer">
+            <button class="admin-btn admin-btn--outline" onclick="closeGameDetails()">Отмена</button>
+            <button class="admin-btn admin-btn--primary" onclick="saveGameChanges()">Сохранить</button>
+            <button class="admin-btn admin-btn--success" id="approve-game-btn" onclick="approveGameFromModal()">Подтвердить игру</button>
         </div>
     </div>
 </div>
 
-<!-- Modal for editing profile -->
-<div class="custom-modal" id="edit-profile-modal">
-    <div class="modal__content">
-        <button class="modal__close" id="close-edit-modal" aria-label="Закрыть модальное окно">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-        <h2 class="modal__title">Редактировать профиль</h2>
-        <form class="modal__form" id="edit-profile-form" enctype="multipart/form-data">
-            <div class="modal__field">
-                <label class="modal__label" for="modal-avatar">Аватар</label>
-                <div class="modal__avatar-wrapper">
-                    <img src="@(Model.AvatarImgPath ?? "/img/avatar100.png")" alt="Аватар пользователя" class="modal__avatar-image" id="modal-avatar-preview">
-                    <input type="file" class="modal__avatar-input" id="modal-avatar" accept="image/*">
-                    <label for="modal-avatar" class="modal__upload-button">Загрузить новое фото</label>
+<!-- Feedback Modal -->
+<div id="feedback-modal" class="admin-modal" aria-hidden="true">
+    <div class="admin-modal__content">
+        <button class="admin-modal__close" onclick="closeFeedback()">×</button>
+        <div class="admin-modal__header">
+            <h2>Обратная связь разработчику</h2>
+        </div>
+        <div class="admin-modal__body">
+            <div class="feedback-form">
+                <div class="feedback-form__field">
+                    <label for="feedback-message">Сообщение</label>
+                    <textarea id="feedback-message" placeholder="Введите ваше сообщение разработчику..." rows="6"></textarea>
                 </div>
             </div>
-            <div class="modal__field">
-                <label class="modal__label" for="modal-firstName">Имя</label>
-                <input type="text" class="modal__input" id="modal-firstName" value="@Model.Name" required>
-            </div>
-            <div class="modal__field">
-                <label class="modal__label" for="modal-lastName">Фамилия</label>
-                <input type="text" class="modal__input" id="modal-lastName" value="@Model.Surname" required>
-            </div>
-            <div class="modal__field">
-                <label class="modal__label" for="modal-email">Email</label>
-                <input type="email" class="modal__input" id="modal-email" value="@Model.UserName" required>
-            </div>
-            <div class="modal__field">
-                <label class="modal__label" for="modal-bio">О себе</label>
-                <textarea class="modal__input modal__textarea" id="modal-bio" placeholder="Расскажите о себе">@Model.Description</textarea>
-            </div>
-            <div class="modal__actions">
-                <button type="button" class="modal__button modal__button--secondary" id="cancel-edit">Отмена</button>
-                <button type="submit" class="modal__button modal__button--primary" id="save-profile">Сохранить</button>
-            </div>
-            <div class="modal__error" id="modal-error" style="display: none;"></div>
-        </form>
+        </div>
+        <div class="admin-modal__footer">
+            <button class="admin-btn admin-btn--outline" onclick="closeFeedback()">Отмена</button>
+            <button class="admin-btn admin-btn--primary" onclick="sendFeedback()">Отправить</button>
+        </div>
     </div>
 </div>
-@* <script type="module" src="/js/script.js"></script> *@
+
+<!-- Analytics Modal -->
+<div id="analytics-modal" class="admin-modal" aria-hidden="true">
+    <div class="admin-modal__content">
+        <button class="admin-modal__close" onclick="closeAnalytics()">×</button>
+        <div class="admin-modal__header">
+            <h2>Аналитика игры</h2>
+        </div>
+        <div class="admin-modal__body">
+            <div class="analytics-content">
+                <p>Аналитика будет реализована в будущем</p>
+            </div>
+        </div>
+        <div class="admin-modal__footer">
+            <button class="admin-btn admin-btn--outline" onclick="closeAnalytics()">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/admin/admin-panel.css">
+<script src="/js/admin/admin-panel.js"></script>

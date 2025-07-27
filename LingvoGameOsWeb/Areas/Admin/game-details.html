@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали игры — Админ-панель</title>
+    <link rel="stylesheet" href="css/game-details.css">
+    <link rel="stylesheet" href="/wwwroot/css/style.css">
+</head>
+<body>
+    <nav class="admin-navbar" aria-label="Навигация по админ-панели">
+        <div class="admin-navbar__logo">LingvoGameOS Admin</div>
+        <ul class="admin-navbar__menu">
+            <li><a href="dashboard.html">Дашборд</a></li>
+        </ul>
+    </nav>
+    <main class="game-details" aria-label="Детали игры">
+        <button class="btn outline" onclick="window.history.back()" style="margin-bottom: 24px;">← Назад к дашборду</button>
+        <section class="game-details__main">
+            <div class="game-details__cover">
+                <img id="game-cover" src="" alt="Обложка игры" />
+            </div>
+            <div class="game-details__info">
+                <form id="game-edit-form">
+                    <div class="form-group">
+                        <label for="game-title">Название игры</label>
+                        <input type="text" id="game-title" name="title" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="game-developer">Разработчик</label>
+                        <input type="text" id="game-developer" name="developer" required disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="game-description">Описание</label>
+                        <textarea id="game-description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-rules">Правила игры</label>
+                        <textarea id="game-rules" name="rules" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-date">Дата подачи</label>
+                        <input type="text" id="game-date" name="date" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label>Скриншоты</label>
+                        <div id="game-screenshots" class="screenshots-gallery"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ссылка/файл игры</label>
+                        <a id="game-link" href="#" target="_blank" class="btn secondary">Скачать/Играть</a>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">Сохранить изменения</button>
+                        <button type="button" class="btn outline" id="open-feedback">Написать отзыв</button>
+                        <button type="button" class="btn success" id="confirm-game" style="display:none;">Подтвердить игру</button>
+                    </div>
+                    <div id="game-edit-status" class="form-status" aria-live="polite"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+    <div id="feedback-modal" class="modal" aria-hidden="true" aria-labelledby="feedback-modal-title" role="dialog">
+        <div class="modal__content">
+            <button class="modal__close" id="close-feedback-modal" aria-label="Закрыть модальное окно">×</button>
+            <h2 id="feedback-modal-title">Отправить отзыв разработчику</h2>
+            <form id="feedback-form">
+                <textarea id="feedback-message" placeholder="Введите сообщение..." required aria-label="Сообщение для разработчика"></textarea>
+                <div class="modal__actions">
+                    <button type="button" id="cancel-feedback">Отмена</button>
+                    <button type="submit" class="primary">Отправить</button>
+                </div>
+                <div id="feedback-status" class="modal__status" aria-live="polite"></div>
+            </form>
+        </div>
+    </div>
+    <script src="js/game-details.js"></script>
+    <script src="js/feedback.js"></script>
+</body>
+</html> 

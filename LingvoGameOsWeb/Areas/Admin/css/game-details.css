@@ -1,0 +1,221 @@
+/* game-details.css — стили для страницы деталей игры в админ-панели */
+:root {
+  --primary: #007BFF;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --danger: #dc3545;
+  --bg: #f8f9fa;
+  --card-bg: #fff;
+  --border: #e0e0e0;
+  --text: #222;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.04);
+  --font-main: 'Inter', Arial, sans-serif;
+}
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+}
+.admin-navbar {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  box-shadow: var(--shadow);
+}
+.admin-navbar__logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-right: 32px;
+}
+.admin-navbar__menu {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+.admin-navbar__menu a {
+  color: var(--text);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  transition: background .2s;
+}
+.admin-navbar__menu a.active,
+.admin-navbar__menu a:hover {
+  background: var(--primary);
+  color: #fff;
+}
+.game-details {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.game-details__main {
+  display: flex;
+  gap: 32px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+  align-items: flex-start;
+}
+.game-details__cover img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--bg);
+}
+.game-details__info {
+  flex: 1;
+}
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: var(--font-main);
+  background: var(--bg);
+  resize: vertical;
+}
+.form-group input[disabled] {
+  background: #f1f1f1;
+  color: var(--secondary);
+}
+.screenshots-gallery {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.screenshots-gallery img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  background: var(--bg);
+}
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+.btn {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: var(--radius);
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn.secondary {
+  background: var(--secondary);
+  color: #fff;
+}
+.btn.success {
+  background: var(--success);
+  color: #fff;
+}
+.btn.outline {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+.btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.form-status {
+  margin-top: 12px;
+  color: var(--success);
+  font-size: 0.95rem;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  align-items: center;
+  justify-content: center;
+}
+.modal[aria-hidden="false"] {
+  display: flex;
+}
+.modal__content {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  min-width: 320px;
+  max-width: 90vw;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.modal__close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--secondary);
+  cursor: pointer;
+}
+.modal__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+.modal__status {
+  margin-top: 12px;
+  color: var(--success);
+  font-size: 0.95rem;
+}
+@media (max-width: 900px) {
+  .game-details__main {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 8px;
+  }
+  .game-details__cover img {
+    width: 100%;
+    height: 180px;
+  }
+}
+@media (max-width: 600px) {
+  .admin-navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 8px 4px;
+  }
+  .admin-navbar__logo {
+    margin-bottom: 8px;
+  }
+  .modal__content {
+    padding: 16px 8px;
+    min-width: 90vw;
+  }
+} 
