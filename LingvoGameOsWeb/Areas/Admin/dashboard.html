@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — Дашборд</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Подключение основных стилей платформы для согласованности -->
+    <link rel="stylesheet" href="/wwwroot/css/style.css">
+</head>
+<body>
+    <nav class="admin-navbar" aria-label="Навигация по админ-панели">
+        <div class="admin-navbar__logo">LingvoGameOS Admin</div>
+        <ul class="admin-navbar__menu">
+            <li class="admin-navbar__dropdown">
+                <button class="admin-navbar__dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="admin-navbar-dropdown-list" tabindex="0">
+                    Меню <span aria-hidden="true">▼</span>
+                </button>
+                <ul class="admin-navbar__dropdown-list" id="admin-navbar-dropdown-list" role="menu">
+                    <li><a href="dashboard.html" role="menuitem">Дашборд</a></li>
+                    <li><a href="#published" role="menuitem">Опубликованные игры</a></li>
+                    <li><a href="#pending" role="menuitem">Игры на модерации</a></li>
+                    <li><a href="game-details.html?id=1" role="menuitem">Пример: Детали игры</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <main class="admin-dashboard" aria-label="Главная страница админ-панели">
+        <section class="admin-stats" aria-label="Статистика платформы">
+            <div class="admin-stats__card" id="total-games">
+                <span class="admin-stats__label">Всего игр</span>
+                <span class="admin-stats__value" id="total-games-value">0</span>
+            </div>
+            <div class="admin-stats__card" id="pending-games">
+                <span class="admin-stats__label">На модерации</span>
+                <span class="admin-stats__value" id="pending-games-value">0</span>
+            </div>
+        </section>
+        <section class="admin-section" aria-label="Опубликованные игры">
+            <h2>Опубликованные игры</h2>
+            <div class="admin-table-controls">
+                <input type="search" id="published-search" placeholder="Поиск по названию или разработчику" aria-label="Поиск опубликованных игр">
+                <select id="published-sort" aria-label="Сортировка опубликованных игр">
+                    <option value="date">По дате</option>
+                    <option value="title">По названию</option>
+                    <option value="developer">По разработчику</option>
+                </select>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table" id="published-games-table" aria-label="Таблица опубликованных игр">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Разработчик</th>
+                            <th>Дата публикации</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Мок-данные будут подставлены через JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="admin-section" aria-label="Игры на модерации">
+            <h2>Игры на модерации</h2>
+            <div class="admin-table-controls">
+                <input type="search" id="pending-search" placeholder="Поиск по названию или разработчику" aria-label="Поиск игр на модерации">
+                <select id="pending-sort" aria-label="Сортировка игр на модерации">
+                    <option value="date">По дате</option>
+                    <option value="title">По названию</option>
+                    <option value="developer">По разработчику</option>
+                </select>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table" id="pending-games-table" aria-label="Таблица игр на модерации">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Разработчик</th>
+                            <th>Дата подачи</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Мок-данные будут подставлены через JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <div id="feedback-modal" class="modal" aria-hidden="true" aria-labelledby="feedback-modal-title" role="dialog">
+        <div class="modal__content">
+            <button class="modal__close" id="close-feedback-modal" aria-label="Закрыть модальное окно">×</button>
+            <h2 id="feedback-modal-title">Отправить отзыв разработчику</h2>
+            <form id="feedback-form">
+                <textarea id="feedback-message" placeholder="Введите сообщение..." required aria-label="Сообщение для разработчика"></textarea>
+                <div class="modal__actions">
+                    <button type="button" id="cancel-feedback">Отмена</button>
+                    <button type="submit" class="primary">Отправить</button>
+                </div>
+                <div id="feedback-status" class="modal__status" aria-live="polite"></div>
+            </form>
+        </div>
+    </div>
+    <script src="js/dashboard.js"></script>
+    <script src="js/feedback.js"></script>
+    <script src="js/nav.js"></script>
+</body>
+</html> 
