@@ -19,8 +19,9 @@ namespace LingvoGameOs.Controllers
         readonly IPlatformsRepository _platformsRepository;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly FileProvider _fileProvider;
+        readonly IPendingGamesRepository _pendingGamesRepository;
 
-        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository)
+        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IPendingGamesRepository pendingGamesRepository)
         {
             _gamesRepository = gamesRepository;
             _userManager = userManager;
@@ -28,6 +29,7 @@ namespace LingvoGameOs.Controllers
             _fileProvider = new FileProvider(appEnvironment);
             _platformsRepository = platformsRepository;
             _languageLevelsRepository = languageLevelsRepository;
+            _pendingGamesRepository = pendingGamesRepository;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -128,7 +130,7 @@ namespace LingvoGameOs.Controllers
 
                     if (gameViewModel.UploadedGame != null) // Если файл загруженной игры не пустой, то она десктоп
                     {
-                        Game newGame = new Game
+                        PendingGame pendingGame = new PendingGame
                         {
                             Title = gameViewModel.Title,
                             Description = gameViewModel.Description,
@@ -136,23 +138,47 @@ namespace LingvoGameOs.Controllers
                             AuthorId = authorId!,
                             CoverImagePath = coverImagePath!,
                             ImagesPaths = imagesPaths,
-                            PublicationDate = DateTime.Now,
-                            LastUpdateDate = DateTime.Now,
+                            DispatchDate = DateTime.Now,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,
                             VideoUrl = gameViewModel.VideoUrl
                         };
-                        await _gamesRepository.AddAsync(newGame); // После выполнения этой строки код выбрасывает с ошибкой
-
+                        await _pendingGamesRepository.AddAsync(pendingGame);
                         // Теперь можно использовать ID для сохранения файла
-                        string? gameUrl = await _fileProvider.SafeFileAsync(gameViewModel.UploadedGame, newGame.Id, newGame.Title);
+                        string? gameUrl = await _fileProvider.SafeFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title);
 
                         // Если нужно обновить URL игры после сохранения файла
                         if (!string.IsNullOrEmpty(gameUrl))
                         {
-                            await _gamesRepository.ChangeGameUrl(gameUrl, newGame);
+                            await _pendingGamesRepository.ChangeGameUrl(gameUrl, pendingGame);
                         }
+
+                        //Game newGame = new Game
+                        //{
+                        //    Title = gameViewModel.Title,
+                        //    Description = gameViewModel.Description,
+                        //    Rules = gameViewModel.Rules,
+                        //    AuthorId = authorId!,
+                        //    CoverImagePath = coverImagePath!,
+                        //    ImagesPaths = imagesPaths,
+                        //    PublicationDate = DateTime.Now,
+                        //    LastUpdateDate = DateTime.Now,
+                        //    GamePlatform = platform!,
+                        //    SkillsLearning = skills,
+                        //    LanguageLevel = languageLvl!,
+                        //    VideoUrl = gameViewModel.VideoUrl
+                        //};
+                        //await _gamesRepository.AddAsync(newGame); 
+
+                        //// Теперь можно использовать ID для сохранения файла
+                        //string? gameUrl = await _fileProvider.SafeFileAsync(gameViewModel.UploadedGame, newGame.Id, newGame.Title);
+
+                        //// Если нужно обновить URL игры после сохранения файла
+                        //if (!string.IsNullOrEmpty(gameUrl))
+                        //{
+                        //    await _gamesRepository.ChangeGameUrl(gameUrl, newGame);
+                        //}
 
                         // смена роли игрока на разработчика
                         await ChangeRolePlayerToDevAsync();
@@ -161,7 +187,8 @@ namespace LingvoGameOs.Controllers
                     }
                     else // Инача - игра веб
                     {
-                        Game newGame = new Game
+
+                        PendingGame pendingGame = new PendingGame
                         {
                             Title = gameViewModel.Title,
                             Description = gameViewModel.Description,
@@ -169,16 +196,32 @@ namespace LingvoGameOs.Controllers
                             AuthorId = authorId!,
                             CoverImagePath = coverImagePath!,
                             ImagesPaths = imagesPaths,
-                            PublicationDate = DateTime.Now,
-                            LastUpdateDate = DateTime.Now,
+                            DispatchDate = DateTime.Now,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,
                             GameURL = gameViewModel.GameURL!,
                             VideoUrl = gameViewModel.VideoUrl
                         };
+                        await _pendingGamesRepository.AddAsync(pendingGame);
+                        //Game newGame = new Game
+                        //{
+                        //    Title = gameViewModel.Title,
+                        //    Description = gameViewModel.Description,
+                        //    Rules = gameViewModel.Rules,
+                        //    AuthorId = authorId!,
+                        //    CoverImagePath = coverImagePath!,
+                        //    ImagesPaths = imagesPaths,
+                        //    PublicationDate = DateTime.Now,
+                        //    LastUpdateDate = DateTime.Now,
+                        //    GamePlatform = platform!,
+                        //    SkillsLearning = skills,
+                        //    LanguageLevel = languageLvl!,
+                        //    GameURL = gameViewModel.GameURL!,
+                        //    VideoUrl = gameViewModel.VideoUrl
+                        //};
 
-                        await _gamesRepository.AddAsync(newGame);
+                        //await _gamesRepository.AddAsync(newGame);
 
                         // смена роли игрока на разработчика
                         await ChangeRolePlayerToDevAsync();

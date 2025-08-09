@@ -15,11 +15,13 @@ namespace LingvoGameOs.Areas.Admin.Controllers
     {
         readonly UserManager<User> _userManager;
         readonly IGamesRepository _gamesRepository;
+        readonly IPendingGamesRepository _pendingGamesRepository;
 
-        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository)
+        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository)
         {
             _userManager = userManager;
             _gamesRepository = gamesRepository;
+            _pendingGamesRepository = pendingGamesRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -29,7 +31,18 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 return NotFound();
 
             var existingGames = await _gamesRepository.GetAllAsync();
-            var adminUserViewModel = new AdminViewModel { Id = adminUser.Id , Name = adminUser.Name, Surname = adminUser.Surname, UserName  = adminUser.UserName!, Description = adminUser.Description, AvatarImgPath = adminUser.AvatarImgPath, DevGames = existingGames };
+            var pendingGames = await _pendingGamesRepository.GetAllAsync();
+            var adminUserViewModel = new AdminViewModel
+            {
+                Id = adminUser.Id,
+                Name = adminUser.Name,
+                Surname = adminUser.Surname,
+                UserName = adminUser.UserName!,
+                Description = adminUser.Description,
+                AvatarImgPath = adminUser.AvatarImgPath,
+                ExistingDevGames = existingGames,
+                PendingGames = pendingGames
+            };
 
             return View(adminUserViewModel);
         }

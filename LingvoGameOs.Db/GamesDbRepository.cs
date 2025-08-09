@@ -17,6 +17,7 @@ namespace LingvoGameOs.Db
 			return await databaseContext.Games
 				.Include(g => g.SkillsLearning)
 				.Include(g => g.GamePlatform)
+				.Include(g => g.Author)
 				.ToListAsync();
 		}
 

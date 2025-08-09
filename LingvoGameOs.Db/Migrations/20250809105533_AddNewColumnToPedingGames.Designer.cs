@@ -3,6 +3,7 @@ using System;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250809105533_AddNewColumnToPedingGames")]
+    partial class AddNewColumnToPedingGames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
@@ -159,6 +162,7 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LastMessage")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Rules")
@@ -181,21 +185,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.HasIndex("LanguageLevelId");
 
                     b.ToTable("PendingGames");
-                });
-
-            modelBuilder.Entity("LingvoGameOs.Db.Models.PendingGameSkillLearning", b =>
-                {
-                    b.Property<int>("PendingGameId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SkillLearningId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("PendingGameId", "SkillLearningId");
-
-                    b.HasIndex("SkillLearningId");
-
-                    b.ToTable("PendingGameSkillLearning", (string)null);
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.Platform", b =>
@@ -244,7 +233,12 @@ namespace LingvoGameOs.Db.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("PendingGameId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PendingGameId");
 
                     b.ToTable("SkillsLearning");
                 });
@@ -528,25 +522,6 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("LanguageLevel");
                 });
 
-            modelBuilder.Entity("LingvoGameOs.Db.Models.PendingGameSkillLearning", b =>
-                {
-                    b.HasOne("LingvoGameOs.Db.Models.PendingGame", "PendingGame")
-                        .WithMany()
-                        .HasForeignKey("PendingGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LingvoGameOs.Db.Models.SkillLearning", "SkillLearning")
-                        .WithMany()
-                        .HasForeignKey("SkillLearningId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PendingGame");
-
-                    b.Navigation("SkillLearning");
-                });
-
             modelBuilder.Entity("LingvoGameOs.Db.Models.PlayerGame", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
@@ -564,6 +539,13 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("Game");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.SkillLearning", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.PendingGame", null)
+                        .WithMany("SkillsLearning")
+                        .HasForeignKey("PendingGameId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -620,6 +602,11 @@ namespace LingvoGameOs.Db.Migrations
             modelBuilder.Entity("LingvoGameOs.Db.Models.Game", b =>
                 {
                     b.Navigation("UserGames");
+                });
+
+            modelBuilder.Entity("LingvoGameOs.Db.Models.PendingGame", b =>
+                {
+                    b.Navigation("SkillsLearning");
                 });
 
             modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>
