@@ -11,6 +11,7 @@ namespace LingvoGameOs.Db
         public DbSet<SkillLearning> SkillsLearning { get; set; }
         public DbSet<LanguageLevel> LanguageLevels { get; set; }
         public DbSet<Platform> Platforms { get; set; }
+        public DbSet<PendingGame> PendingGames { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -50,6 +51,25 @@ namespace LingvoGameOs.Db
                     j => j
                         .ToTable("GameSkillLearning")
                         .HasKey(t => new { t.GameId, t.SkillLearningId }) // Составной первичный ключ
+                );
+
+            modelBuilder.Entity<PendingGame>()
+                .HasMany(g => g.SkillsLearning)
+                .WithMany(gt => gt.PendingGames)
+                .UsingEntity<PendingGameSkillLearning>(
+                    j => j
+                        .HasOne(gt => gt.SkillLearning)  // Настраиваем связь с GameType
+                        .WithMany()
+                        .HasForeignKey(gt => gt.SkillLearningId),  // Явно указываем внешний ключ
+
+                    j => j
+                        .HasOne(g => g.PendingGame)  // Настраиваем связь с Game
+                        .WithMany()
+                        .HasForeignKey(g => g.PendingGameId),  // Явно указываем внешний ключ
+
+                    j => j
+                        .ToTable("PendingGameSkillLearning")
+                        .HasKey(t => new { t.PendingGameId, t.SkillLearningId }) // Составной первичный ключ
                 );
         }
     }

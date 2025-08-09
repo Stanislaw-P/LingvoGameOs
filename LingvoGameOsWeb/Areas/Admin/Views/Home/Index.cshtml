@@ -33,7 +33,7 @@
                 </svg>
             </div>
             <div class="admin-stats__content">
-                <span class="admin-stats__value">@Model?.DevGames?.Count</span>
+                <span class="admin-stats__value">@Model?.ExistingDevGames?.Count</span>
                 <span class="admin-stats__label">Игр на платформе</span>
             </div>
         </div>
@@ -58,7 +58,7 @@
                 </svg>
             </div>
             <div class="admin-stats__content">
-                <span class="admin-stats__value">@Model?.DevGames?.Count</span>
+                <span class="admin-stats__value">@Model?.ExistingDevGames?.Count</span>
                 <span class="admin-stats__label">Разработчиков</span>
             </div>
         </div>
@@ -79,9 +79,9 @@
         </div>
         
         <div class="admin-games-grid">
-            @if (Model?.DevGames != null && Model.DevGames.Any())
+            @if (Model?.ExistingDevGames != null && Model.ExistingDevGames.Any())
             {
-                @foreach (var game in Model.DevGames)
+                @foreach (var game in Model.ExistingDevGames)
                 {
                     <div class="admin-game-card">
                         <div class="admin-game-card__image">
@@ -131,32 +131,32 @@
         </div>
         
         <div class="admin-games-grid">
-            @{
-                var pendingGames = new[]
-                {
-                    new { Id = 1, Title = "Словарный Бой", Developer = "Иван Иванов", Date = "20.06.2024", Cover = "/img/game1.png" },
-                    new { Id = 2, Title = "Грамматический Штурм", Developer = "Мария Петрова", Date = "22.06.2024", Cover = "/img/game2.png" },
-                    new { Id = 3, Title = "Уши на Макушке", Developer = "Алексей Смирнов", Date = "25.06.2024", Cover = "/img/game3.png" }
-                };
-            }
-            
-            @foreach (var game in pendingGames)
+            @if (Model?.PendingGames != null && Model.PendingGames.Any())
             {
-                <div class="admin-game-card admin-game-card--pending">
-                    <div class="admin-game-card__image">
-                        <img src="@game.Cover" alt="@game.Title">
-                        <div class="admin-game-card__status">На модерации</div>
+                @foreach (var game in Model.PendingGames)
+                {
+                    <div class="admin-game-card admin-game-card--pending">
+                        <div class="admin-game-card__image">
+                            <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="@game.Title">
+                            <div class="admin-game-card__status">На модерации</div>
+                        </div>
+                        <div class="admin-game-card__content">
+                            <h3 class="admin-game-card__title">@game.Title</h3>
+                            <p class="admin-game-card__developer">@game.Author?.Name @game.Author?.Surname</p>
+                            <p class="admin-game-card__date">@game.DispatchDate.ToString("dd.MM.yyyy")</p>
+                        </div>
+                        <div class="admin-game-card__actions">
+                            <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(@game.Id)">Детали</button>
+                            <button class="admin-btn admin-btn--outline" onclick="openFeedback(@game.Id)">Обратная связь</button>
+                            <button class="admin-btn admin-btn--success" onclick="approveGame(@game.Id)">Опубликовать</button>
+                        </div>
                     </div>
-                    <div class="admin-game-card__content">
-                        <h3 class="admin-game-card__title">@game.Title</h3>
-                        <p class="admin-game-card__developer">@game.Developer</p>
-                        <p class="admin-game-card__date">@game.Date</p>
-                    </div>
-                    <div class="admin-game-card__actions">
-                        <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(@game.Id)">Детали</button>
-                        <button class="admin-btn admin-btn--outline" onclick="openFeedback(@game.Id)">Обратная связь</button>
-                        <button class="admin-btn admin-btn--success" onclick="approveGame(@game.Id)">Подтвердить</button>
-                    </div>
+                }
+            }
+            else
+            {
+                <div class="admin-empty">
+                    <p>Нет игр на модерации</p>
                 </div>
             }
         </div>
