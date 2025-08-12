@@ -11,17 +11,19 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 {
     [Area(Constants.AdminRoleName)]
     [Authorize(Roles = Constants.AdminRoleName)]
-    public class HomeController : Controller
+    public class GamesController : Controller
     {
         readonly UserManager<User> _userManager;
         readonly IGamesRepository _gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
+        readonly ISkillsLearningRepository _skillsLearningRepository;
 
-        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository)
+        public GamesController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository)
         {
             _userManager = userManager;
             _gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
+            _skillsLearningRepository = skillsLearningRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -45,6 +47,28 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             };
 
             return View(adminUserViewModel);
+        }
+
+        public async Task<IActionResult> PendingDetails(int gameId)
+        {
+            var existingGame = await _pendingGamesRepository.TryGetByIdAsync(gameId);
+            if (existingGame == null)
+                return NotFound();
+
+            var skillLearnings = await _skillsLearningRepository.GetAllAsync();
+            ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
+            return View(new EditGameViewModel
+            {
+                Id = existingGame.Id,
+                Title = existingGame.Title,
+                Description = existingGame.Description,
+                Rules = existingGame.Rules,
+                CurrentCoverImage = existingGame.CoverImagePath,
+                CurrentImagesPaths = existingGame.ImagesPaths,
+                SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
+                Author = existingGame.Author,
+                DispatchDate = existingGame.DispatchDate
+            });
         }
     }
 }

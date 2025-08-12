@@ -1,7 +1,7 @@
-﻿@model AddGameViewModel
+﻿@model EditGameViewModel
 
 @{
-    ViewData["Title"] = "Загрузка игры";
+    ViewData["Title"] = $"Детали игры: {Model.Title}";
 }
 
 <div class="wrapper">
@@ -84,22 +84,21 @@
                                                 }
                                             </ul>
                                         </div>
-                                        <div class="selected-skillsLearning-list" id="selected-skillsLearning-list"></div>
-                                        <input asp-for="SkillsLearning" type="hidden" id="game-skillsLearning" name="skillsLearning" required>
+                                        <div class="selected-skillsLearning-list" id="selected-skillsLearning-list">
+                                            @if (Model.SkillsLearning != null && Model.SkillsLearning.Any())
+                                            {
+                                                @foreach (var skillName in Model.SkillsLearning)
+                                                {
+                                                    <span class="selected-item" data-value="@skillName">
+                                                        @skillName
+                                                        <span class="selected-item__remove" role="button" aria-label="Удалить @skillName">×</span>
+                                                    </span>
+                                                }
+                                            }
+                                        </div>
+                                        <input asp-for="SkillsLearning" type="hidden" id="game-skillsLearning" name="skillsLearning" value="@(Model.SkillsLearning != null ? string.Join(",", Model.SkillsLearning) : "")" required>
                                     </div>
                                     <span id="skillsLearning-error" class="error-message"></span>
-                                </div>
-                            </div>
-
-                            <div class="upload-form__group">
-                                <label for="game-keywords" class="upload-form__label">Ключевые слова</label>
-                                <div class="upload-form__input-wrapper">
-                                    <div class="input-field">
-                                        <input type="text" id="game-keywords" class="input-field__input"
-                                               placeholder="Введите ключевое слово и нажмите Enter">
-                                    </div>
-                                    <div class="skillsLearning-list" id="keywords-list"></div>
-                                    <span id="keywords-error" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -215,7 +214,7 @@
                                                         <p class="file-upload__size">Максимальный размер 2 ГБ</p>
                                                     </div>
                                                 </div>
-                                                <input type="file" asp-for="UploadedGame" id="game-file-file" name="UploadedGame"
+                                                <input type="file" @*  asp-for="UploadedGame" *@ id="game-file-file" name="UploadedGame"
                                                        class="input-field__input"
                                                        accept=".msi" hidden>
                                             </div>
@@ -231,7 +230,7 @@
                                     Обложка
                                     игры
                                 </label>
-                            
+
                                 <p class="upload-form__file-label">Прикрепите фото обложки игры</p>
                                 <div class="upload-form__file-upload">
                                     <label class="file-upload" id="cover-dropzone">
@@ -245,7 +244,7 @@
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" asp-for="CoverImage" id="game-cover-file" name="CoverImage"
+                                            <input type="file" @* asp-for="CoverImage" *@ id="game-cover-file" name="CoverImage"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
                                     </label>
@@ -281,7 +280,7 @@
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" asp-for="UploadedImages" id="game-screenshots-file" name="UploadedImages"
+                                            <input type="file" @* asp-for="UploadedImages" *@ id="game-screenshots-file" name="UploadedImages"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
                                                    hidden>
                                         </div>

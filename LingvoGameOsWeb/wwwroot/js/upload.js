@@ -37,6 +37,12 @@ function initializeUploadForm() {
     const fileUploadGroup = document.querySelector('#game-file-upload-group');
     let lastFocusedElement = null;
     let selectedSkillsLearning = [];
+    // Инициализируем из скрытого поля
+    const initialSkills = document.getElementById('game-skillsLearning').value;
+    if (initialSkills) {
+        selectedSkillsLearning = initialSkills.split(',').filter(item => item.trim() !== '');
+    }
+    updatePlaceholderText(skillsLearningSelected.querySelector('.custom-dropdown__placeholder'), selectedSkillsLearning.length);
     let selectedPlatforms = [];
 
     // Allowed file types and sizes
@@ -62,8 +68,8 @@ function initializeUploadForm() {
     function updateSelectedItems(list, input, selectedItems, options, placeholderElement) {
         list.innerHTML = '';
         input.value = selectedItems.join(',');
-        placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформу' : 'навыки'}`;
-
+        //placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформу' : 'навыки'}`;
+        updatePlaceholderText(placeholderElement, selectedItems.length);
         selectedItems.forEach(value => {
             const option = Array.from(options).find(opt => opt.dataset.value === value);
             if (option) {
@@ -121,8 +127,11 @@ function initializeUploadForm() {
 
     // Remove item (generic for skillsLearning and platforms)
     function removeItem(value, selectedItems, options, list, input, placeholderElement) {
-        selectedItems.splice(selectedItems.indexOf(value), 1);
-        updateSelectedItems(list, input, selectedItems, options, placeholderElement);
+        const index = selectedItems.indexOf(value);
+        if (index !== -1) {
+            selectedItems.splice(index, 1);
+            updateSelectedItems(list, input, selectedItems, options, placeholderElement);
+        }
     }
 
     // Filter items (generic for skillsLearning and platforms)
@@ -476,6 +485,10 @@ function initializeUploadForm() {
     updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
 }
 
+function updatePlaceholderText(placeholderElement, count) {
+    placeholderElement.textContent = count ? `${count} выбрано` : 'Выберите развиваемые навыки';
+}
+
 /**
  * Adds a tag to the specified list
  * @param {HTMLElement} list - The list to add the tag to
@@ -492,6 +505,7 @@ function addTag(list, value, type) {
     `;
     list.appendChild(tag);
 }
+
 
 /**
  * Sets up drag-and-drop file upload with improved validation
