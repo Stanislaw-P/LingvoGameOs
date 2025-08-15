@@ -224,11 +224,11 @@
                                     <div class="upload-form__input-wrapper">
                                         <div class="upload-form__file-upload">
                                             <div class="file-upload__previews" id="file-preview">
-                                                @if(Model.GameFileInfo != null)
+                                                @if (Model.GameFileInfo != null)
                                                 {
                                                     <div class="file-upload__file">
                                                         <a href="@Model.GameURL" download class="file-upload__file-name">@Model.GameFileInfo.Name</a>
-                                                        <span class="file-upload__file-size">@((Model.GameFileInfo.Length / (1024.0 * 1024.0)).ToString("#.##")) Мб</span>
+                                                        <span class="file-upload__file-size">@((Model.GameFileInfo.Length / (1024 * 1024))) Мб</span>
                                                         <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить Лабиринт Нартов.msi">
                                                     </div>
                                                 }
@@ -259,7 +259,6 @@
                                     Обложка
                                     игры
                                 </label>
-
                                 <p class="upload-form__file-label">Прикрепите фото обложки игры</p>
                                 <div class="upload-form__file-upload">
                                     <label class="file-upload" id="cover-dropzone">
@@ -273,11 +272,23 @@
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" @* asp-for="CoverImage" *@ id="game-cover-file" name="CoverImage"
+                                            <input type="file" asp-for="CoverImage" id="game-cover-file"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
                                     </label>
-                                    <div class="file-upload__previews" id="cover-preview"></div>
+                                    <div class="file-upload__previews" id="cover-preview">
+                                        <div class="file-upload__previews" id="cover-preview">
+                                            @if (Model.CoverImagePath != null && Model.CoverImageInfo != null)
+                                            {
+                                                <div class="file-upload__file">
+                                                    <span class="file-upload__file-name">@Model?.CoverImageInfo?.Name</span>
+                                                    <span class="file-upload__file-size">@(Model.CoverImageInfo.Length / (1024)) Кб</span>
+                                                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить @Model.CoverImageInfo.Name">
+                                                </div>
+                                                <img src="@Model?.CoverImagePath" class="file-upload__preview-image" alt="Превью обложки игры">
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                                 <span id="cover-error" class="error-message"></span>
                             </div>
@@ -314,7 +325,20 @@
                                                    hidden>
                                         </div>
                                     </label>
-                                    <div class="file-upload__previews" id="screenshots-preview"></div>
+                                    <div class="file-upload__previews" id="screenshots-preview">
+                                        @if(Model?.ImagesFilesInfo != null)
+                                        {
+                                            @foreach (var imgInfo in Model.ImagesFilesInfo)
+                                            {
+                                                <div class="file-upload__file">
+                                                    <span class="file-upload__file-name">@imgInfo?.FileInfo?.Name</span>
+                                                    <span class="file-upload__file-size">@(imgInfo?.FileInfo?.Length / (1024)) Кб</span>
+                                                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить @imgInfo?.FileInfo?.Name">
+                                                </div>
+                                                <img src="@imgInfo?.ImagePath" class="file-upload__preview-image" alt="Превью скриншота игры">
+                                            }
+                                        }
+                                    </div>
                                 </div>
                                 <span id="screenshots-error" class="error-message"></span>
                             </div>

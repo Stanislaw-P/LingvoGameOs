@@ -1,4 +1,5 @@
-﻿using LingvoGameOs.Db.Models;
+﻿using LingvoGameOs.Areas.Admin.Models;
+using LingvoGameOs.Db.Models;
 
 namespace LingvoGameOs.Helpers
 {
@@ -63,18 +64,28 @@ namespace LingvoGameOs.Helpers
             return Path.Combine(folder.ToString(), gameId.ToString(), fileName);
         }
 
-        public string GetGameFileFullPath(string gameFilePath)
+        public string GetFileFullPath(string filePath)
         {
             try
             {
-                var path = Path.Combine(_appEnvironment.WebRootPath + "/" + gameFilePath);
-                return path;
+                return Path.Combine(_appEnvironment.WebRootPath + "/" + filePath);
             }
             catch
             {
                 // Тут нужно логировать ошибку
                 return "";
             }
+        }
+
+        public List<ImageFileInfo> GetImagesFilesInfo(List<string> filesPaths)
+        {
+            return filesPaths
+                .Select(filePath => new ImageFileInfo
+                { 
+                    ImagePath = filePath,
+                    FileInfo = new FileInfo(Path.Combine(_appEnvironment.WebRootPath + "/" + filePath))
+                })
+                .ToList();
         }
 
         public void MoveFile(string sourceFilePath, string destFilePath)
