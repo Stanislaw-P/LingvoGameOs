@@ -23,6 +23,30 @@
                             <div asp-validation-summary="All" style="color:red"></div>
 
                             <div class="upload-form__group">
+                                <label class="upload-form__label">
+                                    Автор игры <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="text" value="@Model.Author.Name @Model.Author.Surname" class="input-field__input"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label class="upload-form__label">
+                                    Дата отправки заявки <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="text" value="@Model.DispatchDate.ToString("dd.MM.yyyy")" class="input-field__input"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
                                 <label for="game-title" class="upload-form__label">
                                     Название игры <span class="required">*</span>
                                 </label>
@@ -179,51 +203,56 @@
                                                 <li class="custom-dropdown__option" role="option" data-value="Desktop" aria-selected="false">Desktop</li>
                                             </ul>
                                         </div>
-                                        <div class="selected-platforms-list" id="selected-platforms-list"></div>
+                                        <div class="selected-platforms-list" id="selected-platforms-list">
+                                            @if (Model.GamePlatform != null)
+                                            {
+                                                <span class="selected-item" data-value="@Model.GamePlatform">
+                                                    @Model.GamePlatform
+                                                    <span class="selected-item__remove" role="button" aria-label="Удалить @Model.GamePlatform">×</span>
+                                                </span>
+                                            }
+                                        </div>
                                     </div>
                                     <span id="platform-error" class="error-message"></span>
                                 </div>
                             </div>
 
-                            <div class="upload-form__group" id="game-file-url-group" style="display: none;">
-                                <label for="game-file-url" class="upload-form__label">
-                                    URL-адрес игры <span class="required">*</span>
-                                </label>
-                                <div class="upload-form__input-wrapper">
-                                    <div class="input-field">
-                                        <input type="url" asp-for="GameURL" id="game-file-url" name="GameURL"
-                                               class="input-field__input" placeholder="Введите URL игры">
-                                    </div>
-                                    <span id="file-url-error" class="error-message"></span>
-                                </div>
-                            </div>
-
-                            <div class="upload-form__group" id="game-file-upload-group" style="display: none;">
-                                <label class="upload-form__label">Файл игры <span class="required">*</span></label>
-                                <div class="upload-form__input-wrapper">
-                                    <div class="upload-form__file-upload">
-                                        <label class="file-upload" id="file-dropzone">
-                                            <div class="file-upload__dropzone">
-                                                <div class="file-upload__text">
-                                                    <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
-                                                    <div class="file-upload__info">
-                                                        <p class="file-upload__info-text">
-                                                            Загрузите или перетащите
-                                                            игру сюда (MSI)
-                                                        </p>
-                                                        <p class="file-upload__size">Максимальный размер 2 ГБ</p>
+                            @if (Model.GamePlatform == "Desktop")
+                            {
+                                <div class="upload-form__group" id="game-file-upload-group">
+                                    <label class="upload-form__label">Файл игры <span class="required">*</span></label>
+                                    <div class="upload-form__input-wrapper">
+                                        <div class="upload-form__file-upload">
+                                            <div class="file-upload__previews" id="file-preview">
+                                                @if(Model.GameFileInfo != null)
+                                                {
+                                                    <div class="file-upload__file">
+                                                        <a href="@Model.GameURL" download class="file-upload__file-name">@Model.GameFileInfo.Name</a>
+                                                        <span class="file-upload__file-size">@((Model.GameFileInfo.Length / (1024.0 * 1024.0)).ToString("#.##")) Мб</span>
+                                                        <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить Лабиринт Нартов.msi">
                                                     </div>
-                                                </div>
-                                                <input type="file" @*  asp-for="UploadedGame" *@ id="game-file-file" name="UploadedGame"
-                                                       class="input-field__input"
-                                                       accept=".msi" hidden>
+                                                }
                                             </div>
-                                        </label>
-                                        <div class="file-upload__previews" id="file-preview"></div>
+                                        </div>
+                                        <span id="file-error" class="error-message"></span>
                                     </div>
-                                    <span id="file-error" class="error-message"></span>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="upload-form__group" id="game-file-url-group">
+                                    <label for="game-file-url" class="upload-form__label">
+                                        URL-адрес игры <span class="required">*</span>
+                                    </label>
+                                    <div class="upload-form__input-wrapper">
+                                        <div class="input-field">
+                                            <input type="url" asp-for="GameURL" id="game-file-url" name="GameURL"
+                                                   class="input-field__input" placeholder="Введите URL игры">
+                                        </div>
+                                        <span id="file-url-error" class="error-message"></span>
+                                    </div>
+                                </div>
+                            }
 
                             <div class="upload-form__group">
                                 <label for="game-cover-url" class="upload-form__label">

@@ -17,7 +17,7 @@ namespace LingvoGameOs.Helpers
             foreach (var file in files)
             {
                 var imagePath = await SafeFileAsync(file, folder);
-                if(imagePath != null)
+                if (imagePath != null)
                     imagePaths.Add(imagePath);
             }
             return imagePaths;
@@ -44,11 +44,11 @@ namespace LingvoGameOs.Helpers
         }
 
         // Для файлов игр
-        public async Task<string?> SafeFileAsync(IFormFile uploadedFile, int gameId, string gameTitle)
+        public async Task<string?> SafeGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, GameFolders folder)
         {
             if (uploadedFile == null)
                 return null;
-            string folderPath = Path.Combine(_appEnvironment.WebRootPath + "/games/" + gameId);
+            string folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
@@ -60,7 +60,26 @@ namespace LingvoGameOs.Helpers
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            return "/games/" + gameId + "/" + fileName;
+            return Path.Combine(folder.ToString(), gameId.ToString(), fileName);
+        }
+
+        public string GetGameFileFullPath(string gameFilePath)
+        {
+            try
+            {
+                var path = Path.Combine(_appEnvironment.WebRootPath + "/" + gameFilePath);
+                return path;
+            }
+            catch
+            {
+                // Тут нужно логировать ошибку
+                return "";
+            }
+        }
+
+        public void MoveFile(string sourceFilePath, string destFilePath)
+        {
+            File.Move(sourceFilePath, destFilePath, overwrite: true);
         }
     }
 }

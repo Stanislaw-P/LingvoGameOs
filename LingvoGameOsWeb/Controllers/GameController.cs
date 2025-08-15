@@ -146,7 +146,7 @@ namespace LingvoGameOs.Controllers
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
                         // Теперь можно использовать ID для сохранения файла
-                        string? gameUrl = await _fileProvider.SafeFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title);
+                        string? gameUrl = await _fileProvider.SafeGameFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title, GameFolders.PendingGame);
 
                         // Если нужно обновить URL игры после сохранения файла
                         if (!string.IsNullOrEmpty(gameUrl))
@@ -187,7 +187,6 @@ namespace LingvoGameOs.Controllers
                     }
                     else // Инача - игра веб
                     {
-
                         PendingGame pendingGame = new PendingGame
                         {
                             Title = gameViewModel.Title,
