@@ -1,10 +1,12 @@
 ﻿using LingvoGameOs.Areas.Admin.Models;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Reflection.Metadata;
 
 namespace LingvoGameOs.Areas.Admin.Controllers
@@ -17,13 +19,15 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly IGamesRepository _gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
+        readonly FileProvider _fileProvider;
 
-        public GamesController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository)
+        public GamesController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment)
         {
             _userManager = userManager;
             _gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
             _skillsLearningRepository = skillsLearningRepository;
+            _fileProvider = new FileProvider(appEnvironment);
         }
 
         public async Task<IActionResult> Index()
@@ -56,6 +60,13 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 return NotFound();
 
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
+
+            FileInfo? msiFileInfo = null;
+            if (existingGame.GamePlatform.Name == "Desktop")
+            {
+                msiFileInfo = new FileInfo(_fileProvider.GetGameFileFullPath(existingGame.GameURL ?? ""));
+            }
+
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new EditGameViewModel
             {
@@ -67,7 +78,12 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 CurrentImagesPaths = existingGame.ImagesPaths,
                 SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
-                DispatchDate = existingGame.DispatchDate
+                DispatchDate = existingGame.DispatchDate,
+                GameURL = existingGame.GameURL,
+                GameFileInfo = msiFileInfo,
+                GamePlatform = existingGame.GamePlatform.Name,
+                LanguageLevel = existingGame.LanguageLevel.Name,
+                VideoUrl = existingGame.VideoUrl ?? "Video doesn't exist"
             });
         }
     }

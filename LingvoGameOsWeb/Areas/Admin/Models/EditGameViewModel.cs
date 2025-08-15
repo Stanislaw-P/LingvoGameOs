@@ -38,7 +38,7 @@ namespace LingvoGameOs.Areas.Admin.Models
         public string VideoUrl { get; set; }
 
         public string? GameURL { get; set; }
-        public IFormFile? UploadedGame { get; set; }
+        public FileInfo? GameFileInfo { get; set; }
 
         //[Required(ErrorMessage = "Обязательное поле")]
         public string GamePlatform { get; set; }
