@@ -26,11 +26,12 @@ namespace LingvoGameOs.Areas.Admin.Models
         //[Required(ErrorMessage = "Обязательное поле")]
         public List<string> SkillsLearning { get; set; }
 
-        public string CurrentCoverImage { get; set; }
+        public string CoverImagePath { get; set; }
         //[Required(ErrorMessage = "Обязательное поле")]
         public IFormFile CoverImage { get; set; }
+        public FileInfo? CoverImageInfo { get; set; }
 
-        public List<string> CurrentImagesPaths { get; set; }
+        public List<ImageFileInfo> ImagesFilesInfo { get; set; }
         //[Required(ErrorMessage = "Обязательное поле")]
         public IFormFile[] UploadedImages { get; set; }
 

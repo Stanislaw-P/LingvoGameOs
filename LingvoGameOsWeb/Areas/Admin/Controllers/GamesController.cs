@@ -64,7 +64,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             FileInfo? msiFileInfo = null;
             if (existingGame.GamePlatform.Name == "Desktop")
             {
-                msiFileInfo = new FileInfo(_fileProvider.GetGameFileFullPath(existingGame.GameURL ?? ""));
+                msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameURL ?? ""));
             }
 
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
@@ -74,8 +74,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Title = existingGame.Title,
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                CurrentCoverImage = existingGame.CoverImagePath,
-                CurrentImagesPaths = existingGame.ImagesPaths,
+                CoverImagePath = existingGame.CoverImagePath,
+                CoverImageInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.CoverImagePath)),
+                ImagesFilesInfo = _fileProvider.GetImagesFilesInfo(existingGame.ImagesPaths),
                 SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
                 DispatchDate = existingGame.DispatchDate,
