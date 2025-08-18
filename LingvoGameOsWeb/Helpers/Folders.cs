@@ -1,8 +1,8 @@
 ﻿namespace LingvoGameOs.Helpers
 {
-    public enum GameFolders
+    public enum Folders
     {
         Games,
-        PendingGame
+        PendingGames
     }
 }

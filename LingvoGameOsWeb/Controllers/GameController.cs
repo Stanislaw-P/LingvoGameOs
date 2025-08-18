@@ -117,9 +117,6 @@ namespace LingvoGameOs.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    string? coverImagePath = await _fileProvider.SafeFileAsync(gameViewModel.CoverImage, ImageFolders.Games);
-                    List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, ImageFolders.Games);
-                    
                     // Получаем из БД выбранные скиллы и платформу
                     List<string>? selectedSkills = JsonSerializer.Deserialize<List<string>>(gameViewModel.SkillsLearning);
                     List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
@@ -136,8 +133,6 @@ namespace LingvoGameOs.Controllers
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
                             AuthorId = authorId!,
-                            CoverImagePath = coverImagePath!,
-                            ImagesPaths = imagesPaths,
                             DispatchDate = DateTime.Now,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
@@ -145,8 +140,14 @@ namespace LingvoGameOs.Controllers
                             VideoUrl = gameViewModel.VideoUrl
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
-                        // Теперь можно использовать ID для сохранения файла
-                        string? gameUrl = await _fileProvider.SafeGameFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title, GameFolders.PendingGame);
+                        
+                        // Теперь можно использовать ID для сохранения файлов в соотв. директорию
+                        string? gameUrl = await _fileProvider.SafeGameFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title, Folders.PendingGames);
+                        string? coverImagePath = await _fileProvider.SafeImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
+                        List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
+                        
+                        pendingGame.CoverImagePath = coverImagePath;
+                        pendingGame.ImagesPaths = imagesPaths;
 
                         // Если нужно обновить URL игры после сохранения файла
                         if (!string.IsNullOrEmpty(gameUrl))
@@ -193,8 +194,6 @@ namespace LingvoGameOs.Controllers
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
                             AuthorId = authorId!,
-                            CoverImagePath = coverImagePath!,
-                            ImagesPaths = imagesPaths,
                             DispatchDate = DateTime.Now,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
@@ -203,6 +202,12 @@ namespace LingvoGameOs.Controllers
                             VideoUrl = gameViewModel.VideoUrl
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
+
+                        string? coverImagePath = await _fileProvider.SafeImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
+                        List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
+
+                        pendingGame.CoverImagePath = coverImagePath ?? "/img/default-img.jpg";
+                        pendingGame.ImagesPaths = imagesPaths;
                         //Game newGame = new Game
                         //{
                         //    Title = gameViewModel.Title,

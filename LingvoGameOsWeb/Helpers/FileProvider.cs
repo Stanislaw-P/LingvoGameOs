@@ -12,12 +12,12 @@ namespace LingvoGameOs.Helpers
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<List<string>> SafeImagesFilesAsync(IFormFile[] files, ImageFolders folder)
+        public async Task<List<string>> SafeImagesFilesAsync(IFormFile[] files, Folders folder, int gameId)
         {
             var imagePaths = new List<string>();
             foreach (var file in files)
             {
-                var imagePath = await SafeFileAsync(file, folder);
+                var imagePath = await SafeImgFileAsync(file, folder, gameId);
                 if (imagePath != null)
                     imagePaths.Add(imagePath);
             }
@@ -25,12 +25,12 @@ namespace LingvoGameOs.Helpers
         }
 
         // Для картинок
-        public async Task<string?> SafeFileAsync(IFormFile file, ImageFolders folder)
+        public async Task<string?> SafeImgFileAsync(IFormFile file, Folders folder, int gameId)
         {
             if (file == null)
                 return null;
 
-            var folderPath = Path.Combine(_appEnvironment.WebRootPath + "/img/" + folder);
+            var folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
@@ -41,11 +41,11 @@ namespace LingvoGameOs.Helpers
             {
                 await file.CopyToAsync(fileStream);
             }
-            return "/img/" + folder + "/" + fileName;
+            return Path.Combine("/", folder + "/" + gameId + "/" + fileName);
         }
 
         // Для файлов игр
-        public async Task<string?> SafeGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, GameFolders folder)
+        public async Task<string?> SafeGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, Folders folder)
         {
             if (uploadedFile == null)
                 return null;
@@ -81,16 +81,62 @@ namespace LingvoGameOs.Helpers
         {
             return filesPaths
                 .Select(filePath => new ImageFileInfo
-                { 
+                {
                     ImagePath = filePath,
                     FileInfo = new FileInfo(Path.Combine(_appEnvironment.WebRootPath + "/" + filePath))
                 })
                 .ToList();
         }
 
-        public void MoveFile(string sourceFilePath, string destFilePath)
+        public bool MoveGameFolder(string gameId)
         {
-            File.Move(sourceFilePath, destFilePath, overwrite: true);
+            string sourceFolder = Path.Combine(_appEnvironment.WebRootPath, "pendingGame", gameId);
+            string destFolder = Path.Combine(_appEnvironment.WebRootPath, "games", gameId);
+
+            try
+            {
+                // Проверяем существование исходной папки
+                if (!Directory.Exists(sourceFolder))
+                {
+                    Console.WriteLine($"Исходная папка не найдена: {sourceFolder}");
+                    return false;
+                }
+
+                // Создаем целевую папку, если ее нет
+                Directory.CreateDirectory(destFolder);
+
+                // Переносим все файлы
+                foreach (string file in Directory.GetFiles(sourceFolder))
+                {
+                    string fileName = Path.GetFileName(file);
+                    string destFile = Path.Combine(destFolder, fileName);
+
+                    File.Move(file, destFile);
+                }
+
+                // Удаляем исходную папку после успешного переноса
+                Directory.Delete(sourceFolder, true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при переносе папки: {ex.Message}");
+                return false;
+            }
+        }
+
+        private void MoveDirectory(string sourceDir, string targetDir)
+        {
+            Directory.CreateDirectory(targetDir);
+
+            foreach (string file in Directory.GetFiles(sourceDir))
+                File.Move(file, Path.Combine(targetDir, Path.GetFileName(file)));
+
+            foreach (string subDir in Directory.GetDirectories(sourceDir))
+                MoveDirectory(subDir, Path.Combine(targetDir, Path.GetFileName(subDir)));
+
+            Directory.Delete(sourceDir);
         }
     }
 }
