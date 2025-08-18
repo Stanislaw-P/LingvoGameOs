@@ -146,7 +146,7 @@
                             <p class="admin-game-card__date">@game.DispatchDate.ToString("dd.MM.yyyy")</p>
                         </div>
                         <div class="admin-game-card__actions">
-                            <a asp-area="Admin" asp-controller="Games" asp-action="PendingDetails" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Детали</a>
+                            <a asp-area="Admin" asp-controller="PendingGames" asp-action="Details" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Детали</a>
                             <button class="admin-btn admin-btn--outline" onclick="openFeedback(@game.Id)">Обратная связь</button>
                             <button class="admin-btn admin-btn--success" onclick="approveGame(@game.Id)">Опубликовать</button>
                         </div>
