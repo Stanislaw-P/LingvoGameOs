@@ -61,7 +61,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Details([FromForm] EditGameViewModel editGame)
+        public async Task<IActionResult> Details(EditGameViewModel editGame)
         {
             return null;
         }

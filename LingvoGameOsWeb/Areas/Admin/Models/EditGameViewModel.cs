@@ -33,7 +33,8 @@ namespace LingvoGameOs.Areas.Admin.Models
 
         public List<ImageFileInfo> ImagesFilesInfo { get; set; } = null!;
         //[Required(ErrorMessage = "Обязательное поле")]
-        public IFormFile[] UploadedImages { get; set; } = null!;
+        public IFormFile[]? UploadedImages { get; set; }
+        public List<string>? DeletedImages { get; set; }
 
         //[Required(ErrorMessage = "Обязательное поле")]
         public string VideoUrl { get; set; } = null!;
