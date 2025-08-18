@@ -276,19 +276,8 @@
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
                                     </label>
-                                    <div class="file-upload__previews" id="cover-preview">
-                                        <div class="file-upload__previews" id="cover-preview">
-                                            @if (Model.CoverImagePath != null && Model.CoverImageInfo != null)
-                                            {
-                                                <div class="file-upload__file">
-                                                    <span class="file-upload__file-name">@Model?.CoverImageInfo?.Name</span>
-                                                    <span class="file-upload__file-size">@(Model.CoverImageInfo.Length / (1024)) Кб</span>
-                                                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить @Model.CoverImageInfo.Name">
-                                                </div>
-                                                <img src="@Model?.CoverImagePath" class="file-upload__preview-image" alt="Превью обложки игры">
-                                            }
-                                        </div>
-                                    </div>
+                                    <div class="file-upload__previews" id="cover-preview"></div>
+                                    <input type="hidden" asp-for="CoverImagePath" />
                                 </div>
                                 <span id="cover-error" class="error-message"></span>
                             </div>
@@ -307,7 +296,7 @@
                             </div>
 
                             <div class="upload-form__group">
-                                <p class="upload-form__file-label">Прикрепите скриншоты игры</p>
+                                <p class="upload-form__file-label">Прикрепите скриншоты игры (максимум 3)</p>
                                 <div class="upload-form__file-upload">
                                     <label class="file-upload" id="screenshots-dropzone">
                                         <div class="file-upload__dropzone">
@@ -320,7 +309,7 @@
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" @* asp-for="UploadedImages" *@ id="game-screenshots-file" name="UploadedImages"
+                                            <input type="file" asp-for="UploadedImages" id="game-screenshots-file" name="UploadedImages"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
                                                    hidden>
                                         </div>
@@ -343,8 +332,11 @@
                                 <span id="screenshots-error" class="error-message"></span>
                             </div>
 
-                            <button type="submit" asp-controller="Upload" asp-action="Index" class="upload-form__submit" aria-busy="false">
+                            <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="#" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>
+                            </button>
+                            <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="Details" class="upload-form__submit" aria-busy="false">
+                                <span class="upload-form__submit-text">Сохранить изменения</span>
                             </button>
                         </form>
                     </div>
@@ -407,3 +399,57 @@
 <div class="notification" id="notification" aria-live="assertive"></div>
 <script type="module" src="js/upload.js"></script>
 <script type="module" src="js/script.js"></script>
+
+@* Илона, я честно не смог вынести это в файл отдельный - Upload.js *@
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('game-cover-file');
+        const previewContainer = document.getElementById('cover-preview');
+
+        // Если у модели уже есть изображение, показываем его
+        const modelImagePath = '@Model?.CoverImagePath';
+        const modelImageInfo = {
+            name: '@Model?.CoverImageInfo?.Name',
+            size: @(Model?.CoverImageInfo?.Length / 1024 ?? 0)
+        };
+
+        if (modelImagePath) {
+            showPreview(modelImagePath, modelImageInfo);
+        }
+
+        // Обработка выбора нового файла
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const fileInfo = {
+                        name: file.name,
+                        size: Math.round(file.size / 1024)
+                    };
+                    showPreview(event.target.result, fileInfo);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Функция для отображения превью
+        function showPreview(imageSrc, fileInfo) {
+            previewContainer.innerHTML = `
+                <div class="file-upload__file">
+                    <span class="file-upload__file-name">${fileInfo.name}</span>
+                    <span class="file-upload__file-size">${fileInfo.size} Кб</span>
+                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${fileInfo.name}">
+                </div>
+                <img src="${imageSrc}" class="file-upload__preview-image" alt="Превью обложки игры">
+            `;
+
+            // Добавляем обработчик для кнопки удаления
+            const deleteButton = previewContainer.querySelector('.file-upload__file-trash');
+            deleteButton.addEventListener('click', function() {
+                previewContainer.innerHTML = '';
+                fileInput.value = '';
+            });
+        }
+    });
+</script>
