@@ -50,6 +50,13 @@ namespace LingvoGameOs.Db
             await databaseContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Метод нужен для сохранения изменений в контексте БД
+        /// </summary>
+        /// <param name="coverImgPath">Путь к обложке</param>
+        /// <param name="imgPaths">Путь к скриншотам</param>
+        /// <param name="game">Игра</param>
+        /// <returns></returns>
         public async Task ChangeImagesAsync(string coverImgPath, List<string> imgPaths, PendingGame game)
         {
             game.CoverImagePath = coverImgPath;
@@ -63,10 +70,8 @@ namespace LingvoGameOs.Db
             if (existingGame == null)
                 throw new InvalidOperationException($"Игра с Id {updatedGame.Id} не найдена :(");
 
-            existingGame.Title = updatedGame.Title;
-            existingGame.Description = updatedGame.Description;
-            existingGame.Rules = updatedGame.Rules;
-           
+            databaseContext.PendingGames.Update(updatedGame);
+            await databaseContext.SaveChangesAsync();
         }
     }
 }

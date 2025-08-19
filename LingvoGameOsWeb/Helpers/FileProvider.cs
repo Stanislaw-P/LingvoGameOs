@@ -77,6 +77,19 @@ namespace LingvoGameOs.Helpers
             }
         }
 
+        public string GetFileShortPath(string fileName, Folders gameFolder, int gameId)
+        {
+            try
+            {
+                return $"/{gameFolder}/{gameId}/{fileName}";
+            }
+            catch
+            {
+                // Тут нужно логировать ошибку
+                return "";
+            }
+        }
+
         public List<ImageFileInfo> GetImagesFilesInfo(List<string> filesPaths)
         {
             return filesPaths
@@ -137,6 +150,29 @@ namespace LingvoGameOs.Helpers
                 MoveDirectory(subDir, Path.Combine(targetDir, Path.GetFileName(subDir)));
 
             Directory.Delete(sourceDir);
+        }
+
+        public void DeleteImage(string imgPath)
+        {
+            if (imgPath == null) return;
+            string fullImgPath = Path.Combine(_appEnvironment.WebRootPath + imgPath);
+            if (File.Exists(fullImgPath))
+                File.Delete(fullImgPath);
+        }
+
+        public void DeleteImages(List<string> imagesPaths, Folders gameFolder, int gameId)
+        {
+            if (imagesPaths == null || !imagesPaths.Any()) return;
+
+            foreach (var img in imagesPaths)
+            {
+                if (!string.IsNullOrEmpty(img))
+                {
+                    var fullPath = Path.Combine(_appEnvironment.WebRootPath, gameFolder.ToString(), gameId.ToString(), img);
+                    if (File.Exists(fullPath))
+                        File.Delete(fullPath);
+                }
+            }
         }
     }
 }
