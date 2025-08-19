@@ -5,9 +5,11 @@ namespace LingvoGameOs.Db
     public interface IPendingGamesRepository
     {
         Task AddAsync(PendingGame newGame);
-        Task ChangeGameUrl(string newGameUrl, PendingGame game);
+        Task ChangeGameUrlAsync(string newGameUrl, PendingGame game);
         Task<List<PendingGame>> GetAllAsync();
         Task RemoveAsync(PendingGame game);
         Task<PendingGame?> TryGetByIdAsync(int idGame);
+        Task ChangeImagesAsync(string coverImgPath, List<string> imgPaths, PendingGame game);
+        Task UpdateAsync(PendingGame updatedGame);
     }
 }

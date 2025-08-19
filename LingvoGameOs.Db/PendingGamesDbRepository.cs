@@ -44,10 +44,29 @@ namespace LingvoGameOs.Db
             await databaseContext.SaveChangesAsync();
         }
 
-        public async Task ChangeGameUrl(string newGameUrl, PendingGame game)
+        public async Task ChangeGameUrlAsync(string newGameUrl, PendingGame game)
         {
             game.GameURL = newGameUrl;
             await databaseContext.SaveChangesAsync();
+        }
+
+        public async Task ChangeImagesAsync(string coverImgPath, List<string> imgPaths, PendingGame game)
+        {
+            game.CoverImagePath = coverImgPath;
+            game.ImagesPaths = imgPaths;
+            await databaseContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(PendingGame updatedGame)
+        {
+            PendingGame? existingGame = await TryGetByIdAsync(updatedGame.Id);
+            if (existingGame == null)
+                throw new InvalidOperationException($"Игра с Id {updatedGame.Id} не найдена :(");
+
+            existingGame.Title = updatedGame.Title;
+            existingGame.Description = updatedGame.Description;
+            existingGame.Rules = updatedGame.Rules;
+           
         }
     }
 }
