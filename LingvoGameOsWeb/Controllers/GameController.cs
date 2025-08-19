@@ -146,13 +146,13 @@ namespace LingvoGameOs.Controllers
                         string? coverImagePath = await _fileProvider.SafeImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
                         List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
                         
-                        pendingGame.CoverImagePath = coverImagePath;
+                        pendingGame.CoverImagePath = coverImagePath ?? "/img/default-img.jpg";
                         pendingGame.ImagesPaths = imagesPaths;
 
                         // Если нужно обновить URL игры после сохранения файла
                         if (!string.IsNullOrEmpty(gameUrl))
                         {
-                            await _pendingGamesRepository.ChangeGameUrl(gameUrl, pendingGame);
+                            await _pendingGamesRepository.ChangeGameUrlAsync(gameUrl, pendingGame);
                         }
 
                         //Game newGame = new Game
@@ -206,8 +206,7 @@ namespace LingvoGameOs.Controllers
                         string? coverImagePath = await _fileProvider.SafeImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
                         List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
 
-                        pendingGame.CoverImagePath = coverImagePath ?? "/img/default-img.jpg";
-                        pendingGame.ImagesPaths = imagesPaths;
+                        await _pendingGamesRepository.ChangeImagesAsync(coverImagePath ?? "/img/default-img.jpg", imagesPaths, pendingGame);
                         //Game newGame = new Game
                         //{
                         //    Title = gameViewModel.Title,
@@ -230,7 +229,7 @@ namespace LingvoGameOs.Controllers
                         // смена роли игрока на разработчика
                         await ChangeRolePlayerToDevAsync();
                         //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
-                        return RedirectToAction("Index", "Profile", new { userId = authorId });
+                        return Json(new { success = true, redirectUrl = Url.Action("Index", "Profile", new { userId = authorId }) });
                     }
                 }
 

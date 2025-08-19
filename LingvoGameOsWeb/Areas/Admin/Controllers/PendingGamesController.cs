@@ -5,6 +5,7 @@ using LingvoGameOs.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace LingvoGameOs.Areas.Admin.Controllers
 {
@@ -16,13 +17,17 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly FileProvider _fileProvider;
+        readonly IPlatformsRepository _platformsRepository;
+        readonly ILanguageLevelsRepository _languageLevelsRepository;
 
-        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment)
+        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository)
         {
             _userManager = userManager;
             _pendingGamesRepository = pendingGamesRepository;
             _skillsLearningRepository = skillsLearningRepository;
             _fileProvider = new FileProvider(appEnvironment);
+            _platformsRepository = platformsRepository;
+            _languageLevelsRepository = languageLevelsRepository;
         }
 
         public async Task<IActionResult> Details(int gameId)
@@ -46,11 +51,12 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Title = existingGame.Title,
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                CoverImagePath = existingGame.CoverImagePath,
+                CurrentCoverImagePath = existingGame.CoverImagePath,
                 CoverImageInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.CoverImagePath)),
                 ImagesFilesInfo = _fileProvider.GetImagesFilesInfo(existingGame.ImagesPaths),
                 SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
+                AuthorId = existingGame.Author.Id,
                 DispatchDate = existingGame.DispatchDate,
                 GameURL = existingGame.GameURL,
                 GameFileInfo = msiFileInfo,
@@ -63,7 +69,25 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Details(EditGameViewModel editGame)
         {
-            return null;
+            try
+            {
+                var existingGame = await _pendingGamesRepository.TryGetByIdAsync(editGame.Id);
+                if (existingGame == null) return NotFound($"Игра с Id: {editGame.Id} не найдена :(");
+
+                List<string>? selectedSkills = editGame.SkillsLearning[0].Split(',').ToList();
+                List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
+                var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
+                var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(editGame.LanguageLevel);
+                
+                
+
+                return View(platform);
+
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         public void DeleteGameImg(string imgPath)

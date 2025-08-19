@@ -223,20 +223,12 @@
                                     <label class="upload-form__label">Файл игры <span class="required">*</span></label>
                                     <div class="upload-form__input-wrapper">
                                         <div class="upload-form__file-upload">
-                                            <div class="file-upload__previews" id="file-preview">
-                                                @if (Model.GameFileInfo != null)
-                                                {
-                                                    <div class="file-upload__file">
-                                                        <a href="@Model.GameURL" download class="file-upload__file-name">@Model.GameFileInfo.Name</a>
-                                                        <span class="file-upload__file-size">@((Model.GameFileInfo.Length / (1024 * 1024))) Мб</span>
-                                                        <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить Лабиринт Нартов.msi">
-                                                    </div>
-                                                }
-                                            </div>
+                                            <div class="file-upload__previews" id="file-preview"></div>
                                         </div>
                                         <span id="file-error" class="error-message"></span>
                                     </div>
                                 </div>
+                                <input type="hidden" asp-for="GameURL" />
                             }
                             else
                             {
@@ -277,7 +269,7 @@
                                         </div>
                                     </label>
                                     <div class="file-upload__previews" id="cover-preview"></div>
-                                    <input type="hidden" asp-for="CoverImagePath" />
+                                    <input type="hidden" asp-for="CurrentCoverImagePath" />
                                 </div>
                                 <span id="cover-error" class="error-message"></span>
                             </div>
@@ -320,6 +312,10 @@
                                 </div>
                                 <span id="screenshots-error" class="error-message"></span>
                             </div>
+
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="AuthorId" />
+                            <input type="hidden" asp-for="DispatchDate" />
 
                             <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="#" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>
@@ -386,6 +382,7 @@
     <div id="footer-placeholder"></div>
 </div>
 <div class="notification" id="notification" aria-live="assertive"></div>
+
 <script type="module" src="js/upload.js"></script>
 <script type="module" src="js/script.js"></script>
 
@@ -396,7 +393,7 @@
         const previewContainer = document.getElementById('cover-preview');
 
         // Если у модели уже есть изображение, показываем его
-        const modelImagePath = '@Model?.CoverImagePath';
+        const modelImagePath = '@Model?.CurrentCoverImagePath';
         const modelImageInfo = {
             name: '@Model?.CoverImageInfo?.Name',
             size: @(Model?.CoverImageInfo?.Length / 1024 ?? 0)
@@ -445,158 +442,214 @@
 
     //Для скриншотов игры
     document.addEventListener('DOMContentLoaded', function() {
-    const MAX_IMAGES = 3;
-    const fileInput = document.getElementById('game-screenshots-file');
-    const previewContainer = document.getElementById('screenshots-preview');
-    const errorElement = document.getElementById('screenshots-error');
-    const form = document.querySelector('form');
-    
-    let currentImages = []; // Все текущие изображения (новые + существующие)
-    let originalImages = []; // Исходные существующие изображения
+        const MAX_IMAGES = 3;
+        const fileInput = document.getElementById('game-screenshots-file');
+        const previewContainer = document.getElementById('screenshots-preview');
+        const errorElement = document.getElementById('screenshots-error');
+        const form = document.querySelector('form');
 
-    // 1. Инициализация существующих изображений
-    @if (Model?.ImagesFilesInfo != null)
-    {
-        @foreach (var imgInfo in Model.ImagesFilesInfo)
+        let currentImages = []; // Все текущие изображения (новые + существующие)
+        let originalImages = []; // Исходные существующие изображения
+
+        // 1. Инициализация существующих изображений
+        @if (Model?.ImagesFilesInfo != null)
         {
-            <text>
-            originalImages.push('@imgInfo.FileInfo.Name');
-            currentImages.push({
-                type: 'existing',
-                id: '@imgInfo.FileInfo.Name',
-                name: '@imgInfo.FileInfo.Name',
-                path: '@imgInfo.ImagePath'
-            });
-            </text>
+                @foreach (var imgInfo in Model.ImagesFilesInfo)
+                {
+                        <text>
+                        originalImages.push('@imgInfo.FileInfo.Name');
+                        currentImages.push({
+                            type: 'existing',
+                            id: '@imgInfo.FileInfo.Name',
+                            name: '@imgInfo.FileInfo.Name',
+                            path: '@imgInfo.ImagePath'
+                        });
+                        </text>
+                }
         }
-    }
-    renderPreviews();
+        renderPreviews();
 
-    // 2. Обработка новых файлов
-    fileInput.addEventListener('change', function(e) {
-        errorElement.textContent = '';
-        const files = Array.from(e.target.files);
-        
-        // Проверка лимита
-        if (currentImages.length + files.length > MAX_IMAGES) {
-            errorElement.textContent = `Максимум можно загрузить ${MAX_IMAGES} изображения`;
-            fileInput.value = '';
-            return;
-        }
-        
-        files.forEach(file => {
-            if (!file.type.match('image.*')) {
-                errorElement.textContent = 'Пожалуйста, загружайте только изображения';
+        // 2. Обработка новых файлов
+        fileInput.addEventListener('change', function(e) {
+            errorElement.textContent = '';
+            const files = Array.from(e.target.files);
+
+            // Проверка лимита
+            if (currentImages.length + files.length > MAX_IMAGES) {
+                errorElement.textContent = `Максимум можно загрузить ${MAX_IMAGES} изображения`;
+                fileInput.value = '';
                 return;
             }
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                currentImages.push({
-                    type: 'new',
-                    file: file,
-                    name: file.name,
-                    preview: event.target.result
-                });
-                renderPreviews();
-            };
-            reader.readAsDataURL(file);
-        });
-        
-        fileInput.value = '';
-    });
 
-    // 3. Функция отрисовки превью
-    function renderPreviews() {
-        previewContainer.innerHTML = '';
-        
-        // Обновляем статус кнопки загрузки
-        fileInput.disabled = currentImages.length >= MAX_IMAGES;
-        
-        currentImages.forEach((img, index) => {
-            const previewElement = document.createElement('div');
-            previewElement.className = 'preview-item';
-            previewElement.innerHTML = `
-                <div class="file-upload__file">
-                    <span class="file-upload__file-name">${img.name}</span>
-                    <img src="/icon/trash.svg" class="file-upload__file-trash" 
-                         alt="Удалить" title="Удалить">
-                </div>
-                <img src="${img.type === 'existing' ? img.path : img.preview}" 
-                     class="file-upload__preview-image">
-            `;
-            
-            // Обработчик удаления
-            previewElement.querySelector('.file-upload__file-trash').addEventListener('click', () => {
-                currentImages.splice(index, 1);
-                renderPreviews();
+            files.forEach(file => {
+                if (!file.type.match('image.*')) {
+                    errorElement.textContent = 'Пожалуйста, загружайте только изображения';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    currentImages.push({
+                        type: 'new',
+                        file: file,
+                        name: file.name,
+                        preview: event.target.result
+                    });
+                    renderPreviews();
+                };
+                reader.readAsDataURL(file);
             });
-            
-            previewContainer.appendChild(previewElement);
-        });
-    }
 
-    // 4. Подготовка данных перед отправкой
-        form.addEventListener('submit', function(e) {
-        // Не прерываем отправку формы
-        e.preventDefault();
-
-        // Собираем удаленные изображения
-        const deletedImages = originalImages.filter(original =>
-            !currentImages.some(img => img.type === 'existing' && img.id === original)
-        );
-
-        // Добавляем скрытые поля для удаленных изображений
-        addHiddenInputs('DeletedImages', deletedImages);
-
-        // Создаем FormData и добавляем файлы
-        const formData = new FormData(form);
-
-        // Добавляем новые файлы в FormData
-        const newFiles = currentImages
-            .filter(img => img.type === 'new')
-            .map(img => img.file);
-
-        // Очищаем существующие файлы в FormData
-        formData.delete('UploadedImages');
-
-        // Добавляем каждый новый файл отдельно
-        newFiles.forEach((file, index) => {
-            formData.append(`UploadedImages`, file);
+            fileInput.value = '';
         });
 
-        // Отправляем форму через fetch
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/success-url'; // Перенаправление при успехе
-            } else {
-                throw new Error('Ошибка при отправке формы');
-            }
-        })
-        .catch(error => {
-            errorElement.textContent = error.message;
+        // 3. Функция отрисовки превью
+        function renderPreviews() {
+            previewContainer.innerHTML = '';
+
+            // Обновляем статус кнопки загрузки
+            fileInput.disabled = currentImages.length >= MAX_IMAGES;
+
+            currentImages.forEach((img, index) => {
+                const previewElement = document.createElement('div');
+                previewElement.className = 'preview-item';
+                previewElement.innerHTML = `
+                    <div class="file-upload__file">
+                        <span class="file-upload__file-name">${img.name}</span>
+                        <img src="/icon/trash.svg" class="file-upload__file-trash"
+                             alt="Удалить" title="Удалить">
+                    </div>
+                    <img src="${img.type === 'existing' ? img.path : img.preview}"
+                         class="file-upload__preview-image">
+                `;
+
+                // Обработчик удаления
+                previewElement.querySelector('.file-upload__file-trash').addEventListener('click', () => {
+                    currentImages.splice(index, 1);
+                    renderPreviews();
+                });
+
+                previewContainer.appendChild(previewElement);
+            });
+        }
+
+        // 4. Подготовка данных перед отправкой
+            form.addEventListener('submit', function(e) {
+            // Не прерываем отправку формы
+            e.preventDefault();
+
+            // Собираем удаленные изображения
+            const deletedImages = originalImages.filter(original =>
+                !currentImages.some(img => img.type === 'existing' && img.id === original)
+            );
+
+            // Добавляем скрытые поля для удаленных изображений
+            addHiddenInputs('DeletedImages', deletedImages);
+
+            // Создаем FormData и добавляем файлы
+            const formData = new FormData(form);
+
+            // Добавляем новые файлы в FormData
+            const newFiles = currentImages
+                .filter(img => img.type === 'new')
+                .map(img => img.file);
+
+            // Очищаем существующие файлы в FormData
+            formData.delete('UploadedImages');
+
+            // Добавляем каждый новый файл отдельно
+            newFiles.forEach((file, index) => {
+                formData.append(`UploadedImages`, file);
+            });
+
+            // Отправляем форму через fetch
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/success-url'; // Перенаправление при успехе
+                } else {
+                    throw new Error('Ошибка при отправке формы');
+                }
+            })
+            .catch(error => {
+                errorElement.textContent = error.message;
+            });
         });
+
+        function addHiddenInputs(name, values) {
+            // Удаляем старые inputs
+            document.querySelectorAll(`input[name^="${name}"]`).forEach(el => el.remove());
+
+            // Добавляем новые
+            values.forEach((value, index) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `${name}[${index}]`;
+                input.value = value;
+                form.appendChild(input);
+            });
+        }
     });
-    
-    function addHiddenInputs(name, values) {
-        // Удаляем старые inputs
-        document.querySelectorAll(`input[name^="${name}"]`).forEach(el => el.remove());
-        
-        // Добавляем новые
-        values.forEach((value, index) => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = `${name}[${index}]`;
-            input.value = value;
-            form.appendChild(input);
+
+
+    // Для файла игры
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('game-cover-file');
+        const previewContainer = document.getElementById('file-preview');
+        const gameUrlHiddenInput = document.querySelector('input[name="GameURL"]');
+
+        // Если у модели уже есть изображение, показываем его
+        const modelGameFilePath = '@Model?.GameURL';
+        const modelGameFileInfo = {
+            name: '@Model?.CoverImageInfo?.Name',
+            size: @(Model?.GameFileInfo?.Length / 1024 ?? 0)
+        };
+
+        if (modelGameFilePath) {
+            showPreview(modelGameFilePath, modelGameFileInfo);
+        }
+
+        // Обработка выбора нового файла
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const fileInfo = {
+                        name: file.name,
+                        size: Math.round(file.size / (1024 * 1024))
+                    };
+                    showPreview(event.target.result, fileInfo);
+                };
+                reader.readAsDataURL(file);
+            }
         });
-    }
-});
+
+        // Функция для отображения превью
+        function showPreview(gameUrl, fileInfo) {
+            previewContainer.innerHTML = `
+            <div class="file-upload__file">
+                 <a href="${gameUrl}" download class="file-upload__file-name">${fileInfo.name}</a>
+                 <span class="file-upload__file-size">$${fileInfo.size} Мб</span>
+                 <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${fileInfo.name}">
+            </div>
+            `;
+            // Добавляем обработчик для кнопки удаления
+            const deleteButton = previewContainer.querySelector('.file-upload__file-trash');
+            deleteButton.addEventListener('click', function() {
+                // Очищаем скрытое поле
+                if (gameUrlHiddenInput) {
+                    gameUrlHiddenInput.value = '';
+                }
+                previewContainer.innerHTML = '';
+                fileInput.value = '';
+            });
+        }
+    });
 </script>
