@@ -316,6 +316,7 @@
                             <input type="hidden" asp-for="Id" />
                             <input type="hidden" asp-for="AuthorId" />
                             <input type="hidden" asp-for="DispatchDate" />
+                            <input type="hidden" asp-for="CurrentGameURL" value="@Model.GameURL" />
 
                             <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="#" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>

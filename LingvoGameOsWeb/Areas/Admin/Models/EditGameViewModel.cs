@@ -39,6 +39,7 @@ namespace LingvoGameOs.Areas.Admin.Models
         //[Required(ErrorMessage = "Обязательное поле")]
         public string VideoUrl { get; set; } = null!;
 
+        public string? CurrentGameURL { get; set; }
         public string? GameURL { get; set; }
         public FileInfo? GameFileInfo { get; set; }
 

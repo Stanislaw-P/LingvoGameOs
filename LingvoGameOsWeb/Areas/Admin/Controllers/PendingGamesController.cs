@@ -78,22 +78,95 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
                 var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
                 var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(editGame.LanguageLevel);
-                
-                
 
-                return View(platform);
+                existingGame.Title = editGame.Title;
+                existingGame.Description = editGame.Description;
+                existingGame.Rules = editGame.Rules;
+                existingGame.SkillsLearning = skills;
+                existingGame.GamePlatform = platform!;
+                existingGame.LanguageLevel = languageLvl!;
+                existingGame.VideoUrl = existingGame.VideoUrl;
+                existingGame.GameURL = existingGame.GameURL;
 
+                // Если есть новое изображение - меняем
+                await ProcessChangeCoverImage(editGame, existingGame);
+
+                // Процесс удаления картинок
+                ProcessDeletedImages(editGame, existingGame);
+
+                // Обрабатываем новые картинки
+                await ProcessNewImagesAsync(editGame, existingGame);
+
+                // Меняем адрес игры, если он изменился
+                ProcessChangeGameURL(editGame, existingGame);
+
+                await _pendingGamesRepository.UpdateAsync(existingGame);
+                return Redirect("/Admin/");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
 
-        public void DeleteGameImg(string imgPath)
+        private static void ProcessChangeGameURL(EditGameViewModel editGame, PendingGame existingGame)
         {
-            if (System.IO.File.Exists(imgPath))
-                System.IO.File.Delete(imgPath);
+            if (editGame.GameURL != editGame.CurrentGameURL)
+            {
+                existingGame.GameURL = editGame.GameURL;
+            }
+        }
+
+        private async Task ProcessChangeCoverImage(EditGameViewModel editGame, PendingGame existingGame)
+        {
+            if (editGame.CoverImage != null)
+            {
+                string? coverImagePath = await _fileProvider.SafeImgFileAsync(editGame.CoverImage, Folders.PendingGames, existingGame.Id);
+                existingGame.CoverImagePath = coverImagePath;
+
+                // Удаляем прошлую обложку
+                _fileProvider.DeleteImage(editGame.CurrentCoverImagePath!);
+            }
+            else
+                existingGame.CoverImagePath = editGame.CurrentCoverImagePath;
+        }
+
+        private void ProcessDeletedImages(EditGameViewModel editGameViewModel, PendingGame pendingGame)
+        {
+            if (editGameViewModel.DeletedImages == null || !editGameViewModel.DeletedImages.Any())
+                return;
+
+            // Удаляем файлы из системы
+            _fileProvider.DeleteImages(editGameViewModel.DeletedImages, Folders.PendingGames, pendingGame.Id);
+
+            //Удаляем пути из БД
+            if (pendingGame.ImagesPaths != null)
+            {
+                var deletedImagesPaths = new List<string>();
+                foreach (var deletedImg in editGameViewModel.DeletedImages)
+                {
+                    var deletedImagePath = _fileProvider.GetFileShortPath(deletedImg, Folders.PendingGames, pendingGame.Id);
+                    deletedImagesPaths.Add(deletedImagePath);
+                }
+                pendingGame.ImagesPaths = pendingGame.ImagesPaths
+                    .Where(imgPath => !deletedImagesPaths.Contains(imgPath))
+                    .ToList();
+            }
+        }
+
+        private async Task ProcessNewImagesAsync(EditGameViewModel editGameViewModel, PendingGame pendingGame)
+        {
+            if (editGameViewModel.UploadedImages == null || !editGameViewModel.UploadedImages.Any(f => f.Length > 0))
+                return;
+
+            List<string> newImagesPaths = await _fileProvider.SafeImagesFilesAsync(
+                editGameViewModel.UploadedImages.Where(f => f.Length > 0).ToArray(),
+                Folders.PendingGames, editGameViewModel.Id);
+
+            if (pendingGame.ImagesPaths == null)
+                pendingGame.ImagesPaths = new List<string>();
+            pendingGame.ImagesPaths.AddRange(newImagesPaths);
         }
     }
 }
