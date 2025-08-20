@@ -61,7 +61,7 @@ namespace LingvoGameOs.Helpers
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            return Path.Combine(folder.ToString(), gameId.ToString(), fileName);
+            return $"/{folder}/{gameId}/{fileName}";
         }
 
         public string GetFileFullPath(string filePath)
@@ -152,12 +152,12 @@ namespace LingvoGameOs.Helpers
             Directory.Delete(sourceDir);
         }
 
-        public void DeleteImage(string imgPath)
+        public void DeleteFile(string filePath)
         {
-            if (imgPath == null) return;
-            string fullImgPath = Path.Combine(_appEnvironment.WebRootPath + imgPath);
-            if (File.Exists(fullImgPath))
-                File.Delete(fullImgPath);
+            if (filePath == null) return;
+            string fullFilePath = Path.Combine(_appEnvironment.WebRootPath + filePath);
+            if (File.Exists(fullFilePath))
+                File.Delete(fullFilePath);
         }
 
         public void DeleteImages(List<string> imagesPaths, Folders gameFolder, int gameId)

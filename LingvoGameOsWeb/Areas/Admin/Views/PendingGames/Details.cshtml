@@ -19,7 +19,7 @@
                             </a>
                             перед публикацией вашего проекта.
                         </p>
-                        <form method="post" class="upload-form" id="upload-game-form" enctype="multipart/form-data">
+                        <form method="post" class="upload-form" id="upload-game-form" data-action="/admin/pendingGame/details" enctype="multipart/form-data">
                             <div asp-validation-summary="All" style="color:red"></div>
 
                             <div class="upload-form__group">
@@ -221,12 +221,19 @@
                             {
                                 <div class="upload-form__group" id="game-file-upload-group">
                                     <label class="upload-form__label">Файл игры <span class="required">*</span></label>
-                                    <div class="upload-form__input-wrapper">
-                                        <div class="upload-form__file-upload">
-                                            <div class="file-upload__previews" id="file-preview"></div>
+                                    @if(Model.GameURL != null)
+                                    {
+                                        <div class="upload-form__input-wrapper">
+                                            <div class="upload-form__file-upload">
+                                                <div class="file-upload__previews" id="file-preview"></div>
+                                            </div>
+                                            <span id="file-error" class="error-message"></span>
                                         </div>
-                                        <span id="file-error" class="error-message"></span>
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="file-upload__file-name">Файл игры отсутствует на сервере!</span>
+                                    }
                                 </div>
                                 <input type="hidden" asp-for="GameURL" />
                             }
@@ -318,7 +325,7 @@
                             <input type="hidden" asp-for="DispatchDate" />
                             <input type="hidden" asp-for="CurrentGameURL" value="@Model.GameURL" />
 
-                            <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="#" class="upload-form__submit" aria-busy="false">
+                            <button asp-area="Admin" asp-controller="PendingGames" asp-action="#" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Опубликовать игру</span>
                             </button>
                             <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="Details" class="upload-form__submit" aria-busy="false">
@@ -455,18 +462,18 @@
         // 1. Инициализация существующих изображений
         @if (Model?.ImagesFilesInfo != null)
         {
-                @foreach (var imgInfo in Model.ImagesFilesInfo)
-                {
-                        <text>
-                        originalImages.push('@imgInfo.FileInfo.Name');
-                        currentImages.push({
-                            type: 'existing',
-                            id: '@imgInfo.FileInfo.Name',
-                            name: '@imgInfo.FileInfo.Name',
-                            path: '@imgInfo.ImagePath'
-                        });
-                        </text>
-                }
+                        @foreach (var imgInfo in Model.ImagesFilesInfo)
+                        {
+                                        <text>
+                                        originalImages.push('@imgInfo.FileInfo.Name');
+                                        currentImages.push({
+                                            type: 'existing',
+                                            id: '@imgInfo.FileInfo.Name',
+                                            name: '@imgInfo.FileInfo.Name',
+                                            path: '@imgInfo.ImagePath'
+                                        });
+                                        </text>
+                        }
         }
         renderPreviews();
 
@@ -535,9 +542,10 @@
         }
 
         // 4. Подготовка данных перед отправкой
-            form.addEventListener('submit', function(e) {
-            // Не прерываем отправку формы
-            e.preventDefault();
+        form.addEventListener('submit', function(e) {
+            // С этой строкой не работает отправка формы из-за конфликта с другим скриптом
+            // Обработчиком отправки в upload.js
+            // e.preventDefault();
 
             // Собираем удаленные изображения
             const deletedImages = originalImages.filter(original =>
@@ -561,25 +569,6 @@
             // Добавляем каждый новый файл отдельно
             newFiles.forEach((file, index) => {
                 formData.append(`UploadedImages`, file);
-            });
-
-            // Отправляем форму через fetch
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/success-url'; // Перенаправление при успехе
-                } else {
-                    throw new Error('Ошибка при отправке формы');
-                }
-            })
-            .catch(error => {
-                errorElement.textContent = error.message;
             });
         });
 
@@ -605,11 +594,11 @@
         const previewContainer = document.getElementById('file-preview');
         const gameUrlHiddenInput = document.querySelector('input[name="GameURL"]');
 
-        // Если у модели уже есть изображение, показываем его
+        // Если у модели уже есть файл игры, показываем его
         const modelGameFilePath = '@Model?.GameURL';
         const modelGameFileInfo = {
-            name: '@Model?.CoverImageInfo?.Name',
-            size: @(Model?.GameFileInfo?.Length / 1024 ?? 0)
+            name: '@Model?.GameFileInfo?.Name',
+            size: @(Model?.GameFileInfo?.Length / (1024 * 1024) ?? 0)
         };
 
         if (modelGameFilePath) {
@@ -637,7 +626,7 @@
             previewContainer.innerHTML = `
             <div class="file-upload__file">
                  <a href="${gameUrl}" download class="file-upload__file-name">${fileInfo.name}</a>
-                 <span class="file-upload__file-size">$${fileInfo.size} Мб</span>
+                 <span class="file-upload__file-size">${fileInfo.size} Мб</span>
                  <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${fileInfo.name}">
             </div>
             `;
