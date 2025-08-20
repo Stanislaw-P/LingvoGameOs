@@ -41,9 +41,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             FileInfo? msiFileInfo = null;
             if (existingGame.GamePlatform.Name == "Desktop")
             {
-                msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameURL ?? ""));
+                if (existingGame.GameURL != null)
+                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameURL));
             }
-
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new EditGameViewModel
             {
@@ -86,7 +86,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.GamePlatform = platform!;
                 existingGame.LanguageLevel = languageLvl!;
                 existingGame.VideoUrl = existingGame.VideoUrl;
-                existingGame.GameURL = existingGame.GameURL;
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImage(editGame, existingGame);
@@ -97,11 +96,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Обрабатываем новые картинки
                 await ProcessNewImagesAsync(editGame, existingGame);
 
+                // Удаляем файл игры
+                ProcessDeleteGameFile(editGame, existingGame);
+
                 // Меняем адрес игры, если он изменился
                 ProcessChangeGameURL(editGame, existingGame);
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
-                return Redirect("/Admin/");
+                return Redirect("/Admin/Home/Index");
             }
             catch (Exception ex)
             {
@@ -126,7 +128,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.CoverImagePath = coverImagePath;
 
                 // Удаляем прошлую обложку
-                _fileProvider.DeleteImage(editGame.CurrentCoverImagePath!);
+                _fileProvider.DeleteFile(editGame.CurrentCoverImagePath!);
             }
             else
                 existingGame.CoverImagePath = editGame.CurrentCoverImagePath;
@@ -167,6 +169,18 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             if (pendingGame.ImagesPaths == null)
                 pendingGame.ImagesPaths = new List<string>();
             pendingGame.ImagesPaths.AddRange(newImagesPaths);
+        }
+
+        private void ProcessDeleteGameFile(EditGameViewModel editGame, PendingGame existingGame)
+        {
+            if (editGame.GamePlatform == "Desktop" && editGame.GameURL == null)
+            {
+                if (editGame.CurrentGameURL != null)
+                {
+                    existingGame.GameURL = null;
+                    _fileProvider.DeleteFile(editGame.CurrentGameURL);
+                }
+            }
         }
     }
 }

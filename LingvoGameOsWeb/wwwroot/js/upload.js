@@ -384,68 +384,68 @@ function initializeUploadForm() {
         const formData = new FormData(form);
         const keywords = Array.from(keywordsList.querySelectorAll('.skillsLearning-item')).map(item => item.dataset.value);
         const platforms = formData.get('GamePlatform').split(',').filter(p => p);
-
+        const actionUrl = form.getAttribute('data-action');
         // Validate required fields
-        if (!formData.get('title').trim()) {
-            showFormError('title-error', 'Название игры обязательно');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (!formData.get('description').trim()) {
-            showFormError('description-error', 'Краткое описание обязательно');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (formData.get('description').length > 200) {
-            showFormError('description-error', 'Краткое описание должно быть не длиннее 200 символов');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (!formData.get('rules').trim()) {
-            showFormError('rules-error', 'Правила игры обязательны');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (selectedSkillsLearning.length === 0) {
-            showFormError('skillsLearning-error', 'Необходимо выбрать хотя бы один навык');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (selectedPlatforms.length === 0) {
-            showFormError('platform-error', 'Необходимо выбрать хотя бы одну платформу');
-            submitButton.setAttribute('aria-busy', 'false');
-            return;
-        }
-        if (platforms.includes('Web-Mobile') || platforms.includes('Web-Desktop')) {
-            if (!formData.get('GameURL').trim()) {
-                showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
-                submitButton.setAttribute('aria-busy', 'false');
-                return;
-            }
-        }
-        if (platforms.includes('Desktop')) {
-            if (!formData.get('UploadedGame')) {
-                showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
-                submitButton.setAttribute('aria-busy', 'false');
-                return;
-            }
-            const gameFile = gameFileInput.files[0];
-            if (gameFile) {
-                const fileExtension = gameFile.name.slice(gameFile.name.lastIndexOf('.')).toLowerCase();
-                if (!ALLOWED_GAME_EXTENSIONS.includes(fileExtension)) {
-                    showFormError('file-error', `Недопустимое расширение файла. Разрешено: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
-                    submitButton.setAttribute('aria-busy', 'false');
-                    return;
-                }
-            }
-        }
+        //if (!formData.get('title').trim()) {
+        //    showFormError('title-error', 'Название игры обязательно');
+        //    submitButton.setAttribute('aria-busy', 'false');
+        //    return;
+        //}
+        //if (!formData.get('description').trim()) {
+        //    showFormError('description-error', 'Краткое описание обязательно');
+        //    submitButton.setAttribute('aria-busy', 'false');
+        //    return;
+        //}
+        //if (formData.get('description').length > 200) {
+        //    showFormError('description-error', 'Краткое описание должно быть не длиннее 200 символов');
+        //    submitButton.setAttribute('aria-busy', 'false');
+        //    return;
+        //}
+        //if (!formData.get('rules').trim()) {
+        //    showFormError('rules-error', 'Правила игры обязательны');
+        //    submitButton.setAttribute('aria-busy', 'false');
+        //    return;
+        //}
+        //if (selectedSkillsLearning.length === 0) {
+        //    showFormError('skillsLearning-error', 'Необходимо выбрать хотя бы один навык');
+        //    submitButton.setAttribute('aria-busy', 'false');
+        //    return;
+        //}
+        //if (selectedPlatforms.length === 0) {
+        //    showFormError('platform-error', 'Необходимо выбрать хотя бы одну платформу');
+        //    submitButton.setAttribute('aria-busy', 'false');
+        //    return;
+        //}
+        //if (platforms.includes('Web-Mobile') || platforms.includes('Web-Desktop')) {
+        //    if (!formData.get('GameURL').trim()) {
+        //        showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
+        //        submitButton.setAttribute('aria-busy', 'false');
+        //        return;
+        //    }
+        //}
+        //if (platforms.includes('Desktop')) {
+        //    if (!formData.get('UploadedGame')) {
+        //        showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
+        //        submitButton.setAttribute('aria-busy', 'false');
+        //        return;
+        //    }
+        //    const gameFile = gameFileInput.files[0];
+        //    if (gameFile) {
+        //        const fileExtension = gameFile.name.slice(gameFile.name.lastIndexOf('.')).toLowerCase();
+        //        if (!ALLOWED_GAME_EXTENSIONS.includes(fileExtension)) {
+        //            showFormError('file-error', `Недопустимое расширение файла. Разрешено: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
+        //            submitButton.setAttribute('aria-busy', 'false');
+        //            return;
+        //        }
+        //    }
+        //}
 
         formData.set('skillsLearning', JSON.stringify(selectedSkillsLearning));
         formData.set('keywords', JSON.stringify(keywords));
         formData.set('platform', JSON.stringify(platforms));
 
         try {
-            const response = await fetch(`/game/upload`, {
+            const response = await fetch(actionUrl, {
                 method: 'POST',
                 body: formData
             });
