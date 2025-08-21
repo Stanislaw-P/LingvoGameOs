@@ -222,7 +222,14 @@
         <div class="admin-modal__header">
             <h2>Обратная связь разработчику</h2>
         </div>
+
+        <input type="hidden" id="feedback-game-id" />
+
         <div class="admin-modal__body">
+            <strong style="color:black" id="feedback-game-infoId"></strong>
+            <p style="color: var(--text-primary)" id="feedback-game-title"></p>
+            <p style="color: var(--text-primary)" id="feedback-game-author"></p><br />
+
             <div class="feedback-form">
                 <div class="feedback-form__field">
                     <label for="feedback-message">Сообщение</label>

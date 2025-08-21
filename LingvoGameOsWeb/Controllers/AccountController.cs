@@ -35,7 +35,7 @@ namespace LingvoGameOs.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Неправильный пароль");
+                    ModelState.AddModelError("", "Неправильный логин или пароль!");
                 }
             }
             return View(login);
