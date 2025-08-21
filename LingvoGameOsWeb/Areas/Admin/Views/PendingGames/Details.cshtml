@@ -10,7 +10,7 @@
         <div class="content__container _container">
             <section class="upload-hero" data-game-id="upload">
                 <div class="upload-hero__content">
-                    <h1 class="upload-hero__title">Загрузить игру</h1>
+                    <h1 class="upload-hero__title">Детали игры</h1>
                     <div class="upload-hero__form-container">
                         <p class="upload-hero__info">
                             Ознакомьтесь с нашими
@@ -320,14 +320,23 @@
                                 <span id="screenshots-error" class="error-message"></span>
                             </div>
 
+                            <div class="upload-form__group">
+                                <label  class="upload-form__label">
+                                    Последнее сообщение для разработчика</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field input-field--textarea">
+                                        <textarea asp-for="LastMessage" class="input-field__textarea" readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
                             <input type="hidden" asp-for="Id" />
                             <input type="hidden" asp-for="AuthorId" />
                             <input type="hidden" asp-for="DispatchDate" />
                             <input type="hidden" asp-for="CurrentGameURL" value="@Model.GameURL" />
+                            <input type="hidden" asp-for="LastMessage" />
 
-                            <button asp-area="Admin" asp-controller="PendingGames" asp-action="#" class="upload-form__submit" aria-busy="false">
-                                <span class="upload-form__submit-text">Опубликовать игру</span>
-                            </button>
                             <button type="submit" asp-area="Admin" asp-controller="PendingGames" asp-action="Details" class="upload-form__submit" aria-busy="false">
                                 <span class="upload-form__submit-text">Сохранить изменения</span>
                             </button>

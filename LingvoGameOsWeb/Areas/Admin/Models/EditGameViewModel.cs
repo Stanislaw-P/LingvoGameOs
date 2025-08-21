@@ -50,5 +50,6 @@ namespace LingvoGameOs.Areas.Admin.Models
         public DateTime LastUpdateDate { get; set; }
         public User Author { get; set; } = null!;
         public string AuthorId { get; set; } = null!;
+        public string? LastMessage { get; set; }
     }
 }

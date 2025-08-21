@@ -30,6 +30,61 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _languageLevelsRepository = languageLevelsRepository;
         }
 
+        public async Task<IActionResult> SendFeedback([FromBody] FeedBackViewModel feedBackView)
+        {
+            if (feedBackView.Message == null)
+            {
+                ModelState.AddModelError("Message", "Сообщение не может быть пустым!");
+                return BadRequest(new { error = "Сообщение не может быть пустым" });
+            }
+            if(feedBackView.GameId < 0)
+            {
+                ModelState.AddModelError("GameId", "ID игры не может быть отрицательным!");
+                return BadRequest(new { error = "ID игры не может быть отрицательным!" });
+            }
+            try
+            {
+                var existingGame = await _pendingGamesRepository.TryGetByIdAsync(feedBackView.GameId);
+                if (existingGame == null)
+                    return NotFound(new { error = $"Игра с id: {feedBackView.GameId} не найдена!" });
+                existingGame.LastMessage = feedBackView.Message;
+                
+                //TODO: Тут нужно добавить отправку на email разработчика сообщения
+
+                await _pendingGamesRepository.UpdateAsync(existingGame);
+                return Ok(new{
+                    success = true,
+                    message = "Сообщение отправлено разработчику"
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> GetGameInfo(int gameId)
+        {
+            try
+            {
+                var existingGame = await _pendingGamesRepository.TryGetByIdAsync(gameId);
+                if (existingGame == null)
+                    return NotFound(new { error = $"Игра с id: {gameId} не найдена" });
+                return Ok(new
+                {
+                    title = existingGame.Title,
+                    author = $"{existingGame.Author.Name} {existingGame.Author.Surname}",
+                    authorEmail = existingGame.Author.Email
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+
+        }
+
         public async Task<IActionResult> Details(int gameId)
         {
             var existingGame = await _pendingGamesRepository.TryGetByIdAsync(gameId);
@@ -62,7 +117,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 GameFileInfo = msiFileInfo,
                 GamePlatform = existingGame.GamePlatform.Name,
                 LanguageLevel = existingGame.LanguageLevel.Name,
-                VideoUrl = existingGame.VideoUrl ?? "Video doesn't exist"
+                VideoUrl = existingGame.VideoUrl ?? "Video doesn't exist",
+                LastMessage = existingGame.LastMessage,
             });
         }
 
