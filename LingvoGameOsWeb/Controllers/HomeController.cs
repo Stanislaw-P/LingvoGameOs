@@ -35,7 +35,6 @@ public class HomeController : Controller
             ViewBag.GameName = gameName;
         }
 
-       /* Thread.Sleep(2000);*/ // ������������ "������ ���"
         return PartialView("_GamesListPartial", games);
     }
 

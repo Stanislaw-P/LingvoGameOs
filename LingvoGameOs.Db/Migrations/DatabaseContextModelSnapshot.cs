@@ -28,7 +28,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CoverImagePath")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -46,7 +45,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImagesPaths")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("LanguageLevelId")
@@ -142,6 +140,9 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DispatchDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GameFolderName")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GamePlatformId")

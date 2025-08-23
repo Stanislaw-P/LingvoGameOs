@@ -34,6 +34,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
             var existingGames = await _gamesRepository.GetAllAsync();
             var pendingGames = await _pendingGamesRepository.GetAllAsync();
+            var devUsers = await _userManager.GetUsersInRoleAsync(Constants.DevRoleName);
+            var numberDevUser = devUsers.Count;
             var adminUserViewModel = new AdminViewModel
             {
                 Id = adminUser.Id,
@@ -43,7 +45,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Description = adminUser.Description,
                 AvatarImgPath = adminUser.AvatarImgPath,
                 ExistingDevGames = existingGames,
-                PendingGames = pendingGames
+                PendingGames = pendingGames,
+                NumberDevelopers = numberDevUser
             };
 
             return View(adminUserViewModel);

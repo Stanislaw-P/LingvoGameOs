@@ -5,6 +5,7 @@ using LingvoGameOs.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using System.Text.Json;
 
 namespace LingvoGameOs.Areas.Admin.Controllers
@@ -15,12 +16,13 @@ namespace LingvoGameOs.Areas.Admin.Controllers
     {
         readonly UserManager<User> _userManager;
         readonly IPendingGamesRepository _pendingGamesRepository;
+        readonly IGamesRepository _gamesRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly FileProvider _fileProvider;
         readonly IPlatformsRepository _platformsRepository;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
 
-        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository)
+        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository)
         {
             _userManager = userManager;
             _pendingGamesRepository = pendingGamesRepository;
@@ -28,8 +30,69 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _fileProvider = new FileProvider(appEnvironment);
             _platformsRepository = platformsRepository;
             _languageLevelsRepository = languageLevelsRepository;
+            _gamesRepository = gamesRepository;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Publish(int gameId)
+        {
+            PendingGame? pendingGame = await _pendingGamesRepository.TryGetByIdAsync(gameId);
+            if (pendingGame == null)
+                return NotFound();
+
+            var publishedGame = await _pendingGamesRepository.PublishAsync(pendingGame);
+            // Переносим файлы
+            await _fileProvider.MoveGameFilesAsync(
+                pendingGame.Id,
+                publishedGame.Id,
+                Folders.PendingGames,
+                Folders.Games);
+
+            // Обновляем пути к файлам
+            publishedGame.CoverImagePath = _fileProvider.UpdateFilePath(
+                pendingGame.CoverImagePath!,
+                $"{Folders.PendingGames}/{pendingGame.Id}",
+                $"{Folders.Games}/{publishedGame.Id}");
+
+            if (publishedGame.GamePlatform.Name == "Desktop")
+            {
+                publishedGame.GameURL = _fileProvider.UpdateFilePath(
+                pendingGame.GameURL!,
+                $"{Folders.PendingGames}/{pendingGame.Id}",
+                $"{Folders.Games}/{publishedGame.Id}");
+            }
+
+            publishedGame.ImagesPaths = new List<string>();
+            // Переносим скриншоты
+            foreach (var imgPath in pendingGame.ImagesPaths!)
+            {
+                var newImgPath = _fileProvider.UpdateFilePath(
+                    imgPath,
+                    $"{Folders.PendingGames}/{pendingGame.Id}",
+                    $"{Folders.Games}/{publishedGame.Id}");
+
+                publishedGame.ImagesPaths.Add(newImgPath);
+            }
+
+            await _gamesRepository.UpdateAsync(publishedGame);
+
+            return Ok(new
+            {
+                success = true,
+                gameData = new
+                {
+                    id = publishedGame.Id,
+                    title = publishedGame.Title,
+                    authorName = $"{publishedGame.Author.Name} {publishedGame.Author.Surname}",
+                    publicationDate = publishedGame.PublicationDate.ToString("dd.MM.yyyy"),
+                    imagePath = publishedGame.CoverImagePath,
+                    gameUrl = publishedGame.GameURL,
+                    platform = publishedGame.GamePlatform.Name
+                }
+            });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> SendFeedback([FromBody] FeedBackViewModel feedBackView)
         {
             if (feedBackView.Message == null)
@@ -37,7 +100,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 ModelState.AddModelError("Message", "Сообщение не может быть пустым!");
                 return BadRequest(new { error = "Сообщение не может быть пустым" });
             }
-            if(feedBackView.GameId < 0)
+            if (feedBackView.GameId < 0)
             {
                 ModelState.AddModelError("GameId", "ID игры не может быть отрицательным!");
                 return BadRequest(new { error = "ID игры не может быть отрицательным!" });
@@ -48,11 +111,12 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 if (existingGame == null)
                     return NotFound(new { error = $"Игра с id: {feedBackView.GameId} не найдена!" });
                 existingGame.LastMessage = feedBackView.Message;
-                
+
                 //TODO: Тут нужно добавить отправку на email разработчика сообщения
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
-                return Ok(new{
+                return Ok(new
+                {
                     success = true,
                     message = "Сообщение отправлено разработчику"
                 });
@@ -114,6 +178,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 AuthorId = existingGame.Author.Id,
                 DispatchDate = existingGame.DispatchDate,
                 GameURL = existingGame.GameURL,
+                GameFolderName = existingGame.GameFolderName,
                 GameFileInfo = msiFileInfo,
                 GamePlatform = existingGame.GamePlatform.Name,
                 LanguageLevel = existingGame.LanguageLevel.Name,
@@ -141,7 +206,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.SkillsLearning = skills;
                 existingGame.GamePlatform = platform!;
                 existingGame.LanguageLevel = languageLvl!;
-                existingGame.VideoUrl = existingGame.VideoUrl;
+                existingGame.VideoUrl = editGame.VideoUrl;
+                existingGame.GameFolderName = editGame.GameFolderName;
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImage(editGame, existingGame);

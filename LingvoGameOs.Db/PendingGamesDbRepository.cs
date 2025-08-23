@@ -73,5 +73,29 @@ namespace LingvoGameOs.Db
             databaseContext.PendingGames.Update(updatedGame);
             await databaseContext.SaveChangesAsync();
         }
+
+        public async Task<Game> PublishAsync(PendingGame pendingGame)
+        {
+            var newGame = new Game
+            {
+                Title = pendingGame.Title,
+                Description = pendingGame.Description,
+                Rules = pendingGame.Rules,
+                Author = pendingGame.Author,
+                LanguageLevel = pendingGame.LanguageLevel,
+                SkillsLearning = pendingGame.SkillsLearning,
+                GamePlatform = pendingGame.GamePlatform,
+                GameFolderName = pendingGame.GameFolderName,
+                GameURL = pendingGame.GameURL,
+                VideoUrl = pendingGame.VideoUrl,
+                PublicationDate = DateTime.Now,
+                LastUpdateDate = DateTime.Now,
+            };
+
+            databaseContext.PendingGames.Remove(pendingGame);
+            await databaseContext.Games.AddAsync(newGame);
+            await databaseContext.SaveChangesAsync();
+            return newGame;
+        }
     }
 }
