@@ -58,7 +58,7 @@
                 </svg>
             </div>
             <div class="admin-stats__content">
-                <span class="admin-stats__value">@Model?.ExistingDevGames?.Count</span>
+                <span class="admin-stats__value">@Model?.NumberDevelopers</span>
                 <span class="admin-stats__label">Разработчиков</span>
             </div>
         </div>
@@ -78,7 +78,7 @@
             </div>
         </div>
         
-        <div class="admin-games-grid">
+        <div class="admin-games-grid" id="published-games-list">
             @if (Model?.ExistingDevGames != null && Model.ExistingDevGames.Any())
             {
                 @foreach (var game in Model.ExistingDevGames)
@@ -135,7 +135,7 @@
             {
                 @foreach (var game in Model.PendingGames)
                 {
-                    <div class="admin-game-card admin-game-card--pending">
+                    <div class="admin-game-card admin-game-card--pending" id="pending-game-@game.Id">
                         <div class="admin-game-card__image">
                             <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="@game.Title">
                             <div class="admin-game-card__status">На модерации</div>

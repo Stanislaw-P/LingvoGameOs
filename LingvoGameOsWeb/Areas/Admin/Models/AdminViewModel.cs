@@ -13,5 +13,6 @@ namespace LingvoGameOs.Areas.Admin.Models
         public string? AvatarImgPath { get; set; }
         public List<Game>? ExistingDevGames { get; set; }
         public List<PendingGame>? PendingGames { get; set; }
+        public int NumberDevelopers { get; set; }
     }
 }

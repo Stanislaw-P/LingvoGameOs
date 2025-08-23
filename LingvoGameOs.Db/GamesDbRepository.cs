@@ -85,5 +85,15 @@ namespace LingvoGameOs.Db
 			game.GameURL = newGameUrl;
 			await databaseContext.SaveChangesAsync();
 		}
+
+        public async Task UpdateAsync(Game updatedGame)
+        {
+            Game? existingGame = await TryGetByIdAsync(updatedGame.Id);
+            if (existingGame == null)
+                throw new InvalidOperationException($"Игра с Id {updatedGame.Id} не найдена :(");
+
+            databaseContext.Games.Update(updatedGame);
+            await databaseContext.SaveChangesAsync();
+        }
     }
 }

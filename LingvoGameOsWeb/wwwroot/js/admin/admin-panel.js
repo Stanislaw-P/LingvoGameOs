@@ -183,21 +183,91 @@ function approveGameFromModal() {
     closeGameDetails();
 }
 
-function approveGame(gameId) {
-    console.log('Подтверждение игры:', gameId);
+async function approveGame(gameId) {
+    const button = document.getElementById('approve-game-btn');
 
-    // В реальном проекте: POST /api/games/:id/approve
-    fakeApiCall({ success: true, message: 'Игра подтверждена' })
-        .then(() => {
-            alert('Игра успешно подтверждена и опубликована!');
-            // Обновляем UI - убираем игру из списка на модерации
-            updatePendingGamesList();
-        })
-        .catch(error => {
-            console.error('Ошибка подтверждения:', error);
-            alert('Ошибка при подтверждении игры');
+    // Показываем индикатор загрузки
+    button.textContent = 'Загрузка...';
+    button.disabled = true;
+
+    try {
+        const response = await fetch(`/Admin/PendingGames/Publish?gameId=${gameId}`, {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                gameId: gameId
+            })
         });
+
+        if (!response.ok) {
+            throw new Error('Ошибка публикации игры');
+        }
+
+        // Удаляем игру из списка на модерации
+        const gameElement = document.getElementById(`pending-game-${gameId}`);
+        if (gameElement) {
+            gameElement.remove();
+        }
+
+        const result = await response.json();
+
+        // Добавляем игру в список опубликованных
+        addToPublishedList(result.gameData);
+        alert('Игра успешно подтверждена и опубликована!');
+
+
+
+    }catch(error){
+        console.error('Ошибка подтверждения:', error);
+        alert('Ошибка при подтверждении игры');
+        button.textContent = 'Опубликовать игру';
+        button.disabled = false;
+    }
+
+    //console.log('Подтверждение игры:', gameId);
+
+    //// В реальном проекте: POST /api/games/:id/approve
+    //fakeApiCall({ success: true, message: 'Игра подтверждена' })
+    //    .then(() => {
+    //        alert('Игра успешно подтверждена и опубликована!');
+    //        // Обновляем UI - убираем игру из списка на модерации
+    //        updatePendingGamesList();
+    //    })
+    //    .catch(error => {
+    //        console.error('Ошибка подтверждения:', error);
+    //        alert('Ошибка при подтверждении игры');
+    //    });
 }
+
+function addToPublishedList(gameData) {
+    const publishedList = document.getElementById('published-games-list');
+
+    const newGameElement = document.createElement('div');
+    newGameElement.className = 'admin-game-card';
+    newGameElement.innerHTML = `
+        <div class="admin-game-card__image">
+            <img src="${gameData.imagePath || '/img/default-game.png'}" alt="${gameData.title}">
+        </div>
+        <div class="admin-game-card__content">
+            <h3 class="admin-game-card__title">${gameData.title}</h3>
+            <p class="admin-game-card__developer">${gameData.authorName}</p>
+            <p class="admin-game-card__date">${gameData.publicationDate}</p>
+        </div>
+        <div class="admin-game-card__actions">
+            ${gameData.platform === 'Desktop' ?
+            `<a href="${gameData.gameUrl}" download class="admin-btn admin-btn--primary">Скачать</a>` :
+            `<a href="/Game/Start/${gameData.id}" class="admin-btn admin-btn--primary">Играть</a>`
+        }
+            <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(${gameData.id})">Редактировать</button>
+            <button class="admin-btn admin-btn--outline" onclick="openAnalytics(${gameData.id})">Аналитика</button>
+        </div>
+    `;
+
+    publishedList.appendChild(newGameElement);
+}
+
 
 let currentFeedbackGameId = null;
 
@@ -277,7 +347,7 @@ async function sendFeedback() {
         });
 
         if (response.ok) {
-            const result = await response.json()
+            //const result = await response.json()
             alert('Обратная связь успешно отправлена разработчику!');
             closeFeedback();
         } else {

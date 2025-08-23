@@ -12,5 +12,6 @@ namespace LingvoGameOs.Db
 		Task<List<Game>?> TryGetUserGameHistoryAsync(User user);
 		Task<List<Game>?> TryGetUserDevGamesAsync(User user);
 		Task ChangeGameUrl(string newGameUrl, Game game);
+		Task UpdateAsync(Game updatedGame);
     }
 }

@@ -24,6 +24,7 @@ namespace LingvoGameOs.Db.Models
         public List<string>? ImagesPaths { get; set; }
         public string? VideoUrl { get; set; }
         public string? GameURL { get; set; }
+        public string? GameFolderName { get; set; }
         public Platform GamePlatform { get; set; }
         public int GamePlatformId { get; set; }
         public string? LastMessage { get; set; }

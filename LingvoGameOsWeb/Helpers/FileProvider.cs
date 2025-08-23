@@ -3,7 +3,7 @@ using LingvoGameOs.Db.Models;
 
 namespace LingvoGameOs.Helpers
 {
-    public partial class FileProvider
+    public class FileProvider
     {
         readonly IWebHostEnvironment _appEnvironment;
 
@@ -101,55 +101,51 @@ namespace LingvoGameOs.Helpers
                 .ToList();
         }
 
-        public bool MoveGameFolder(string gameId)
+        public async Task MoveGameFilesAsync(int sourceGameId, int destGameId, Folders sourceGameFolder, Folders destGameFolder)
         {
-            string sourceFolder = Path.Combine(_appEnvironment.WebRootPath, "pendingGame", gameId);
-            string destFolder = Path.Combine(_appEnvironment.WebRootPath, "games", gameId);
-
             try
             {
-                // Проверяем существование исходной папки
-                if (!Directory.Exists(sourceFolder))
+                var sourcePath = Path.Combine(_appEnvironment.WebRootPath, sourceGameFolder.ToString(), sourceGameId.ToString());
+                var destPath = Path.Combine(_appEnvironment.WebRootPath, destGameFolder.ToString(), destGameId.ToString());
+
+                if (!Directory.Exists(sourcePath))
                 {
-                    Console.WriteLine($"Исходная папка не найдена: {sourceFolder}");
-                    return false;
+                    Console.WriteLine($"Source directory not found: {sourcePath}");
+                    return;
                 }
 
-                // Создаем целевую папку, если ее нет
-                Directory.CreateDirectory(destFolder);
-
-                // Переносим все файлы
-                foreach (string file in Directory.GetFiles(sourceFolder))
+                // Создаем целевую директорию, если не существует
+                if (!Directory.Exists(destPath))
                 {
-                    string fileName = Path.GetFileName(file);
-                    string destFile = Path.Combine(destFolder, fileName);
-
-                    File.Move(file, destFile);
+                    Directory.CreateDirectory(destPath);
                 }
 
-                // Удаляем исходную папку после успешного переноса
-                Directory.Delete(sourceFolder, true);
+                // Копируем все файлы из исходной директории в целевую
+                foreach (var file in Directory.GetFiles(sourcePath))
+                {
+                    var fileName = Path.GetFileName(file);
+                    var destFile = Path.Combine(destPath, fileName);
+                    File.Move(file, destFile, overwrite: true);
+                }
 
-                return true;
+                // Удаляем пустую исходную директорию
+                if (Directory.GetFiles(sourcePath).Length == 0)
+                {
+                    Directory.Delete(sourcePath);
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при переносе папки: {ex.Message}");
-                return false;
+                throw new Exception(ex.Message);
             }
         }
 
-        private void MoveDirectory(string sourceDir, string targetDir)
+        public string UpdateFilePath(string originalPath, string oldBasePath, string newBasePath)
         {
-            Directory.CreateDirectory(targetDir);
+            if (string.IsNullOrEmpty(originalPath))
+                return originalPath;
 
-            foreach (string file in Directory.GetFiles(sourceDir))
-                File.Move(file, Path.Combine(targetDir, Path.GetFileName(file)));
-
-            foreach (string subDir in Directory.GetDirectories(sourceDir))
-                MoveDirectory(subDir, Path.Combine(targetDir, Path.GetFileName(subDir)));
-
-            Directory.Delete(sourceDir);
+            return originalPath.Replace(oldBasePath, newBasePath, StringComparison.OrdinalIgnoreCase);
         }
 
         public void DeleteFile(string filePath)
