@@ -56,6 +56,33 @@ body {
 ._container {
     max-width: 1240px;
     margin: 0px auto;
+    padding: 0 20px;
+}
+
+/* Адаптивные стили для контейнера */
+@media (max-width: 1200px) {
+    ._container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    ._container {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    ._container {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    ._container {
+        padding: 0 8px;
+    }
 }
 
 /* #endregion */
@@ -169,8 +196,6 @@ body {
     gap: 11px;
     cursor: pointer;
     padding: 10px;
-    border-radius: 6px 16px;
-    background: var(--bg-white);
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
@@ -193,13 +218,13 @@ body {
     visibility: hidden;
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
     z-index: 100;
-    transform-origin: top right; /* Изменил точку трансформации */
+    transform-origin: top right; 
 }
 
 .user-profile__menu.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(3%); /* Убрал translateX(-100%), так как right: 0 решает проблему */
+    transform: translateY(3%); 
     overflow-x: hidden;
 }
 
@@ -214,19 +239,6 @@ body {
     font-weight: 500;
     cursor: pointer;
     border-radius: 73px;
-    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.user-profile__menu-item:hover {
-    background: var(--bg-light);
-    box-shadow: 0 2px 8px rgba(63, 105, 210, 0.2);
-    transform: translateX(5px);
-}
-
-.user-profile__menu-item:active {
-    background: var(--accent-2);
-    transform: translateX(0);
-    color: var(--text-light);
 }
 
 .user-profile__menu-item i {

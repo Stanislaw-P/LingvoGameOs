@@ -48,10 +48,43 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Мобильный аватар для перехода в профиль -->
+            <a class="mobile-user-avatar" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId" aria-label="Перейти в профиль">
+                <img src="@await Component.InvokeAsync("Avatar")" alt="Аватар" class="mobile-user-avatar__image" />
+            </a>
         }
         else
         {
             <a class="header__logout" asp-controller="Account" asp-action="Login">Войти</a>
         }
+        
+        <!-- Кнопка мобильного меню -->
+        <button class="mobile-menu-toggle" aria-label="Открыть меню" id="mobileMenuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
+    
+    <!-- Мобильное меню -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu__list">
+            <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Home" asp-action="Index">Главная</a></li>
+            <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Home" asp-action="Games">Все игры</a></li>
+            <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Home" asp-action="News">Новости</a></li>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                var userId = userIdClaim?.Value;
+                <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId">Профиль</a></li>
+                <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Profile" asp-action="Settings" asp-route-userId="@userId">Настройки</a></li>
+                <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Account" asp-action="Logout">Выйти</a></li>
+            }
+            else
+            {
+                <li class="mobile-menu__item"><a class="mobile-menu__link" asp-controller="Account" asp-action="Login">Войти</a></li>
+            }
+        </ul>
+    </nav>
 </header>
