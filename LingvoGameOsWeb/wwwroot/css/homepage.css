@@ -714,8 +714,9 @@ body {
 
 .homepage-new-games__list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, 280px);
     gap: 2rem;
+    justify-content: center;
 }
 
 .homepage-new-games__item {
@@ -1164,10 +1165,30 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .homepage-hero {
+        margin-top: -75px; /* Небольшая корректировка для больших планшетов */
+    }
+}
+
+@media (max-width: 992px) {
+    .homepage-hero {
+        margin-top: -70px; /* Корректировка для средних планшетов */
+    }
+
+    .homepage-new-games__list {
+        grid-template-columns: repeat(auto-fill, 270px);
+        gap: 1.75rem;
+        justify-content: center;
+    }
+}
+
 @media (max-width: 768px) {
     .homepage-hero {
         min-height: 80vh;
         padding: 2rem 1rem;
+        margin-top: -40px; /* Уменьшаем отрицательный отступ для планшетов */
+        padding-top: 60px; /* Добавляем отступ сверху для плавного перехода */
     }
 
     .homepage-hero__content {
@@ -1241,13 +1262,19 @@ body {
     .homepage-games__title,
     .homepage-reviews__title,
     .homepage-faq__title {
-        font-size: 48px;
+        font-size: 32px; /* Уменьшаем с 48px до 32px для планшетов */
         line-height: 1.2;
     }
 
+    .homepage-categories__description {
+        font-size: 16px; /* Уменьшаем описание для планшетов */
+        line-height: 1.5;
+    }
+
     .homepage-new-games__list {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, 260px);
+        gap: 1.5rem;
+        justify-content: center;
     }
 }
 
@@ -1255,6 +1282,7 @@ body {
     .homepage-hero {
         min-height: 70vh;
         padding: 1rem;
+        padding-top: 80px; /* Увеличиваем отступ сверху для плавного перехода */
     }
 
     .homepage-hero__content {
@@ -1282,6 +1310,22 @@ body {
         padding: 3rem 1rem;
     }
 
+    /* Адаптируем заголовки для мобильных устройств */
+    .homepage-categories__title,
+    .homepage-games__title,
+    .homepage-reviews__title,
+    .homepage-faq__title,
+    .homepage-new-games__title{
+        font-size: 28px; /* Уменьшаем до 28px для мобильных */
+        line-height: 1.3;
+        margin-bottom: 12px;
+    }
+
+    .homepage-categories__description {
+        font-size: 14px; /* Уменьшаем описание для мобильных */
+        line-height: 1.4;
+    }
+
     .homepage-category-card {
         padding: 1.5rem;
     }
@@ -1297,8 +1341,9 @@ body {
     }
 
     .homepage-new-games__list {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fill, 240px);
+        gap: 1rem;
+        justify-content: center;
     }
 
     .homepage-faq__question {
@@ -1311,6 +1356,66 @@ body {
 
     .homepage-faq__item.active .homepage-faq__answer {
         padding: 0 1.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .homepage-hero {
+        margin-top: -10px; /* Минимальный отступ для очень маленьких экранов */
+        padding: 0.5rem;
+        padding-top: 90px; /* Максимальный отступ сверху для очень маленьких экранов */
+    }
+    
+    .homepage-hero__title {
+        font-size: 32px;
+    }
+    
+    .homepage-hero__description {
+        font-size: 13px;
+    }
+
+    /* Адаптируем заголовки для очень маленьких экранов */
+    .homepage-categories__title,
+    .homepage-games__title,
+    .homepage-reviews__title,
+    .homepage-faq__title {
+        font-size: 24px; /* Минимальный размер для очень маленьких экранов */
+        line-height: 1.2;
+        margin-bottom: 10px;
+    }
+
+    .homepage-categories__description {
+        font-size: 13px; /* Минимальный размер описания */
+        line-height: 1.3;
+    }
+
+    .homepage-categories,
+    .homepage-games,
+    .homepage-reviews,
+    .homepage-faq {
+        padding: 2rem 0.5rem; /* Уменьшаем отступы для маленьких экранов */
+    }
+
+    /* Адаптируем блок новых игр для очень маленьких экранов */
+    .homepage-new-games {
+        padding: 2rem 0.5rem;
+    }
+
+    .homepage-new-games__list {
+        grid-template-columns: repeat(auto-fill, 220px);
+        gap: 0.75rem;
+        justify-content: center;
+    }
+
+    .homepage-new-games__title {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+    }
+
+    .homepage-new-games__description {
+        font-size: 13px;
+        line-height: 1.3;
     }
 }
 
