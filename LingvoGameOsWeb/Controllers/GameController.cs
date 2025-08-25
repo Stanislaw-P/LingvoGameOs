@@ -20,8 +20,9 @@ namespace LingvoGameOs.Controllers
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly FileProvider _fileProvider;
         readonly IPendingGamesRepository _pendingGamesRepository;
+        readonly ILogger<GameController> _logger;
 
-        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IPendingGamesRepository pendingGamesRepository)
+        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IPendingGamesRepository pendingGamesRepository, ILogger<GameController> logger)
         {
             _gamesRepository = gamesRepository;
             _userManager = userManager;
@@ -30,6 +31,7 @@ namespace LingvoGameOs.Controllers
             _platformsRepository = platformsRepository;
             _languageLevelsRepository = languageLevelsRepository;
             _pendingGamesRepository = pendingGamesRepository;
+            _logger = logger;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -37,6 +39,17 @@ namespace LingvoGameOs.Controllers
             var existingGame = await _gamesRepository.TryGetByIdAsync(idGame);
             if (existingGame == null)
                 return NotFound();
+
+            // Логируем начало запроса с дополнительными данными
+            _logger.LogInformation("Просмотр игры {@GameStartData}", new
+            {
+                GameId = idGame,
+                UserId = User.Identity?.Name ?? "Anonymous",
+                UserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserAgent = Request.Headers.UserAgent.ToString(),
+                RequestTime = DateTime.UtcNow,
+                IsCustomLog = true
+            });
 
             return View(existingGame);
         }

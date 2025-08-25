@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Serilog;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,9 +49,16 @@ builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>
 // Добавление ненавязчивого Ajax
 builder.Services.AddUnobtrusiveAjax();
 
+builder.Host.UseSerilog((context, services, configuration) =>
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+        .Enrich.WithProperty("Application", "GamePortal")
+        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+);
+
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -80,6 +88,9 @@ app.UseAuthorization();
 
 // Подключение ненавязчивого Ajax
 app.UseUnobtrusiveAjax();
+
+// Логгирование
+app.UseSerilogRequestLogging();
 
 // инициализация администратора
 using (var serviceScope = app.Services.CreateScope())
