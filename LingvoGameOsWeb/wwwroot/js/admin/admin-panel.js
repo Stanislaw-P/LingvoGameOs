@@ -216,9 +216,6 @@ async function approveGame(gameId) {
         // Добавляем игру в список опубликованных
         addToPublishedList(result.gameData);
         alert('Игра успешно подтверждена и опубликована!');
-
-
-
     }catch(error){
         console.error('Ошибка подтверждения:', error);
         alert('Ошибка при подтверждении игры');

@@ -39,28 +39,16 @@ namespace LingvoGameOs.Controllers
             var existingGame = await _gamesRepository.TryGetByIdAsync(idGame);
             if (existingGame == null)
                 return NotFound();
-
-            // Логируем начало запроса с дополнительными данными
-            _logger.LogInformation("Просмотр игры {@GameStartData}", new
-            {
-                GameId = idGame,
-                UserId = User.Identity?.Name ?? "Anonymous",
-                UserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserAgent = Request.Headers.UserAgent.ToString(),
-                RequestTime = DateTime.UtcNow,
-                IsCustomLog = true
-            });
-
+ 
             return View(existingGame);
         }
 
         public async Task<IActionResult> StartAsync(int idGame)
         {
             var existingGame = await _gamesRepository.TryGetByIdAsync(idGame);
-
             if (existingGame == null)
                 return NotFound();
-
+            
             ViewBag.GameId = idGame;
             ViewBag.GameTitle = existingGame.Title;
 
@@ -69,9 +57,30 @@ namespace LingvoGameOs.Controllers
 
             // TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
             string runningScript = Path.Combine(Constants.GameFolderPath, existingGame.GameFolderName, "run.sh");
+            var currentUser = await _userManager.GetUserAsync(User);
+            
+            var logData = new
+            {
+                GameId = idGame,
+                UserId = currentUser?.Id ?? "Anonymous",
+                UserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserAgent = Request.Headers.UserAgent.ToString(),
+                RequestTime = DateTime.UtcNow,
+            };
 
             if (!System.IO.File.Exists(runningScript))
             {
+                _logger.LogError("Ошибка запуска игры. Отсутсвует скрипт запуска игры {@GameStartData}", new
+                {
+                    logData.GameId,
+                    logData.UserId,
+                    logData.UserIP,
+                    logData.UserAgent,
+                    logData.RequestTime,
+                    GameRunningScript = runningScript,
+                    ResponseStatusCode = 500
+                });
+
                 ViewBag.GameUrl = null;
                 return View();
             }
@@ -91,13 +100,33 @@ namespace LingvoGameOs.Controllers
                 ViewBag.GameUrl = existingGame.GameURL;
 
                 // Добавление игры в историю пользователя
-                var currentUser = await _userManager.GetUserAsync(User);
                 if (currentUser != null)
                     await _gamesRepository.AddPlayerToGameHistoryAsync(existingGame, currentUser);
+
+                _logger.LogInformation("Запуск игры {@GameStartData}", new
+                {
+                    logData.GameId,
+                    logData.UserId,
+                    logData.UserIP,
+                    logData.UserAgent,
+                    logData.RequestTime,
+                    ResponseStatusCode = 200
+                });
+
                 return View();
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Ошибка запуска игры {@GameStartData}", new
+                {
+                    logData.GameId,
+                    logData.UserId,
+                    logData.UserIP,
+                    logData.UserAgent,
+                    logData.RequestTime,
+                    ResponseStatusCode = 500
+                });
+
                 return BadRequest("Error starting game: " + ex.Message);
             }
         }
@@ -114,6 +143,13 @@ namespace LingvoGameOs.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadAsync([FromForm] AddGameViewModel gameViewModel)
         {
+            string? authorId = _userManager.GetUserId(User);
+            var logData = new
+            {
+                UserId = authorId ?? "Anonymous",
+                UserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserAgent = Request.Headers.UserAgent.ToString(),
+            };
             try
             {
                 //if (gameViewModel.UploadedGame == null && gameViewModel.GameURL == null)
@@ -135,8 +171,6 @@ namespace LingvoGameOs.Controllers
                     List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
                     var platform = await _platformsRepository.GetExistingPlatformAsync(gameViewModel.GamePlatform);
                     var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(gameViewModel.LanguageLevel);
-
-                    string? authorId = _userManager.GetUserId(User);
 
                     if (gameViewModel.UploadedGame != null) // Если файл загруженной игры не пустой, то она десктоп
                     {
@@ -168,34 +202,19 @@ namespace LingvoGameOs.Controllers
                             await _pendingGamesRepository.ChangeGameUrlAsync(gameUrl, pendingGame);
                         }
 
-                        //Game newGame = new Game
-                        //{
-                        //    Title = gameViewModel.Title,
-                        //    Description = gameViewModel.Description,
-                        //    Rules = gameViewModel.Rules,
-                        //    AuthorId = authorId!,
-                        //    CoverImagePath = coverImagePath!,
-                        //    ImagesPaths = imagesPaths,
-                        //    PublicationDate = DateTime.Now,
-                        //    LastUpdateDate = DateTime.Now,
-                        //    GamePlatform = platform!,
-                        //    SkillsLearning = skills,
-                        //    LanguageLevel = languageLvl!,
-                        //    VideoUrl = gameViewModel.VideoUrl
-                        //};
-                        //await _gamesRepository.AddAsync(newGame); 
-
-                        //// Теперь можно использовать ID для сохранения файла
-                        //string? gameUrl = await _fileProvider.SafeFileAsync(gameViewModel.UploadedGame, newGame.Id, newGame.Title);
-
-                        //// Если нужно обновить URL игры после сохранения файла
-                        //if (!string.IsNullOrEmpty(gameUrl))
-                        //{
-                        //    await _gamesRepository.ChangeGameUrl(gameUrl, newGame);
-                        //}
-
                         // смена роли игрока на разработчика
                         await ChangeRolePlayerToDevAsync();
+
+                        _logger.LogInformation("Загрузка игры на модерацию {@UploadGameData}", new
+                        {
+                            logData.UserId,
+                            logData.UserIP,
+                            logData.UserAgent,
+                            RequestTime = DateTime.UtcNow,
+                            PendingGameId = pendingGame.Id,
+                            PendingGamePlatform = pendingGame.GamePlatform.Name,
+                            ResponseStatusCode = 200
+                        });
                         //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
                         return Json(new { success = true, redirectUrl = Url.Action("Index", "Profile", new { userId = authorId }) });
                     }
@@ -220,27 +239,20 @@ namespace LingvoGameOs.Controllers
                         List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
 
                         await _pendingGamesRepository.ChangeImagesAsync(coverImagePath ?? "/img/default-img.jpg", imagesPaths, pendingGame);
-                        //Game newGame = new Game
-                        //{
-                        //    Title = gameViewModel.Title,
-                        //    Description = gameViewModel.Description,
-                        //    Rules = gameViewModel.Rules,
-                        //    AuthorId = authorId!,
-                        //    CoverImagePath = coverImagePath!,
-                        //    ImagesPaths = imagesPaths,
-                        //    PublicationDate = DateTime.Now,
-                        //    LastUpdateDate = DateTime.Now,
-                        //    GamePlatform = platform!,
-                        //    SkillsLearning = skills,
-                        //    LanguageLevel = languageLvl!,
-                        //    GameURL = gameViewModel.GameURL!,
-                        //    VideoUrl = gameViewModel.VideoUrl
-                        //};
-
-                        //await _gamesRepository.AddAsync(newGame);
 
                         // смена роли игрока на разработчика
                         await ChangeRolePlayerToDevAsync();
+
+                        _logger.LogInformation("Загрузка игры на модерацию {@UploadGameData}", new
+                        {
+                            logData.UserId,
+                            logData.UserIP,
+                            logData.UserAgent,
+                            RequestTime = DateTime.UtcNow,
+                            PendingGameId = pendingGame.Id,
+                            PendingGamePlatform = pendingGame.GamePlatform.Name,
+                            ResponseStatusCode = 200
+                        });
                         //Нужно как-нибудь оповестить пользователя об успешной заргузки игры
                         return Json(new { success = true, redirectUrl = Url.Action("Index", "Profile", new { userId = authorId }) });
                     }
@@ -253,7 +265,14 @@ namespace LingvoGameOs.Controllers
             }
             catch (Exception ex)
             {
-                // Нужно сделать логирование
+                _logger.LogError(ex, "Ошибка загрузки игры на модерацию {@UploadGameData}", new
+                {
+                    logData.UserId,
+                    logData.UserIP,
+                    logData.UserAgent,
+                    RequestTime = DateTime.UtcNow,
+                    ResponseStatusCode = 500
+                });
                 return StatusCode(500, new { error = ex.Message });
             }
         }
