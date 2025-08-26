@@ -50,13 +50,7 @@ builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>
 builder.Services.AddUnobtrusiveAjax();
 
 builder.Host.UseSerilog((context, services, configuration) =>
-    configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext()
-        .Enrich.WithProperty("Application", "GamePortal")
-        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
-);
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
@@ -90,7 +84,7 @@ app.UseAuthorization();
 app.UseUnobtrusiveAjax();
 
 // Логгирование
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 // инициализация администратора
 using (var serviceScope = app.Services.CreateScope())

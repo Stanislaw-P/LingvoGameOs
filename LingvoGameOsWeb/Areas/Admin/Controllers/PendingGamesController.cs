@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.Text.Json;
 
 namespace LingvoGameOs.Areas.Admin.Controllers
@@ -21,8 +22,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly FileProvider _fileProvider;
         readonly IPlatformsRepository _platformsRepository;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
+        readonly ILogger<PendingGamesController> _logger;
 
-        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository)
+        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger)
         {
             _userManager = userManager;
             _pendingGamesRepository = pendingGamesRepository;
@@ -31,6 +33,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _platformsRepository = platformsRepository;
             _languageLevelsRepository = languageLevelsRepository;
             _gamesRepository = gamesRepository;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -40,61 +43,97 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             if (pendingGame == null)
                 return NotFound();
 
-            var publishedGame = await _pendingGamesRepository.PublishAsync(pendingGame);
-            // Переносим файлы
-            await _fileProvider.MoveGameFilesAsync(
-                pendingGame.Id,
-                publishedGame.Id,
-                Folders.PendingGames,
-                Folders.Games);
-
-            // Обновляем пути к файлам
-            publishedGame.CoverImagePath = _fileProvider.UpdateFilePath(
-                pendingGame.CoverImagePath!,
-                $"{Folders.PendingGames}/{pendingGame.Id}",
-                $"{Folders.Games}/{publishedGame.Id}");
-
-            if (publishedGame.GamePlatform.Name == "Desktop")
+            var adminUserId = _userManager.GetUserId(User);
+            var logData = new
             {
-                publishedGame.GameURL = _fileProvider.UpdateFilePath(
-                pendingGame.GameURL!,
-                $"{Folders.PendingGames}/{pendingGame.Id}",
-                $"{Folders.Games}/{publishedGame.Id}");
-            }
+                PendingGameId = gameId,
+                AdminUserId = adminUserId,
+                AdminUserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                AdminUserAgent = Request.Headers.UserAgent.ToString(),
+            };
 
-            publishedGame.ImagesPaths = new List<string>();
-            // Переносим скриншоты
-            foreach (var imgPath in pendingGame.ImagesPaths!)
+            try
             {
-                var newImgPath = _fileProvider.UpdateFilePath(
-                    imgPath,
+                var publishedGame = await _pendingGamesRepository.PublishAsync(pendingGame);
+                // Переносим файлы
+                await _fileProvider.MoveGameFilesAsync(
+                    pendingGame.Id,
+                    publishedGame.Id,
+                    Folders.PendingGames,
+                    Folders.Games);
+
+                // Обновляем пути к файлам
+                publishedGame.CoverImagePath = _fileProvider.UpdateFilePath(
+                    pendingGame.CoverImagePath!,
                     $"{Folders.PendingGames}/{pendingGame.Id}",
                     $"{Folders.Games}/{publishedGame.Id}");
 
-                publishedGame.ImagesPaths.Add(newImgPath);
-            }
-
-            await _gamesRepository.UpdateAsync(publishedGame);
-
-            return Ok(new
-            {
-                success = true,
-                gameData = new
+                if (publishedGame.GamePlatform.Name == "Desktop")
                 {
-                    id = publishedGame.Id,
-                    title = publishedGame.Title,
-                    authorName = $"{publishedGame.Author.Name} {publishedGame.Author.Surname}",
-                    publicationDate = publishedGame.PublicationDate.ToString("dd.MM.yyyy"),
-                    imagePath = publishedGame.CoverImagePath,
-                    gameUrl = publishedGame.GameURL,
-                    platform = publishedGame.GamePlatform.Name
+                    publishedGame.GameURL = _fileProvider.UpdateFilePath(
+                    pendingGame.GameURL!,
+                    $"{Folders.PendingGames}/{pendingGame.Id}",
+                    $"{Folders.Games}/{publishedGame.Id}");
                 }
-            });
+
+                publishedGame.ImagesPaths = new List<string>();
+                // Переносим скриншоты
+                foreach (var imgPath in pendingGame.ImagesPaths!)
+                {
+                    var newImgPath = _fileProvider.UpdateFilePath(
+                        imgPath,
+                        $"{Folders.PendingGames}/{pendingGame.Id}",
+                        $"{Folders.Games}/{publishedGame.Id}");
+
+                    publishedGame.ImagesPaths.Add(newImgPath);
+                }
+
+                await _gamesRepository.UpdateAsync(publishedGame);
+
+                _logger.LogInformation("Успешная публикация игры {@PendingGamePublishData}", new
+                {
+                    logData.AdminUserId,
+                    logData.AdminUserIP,
+                    logData.AdminUserAgent,
+                    RequestTime = DateTime.UtcNow,
+                    PendingGameId = pendingGame.Id,
+                    PendingGamePlatform = pendingGame.GamePlatform.Name,
+                    ResponseStatusCode = 200
+                });
+
+                return Ok(new
+                {
+                    success = true,
+                    gameData = new
+                    {
+                        id = publishedGame.Id,
+                        title = publishedGame.Title,
+                        authorName = $"{publishedGame.Author.Name} {publishedGame.Author.Surname}",
+                        publicationDate = publishedGame.PublicationDate.ToString("dd.MM.yyyy"),
+                        imagePath = publishedGame.CoverImagePath,
+                        gameUrl = publishedGame.GameURL,
+                        platform = publishedGame.GamePlatform.Name
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка публикации игры {@PendingGamePublishData}", new
+                {
+                    logData.AdminUserId,
+                    logData.AdminUserIP,
+                    logData.AdminUserAgent,
+                    RequestTime = DateTime.UtcNow,
+                    ResponseStatusCode = 500
+                });
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> SendFeedback([FromBody] FeedBackViewModel feedBackView)
         {
+
             if (feedBackView.Message == null)
             {
                 ModelState.AddModelError("Message", "Сообщение не может быть пустым!");
@@ -105,6 +144,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 ModelState.AddModelError("GameId", "ID игры не может быть отрицательным!");
                 return BadRequest(new { error = "ID игры не может быть отрицательным!" });
             }
+            var adminUserId = _userManager.GetUserId(User);
+            var logData = new
+            {
+                PendingGameId = feedBackView.GameId,
+                AdminUserId = adminUserId,
+                AdminUserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                AdminUserAgent = Request.Headers.UserAgent.ToString(),
+            };
             try
             {
                 var existingGame = await _pendingGamesRepository.TryGetByIdAsync(feedBackView.GameId);
@@ -115,15 +162,34 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 //TODO: Тут нужно добавить отправку на email разработчика сообщения
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
+
+                _logger.LogInformation("Сообщение разработчику отправлено {@FeedbackPendingGameData}", new
+                {
+                    logData.PendingGameId,
+                    logData.AdminUserId,
+                    logData.AdminUserIP,
+                    logData.AdminUserAgent,
+                    DevUserId = existingGame.Author.Id,
+                    RequestTime = DateTime.UtcNow,
+                    ResponseStatusCode = 200
+                });
                 return Ok(new
                 {
                     success = true,
-                    message = "Сообщение отправлено разработчику"
+                    message = "Сообщение разработчику отправлено"
                 });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogError(ex, "Ошибка отправки сообщения разработчику {@FeedbackPendingGameData}", new
+                {
+                    logData.PendingGameId,
+                    logData.AdminUserId,
+                    logData.AdminUserIP,
+                    logData.AdminUserAgent,                 
+                    RequestTime = DateTime.UtcNow,
+                    ResponseStatusCode = 500
+                });
                 return StatusCode(500, new { error = ex.Message });
             }
         }
@@ -190,6 +256,15 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Details(EditGameViewModel editGame)
         {
+            var adminUserId = _userManager.GetUserId(User);
+            var logData = new
+            {
+                PendingGameId = editGame.Id,
+                AdminUserId = adminUserId,
+                AdminUserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                AdminUserAgent = Request.Headers.UserAgent.ToString(),
+            };
+
             try
             {
                 var existingGame = await _pendingGamesRepository.TryGetByIdAsync(editGame.Id);
@@ -225,11 +300,30 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 ProcessChangeGameURL(editGame, existingGame);
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
+
+                _logger.LogInformation("Именение данных игры {@PendingGameEditData}", new
+                {
+                    logData.PendingGameId,
+                    logData.AdminUserId,
+                    logData.AdminUserIP,
+                    logData.AdminUserAgent,
+                    DevUserId = existingGame.Author.Id,
+                    RequestTime = DateTime.UtcNow,
+                    ResponseStatusCode = 200
+                });
                 return Redirect("/Admin/Home/Index");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogError(ex, "Ошибка изменения игры {@PendingGameEditData}", new
+                {
+                    logData.PendingGameId,
+                    logData.AdminUserId,
+                    logData.AdminUserIP,
+                    logData.AdminUserAgent,
+                    RequestTime = DateTime.UtcNow,
+                    ResponseStatusCode = 500
+                });
                 return BadRequest(ex.Message);
             }
         }
