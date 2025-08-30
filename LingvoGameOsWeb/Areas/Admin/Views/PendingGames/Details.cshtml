@@ -221,7 +221,7 @@
                             {
                                 <div class="upload-form__group" id="game-file-upload-group">
                                     <label class="upload-form__label">Файл игры <span class="required">*</span></label>
-                                    @if(Model.GameURL != null)
+                                    @if (Model.GameURL != null)
                                     {
                                         <div class="upload-form__input-wrapper">
                                             <div class="upload-form__file-upload">
@@ -273,22 +273,22 @@
                                 </label>
                                 <p class="upload-form__file-label">Прикрепите фото обложки игры</p>
                                 <div class="upload-form__file-upload">
-                                    <label class="file-upload" id="cover-dropzone">
+                                    <div class="file-upload" id="cover-dropzone">
                                         <div class="file-upload__dropzone">
                                             <div class="file-upload__text">
                                                 <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
                                                 <div class="file-upload__info">
                                                     <p class="file-upload__info-text">
-                                                        Загрузите или перетащите файлы
+                                                        Загрузите или перетащите файл
                                                     </p>
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" asp-for="CoverImage" id="game-cover-file"
+                                            <input type="file" asp-for="CoverImage" id="cover-image-file"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
-                                    </label>
-                                    <div class="file-upload__previews" id="cover-preview"></div>
+                                    </div>
+                                    <div class="file-upload__previews" id="cover-image-preview"></div>
                                     <input type="hidden" asp-for="CurrentCoverImagePath" />
                                 </div>
                                 <span id="cover-error" class="error-message"></span>
@@ -321,7 +321,7 @@
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" asp-for="UploadedImages" name="UploadedImages" id="game-screenshots-file"
+                                            <input type="file" asp-for="UploadedImages" id="game-screenshots-file"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
                                                    hidden>
                                         </div>
@@ -334,7 +334,7 @@
                             </div>
 
                             <div class="upload-form__group">
-                                <label  class="upload-form__label">
+                                <label class="upload-form__label">
                                     Последнее сообщение для разработчика</span>
                                 </label>
                                 <div class="upload-form__input-wrapper">
@@ -418,36 +418,67 @@
 
 @* Илона, я честно не смог вынести это в файл отдельный - Upload.js *@
 <script>
+    // Для обложки игры
     document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.getElementById('game-cover-file');
-        const previewContainer = document.getElementById('cover-preview');
+        const fileInput = document.getElementById('cover-image-file');
+        const previewContainer = document.getElementById('cover-image-preview');
+        const dropzone = document.querySelector('.file-upload__dropzone');
+        let currentFile = null;
 
         // Если у модели уже есть изображение, показываем его
         const modelImagePath = '@Model?.CurrentCoverImagePath';
-        const modelImageInfo = {
-            name: '@Model?.CoverImageInfo?.Name',
-            size: @(Model?.CoverImageInfo?.Length / 1024 ?? 0)
-        };
-
         if (modelImagePath) {
-            showPreview(modelImagePath, modelImageInfo);
+            showPreview(modelImagePath, {
+                name: '@Model?.CoverImageInfo?.Name',
+                size: @(Model?.CoverImageInfo?.Length / 1024 ?? 0)
+            });
         }
 
-        // Обработка выбора нового файла
+        // Обработка выбора файла через input
         fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const fileInfo = {
-                        name: file.name,
-                        size: Math.round(file.size / 1024)
-                    };
-                    showPreview(event.target.result, fileInfo);
-                };
-                reader.readAsDataURL(file);
+            handleFileSelect(e.target.files[0]);
+        });
+
+        // Обработка drag and drop
+        dropzone.addEventListener('dragover', function(e) {
+            dropzone.classList.add('file-upload__dropzone--dragover');
+        });
+
+        dropzone.addEventListener('dragleave', function() {
+            dropzone.classList.remove('file-upload__dropzone--dragover');
+        });
+
+        dropzone.addEventListener('drop', function(e) {
+            dropzone.classList.remove('file-upload__dropzone--dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFileSelect(e.dataTransfer.files[0]);
             }
         });
+
+        // Клик по dropzone открывает диалог выбора файла
+        dropzone.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        // Функция обработки выбранного файла
+        function handleFileSelect(file) {
+            if (!file || !file.type.match('image.*')) {
+                return;
+            }
+
+            // Очищаем предыдущее превью
+            clearPreview();
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                showPreview(event.target.result, {
+                    name: file.name,
+                    size: Math.round(file.size / 1024)
+                });
+                currentFile = file;
+            };
+            reader.readAsDataURL(file);
+        }
 
         // Функция для отображения превью
         function showPreview(imageSrc, fileInfo) {
@@ -455,17 +486,24 @@
                 <div class="file-upload__file">
                     <span class="file-upload__file-name">${fileInfo.name}</span>
                     <span class="file-upload__file-size">${fileInfo.size} Кб</span>
-                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button" aria-label="Удалить ${fileInfo.name}">
+                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
                 </div>
                 <img src="${imageSrc}" class="file-upload__preview-image" alt="Превью обложки игры">
             `;
 
             // Добавляем обработчик для кнопки удаления
             const deleteButton = previewContainer.querySelector('.file-upload__file-trash');
-            deleteButton.addEventListener('click', function() {
-                previewContainer.innerHTML = '';
+            deleteButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                clearPreview();
                 fileInput.value = '';
+                currentFile = null;
             });
+        }
+
+        // Функция для очистки превью
+        function clearPreview() {
+            previewContainer.innerHTML = '';
         }
     });
 
@@ -563,11 +601,9 @@
             });
         }
 
-        // 4. Подготовка данных перед отправкой
+        // 4. Подготовка данных перед отправкой - КЛЮЧЕВОЕ ИЗМЕНЕНИЕ
         form.addEventListener('submit', function(e) {
-            // С этой строкой не работает отправка формы из-за конфликта с другим скриптом
-            // Обработчиком отправки в upload.js
-            // e.preventDefault();
+            // e.preventDefault(); // НЕ используем!
 
             // Собираем удаленные изображения
             const deletedImages = originalImages.filter(original =>
@@ -577,22 +613,38 @@
             // Добавляем скрытые поля для удаленных изображений
             addHiddenInputs('DeletedImages', deletedImages);
 
-            // Создаем FormData и добавляем файлы
-            const formData = new FormData(form);
-
-            // Добавляем новые файлы в FormData
-            const newFiles = currentImages
-                .filter(img => img.type === 'new')
-                .map(img => img.file);
-
-            // Очищаем существующие файлы в FormData
-            formData.delete('UploadedImages');
-
-            // Добавляем каждый новый файл отдельно
-            newFiles.forEach((file, index) => {
-                formData.append(`UploadedImages`, file);
-            });
+            // ОБНОВЛЯЕМ ФАЙЛЫ В INPUT - ВАЖНО ДЛЯ IFormFile[]
+            updateFileInput();
         });
+
+        // Функция обновления файлов в input
+            // Альтернативное решение - полная перезапись input
+    function updateFileInput() {
+        // Создаем новый input element
+        const newInput = document.createElement('input');
+        newInput.type = 'file';
+        newInput.name = 'UploadedImages';
+        newInput.multiple = true;
+        newInput.hidden = true;
+
+        // Создаем DataTransfer с файлами
+        const dataTransfer = new DataTransfer();
+        const newFiles = currentImages
+            .filter(img => img.type === 'new')
+            .map(img => img.file);
+
+        newFiles.forEach(file => dataTransfer.items.add(file));
+
+        // Устанавливаем files
+        newInput.files = dataTransfer.files;
+
+        // Заменяем старый input
+        const oldInput = document.getElementById('game-screenshots-file');
+        oldInput.parentNode.replaceChild(newInput, oldInput);
+
+        // Обновляем ссылку
+        fileInput = newInput;
+    }
 
         function addHiddenInputs(name, values) {
             // Удаляем старые inputs

@@ -37,7 +37,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Publish(int gameId)
+        public async Task<IActionResult> PublishAsync(int gameId)
         {
             PendingGame? pendingGame = await _pendingGamesRepository.TryGetByIdAsync(gameId);
             if (pendingGame == null)
@@ -56,7 +56,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             {
                 var publishedGame = await _pendingGamesRepository.PublishAsync(pendingGame);
                 // Переносим файлы
-                await _fileProvider.MoveGameFilesAsync(
+                _fileProvider.MoveGameFiles(
                     pendingGame.Id,
                     publishedGame.Id,
                     Folders.PendingGames,
@@ -98,6 +98,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     RequestTime = DateTime.UtcNow,
                     PendingGameId = pendingGame.Id,
                     PendingGamePlatform = pendingGame.GamePlatform.Name,
+                    NewGameId = publishedGame.Id,
                     ResponseStatusCode = 200
                 });
 
@@ -131,9 +132,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendFeedback([FromBody] FeedBackViewModel feedBackView)
+        public async Task<IActionResult> SendFeedbackAsync([FromBody] FeedBackViewModel feedBackView)
         {
-
             if (feedBackView.Message == null)
             {
                 ModelState.AddModelError("Message", "Сообщение не может быть пустым!");
@@ -186,7 +186,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.PendingGameId,
                     logData.AdminUserId,
                     logData.AdminUserIP,
-                    logData.AdminUserAgent,                 
+                    logData.AdminUserAgent,
                     RequestTime = DateTime.UtcNow,
                     ResponseStatusCode = 500
                 });
@@ -194,7 +194,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> GetGameInfo(int gameId)
+        public async Task<IActionResult> GetGameInfoAsync(int gameId)
         {
             try
             {
@@ -215,7 +215,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
         }
 
-        public async Task<IActionResult> Details(int gameId)
+        public async Task<IActionResult> DetailsAsync(int gameId)
         {
             var existingGame = await _pendingGamesRepository.TryGetByIdAsync(gameId);
             if (existingGame == null)
@@ -254,7 +254,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Details(EditGameViewModel editGame)
+        public async Task<IActionResult> DetailsAsync(EditGameViewModel editGame)
         {
             var adminUserId = _userManager.GetUserId(User);
             var logData = new
@@ -275,7 +275,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
                 var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(editGame.LanguageLevel);
 
-                existingGame.Title = editGame.Title;
                 existingGame.Description = editGame.Description;
                 existingGame.Rules = editGame.Rules;
                 existingGame.SkillsLearning = skills;
@@ -285,7 +284,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.GameFolderName = editGame.GameFolderName;
 
                 // Если есть новое изображение - меняем
-                await ProcessChangeCoverImage(editGame, existingGame);
+                await ProcessChangeCoverImageAsync(editGame, existingGame);
 
                 // Процесс удаления картинок
                 ProcessDeletedImages(editGame, existingGame);
@@ -295,6 +294,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
                 // Удаляем файл игры
                 ProcessDeleteGameFile(editGame, existingGame);
+                
+                // Меняем ия
+                ProcessRenameGameFile(editGame, existingGame);
 
                 // Меняем адрес игры, если он изменился
                 ProcessChangeGameURL(editGame, existingGame);
@@ -325,10 +327,10 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
-            }
+            }           
         }
 
-        private static void ProcessChangeGameURL(EditGameViewModel editGame, PendingGame existingGame)
+        private void ProcessChangeGameURL(EditGameViewModel editGame, PendingGame existingGame)
         {
             if (editGame.GameURL != editGame.CurrentGameURL)
             {
@@ -336,7 +338,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
         }
 
-        private async Task ProcessChangeCoverImage(EditGameViewModel editGame, PendingGame existingGame)
+        private async Task ProcessChangeCoverImageAsync(EditGameViewModel editGame, PendingGame existingGame)
         {
             if (editGame.CoverImage != null)
             {
@@ -364,7 +366,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 var deletedImagesPaths = new List<string>();
                 foreach (var deletedImg in editGameViewModel.DeletedImages)
                 {
-                    var deletedImagePath = _fileProvider.GetFileShortPath(deletedImg, Folders.PendingGames, pendingGame.Id);
+                    var deletedImagePath = _fileProvider.GetGameFileShortPath(deletedImg, Folders.PendingGames, pendingGame.Id);
                     deletedImagesPaths.Add(deletedImagePath);
                 }
                 pendingGame.ImagesPaths = pendingGame.ImagesPaths
@@ -395,6 +397,21 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 {
                     existingGame.GameURL = null;
                     _fileProvider.DeleteFile(editGame.CurrentGameURL);
+                }
+            }
+        }
+
+        private void ProcessRenameGameFile(EditGameViewModel editGame, PendingGame existingGame)
+        {
+            if(editGame.GamePlatform == "Desktop")
+            {
+                if (editGame.Title != existingGame.Title && existingGame.GameURL != null)
+                {
+                    string newGameFileName = editGame.Title.Trim();
+                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameURL, newGameFileName + ".msi");
+                    editGame.GameURL = newGameFilePath;
+                    existingGame.Title = newGameFileName;
+                    _fileProvider.MoveGameFile(existingGame.GameURL, editGame.GameURL);
                 }
             }
         }

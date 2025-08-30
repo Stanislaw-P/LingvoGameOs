@@ -15,8 +15,6 @@ function initializeUploadForm() {
     const selectedskillsLearningList = document.querySelector('#selected-skillsLearning-list');
     const skillsLearningInput = document.querySelector('#game-skillsLearning');
     const skillsLearningError = document.querySelector('#skillsLearning-error');
-    const keywordsInput = document.querySelector('#game-keywords');
-    const keywordsList = document.querySelector('#keywords-list');
     const coverDropzone = document.querySelector('#cover-dropzone');
     const fileDropzone = document.querySelector('#file-dropzone');
     const coverFileInput = document.querySelector('#game-cover-file');
@@ -289,22 +287,6 @@ function initializeUploadForm() {
         }
     });
 
-    // Handle keywords input
-    keywordsInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && e.target.value.trim()) {
-            e.preventDefault();
-            addTag(keywordsList, e.target.value.trim(), 'keyword');
-            e.target.value = '';
-        }
-    });
-
-    // Handle tag removal from keywordsList
-    keywordsList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('skillsLearning-item__remove')) {
-            e.target.parentElement.remove();
-        }
-    });
-
     // Handle file uploads
     setupFileUpload(
         coverDropzone,
@@ -382,7 +364,6 @@ function initializeUploadForm() {
         clearErrors();
 
         const formData = new FormData(form);
-        const keywords = Array.from(keywordsList.querySelectorAll('.skillsLearning-item')).map(item => item.dataset.value);
         const platforms = formData.get('GamePlatform').split(',').filter(p => p);
         const actionUrl = form.getAttribute('data-action');
         // Validate required fields
@@ -441,7 +422,6 @@ function initializeUploadForm() {
         //}
 
         formData.set('skillsLearning', JSON.stringify(selectedSkillsLearning));
-        formData.set('keywords', JSON.stringify(keywords));
         formData.set('platform', JSON.stringify(platforms));
 
         try {
@@ -467,7 +447,6 @@ function initializeUploadForm() {
             selectedPlatforms = [];
             updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
             updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
-            keywordsList.innerHTML = '';
             document.querySelector('#cover-preview').innerHTML = '';
             document.querySelector('#file-preview').innerHTML = '';
             fileUrlGroup.style.display = 'none';
