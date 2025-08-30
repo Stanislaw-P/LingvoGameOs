@@ -91,17 +91,7 @@
                                 </div>
                             </div>
 
-                            <div class="upload-form__group">
-                                <label for="game-keywords" class="upload-form__label">Ключевые слова</label>
-                                <div class="upload-form__input-wrapper">
-                                    <div class="input-field">
-                                        <input type="text" id="game-keywords" class="input-field__input"
-                                               placeholder="Введите ключевое слово и нажмите Enter">
-                                    </div>
-                                    <div class="skillsLearning-list" id="keywords-list"></div>
-                                    <span id="keywords-error" class="error-message"></span>
-                                </div>
-                            </div>
+                            
 
                             <div class="upload-form__group">
                                 <label class="upload-form__label">Уровень <span class="required">*</span></label>
@@ -215,7 +205,6 @@
                                                         <p class="file-upload__size">Максимальный размер 2 ГБ</p>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </label>
                                         <input type="file" asp-for="UploadedGame" id="game-file-file" name="UploadedGame"
@@ -232,7 +221,7 @@
                                     Обложка
                                     игры
                                 </label>
-                            
+
                                 <p class="upload-form__file-label">Прикрепите фото обложки игры</p>
                                 <div class="upload-form__file-upload">
                                     <div class="file-upload" id="cover-dropzone">
@@ -241,7 +230,7 @@
                                                 <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
                                                 <div class="file-upload__info">
                                                     <p class="file-upload__info-text">
-                                                        Загрузите или перетащите файлы
+                                                        Загрузите или перетащите файл
                                                     </p>
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
@@ -356,3 +345,83 @@
 <div class="notification" id="notification" aria-live="assertive"></div>
 <script type="module" src="js/upload.js"></script>
 <script type="module" src="js/script.js"></script>
+<script>
+    // Вариант с возможностью добавлять файлы по одному
+    document.addEventListener('DOMContentLoaded', function() {
+        const MAX_IMAGES = 3;
+        const fileInput = document.getElementById('game-screenshots-file');
+        const previewContainer = document.getElementById('screenshots-preview');
+        const errorElement = document.getElementById('screenshots-error');
+
+        let currentFiles = [];
+
+        fileInput.addEventListener('change', function(e) {
+            errorElement.textContent = '';
+            const newFiles = Array.from(e.target.files);
+
+            if (currentFiles.length + newFiles.length > MAX_IMAGES) {
+                errorElement.textContent = `Максимум можно загрузить ${MAX_IMAGES} изображения`;
+                return;
+            }
+
+            newFiles.forEach(file => {
+                if (!file.type.match('image.*')) {
+                    errorElement.textContent = 'Пожалуйста, загружайте только изображения';
+                    return;
+                }
+
+                // Проверяем на дубликаты
+                if (!currentFiles.some(f => f.name === file.name && f.size === file.size)) {
+                    currentFiles.push(file);
+                }
+            });
+
+            renderPreviews();
+            updateFileInput();
+        });
+
+        function renderPreviews() {
+            previewContainer.innerHTML = '';
+
+            currentFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const previewElement = document.createElement('div');
+                    previewElement.className = 'preview-item';
+                    previewElement.innerHTML = `
+                        <div class="file-upload__file">
+                            <span class="file-upload__file-name">${file.name}</span>
+                            <span class="file-upload__file-size">${formatFileSize(file.size)}</span>
+                            <img src="/icon/trash.svg" class="file-upload__file-trash"
+                                 alt="Удалить" title="Удалить">
+                        </div>
+                        <img src="${event.target.result}" class="file-upload__preview-image">
+                    `;
+
+                    previewElement.querySelector('.file-upload__file-trash').addEventListener('click', () => {
+                        currentFiles.splice(index, 1);
+                        renderPreviews();
+                        updateFileInput();
+                    });
+
+                    previewContainer.appendChild(previewElement);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function updateFileInput() {
+            const dataTransfer = new DataTransfer();
+            currentFiles.forEach(file => dataTransfer.items.add(file));
+            fileInput.files = dataTransfer.files;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    });
+</script>

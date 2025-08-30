@@ -70,14 +70,14 @@ namespace LingvoGameOs.Helpers
             {
                 return Path.Combine(_appEnvironment.WebRootPath + "/" + filePath);
             }
-            catch
+            catch (Exception ex)
             {
                 // Тут нужно логировать ошибку
                 return "";
             }
         }
 
-        public string GetFileShortPath(string fileName, Folders gameFolder, int gameId)
+        public string GetGameFileShortPath(string fileName, Folders gameFolder, int gameId)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace LingvoGameOs.Helpers
                 .ToList();
         }
 
-        public async Task MoveGameFilesAsync(int sourceGameId, int destGameId, Folders sourceGameFolder, Folders destGameFolder)
+        public void MoveGameFiles(int sourceGameId, int destGameId, Folders sourceGameFolder, Folders destGameFolder)
         {
             try
             {
@@ -140,12 +140,36 @@ namespace LingvoGameOs.Helpers
             }
         }
 
+        public void MoveGameFile(string sourceGamePath, string destGamePath)
+        {
+            try
+            {
+                var sourcePath = Path.Combine(_appEnvironment.WebRootPath + sourceGamePath);
+                var destPath = Path.Combine(_appEnvironment.WebRootPath + destGamePath);
+
+                File.Move(sourcePath, destPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public string UpdateFilePath(string originalPath, string oldBasePath, string newBasePath)
         {
             if (string.IsNullOrEmpty(originalPath))
                 return originalPath;
 
             return originalPath.Replace(oldBasePath, newBasePath, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public string UpdateFileName(string originalPath, string newFileName)
+        {
+            if (string.IsNullOrEmpty(originalPath))
+                return originalPath;
+            string oldFileName = originalPath.Split(['/', '\\']).Last();
+
+            return originalPath.Replace(oldFileName, newFileName, StringComparison.OrdinalIgnoreCase);
         }
 
         public void DeleteFile(string filePath)
