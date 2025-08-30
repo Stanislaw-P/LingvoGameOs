@@ -215,11 +215,12 @@
                                                         <p class="file-upload__size">Максимальный размер 2 ГБ</p>
                                                     </div>
                                                 </div>
-                                                <input type="file" asp-for="UploadedGame" id="game-file-file" name="UploadedGame"
-                                                       class="input-field__input"
-                                                       accept=".msi" hidden>
+                                                
                                             </div>
                                         </label>
+                                        <input type="file" asp-for="UploadedGame" id="game-file-file" name="UploadedGame"
+                                               class="input-field__input"
+                                               accept=".msi" hidden>
                                         <div class="file-upload__previews" id="file-preview"></div>
                                     </div>
                                     <span id="file-error" class="error-message"></span>
@@ -234,7 +235,7 @@
                             
                                 <p class="upload-form__file-label">Прикрепите фото обложки игры</p>
                                 <div class="upload-form__file-upload">
-                                    <label class="file-upload" id="cover-dropzone">
+                                    <div class="file-upload" id="cover-dropzone">
                                         <div class="file-upload__dropzone">
                                             <div class="file-upload__text">
                                                 <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
@@ -248,7 +249,7 @@
                                             <input type="file" asp-for="CoverImage" id="game-cover-file" name="CoverImage"
                                                    class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
                                         </div>
-                                    </label>
+                                    </div>
                                     <div class="file-upload__previews" id="cover-preview"></div>
                                 </div>
                                 <span id="cover-error" class="error-message"></span>
@@ -256,7 +257,7 @@
 
                             <div class="upload-form__group">
                                 <label for="game-video" class="upload-form__label">
-                                    Ссылка на видео из VK
+                                    Ссылка на видео из VK <span class="required">*</span>
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
@@ -270,7 +271,7 @@
                             <div class="upload-form__group">
                                 <p class="upload-form__file-label">Прикрепите скриншоты игры</p>
                                 <div class="upload-form__file-upload">
-                                    <label class="file-upload" id="screenshots-dropzone">
+                                    <label class="file-upload" id="screenshots-dropzone" for="game-screenshots-file">
                                         <div class="file-upload__dropzone">
                                             <div class="file-upload__text">
                                                 <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
@@ -281,11 +282,11 @@
                                                     <p class="file-upload__size">Максимальный размер 30MB</p>
                                                 </div>
                                             </div>
-                                            <input type="file" asp-for="UploadedImages" id="game-screenshots-file" name="UploadedImages"
-                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
-                                                   hidden>
                                         </div>
                                     </label>
+                                    <input type="file" asp-for="UploadedImages" id="game-screenshots-file" name="UploadedImages"
+                                           class="input-field__input" accept=".jpg,.jpeg,.png,.webp" multiple
+                                           hidden>
                                     <div class="file-upload__previews" id="screenshots-preview"></div>
                                 </div>
                                 <span id="screenshots-error" class="error-message"></span>
