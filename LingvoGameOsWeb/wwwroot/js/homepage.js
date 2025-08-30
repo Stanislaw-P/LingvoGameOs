@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for review button
     const reviewButton = document.querySelector('.game-reviews__button');
     if (reviewButton) {
+        
         reviewButton.addEventListener('click', showReviewModal);
     }
 });
