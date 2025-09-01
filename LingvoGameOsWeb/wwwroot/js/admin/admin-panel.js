@@ -257,7 +257,7 @@ function addToPublishedList(gameData) {
             `<a href="${gameData.gameUrl}" download class="admin-btn admin-btn--primary">Скачать</a>` :
             `<a href="/Game/Start/${gameData.id}" class="admin-btn admin-btn--primary">Играть</a>`
         }
-            <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(${gameData.id})">Редактировать</button>
+            <button asp-area="Admin" asp-controller="Games" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</button>
             <button class="admin-btn admin-btn--outline" onclick="openAnalytics(${gameData.id})">Аналитика</button>
         </div>
     `;

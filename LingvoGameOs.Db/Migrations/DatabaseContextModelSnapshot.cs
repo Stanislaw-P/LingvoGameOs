@@ -503,7 +503,7 @@ namespace LingvoGameOs.Db.Migrations
             modelBuilder.Entity("LingvoGameOs.Db.Models.PendingGame", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("DevPendingGames")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -624,6 +624,8 @@ namespace LingvoGameOs.Db.Migrations
             modelBuilder.Entity("LingvoGameOs.Db.Models.User", b =>
                 {
                     b.Navigation("DevGames");
+
+                    b.Navigation("DevPendingGames");
 
                     b.Navigation("UserGames");
                 });

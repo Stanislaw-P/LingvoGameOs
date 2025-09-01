@@ -62,23 +62,23 @@
             </div>
             <div class="level-progress__levels">
                 <div class="level-progress__level" data-tooltip="0-300 баллов"
-                data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
+                     data-description="«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.">
                     1. Барашек, который пытается говорить
                 </div>
                 <div class="level-progress__level active" data-tooltip="300-600 баллов"
-                data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
+                     data-description="«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.">
                     2. Юный нарт
                 </div>
                 <div class="level-progress__level" data-tooltip="600-900 баллов"
-                data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
+                     data-description="«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.">
                     3. Кавказский орёл
                 </div>
                 <div class="level-progress__level" data-tooltip="900-1200 баллов"
-                data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
+                     data-description="«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.">
                     4. Старейшина, который говорит тосты
                 </div>
                 <div class="level-progress__level" data-tooltip="1200+ баллов"
-                data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
+                     data-description="«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.">
                     5. Хранитель языка
                 </div>
             </div>
@@ -178,11 +178,11 @@
                         }
                     </div>
                 </header>
-                @if (Model.DevGames != null && Model.DevGames.Any())
+                @if ((Model.DevGames != null && Model.DevGames.Any()) || (Model.DevPendingGames != null && Model.DevPendingGames.Any()))
                 {
                     <div class="user-added-games__carousel">
                         <div class="user-added-games__list">
-                            @foreach (var game in Model.DevGames)
+                            @foreach (var game in Model.DevGames!)
                             {
                                 <article class="user-added-games__item">
                                     <a asp-area="" asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" class="user-added-games__link">
@@ -225,6 +225,38 @@
                                     </div>
                                 </article>
                             }
+                            @if (Model.IsMyProfile)
+                            {
+                                @foreach (var pendingGame in Model.DevPendingGames!)
+                                {
+                                    <article class="user-added-games__item">
+                                        <div class="user-added-games__link">
+                                            <img src="@(pendingGame.CoverImagePath ?? "/img/default-game.png")" alt="Обложка @pendingGame.Title" class="user-added-games__image" loading="lazy">
+                                            <div class="pending-game-card__status">На модерации</div>
+                                            <div class="user-added-games__content">
+                                                <h4 class="user-added-games__name">@pendingGame.Title</h4>
+                                            </div>
+                                        </div>
+                                        <div class="user-added-games__actions">
+                                            @if (pendingGame.GamePlatform.Name == "Desktop")
+                                            {
+                                                <a role="button" href="@pendingGame.GameURL" download class="user-added-games__button">Скачать</a>
+                                            }
+                                            else
+                                            {
+                                                <button disabled class="user-added-games__button">На модерации</button>
+                                            }
+                                            @if (Model.IsMyProfile)
+                                            {
+                                                <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
+                                                <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                                    <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
+                                                </a>
+                                            }
+                                        </div>
+                                    </article>
+                                }
+                            }
                         </div>
                     </div>
                 }
@@ -249,11 +281,11 @@
                         @{
                             var placeholderGames = new[]
                             {
-                                new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
-                                new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
-                                new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" },
-                                new { Id = 4, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
-                            };
+                                                new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
+                                                new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
+                                                new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" },
+                                                new { Id = 4, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
+                                                };
                         }
                         @if (placeholderGames.Any())
                         {

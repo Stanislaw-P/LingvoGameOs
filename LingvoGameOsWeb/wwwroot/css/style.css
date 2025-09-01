@@ -248,6 +248,19 @@ body {
     color: var(--accent-2);
 }
 
+.pending-game-card__status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--accent-3);
+    color: var(--text-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: "Axiforma", sans-serif;
+}
+
 /* #endregion */
 
 /* #region Стили контента */
@@ -6264,6 +6277,15 @@ game-pause-modal {
     .developer-page__instructions {
         font-size: 14px;
     }
+}
+
+/* #endregion */
+
+/* #region Кнопки Buttons */
+
+.btn--success {
+    background: var(--success-color);
+    color: var(--text-light);
 }
 
 /* #endregion */
