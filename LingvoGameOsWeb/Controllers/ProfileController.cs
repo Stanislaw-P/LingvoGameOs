@@ -13,12 +13,14 @@ namespace LingvoGameOs.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         readonly IGamesRepository gamesRepository;
+        readonly IPendingGamesRepository _pendingGamesRepository;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
+            _pendingGamesRepository = pendingGamesRepository;
         }
 
         // перевод из юзера в модельку профиля (пусть пока будет здесь)
@@ -48,9 +50,23 @@ namespace LingvoGameOs.Controllers
             {
                 var games = await gamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevGames = games;
+                var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
+                user.DevPendingGames = pendingGames;
+                var userViewModel = new UserViewModel()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    UserName = user.UserName,
+                    Level = 1,
+                    Description = user.Description,
+                    AvatarImgPath = user.AvatarImgPath,
+                    DevGames = user.DevGames,
+                    DevPendingGames = user.DevPendingGames,
+                    PlayerGames = user.PlayerGames,
+                    UserGames = user.UserGames
+                };
 
-                var userViewModel = new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Level = 1, Description = user.Description, AvatarImgPath = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames };
-                
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
                 if (userId == UserProfileOwner?.Id)
                 {

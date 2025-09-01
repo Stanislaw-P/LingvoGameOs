@@ -77,7 +77,7 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="admin-games-grid" id="published-games-list">
             @if (Model?.ExistingDevGames != null && Model.ExistingDevGames.Any())
             {
@@ -99,9 +99,9 @@
                             }
                             else
                             {
-                                <a href="@Url.Action("Start", "Game", new { idGame = game.Id })" class="admin-btn admin-btn--primary">Играть</a>
+                                <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="admin-btn admin-btn--primary">Играть</a>
                             }
-                            <button class="admin-btn admin-btn--secondary" onclick="openGameDetails(@game.Id)">Редактировать</button>
+                            <a asp-area="Admin" asp-controller="Games" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</a>
                             <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button>
                         </div>
                     </div>
@@ -129,26 +129,26 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="admin-games-grid">
             @if (Model?.PendingGames != null && Model.PendingGames.Any())
             {
-                @foreach (var game in Model.PendingGames)
+                @foreach (var pendingGame in Model.PendingGames)
                 {
-                    <div class="admin-game-card admin-game-card--pending" id="pending-game-@game.Id">
+                    <div class="admin-game-card admin-game-card--pending" id="pending-game-@pendingGame.Id">
                         <div class="admin-game-card__image">
-                            <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="@game.Title">
+                            <img src="@(pendingGame.CoverImagePath ?? "/img/default-game.png")" alt="@pendingGame.Title">
                             <div class="admin-game-card__status">На модерации</div>
                         </div>
                         <div class="admin-game-card__content">
-                            <h3 class="admin-game-card__title">@game.Title</h3>
-                            <p class="admin-game-card__developer">@game.Author?.Name @game.Author?.Surname</p>
-                            <p class="admin-game-card__date">@game.DispatchDate.ToString("dd.MM.yyyy")</p>
+                            <h3 class="admin-game-card__title">@pendingGame.Title</h3>
+                            <p class="admin-game-card__developer">@pendingGame.Author?.Name @pendingGame.Author?.Surname</p>
+                            <p class="admin-game-card__date">@pendingGame.DispatchDate.ToString("dd.MM.yyyy")</p>
                         </div>
                         <div class="admin-game-card__actions">
-                            <a asp-area="Admin" asp-controller="PendingGames" asp-action="Details" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Детали</a>
-                            <button class="admin-btn admin-btn--outline" onclick="openFeedback(@game.Id)">Обратная связь</button>
-                            <button class="admin-btn admin-btn--success" onclick="approveGame(@game.Id)">Опубликовать</button>
+                            <a asp-area="Admin" asp-controller="PendingGames" asp-action="Details" asp-route-gameId="@pendingGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
+                            <button class="admin-btn admin-btn--outline" onclick="openFeedback(@pendingGame.Id)">Обратная связь</button>
+                            <button class="admin-btn admin-btn--success" onclick="approveGame(@pendingGame.Id)">Опубликовать</button>
                         </div>
                     </div>
                 }

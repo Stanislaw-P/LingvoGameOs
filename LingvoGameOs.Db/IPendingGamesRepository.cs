@@ -12,5 +12,6 @@ namespace LingvoGameOs.Db
         Task ChangeImagesAsync(string coverImgPath, List<string> imgPaths, PendingGame game);
         Task UpdateAsync(PendingGame updatedGame);
         Task<Game> PublishAsync(PendingGame pendingGame);
+        Task<List<PendingGame>?> TryGetUserDevGamesAsync(User user);
     }
 }

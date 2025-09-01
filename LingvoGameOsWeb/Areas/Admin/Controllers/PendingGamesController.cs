@@ -303,7 +303,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
 
-                _logger.LogInformation("Именение данных игры {@PendingGameEditData}", new
+                _logger.LogInformation("Именение данных игры на модерации {@PendingGameEditData}", new
                 {
                     logData.PendingGameId,
                     logData.AdminUserId,
@@ -317,7 +317,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка изменения игры {@PendingGameEditData}", new
+                _logger.LogError(ex, "Ошибка изменения игры на модерации {@PendingGameEditData}", new
                 {
                     logData.PendingGameId,
                     logData.AdminUserId,
