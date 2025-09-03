@@ -15,15 +15,18 @@
     <div class="game-hero__content">
         <div class="game-hero__carousel">
             <div class="game-hero__slides" style="display: flex; overflow: hidden;">
-                <!-- Элементы карусели (скрины игр)-->
-                @foreach (var imgUrl in Model.ImagesPaths)
+                @if(Model.ImagesPaths != null)
                 {
-                    <div class="game-hero__slide">
-                        <img src="@imgUrl" alt="Game screenshot"
-                             class="game-hero__slide-image">
-                    </div>
+                    <!-- Элементы карусели (скрины игр)-->
+                    @foreach (var imgUrl in Model.ImagesPaths)
+                    {
+                        <div class="game-hero__slide">
+                            <img src="@imgUrl" alt="Game screenshot"
+                                 class="game-hero__slide-image">
+                        </div>
+                    }
                 }
-
+                
                 @if (Model.VideoUrl != null)
                 {
                     <!-- Видео с Rutube -->
@@ -77,7 +80,7 @@
     <div class="game-info__row">
         <article class="game-info__description">
             <h3 class="game-info__subtitle">Правила</h3>
-            <p class="game-info__text">
+            <p style="white-space: pre-line" class="game-info__text">
                 @Model.Rules
             </p>
         </article>
@@ -108,17 +111,6 @@
                     {
                         <span class="game-info__metadata-tag">@gameType.Name</span>
                     }
-                </div>
-            </div>
-
-            <div class="game-info__metadata-item">
-                <div class="game-info__metadata-header">
-                    <img src="/icon/keywords.svg" alt="Keywords" class="game-info__metadata-icon">
-                    <h4 class="game-info__metadata-title">Ключевые слова</h4>
-                </div>
-                <div class="game-info__metadata-list">
-                    <span class="game-info__metadata-tag">Бродилка</span>
-                    <span class="game-info__metadata-tag">Сюжет</span>
                 </div>
             </div>
             <div class="game-info__metadata-item">
@@ -164,7 +156,7 @@
                              class="game-info__developer-avatar">
                         <div class="game-info__developer-details">
                             <span class="game-info__developer-name">@Model.Author.Name @Model.Author.Surname</span>
-                            <span class="game-info__developer-games">Количество игр: @Model.Author.DevGames.Count</span>
+                            <span class="game-info__developer-games">Количество игр: @Model.Author?.DevGames?.Count</span>
                         </div>
                     </div>
                 </a>

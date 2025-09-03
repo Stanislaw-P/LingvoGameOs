@@ -93,6 +93,7 @@ namespace LingvoGameOs.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
         [HttpPost]
         public async Task<IActionResult> SettingsAsync(UserViewModel settings)
         {

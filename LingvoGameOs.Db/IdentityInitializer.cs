@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using LingvoGameOs.Db.Models;
+﻿using LingvoGameOs.Db.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace LingvoGameOs.Db
 {
@@ -116,8 +117,8 @@ namespace LingvoGameOs.Db
                     Rules = "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
                     GameFolderName = "lingvo-piece-by-piece",
                     AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
+                    PublicationDate = new DateTime(2025, 4, 14),
+                    LastUpdateDate = new DateTime(2025, 4, 20),
                     LanguageLevelId = languageLevelIntermediate.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
@@ -143,8 +144,8 @@ namespace LingvoGameOs.Db
                 "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
                     GameFolderName = "crossword-ossetia",
                     AuthorId = devDavid.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
+                    PublicationDate = new DateTime(2025, 4, 27),
+                    LastUpdateDate = new DateTime(2025, 5, 1),
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,
@@ -168,8 +169,8 @@ namespace LingvoGameOs.Db
                     Rules = "Отгадайте ребус, используя подсказки. Для ввода ответа используйте кнопки с буквами осетинского алфавита. У вас есть 3 подсказки для каждого ребуса. За каждый правильный ответ вы получаете 20 очков.",
                     GameFolderName = "linvgo-puzzles_in_ossetian",
                     AuthorId = devNastya.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
+                    PublicationDate = new DateTime(2025, 5, 10),
+                    LastUpdateDate = new DateTime(2025, 5, 25),
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 0,
@@ -193,16 +194,16 @@ namespace LingvoGameOs.Db
                     Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
                     Rules = "ИГРА В РАЗРАБОТКЕ!\nЕсть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
                     AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
+                    PublicationDate = new DateTime(2025, 5, 16),
+                    LastUpdateDate = new DateTime(2025, 6, 3),
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.6,
                     RaitingTeachers = 4.8,
-                    CoverImagePath = "/img/games/mountain-labyrinth-banner-1.png",
+                    CoverImagePath = "/img/games/game-banner.png",
                     ImagesPaths = new List<string>
                     {
-                        "/img/games/mountain-labyrinth-banner-1.png",
+                        "/img/games/game-banner.png",
                         "/img/games/mountain-labyrinth-banner-2.png",
                         "/img/games/mountain-labyrinth-banner-3.png"
                     },
@@ -217,8 +218,8 @@ namespace LingvoGameOs.Db
                     Description = "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
                     Rules = "ИГРА В РАЗРАБОТКЕ!\nСлушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
                     AuthorId = devMarat.Id,
-                    PublicationDate = DateTime.Now,
-                    LastUpdateDate = DateTime.Now,
+                    PublicationDate = new DateTime(2025, 3, 7),
+                    LastUpdateDate = new DateTime(2025, 4, 30),
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform1.Id,
                     RaitingPlayers = 4.4,
@@ -233,12 +234,37 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType3, gameType5 },
                     NumberDownloads = 241
                 };
-                
-                
+
+                var game6 = new Game
+                {
+                    Id = 6,
+                    Title = "Поезд",
+                    Description = "Игра развивает память, а также навыки чтения и произношения. В игре доступны три языка: осетинский, грузинский и армянский, а также три уровня сложности.",
+                    Rules = "Цель игры: Изучить осетинский, грузинский или армянский язык, сопоставляя слова с картинками и зарабатывая баллы. Успешное завершение уровней повышает рейтинг.\r\nРежимы игры:\r\nУчить слова: Изучайте слова с картинками и озвучкой. Нажмите на картинку, чтобы услышать произношение и запомнить.\r\nИграть: Перетаскивайте картинки в вагоны поезда, подписанные на выбранном языке.\r\nУровни сложности:\r\n1 уровень: 8 вагонов, картинки с подписями на русском, озвучка при нажатии.\r\n2 уровень: 12 вагонов, картинки с подписями на русском, без озвучки.\r\n3 уровень: 19 вагонов, только картинки, без подписей и озвучки.",
+                    AuthorId = devIlona.Id,
+                    PublicationDate = new DateTime(2025, 9, 3),
+                    LastUpdateDate = new DateTime(2025, 9, 3),
+                    LanguageLevelId = languageLevelAdvanced.Id,
+                    GamePlatformId = platform2.Id,
+                    RaitingPlayers = 4.0,
+                    RaitingTeachers = 3.7,
+                    CoverImagePath = "/Games/6/train-cover.png",
+                    ImagesPaths = new List<string>
+                    {
+                        "/Games/6/train scrin-1.jpg",
+                        "/Games/6/train scrin-2.jpg",
+                        "/Games/6/train scrin-3.jpg"
+                    },
+                    SkillsLearning = new List<SkillLearning> { gameType4, gameType5 },
+                    NumberDownloads = 4,
+                    GameURL = "/Games/6/Поезд.msi",
+                    VideoUrl = "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1"
+                };
+
 
                 if (!await context.Games.AnyAsync())
                 {
-                    await context.AddRangeAsync(game1, game2, game3, game4, game5);
+                    await context.AddRangeAsync(game1, game2, game3, game4, game5, game6);
                     await context.SaveChangesAsync();
                 }
             }
