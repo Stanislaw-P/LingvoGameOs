@@ -51,7 +51,7 @@ namespace LingvoGameOs.Controllers
         {
             if (register.UserName == register.Password)
             {
-                ModelState.AddModelError("", "Логин и пароль не должны совпадать");
+                ModelState.AddModelError("Login == Password", "Логин и пароль не должны совпадать");
             }
             if (ModelState.IsValid)
             {
