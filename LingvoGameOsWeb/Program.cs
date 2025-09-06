@@ -44,7 +44,7 @@ builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbReposit
 builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
 builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbRepository>();
 builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>();
-
+builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 
 // Добавление ненавязчивого Ajax
 builder.Services.AddUnobtrusiveAjax();

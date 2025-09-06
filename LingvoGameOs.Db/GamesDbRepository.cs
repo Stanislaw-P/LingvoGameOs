@@ -18,6 +18,7 @@ namespace LingvoGameOs.Db
 				.Include(g => g.SkillsLearning)
 				.Include(g => g.GamePlatform)
 				.Include(g => g.Author)
+				.AsSplitQuery()
 				.ToListAsync();
 		}
 
@@ -30,7 +31,8 @@ namespace LingvoGameOs.Db
 				.Include(g => g.Players)
 				.Include(g => g.Author)
 				.ThenInclude(a => a.DevGames)
-				.FirstOrDefaultAsync(game => game.Id == idGame);
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(game => game.Id == idGame);
 		}
 
 		public async Task AddAsync(Game newGame)
@@ -59,21 +61,26 @@ namespace LingvoGameOs.Db
             await databaseContext.SaveChangesAsync();
 		}
 
-		public async Task<List<Game>?> TryGetUserGameHistoryAsync(User user)
+		public async Task<List<Game>> TryGetUserGameHistoryAsync(User user)
 		{
 			var existingUser = await databaseContext.Users
 				.Include(u => u.PlayerGames)
-				.FirstOrDefaultAsync(u => u.Id == user.Id);
-			if (existingUser == null)
-				return null;
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
+			if (existingUser.PlayerGames == null)
+				return new List<Game>();
 			return existingUser.PlayerGames;
 		}
 
-        public async Task<List<Game>?> TryGetUserDevGamesAsync(User user)
+        public async Task<List<Game>> TryGetUserDevGamesAsync(User user)
 		{
+			return await databaseContext.Games.Where(g=>g.Author.Id == user.Id)
+				.Include(g=> g.GamePlatform)
+				.ToListAsync();
             var existingUser = await databaseContext.Users
                 .Include(u => u.DevGames!)
                 .ThenInclude(g => g.GamePlatform)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
             if (existingUser == null)
                 return null;

@@ -73,18 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Обработка поиска
-    const searchForm = document.querySelector('.games-search__form');
-    searchForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const searchTerm = searchForm.querySelector('#game-search-input').value.trim().toLowerCase();
-        filters.search = searchTerm;
-        applyFilters();
-        if (searchTerm) {
-            showNotification(`Поиск игры: "${searchTerm}"...`);
-        } else {
-            showNotification('Введите название игры для поиска');
-        }
-    });
+    //const searchForm = document.querySelector('.games-search__form');
+    //searchForm.addEventListener('submit', (e) => {
+    //    e.preventDefault();
+    //    const searchTerm = searchForm.querySelector('#game-search-input').value.trim().toLowerCase();
+    //    filters.search = searchTerm;
+    //    applyFilters();
+    //    if (searchTerm) {
+    //        showNotification(`Поиск игры: "${searchTerm}"...`);
+    //    } else {
+    //        showNotification('Введите название игры для поиска');
+    //    }
+    //});
 
     // Применение фильтров
     function applyFilters() {
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetFiltersButton = document.createElement('button');
     resetFiltersButton.textContent = 'Сбросить фильтры';
     resetFiltersButton.className = 'profile__button reset-filters';
-    document.querySelector('.games-filters').appendChild(resetFiltersButton);
+    //document.querySelector('.games-filters').appendChild(resetFiltersButton);
 
     resetFiltersButton.addEventListener('click', () => {
         filters = { search: '', category: '', keyword: '', rating: '' };

@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //if (playButton) playButton.addEventListener('click', () => alert('Игра запускается! (Функционал в разработке)'));
 
     const reviewButton = document.querySelector('.game-reviews__button');
-    if (reviewButton) reviewButton.addEventListener('click', showReviewModal);
+    if (reviewButton) reviewButton.addEventListener('click', function () {
+        // Получаем gameId из data атрибута
+        const gameId = this.getAttribute('data-game-id');
+        showReviewModal(gameId);
+    });
 
     if (document.querySelector('.game-reviews__container')) initializeReviews();
 

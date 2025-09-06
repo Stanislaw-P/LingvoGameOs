@@ -129,29 +129,7 @@
 </section>
 
 <!-- Отзывы -->
-<section class="game-reviews">
-    <div class="game-reviews__header">
-        <h2 class="game-reviews__title">Отзывы</h2>
-        <button class="game-reviews__button profile__button">
-            <img src="/icon/write.svg" alt="Write" class="game-reviews__icon"> Написать отзыв
-        </button>
-    </div>
-    <div class="game-reviews__container">
-        <!-- Отзывы будут загружены динамически через JavaScript -->
-    </div>
-    <div class="game-reviews__navigation">
-        <button class="game-reviews__nav-button game-reviews__prev">
-            <img src="/icon/prev.svg" alt="Previous">
-        </button>
-        <div class="game-reviews__indicators">
-            <!-- Индикаторы будут созданы динамически -->
-        </div>
-        <button class="game-reviews__nav-button game-reviews__next">
-            <img src="/icon/next.svg" alt="Next">
-        </button>
-    </div>
-</section>
-
+@await Component.InvokeAsync("Reviews", false)
 
 <!-- FAQ Section
 <section class="homepage-faq">
@@ -222,4 +200,3 @@
     </div>
 </section>
 -->
-<script type="module" src="/js/homepage.js"></script>

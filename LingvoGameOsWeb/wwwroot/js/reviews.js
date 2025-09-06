@@ -22,13 +22,12 @@ const sampleReviewsData = [
     { name: "Дэвид", location: "Мир по кусочкам", rating: "4", text: "Игра прикольная! Как интересно собирается картинка, мне интересно как разработчику. Иногда задания кажутся сложноватыми, но это только подогревает интерес!" },
     { name: "Владислав", location: "Ребусы на осетинском", rating: "4", text: "Очень сложная игра, подсказки тоже не помогли. Хоть головоломки и заставляют думать, но мне в нее пока играть рано" },
     {
-        name: "Марат", location: "Кроссворд", rating: "5", text: "мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются." },
+        name: "Марат", location: "Кроссворд", rating: "5", text: "мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются."
+    },
 ];
 
 // Отображение модального окна для отзыва
-export function showReviewModal() {
-    alert("Функция добавления отзывов находится в стадии разработки. Ждите обновлений!");
-    /*
+export async function showReviewModal(gameId) {
     const modal = document.createElement('div');
     modal.className = 'review-modal';
     modal.innerHTML = `
@@ -71,23 +70,41 @@ export function showReviewModal() {
     });
 
     modal.querySelector('.review-modal__close').addEventListener('click', () => modal.remove());
-    modal.querySelector('.review-modal__form').addEventListener('submit', (e) => {
+    modal.querySelector('.review-modal__form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const comment = modal.querySelector('.review-modal__textarea').value;
         if (rating && comment) {
-            addReviewToList({ 
-                name: 'Вы', 
-                location: 'Ваше местоположение', 
-                rating, 
-                text: comment,
-                avatar: getRandomAvatar() // Используем случайную аватарку для новых отзывов
-            });
-            modal.remove();
+            try {
+                const reviewData = {
+                    text: comment,
+                    rating: rating,
+                    gameId: gameId
+                }
+                const response = await fetch('/Review/Send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(reviewData)
+                });
+
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    addReviewToList(result.reviewData);
+                    modal.remove();
+                }
+                else {
+                    alert(result.message || 'Ошибка при отправке отзыва');
+                }
+            }
+            catch (error) {
+                console.error('Ошибка:', error); 
+                alert('Произошла ошибка при отправке отзыва.'); 
+            }
         } else {
             alert('Пожалуйста, выберите рейтинг и напишите комментарий.');
         }
     });
-    */
 }
 
 // Добавление отзыва в список
@@ -97,16 +114,16 @@ export function addReviewToList(review) {
 
     const reviewCard = document.createElement('article');
     reviewCard.className = 'game-reviews__card';
-    
+
     // Определяем аватарку: если есть avatar в review, используем её, иначе ищем по имени
-    const avatarSrc = review.avatar || getAvatarByName(review.name);
-    
+    const avatarSrc = review.authorAvatarPath || getRandomAvatar();
+
     reviewCard.innerHTML = `
         <div class="game-reviews__reviewer">
             <img src="${avatarSrc}" alt="Reviewer" class="game-reviews__avatar">
             <div class="game-reviews__reviewer-details">
-                <span class="game-reviews__reviewer-name">${review.name}</span>
-                <span class="game-reviews__reviewer-location">${review.location}</span>
+                <span class="game-reviews__reviewer-name">${review.authorName}</span>
+                <span class="game-reviews__reviewer-location">${review.gameTitle}</span>
             </div>
             <div class="game-reviews__rating">
                 <span class="game-reviews__rating-score">${review.rating}</span>
@@ -119,20 +136,20 @@ export function addReviewToList(review) {
     updatePagination();
 }
 
-// Инициализация отзывов
+ //Инициализация отзывов
 export function initializeReviews() {
-    const container = document.querySelector('.game-reviews__container');
-    if (!container) return;
+    //const container = document.querySelector('.game-reviews__container');
+    //if (!container) return;
 
-    container.innerHTML = '';
-    
+    //container.innerHTML = '';
+
     // Создаем отзывы с соответствующими аватарками
-    const reviewsWithAvatars = sampleReviewsData.map(review => ({
-        ...review,
-        avatar: getAvatarByName(review.name)
-    }));
-    
-    reviewsWithAvatars.forEach(review => addReviewToList(review));
+    //const reviewsWithAvatars = sampleReviewsData.map(review => ({
+    //    ...review,
+    //    avatar: getAvatarByName(review.name)
+    //}));
+
+    //reviewsWithAvatars.forEach(review => addReviewToList(review));
     updatePagination();
 }
 
