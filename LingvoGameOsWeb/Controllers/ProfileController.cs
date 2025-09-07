@@ -22,26 +22,6 @@ namespace LingvoGameOs.Controllers
             _pendingGamesRepository = pendingGamesRepository;
         }
 
-        // перевод из юзера в модельку профиля (пусть пока будет здесь)
-        //public ProfileViewModel UserToProfileViewModel(User user)
-        //{
-        //    if (user != null)
-        //    {
-        //        ProfileViewModel profile = new ProfileViewModel()
-        //        {
-        //            Name = user.Name,
-        //            Surname = user.Surname,
-        //            Email = user.Email,
-        //            // пока не знаю как ее получить
-        //            Role = "Заглушка роли",
-        //            Description = user.Description
-        //        };
-        //        return profile;
-        //    }
-        //    return new ProfileViewModel();
-        //}
-
-
         public async Task<IActionResult> IndexAsync(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);

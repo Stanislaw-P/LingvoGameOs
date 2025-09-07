@@ -37,15 +37,14 @@
                     <input asp-for="UserName" type="email" class="profile__input" id="email" value="@Model.UserName" required>
                     <span asp-validation-for="UserName" />
                 </div>
-                <div class="profile__field">
-                    <label class="profile__label" for="level">Уровень</label>
-                    <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
-                </div>
                 <div class="profile__field profile__field--bio">
                     <label asp-for="Description" class="profile__label">О себе</label>
                     <textarea asp-for="Description" class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе">@Model.Description</textarea>
                     <span asp-validation-for="Description" />
                 </div>
+
+                <!-- Загрузка авы -->
+                
 
                 <input asp-for="Id" type="hidden" value="@Model.Id">
 
