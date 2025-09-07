@@ -72,11 +72,11 @@ namespace LingvoGameOs.Db
                 var devVlad = new User
                 {
                     Name = "Владислав",
-                    Surname = "Владислав",
+                    Surname = "Петров",
                     AvatarImgPath = "/img/avatars/VslavAva.jpg",
                     Description = "Разработчик игр",
-                    UserName = "Vladislav@gmail.com",
-                    Email = "Vladislav@gmail.com"
+                    UserName = "VladislavPetrov@gmail.com",
+                    Email = "VladislavPetrov@gmail.com"
                 };
                 // создаем пользователя, если его нет
                 await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
@@ -280,7 +280,7 @@ namespace LingvoGameOs.Db
 
                 var review1 = new Review
                 {
-                    Author = devDavid,
+                    AuthorId = devDavid.Id,
                     GameId = game1.Id,
                     Rating = 4,
                     PublicationDate = new DateTime(2025, 7, 24),
@@ -288,7 +288,7 @@ namespace LingvoGameOs.Db
                 };
                 var review2 = new Review
                 {
-                    Author = devMarat,
+                    AuthorId = devMarat.Id,
                     GameId = game2.Id,
                     Rating = 5,
                     PublicationDate = new DateTime(2025, 8, 4),
@@ -296,7 +296,7 @@ namespace LingvoGameOs.Db
                 };
                 var review3 = new Review
                 {
-                    Author = devVlad,
+                    AuthorId = devVlad.Id,
                     GameId = game3.Id,
                     Rating = 4,
                     PublicationDate = new DateTime(2025, 9, 1),
@@ -322,7 +322,7 @@ namespace LingvoGameOs.Db
 
         private static async Task _CreateUserAsync(UserManager<User> userManager, User user, string pass, string roleName)
         {
-            if (await userManager.FindByEmailAsync(user.Email) == null)
+            if (await userManager.FindByEmailAsync(user.Email!) == null)
             {
                 var result = await userManager.CreateAsync(user, pass);
                 if (result.Succeeded)

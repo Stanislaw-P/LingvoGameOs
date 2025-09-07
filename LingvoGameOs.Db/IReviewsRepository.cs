@@ -7,5 +7,6 @@ namespace LingvoGameOs.Db
         Task<Review?> TryGetByIdAsync(Guid reviewId);
         Task AddAsync(Review review);
         Task<List<Review>> GetAllAsync();
+        Task InvalidateCacheAsync();
     }
 }

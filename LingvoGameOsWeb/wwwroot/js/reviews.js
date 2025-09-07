@@ -92,6 +92,7 @@ export async function showReviewModal(gameId) {
                 if (response.ok && result.success) {
                     addReviewToList(result.reviewData);
                     modal.remove();
+                    alert('Отзыв отправлен, скоро он появится в списке.');
                 }
                 else {
                     alert(result.message || 'Ошибка при отправке отзыва');

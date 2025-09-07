@@ -25,8 +25,6 @@ builder.Services.AddIdentity<User, IdentityRole>()
 // подключение контекста бд
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionString));
 
-
-
 // настройка cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -49,8 +47,12 @@ builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 // Добавление ненавязчивого Ajax
 builder.Services.AddUnobtrusiveAjax();
 
+// Логирование
 builder.Host.UseSerilog((context, services, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
+
+// Подключение кеширования
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

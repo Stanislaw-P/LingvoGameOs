@@ -44,7 +44,8 @@ namespace LingvoGameOs.Controllers
                 review.Author = currentUser;
                 review.PublicationDate = DateTime.Now;
                 await _reviewsRepository.AddAsync(review);
-
+                // Очищаем Кеш после добавления отзыва
+                await _reviewsRepository.InvalidateCacheAsync();
                 _logger.LogInformation("Успешная отправка отзыва {@SendReviewsData}", new
                 {
                     logData.UserId,
