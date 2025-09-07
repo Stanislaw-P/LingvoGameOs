@@ -21,7 +21,7 @@
                     }
                 </div>
             </div>
-            <form class="profile__form" method="post">
+            <form class="profile__form" method="post" enctype="multipart/form-data">
                 <div class="profile__field">
                     <label asp-for="Name" class="profile__label">Имя</label>
                     <input asp-for="Name" type="text" class="profile__input" id="firstName" value="@Model.Name" required>
@@ -45,7 +45,6 @@
 
                 <!-- Загрузка авы -->
                 
-
                 <input asp-for="Id" type="hidden" value="@Model.Id">
 
                 <input asp-for="AvatarImgPath" type="hidden" value="@Model.AvatarImgPath">
@@ -62,7 +61,7 @@
     </aside>
     <section class="content__main">
         <!-- Блок добавленных пользователем игр -->
-        <div class="games-block">
+        @* <div class="games-block">
             <!-- Блок добавленных пользователем игр -->
             <section class="user-added-games">
                 <header class="user-added-games__header">
@@ -138,6 +137,6 @@
                     </div>
                 }
             </section>
-        </div>
+        </div> *@
     </section>
 </div>

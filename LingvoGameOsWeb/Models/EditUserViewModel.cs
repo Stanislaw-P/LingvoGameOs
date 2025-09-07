@@ -1,9 +1,8 @@
-﻿using LingvoGameOs.Db.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LingvoGameOs.Models
 {
-    public class UserViewModel
+    public class EditUserViewModel
     {
         public string Id { get; set; }
 
@@ -16,12 +15,8 @@ namespace LingvoGameOs.Models
 
         [Required(ErrorMessage = "Введите фамилию")]
         public string Surname { get; set; }
-        public string? Description { get; set; }
-        public string? AvatarImgPath { get; set; }
-        public List<Game>? PlayerGames { get; set; }
-        public List<PlayerGame>? UserGames { get; set; }
-        public List<Game>? DevGames { get; set; }
-        public List<PendingGame>? DevPendingGames { get; set; }
-        public bool IsMyProfile { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public IFormFile UploadedFile { get; set; }
     }
 }

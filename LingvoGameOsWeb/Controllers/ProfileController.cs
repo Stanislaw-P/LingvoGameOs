@@ -13,13 +13,15 @@ namespace LingvoGameOs.Controllers
         private readonly SignInManager<User> signInManager;
         readonly IGamesRepository gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
+        private readonly IWebHostEnvironment appEnvironment;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment appEnvironment)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
+            this.appEnvironment = appEnvironment;
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
@@ -37,7 +39,6 @@ namespace LingvoGameOs.Controllers
                     Name = user.Name,
                     Surname = user.Surname,
                     UserName = user.UserName,
-                    Level = 1,
                     Description = user.Description,
                     AvatarImgPath = user.AvatarImgPath,
                     DevGames = user.DevGames,
@@ -68,7 +69,7 @@ namespace LingvoGameOs.Controllers
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
                 if (userId == UserProfileOwner?.Id)
                 {
-                    return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName!, Level = 1, Description = user.Description, AvatarImgPath = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames });
+                    return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName!, Description = user.Description, AvatarImgPath = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames });
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -141,7 +142,6 @@ namespace LingvoGameOs.Controllers
                     Name = user.Name,
                     Surname = user.Surname,
                     UserName = user.UserName,
-                    Level = 1,
                     Description = user.Description,
                     AvatarImgPath = user.AvatarImgPath,
                     DevGames = user.DevGames,
