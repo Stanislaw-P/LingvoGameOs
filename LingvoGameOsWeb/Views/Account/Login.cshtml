@@ -268,12 +268,12 @@
             <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
             <div class="login-field">
                 <label asp-for="UserName" class="login-label">Введите электронную почту</label>
-                <input type="email" asp-for="UserName" class="login-input" placeholder="Введите электронную почту" required />
+                <input type="email" asp-for="UserName" class="login-input" placeholder="Введите электронную почту" />
                 <span asp-validation-for="UserName" class="login-validation" />
             </div>
             <div class="login-field">
                 <label asp-for="Password" class="login-label">Введите пароль</label>
-                <input type="password" asp-for="Password" class="login-input" required />
+                <input type="password" asp-for="Password" class="login-input" placeholder="Введите пароль" />
                 <span asp-validation-for="Password" class="login-validation" />
             </div>
             <button type="submit" asp-controller="Account" asp-action="Login" class="login-btn-main">Продолжить</button>
@@ -281,7 +281,7 @@
                 <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
             </button>
 
-            <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+            <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
         </form>
         <div class="login-bottom-link">
             Ещё не зарегистрированы? <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрироваться</a>
@@ -297,3 +297,5 @@
         // Password field is now always visible, so no JS needed for reveal
     </script>
 }
+
+@await Html.PartialAsync("_ValidationScriptsPartial")
