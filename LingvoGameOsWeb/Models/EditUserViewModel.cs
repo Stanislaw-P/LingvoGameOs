@@ -6,7 +6,7 @@ namespace LingvoGameOs.Models
     {
         public string Id { get; set; }
 
-        [Required(ErrorMessage = "Введите логин")]
+        [Required(ErrorMessage = "Введите email")]
         [EmailAddress(ErrorMessage = "Введите корректный email")]
         public string UserName { get; set; }
 
@@ -16,7 +16,7 @@ namespace LingvoGameOs.Models
         [Required(ErrorMessage = "Введите фамилию")]
         public string Surname { get; set; }
         public string Description { get; set; }
-        public string ImagePath { get; set; }
+        public string AvatarImgPath { get; set; }
         public IFormFile UploadedFile { get; set; }
     }
 }
