@@ -63,13 +63,9 @@ namespace LingvoGameOs.Controllers
             var user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                //var games = await gamesRepository.TryGetUserDevGamesAsync(user);
-                //user.DevGames = games;
-
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
                 if (userId == UserProfileOwner?.Id)
                 {
-                    //return View(new UserViewModel() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName!, Description = user.Description, AvatarImgPath = user.AvatarImgPath, DevGames = user.DevGames, PlayerGames = user.PlayerGames, UserGames = user.UserGames });
                     return View(new EditUserViewModel() { Id = user.Id, UserName = user.UserName, Name = user.Name, Surname = user.Surname, Description = user.Description, AvatarImgPath = user.AvatarImgPath });
                 }
             }
@@ -77,18 +73,13 @@ namespace LingvoGameOs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SettingsAsync(UserViewModel settings)
+        public async Task<IActionResult> SettingsAsync(EditUserViewModel settings)
         {
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            var games = await gamesRepository.TryGetUserDevGamesAsync(user);
-            user.DevGames = games;
-            settings.PlayerGames = user.PlayerGames;
-            settings.UserGames = user.UserGames;
-            settings.DevGames = user.DevGames;
             if (ModelState.IsValid)
             {
                 if (user.UserName != settings.UserName)
