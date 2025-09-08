@@ -11,14 +11,7 @@
             <h3 class="profile__title">Профиль пользователя</h3>
             <div class="profile__avatar">
                 <div class="profile__avatar-wrapper">
-                    @if (Model.AvatarImgPath != null)
-                    {
-                        <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image">
-                    }
-                    else
-                    {
-                        <img src="/img/avatar100.png" alt="Аватар пользователя" class="profile__image">
-                    }
+                    <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image">
                 </div>
             </div>
             <form class="profile__form">

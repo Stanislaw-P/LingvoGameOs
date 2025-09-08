@@ -55,7 +55,7 @@ namespace LingvoGameOs.Controllers
             }
             if (ModelState.IsValid)
             {
-                User user = new User() { Email = register.UserName, UserName = register.UserName, Name = register.Name, Surname = register.Surname };
+                User user = new User() { Email = register.UserName, UserName = register.UserName, Name = register.Name, Surname = register.Surname, AvatarImgPath = "/img/avatar100.png" };
                 var result = await userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
