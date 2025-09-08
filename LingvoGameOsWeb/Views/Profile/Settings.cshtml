@@ -15,6 +15,12 @@
                 </div>
             </div>
             <form class="profile__form" method="post" enctype="multipart/form-data">
+                <!-- Загрузка авы -->
+                <label for="UploadedFile">Изменить изображение</label>
+                <input asp-for="UploadedFile" type="file">
+
+                <input asp-for="AvatarImgPath" type="hidden" value="@Model.AvatarImgPath">
+
                 <div class="profile__field">
                     <label asp-for="Name" class="profile__label">Имя</label>
                     <input asp-for="Name" type="text" class="profile__input" id="firstName" value="@Model.Name" required>
@@ -35,12 +41,8 @@
                     <textarea asp-for="Description" class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе">@Model.Description</textarea>
                     <span asp-validation-for="Description" />
                 </div>
-
-                <!-- Загрузка авы -->
                 
                 <input asp-for="Id" type="hidden" value="@Model.Id">
-
-                <input asp-for="AvatarImgPath" type="hidden" value="@Model.AvatarImgPath">
 
                 <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
 

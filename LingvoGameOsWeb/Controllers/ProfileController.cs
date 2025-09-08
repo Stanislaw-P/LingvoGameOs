@@ -4,6 +4,7 @@ using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using LingvoGameOs.Helpers;
 
 namespace LingvoGameOs.Controllers
 {
@@ -13,15 +14,16 @@ namespace LingvoGameOs.Controllers
         private readonly SignInManager<User> signInManager;
         readonly IGamesRepository gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
-        private readonly IWebHostEnvironment appEnvironment;
+        readonly FileProvider fileProvider;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment appEnvironment)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
-            this.appEnvironment = appEnvironment;
+            this.fileProvider = new FileProvider(webHostEnvironment);
+
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
@@ -109,6 +111,15 @@ namespace LingvoGameOs.Controllers
                 if (user.Description != settings.Description)
                 {
                     user.Description = settings.Description;
+                }
+                if (settings.UploadedFile != null)
+                {
+                    user.AvatarImgPath = await fileProvider.SaveProfileImgFileAsync(settings.UploadedFile, Folders.Avatars);
+                    if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png")
+                    {
+                        fileProvider.DeleteFile(settings.AvatarImgPath);
+                    }
+                    settings.AvatarImgPath = user.AvatarImgPath;
                 }
                 await userManager.UpdateAsync(user);
                 await signInManager.RefreshSignInAsync(user);

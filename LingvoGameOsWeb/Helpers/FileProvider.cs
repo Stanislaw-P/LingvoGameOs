@@ -12,20 +12,20 @@ namespace LingvoGameOs.Helpers
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<List<string>> SafeImagesFilesAsync(IFormFile[] files, Folders folder, int gameId)
+        public async Task<List<string>> SaveImagesFilesAsync(IFormFile[] files, Folders folder, int gameId)
         {
             var imagePaths = new List<string>();
             foreach (var file in files)
             {
-                var imagePath = await SafeImgFileAsync(file, folder, gameId);
+                var imagePath = await SaveGameImgFileAsync(file, folder, gameId);
                 if (imagePath != null)
                     imagePaths.Add(imagePath);
             }
             return imagePaths;
         }
 
-        // Для картинок
-        public async Task<string?> SafeImgFileAsync(IFormFile file, Folders folder, int gameId)
+        // Для картинок игры
+        public async Task<string?> SaveGameImgFileAsync(IFormFile file, Folders folder, int gameId)
         {
             if (file == null)
                 return null;
@@ -44,8 +44,28 @@ namespace LingvoGameOs.Helpers
             return Path.Combine("/", folder + "/" + gameId + "/" + fileName);
         }
 
+        // Для картинок профиля
+        public async Task<string?> SaveProfileImgFileAsync(IFormFile file, Folders folder)
+        {
+            if (file == null)
+                return null;
+
+            var folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString());
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            var fileName = Guid.NewGuid() + "." + file.FileName.Split('.').Last();
+            string path = Path.Combine(folderPath, fileName);
+
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+            return Path.Combine("/", folder +  "/" + fileName);
+        }
+
         // Для файлов игр
-        public async Task<string?> SafeGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, Folders folder)
+        public async Task<string?> SaveGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, Folders folder)
         {
             if (uploadedFile == null)
                 return null;

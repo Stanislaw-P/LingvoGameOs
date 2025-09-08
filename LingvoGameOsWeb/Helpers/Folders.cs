@@ -3,6 +3,7 @@
     public enum Folders
     {
         Games,
-        PendingGames
+        PendingGames,
+        Avatars
     }
 }

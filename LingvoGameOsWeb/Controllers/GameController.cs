@@ -189,9 +189,9 @@ namespace LingvoGameOs.Controllers
                         await _pendingGamesRepository.AddAsync(pendingGame);
                         
                         // Теперь можно использовать ID для сохранения файлов в соотв. директорию
-                        string? gameUrl = await _fileProvider.SafeGameFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title, Folders.PendingGames);
-                        string? coverImagePath = await _fileProvider.SafeImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
-                        List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
+                        string? gameUrl = await _fileProvider.SaveGameFileAsync(gameViewModel.UploadedGame, pendingGame.Id, pendingGame.Title, Folders.PendingGames);
+                        string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
+                        List<string> imagesPaths = await _fileProvider.SaveImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
                         
                         pendingGame.CoverImagePath = coverImagePath ?? "/img/default-img.jpg";
                         pendingGame.ImagesPaths = imagesPaths;
@@ -235,8 +235,8 @@ namespace LingvoGameOs.Controllers
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
-                        string? coverImagePath = await _fileProvider.SafeImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
-                        List<string> imagesPaths = await _fileProvider.SafeImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
+                        string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(gameViewModel.CoverImage, Folders.PendingGames, pendingGame.Id);
+                        List<string> imagesPaths = await _fileProvider.SaveImagesFilesAsync(gameViewModel.UploadedImages, Folders.PendingGames, pendingGame.Id);
 
                         await _pendingGamesRepository.ChangeImagesAsync(coverImagePath ?? "/img/default-img.jpg", imagesPaths, pendingGame);
 

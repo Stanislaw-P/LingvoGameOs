@@ -1,14 +1,14 @@
 // Доступные аватарки с именами
 const avatarMapping = {
-    'Дэвид': '/img/avatars/DavaAva.jpg',
-    'Владислав': '/img/avatars/VslavAva.jpg',
-    'Марат': '/img/avatars/MaraAva.jpg',
+    'Дэвид': '/Avatars/DavaAva.jpg',
+    'Владислав': '/Avatars/VslavAva.jpg',
+    'Марат': '/Avatars/MaraAva.jpg',
 
 };
 
 // Функция для получения аватарки по имени
 function getAvatarByName(name) {
-    return avatarMapping[name] || '/img/avatars/AvaNone.jpg'; // fallback
+    return avatarMapping[name] || '/Avatars/AvaNone.jpg'; // fallback
 }
 
 // Функция для получения случайной аватарки (для новых отзывов) ВЫКИНУТЬ!!!

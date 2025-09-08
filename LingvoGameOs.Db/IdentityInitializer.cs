@@ -23,7 +23,7 @@ namespace LingvoGameOs.Db
                 {
                     Email = "admin@gmail.com",
                     UserName = "admin@gmail.com",
-                    AvatarImgPath = "/img/avatars/admin-avatar-11.png",
+                    AvatarImgPath = "/Avatars/admin-avatar-11.png",
                     Name = "Админ",
                     Surname = "Админов",
                     Description = "Администрация сайта"
@@ -33,7 +33,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Марат",
                     Surname = "Дзиов",
-                    AvatarImgPath = "/img/avatars/MaraAva.jpg",
+                    AvatarImgPath = "/Avatars/MaraAva.jpg",
                     Description = "Выпускниц яндекс лицея. В совершенстве знает python и даже был в офисе Яндекс.",
                     UserName = "MaratTest@gmail.com",
                     Email = "MaratTest@gmail.com"
@@ -43,7 +43,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Дэвид",
                     Surname = "Кадиев",
-                    AvatarImgPath = "/img/avatars/DavaAva.jpg",
+                    AvatarImgPath = "/Avatars/DavaAva.jpg",
                     Description = "Лучший составитель тестов и кроссвордов. Сдал ЕГЭ по информатике на 98 баллов и теперь пишет игры для Осетии.",
                     UserName = "DavidTest@gmail.com",
                     Email = "DavidTest@gmail.com"
@@ -53,7 +53,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Илона",
                     Surname = "Бекоева",
-                    AvatarImgPath = "/img/avatars/Ilona-ava933.jpg",
+                    AvatarImgPath = "/Avatars/Ilona-ava933.jpg",
                     Description = "Окончила СОГУ с красным дипломом. Вложила душу в проект платформы. Обладательница премии 'Лучшая игра на WinForms' в 2022 году.",
                     UserName = "IlonaBekoeva@gmail.com",
                     Email = "IlonaBekoeva@gmail.com"
@@ -63,7 +63,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Анастасия",
                     Surname = "Чувенкова",
-                    AvatarImgPath = "/img/avatars/anastasia-ava.jpg",
+                    AvatarImgPath = "/Avatars/anastasia-ava.jpg",
                     Description = "Ученица яндекс лицея.",
                     UserName = "AnastasiaChuvenkova@gmail.com",
                     Email = "AnastasiaChuvenkova@gmail.com"

@@ -161,7 +161,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         {
             if (editGame.CoverImage != null)
             {
-                string? coverImagePath = await _fileProvider.SafeImgFileAsync(editGame.CoverImage, Folders.Games, existingGame.Id);
+                string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(editGame.CoverImage, Folders.Games, existingGame.Id);
                 existingGame.CoverImagePath = coverImagePath;
 
                 // Удаляем прошлую обложку
@@ -199,7 +199,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             if (editGameViewModel.UploadedImages == null || !editGameViewModel.UploadedImages.Any(f => f.Length > 0))
                 return;
 
-            List<string> newImagesPaths = await _fileProvider.SafeImagesFilesAsync(
+            List<string> newImagesPaths = await _fileProvider.SaveImagesFilesAsync(
                 editGameViewModel.UploadedImages.Where(f => f.Length > 0).ToArray(),
                 Folders.Games, editGameViewModel.Id);
 
