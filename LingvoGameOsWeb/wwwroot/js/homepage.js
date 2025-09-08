@@ -674,18 +674,6 @@ document.querySelectorAll('.homepage-category-card').forEach(card => {
     });
 });
 
-// Add performance optimizations
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
 
 // Optimize scroll events
 const optimizedScrollHandler = debounce(() => {

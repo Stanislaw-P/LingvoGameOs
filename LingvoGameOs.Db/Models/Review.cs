@@ -16,5 +16,6 @@ namespace LingvoGameOs.Db.Models
         public DateTime PublicationDate { get; set; }
         public int GameId { get; set; }
         public Game? Game { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

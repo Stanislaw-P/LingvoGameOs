@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM полностью загружен, инициализация начинается');
 
     // Загрузка компонентов header и footer
-    loadComponent('components/header.html', 'header-placeholder');
-    loadComponent('components/footer.html', 'footer-placeholder');
+    //loadComponent('components/header.html', 'header-placeholder');
+    //loadComponent('components/footer.html', 'footer-placeholder');
 
     // Обработка формы подписки на email
     const emailForm = document.querySelector('.email-form-container');

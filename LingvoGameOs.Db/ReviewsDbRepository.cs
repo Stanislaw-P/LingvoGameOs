@@ -50,6 +50,26 @@ namespace LingvoGameOs.Db
             return reviews!;
         }
 
+        public async Task PublishAsync(Guid reviewId)
+        {
+            var existingReview = await TryGetByIdAsync(reviewId);
+            if (existingReview != null)
+            {
+                existingReview.IsApproved = true;
+                await _databaseContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteAsync(Guid reviewId)
+        {
+            var existingReview = await TryGetByIdAsync(reviewId);
+            if (existingReview != null)
+            {
+                _databaseContext.Reviews.Remove(existingReview);
+                await _databaseContext.SaveChangesAsync();
+            }
+        }
+
         public Task InvalidateCacheAsync()
         {
             _memoryCache.Remove(CacheReviewKey);

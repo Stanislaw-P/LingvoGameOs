@@ -1,6 +1,6 @@
 ﻿@model List<Review>
 
-<section class="game-reviews" >   
+<section class="game-reviews">
     <div class="game-reviews__header">
         <h2 class="game-reviews__title">Отзывы</h2>
         @if (ViewBag.IsDetailsPage)
@@ -13,20 +13,23 @@
     <div class="game-reviews__container">
         @foreach (var review in Model)
         {
-            <article class="game-reviews__card" style="display: block;">
-                <div class="game-reviews__reviewer">
-                    <img src="@review.Author.AvatarImgPath" alt="Reviewer" class="game-reviews__avatar">
-                    <div class="game-reviews__reviewer-details">
-                        <span class="game-reviews__reviewer-name">@review.Author.Name</span>
-                        <span class="game-reviews__reviewer-location">@review?.Game?.Title</span>
+            @if (review.IsApproved)
+            {
+                <article class="game-reviews__card" style="display: block;">
+                    <div class="game-reviews__reviewer">
+                        <img src="@review.Author.AvatarImgPath" alt="Reviewer" class="game-reviews__avatar">
+                        <div class="game-reviews__reviewer-details">
+                            <span class="game-reviews__reviewer-name">@review.Author.Name</span>
+                            <span class="game-reviews__reviewer-location">@review?.Game?.Title</span>
+                        </div>
+                        <div class="game-reviews__rating">
+                            <span class="game-reviews__rating-score">@review.Rating</span>
+                            <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
+                        </div>
                     </div>
-                    <div class="game-reviews__rating">
-                        <span class="game-reviews__rating-score">@review.Rating</span>
-                        <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
-                    </div>
-                </div>
-                <p class="game-reviews__text">@review.Text</p>
-            </article>
+                    <p class="game-reviews__text">@review.Text</p>
+                </article>
+            }
         }
     </div>
     <div class="game-reviews__navigation">

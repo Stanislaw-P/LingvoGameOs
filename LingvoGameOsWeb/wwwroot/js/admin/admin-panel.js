@@ -192,7 +192,7 @@ async function approveGame(gameId) {
 
     try {
         const response = await fetch(`/Admin/PendingGames/Publish?gameId=${gameId}`, {
-            method:'POST',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -216,7 +216,7 @@ async function approveGame(gameId) {
         // Добавляем игру в список опубликованных
         addToPublishedList(result.gameData);
         alert('Игра успешно подтверждена и опубликована!');
-    }catch(error){
+    } catch (error) {
         console.error('Ошибка подтверждения:', error);
         alert('Ошибка при подтверждении игры');
         button.textContent = 'Опубликовать игру';
@@ -431,12 +431,47 @@ function updatePendingGamesList() {
     // В реальном проекте здесь было бы обновление UI
 }
 
+
+
+// Функция для фильтрации отзывов
+function setupReviewsFilter() {
+    const filters = document.querySelectorAll('.btn--filter');
+    const reviews = document.querySelectorAll('.admin-review');
+
+    if (filters.length === 0 || reviews.length === 0) {
+        return;
+    }
+
+    filters.forEach(filter => {
+        filter.addEventListener('click', function () {
+            filters.forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+
+            const filterType = this.dataset.filter;
+
+            reviews.forEach(review => {
+                if (filterType === 'all') {
+                    review.style.display = 'flex';
+                } else if (filterType === 'published') {
+                    review.style.display = review.classList.contains('published') ? 'flex' : 'none';
+                } else if (filterType === 'pending') {
+                    review.style.display = review.classList.contains('pending') ? 'flex' : 'none';
+                }
+            });
+        });
+    });
+}
+
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Админ-панель загружена');
 
     // Настройка поиска и сортировки
     setupSearchAndSort();
+
+    // Настройка фильтрации отзывов
+    setupReviewsFilter();
 
     // Инициализация статистики
     updateStats();
@@ -457,4 +492,4 @@ window.openFeedback = openFeedback;
 window.closeFeedback = closeFeedback;
 window.sendFeedback = sendFeedback;
 window.openAnalytics = openAnalytics;
-window.closeAnalytics = closeAnalytics; 
+window.closeAnalytics = closeAnalytics;

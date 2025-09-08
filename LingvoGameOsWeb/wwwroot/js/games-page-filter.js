@@ -172,7 +172,10 @@ function applyFilters(filters) {
 function updateActiveFiltersDisplay(filters) {
     const activeFiltersContainer = document.getElementById('active-filters');
     const activeFiltersList = document.getElementById('active-filters-list');
-    
+    if (!activeFiltersContainer || !activeFiltersList) {
+        console.warn('Элементы для отображения активных фильтров не найдены');
+        return;
+    }
     const allFilters = [...filters.category, ...filters.keyword, ...filters.rating];
     
     if (allFilters.length > 0) {

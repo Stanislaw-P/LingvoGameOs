@@ -90,7 +90,6 @@ export async function showReviewModal(gameId) {
 
                 const result = await response.json();
                 if (response.ok && result.success) {
-                    addReviewToList(result.reviewData);
                     modal.remove();
                     alert('Отзыв отправлен, скоро он появится в списке.');
                 }
