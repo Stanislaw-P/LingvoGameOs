@@ -6,8 +6,9 @@
 
 <link rel="stylesheet" href="/css/games-page.css" />
 
-<section class="games">
-    <div class="games__filter">
+
+ <section class="games">
+   @* <div class="games__filter">
         @using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
          {
              HttpMethod = "get",
@@ -100,7 +101,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
+    
 
     @if (ViewBag.GameName != null)
     {

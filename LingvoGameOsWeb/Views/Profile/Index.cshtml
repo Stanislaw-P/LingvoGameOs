@@ -34,10 +34,10 @@
                     <label class="profile__label" for="email">Email</label>
                     <input type="email" class="profile__input" id="email" value="@Model.UserName" disabled>
                 </div>
-                <div class="profile__field">
+                @* <div class="profile__field">
                     <label class="profile__label" for="level">Уровень</label>
                     <input type="text" class="profile__input" id="level" value="1 (static)" disabled>
-                </div>
+                </div> *@
                 <div class="profile__field profile__field--bio">
                     <label class="profile__label" for="bio">О себе</label>
                     <textarea class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе" disabled>@Model.Description</textarea>
@@ -51,7 +51,7 @@
             </form>
         </div>
         <!-- Прогресс уровней -->
-        <div class="level-progress">
+       @*  <div class="level-progress">
             <h3 class="level-progress__title">Прогресс уровней</h3>
             <div class="level-progress__overview">
                 <span class="level-progress__total">Всего баллов: 450</span>
@@ -82,9 +82,9 @@
                     5. Хранитель языка
                 </div>
             </div>
-        </div>
+        </div> *@
         <!-- Новый блок: Прогресс изучения языка -->
-        <div class="language-progress">
+        @* <div class="language-progress">
             <h3 class="language-progress__title">Прогресс изучения</h3>
             <div class="language-progress__item">
                 <span class="language-progress__label">Словарный запас</span>
@@ -107,10 +107,10 @@
                 </div>
                 <span class="language-progress__value">30%</span>
             </div>
-        </div>
+        </div> *@
     </aside>
     <section class="content__main">
-        <!-- Блок общей активности -->
+        @* <!-- Блок общей активности -->
         <div class="activity">
             <h3 class="activity__title">Общая активность</h3>
             <div class="activity__chart">
@@ -148,7 +148,7 @@
                     <span class="activity__stat-label">игр пройдено</span>
                 </div>
             </div>
-        </div>
+        </div> *@
         <!-- Блок добавленных пользователем игр -->
         <div class="games-block">
             <!-- Блок добавленных пользователем игр -->
@@ -272,7 +272,7 @@
                 }
             </section>
 
-            <!-- Recent Games Block -->
+           @*  <!-- Recent Games Block -->
             <section class="recent-games">
                 <header class="recent-games__header">
                     <h3 class="recent-games__title">Недавние игры</h3>
@@ -332,12 +332,12 @@
                         <a href="/games" class="recent-games__button">Найти игры</a>
                     </div>
                 }
-            </section>
+            </section> *@
         </div>
     </section>
 </div>
 <!-- Блок рейтинга в играх -->
-<div class="game-stats">
+@* <div class="game-stats">
     <h3 class="game-stats__title">Рейтинг в играх</h3>
     <div class="game-stats__list">
         <div class="game-stats__item">
@@ -362,7 +362,7 @@
             <a href="#" class="game-stats__leaderboard-link">Таблица лидеров</a>
         </div>
     </div>
-</div>
+</div> *@
 
 <!-- Рекомендуемые игры -->
 <div class="recommended-games">
