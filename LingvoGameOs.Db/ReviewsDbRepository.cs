@@ -21,11 +21,10 @@ namespace LingvoGameOs.Db
             _memoryCache = memoryCache;
         }
 
-        public async Task<Review?> TryGetByIdAsync(Guid reviewId)
+        public async Task<Review?> TryGetUserReviewAsync(string userId, int gameId)
         {
             return await _databaseContext.Reviews
-                .Include(r => r.Author)
-                .FirstOrDefaultAsync(r => r.Id == reviewId);
+                .FirstOrDefaultAsync(r => r.Author.Id == userId && r.GameId == gameId);
         }
 
         public async Task AddAsync(Review review)
@@ -52,12 +51,21 @@ namespace LingvoGameOs.Db
 
         public async Task PublishAsync(Guid reviewId)
         {
-            var existingReview = await TryGetByIdAsync(reviewId);
+            var existingReview = await _databaseContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
             if (existingReview != null)
             {
                 existingReview.IsApproved = true;
                 await _databaseContext.SaveChangesAsync();
             }
+        }
+
+        public async Task UpdateAsync(Review review)
+        {
+            var existingReview = _databaseContext.Reviews.FirstOrDefault(r => r.Id == review.Id);
+            if (existingReview == null)
+                throw new InvalidOperationException($"Отзыв с Id {review.Id} не найдена :(");
+            _databaseContext.Reviews.Update(review);
+            await _databaseContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid reviewId)
@@ -68,6 +76,11 @@ namespace LingvoGameOs.Db
                 _databaseContext.Reviews.Remove(existingReview);
                 await _databaseContext.SaveChangesAsync();
             }
+        }
+
+        private async Task<Review?> TryGetByIdAsync(Guid reviewId)
+        {
+            return await _databaseContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
         }
 
         public Task InvalidateCacheAsync()

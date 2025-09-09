@@ -77,14 +77,6 @@ namespace LingvoGameOs.Db
 			return await databaseContext.Games.Where(g=>g.Author.Id == user.Id)
 				.Include(g=> g.GamePlatform)
 				.ToListAsync();
-            var existingUser = await databaseContext.Users
-                .Include(u => u.DevGames!)
-                .ThenInclude(g => g.GamePlatform)
-                .AsSplitQuery()
-                .FirstOrDefaultAsync(u => u.Id == user.Id);
-            if (existingUser == null)
-                return null;
-            return existingUser.DevGames;
         }
 
 		public async Task ChangeGameUrl(string newGameUrl, Game game)

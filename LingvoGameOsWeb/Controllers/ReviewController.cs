@@ -21,15 +21,15 @@ namespace LingvoGameOs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendAsync([FromBody] Review review)
+        public async Task<IActionResult> SendAsync([FromBody] Review newReview)
         {
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
                 return BadRequest(new { success = false, message = "Войдите в аккаунт, чтобы написать отзыв!" });
 
-            var existingGame = await _gamesRepository.TryGetByIdAsync(review.GameId);
+            var existingGame = await _gamesRepository.TryGetByIdAsync(newReview.GameId);
             if (existingGame == null)
-                return BadRequest(new { success = false, message = $"Игра с id:{review.GameId} не существует!" });
+                return BadRequest(new { success = false, message = $"Игра с id:{newReview.GameId} не существует!" });
 
             var logData = new
             {
@@ -41,9 +41,19 @@ namespace LingvoGameOs.Controllers
 
             try
             {
-                review.Author = currentUser;
-                review.PublicationDate = DateTime.Now;
-                await _reviewsRepository.AddAsync(review);
+                newReview.Author = currentUser;
+                newReview.PublicationDate = DateTime.Now;
+                var existingReview = await _reviewsRepository.TryGetUserReviewAsync(currentUser.Id, newReview.GameId);
+                if (existingReview == null)
+                    await _reviewsRepository.AddAsync(newReview);
+                else
+                {
+                    existingReview.Text = newReview.Text;
+                    existingReview.PublicationDate = newReview.PublicationDate;
+                    existingReview.Rating = newReview.Rating;
+                    existingReview.IsApproved = false;
+                    await _reviewsRepository.UpdateAsync(existingReview);
+                }
                 // Очищаем Кеш после добавления отзыва
                 await _reviewsRepository.InvalidateCacheAsync();
                 _logger.LogInformation("Успешная отправка отзыва {@SendReviewsData}", new
@@ -53,7 +63,7 @@ namespace LingvoGameOs.Controllers
                     logData.UserAgent,
                     RequestTime = DateTime.UtcNow,
                     GameId = existingGame.Id,
-                    ReviewId = review.Id,
+                    ReviewId = newReview.Id,
                     ResponseStatusCode = 200
                 });
 
@@ -62,9 +72,9 @@ namespace LingvoGameOs.Controllers
                     success = true,
                     reviewData = new
                     {
-                        text = review.Text,
-                        rating = review.Rating,
-                        publicationDate = review.PublicationDate,
+                        text = newReview.Text,
+                        rating = newReview.Rating,
+                        publicationDate = newReview.PublicationDate,
                         authorAvatarPath = currentUser.AvatarImgPath,
                         authorName = $"{currentUser.Name} {currentUser.Surname}",
                         gameTitle = existingGame.Title

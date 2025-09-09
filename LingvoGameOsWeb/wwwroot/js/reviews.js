@@ -1,31 +1,3 @@
-// Доступные аватарки с именами
-const avatarMapping = {
-    'Дэвид': '/img/avatars/DavaAva.jpg',
-    'Владислав': '/img/avatars/VslavAva.jpg',
-    'Марат': '/img/avatars/MaraAva.jpg',
-
-};
-
-// Функция для получения аватарки по имени
-function getAvatarByName(name) {
-    return avatarMapping[name] || '/img/avatars/AvaNone.jpg'; // fallback
-}
-
-// Функция для получения случайной аватарки (для новых отзывов) ВЫКИНУТЬ!!!
-function getRandomAvatar() {
-    const avatars = Object.values(avatarMapping);
-    return avatars[Math.floor(Math.random() * avatars.length)];
-}
-
-// Примерные отзывы (без аватарок, они будут добавляться динамически)
-const sampleReviewsData = [
-    { name: "Дэвид", location: "Мир по кусочкам", rating: "4", text: "Игра прикольная! Как интересно собирается картинка, мне интересно как разработчику. Иногда задания кажутся сложноватыми, но это только подогревает интерес!" },
-    { name: "Владислав", location: "Ребусы на осетинском", rating: "4", text: "Очень сложная игра, подсказки тоже не помогли. Хоть головоломки и заставляют думать, но мне в нее пока играть рано" },
-    {
-        name: "Марат", location: "Кроссворд", rating: "5", text: "мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются."
-    },
-];
-
 // Отображение модального окна для отзыва
 export async function showReviewModal(gameId) {
     const modal = document.createElement('div');
@@ -33,6 +5,8 @@ export async function showReviewModal(gameId) {
     modal.innerHTML = `
         <div class="review-modal__content">
             <h2 class="review-modal__title">Ваш отзыв об игре</h2>
+            <p class="review-modal__label">Внимание! Если вы уже писали отзыв к этой игре, он будет перезаписан.</p>
+            <br>
             <form class="review-modal__form">
                 <div class="review-modal__field">
                     <label class="review-modal__label">Оценка игры</label>
@@ -98,8 +72,8 @@ export async function showReviewModal(gameId) {
                 }
             }
             catch (error) {
-                console.error('Ошибка:', error); 
-                alert('Произошла ошибка при отправке отзыва.'); 
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке отзыва.');
             }
         } else {
             alert('Пожалуйста, выберите рейтинг и напишите комментарий.');
@@ -116,7 +90,7 @@ export function addReviewToList(review) {
     reviewCard.className = 'game-reviews__card';
 
     // Определяем аватарку: если есть avatar в review, используем её, иначе ищем по имени
-    const avatarSrc = review.authorAvatarPath || getRandomAvatar();
+    const avatarSrc = review.authorAvatarPath;
 
     reviewCard.innerHTML = `
         <div class="game-reviews__reviewer">
@@ -136,7 +110,7 @@ export function addReviewToList(review) {
     updatePagination();
 }
 
- //Инициализация отзывов
+//Инициализация отзывов
 export function initializeReviews() {
     //const container = document.querySelector('.game-reviews__container');
     //if (!container) return;
