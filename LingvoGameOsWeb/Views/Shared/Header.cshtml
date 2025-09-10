@@ -14,9 +14,9 @@
                 <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
             </ul>
         </nav>
-        <button class="header__like" aria-label="Избранное">
+        <a role="button" asp-area="" asp-controller="Favorites" asp-action="Index" class="header__like" aria-label="Избранное">
             <img src="~/icon/like.svg" alt="Избранное" class="like-icon" />
-        </button>
+        </a>
         @if (User.Identity?.IsAuthenticated == true)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);

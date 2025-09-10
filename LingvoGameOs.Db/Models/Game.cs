@@ -32,5 +32,6 @@ namespace LingvoGameOs.Db.Models
 		public List<PlayerGame> UserGames { get; set; }
         public string? GameFolderName { get; set; }
         public string? VideoUrl { get; set; }
+        public List<FavoriteGame>? FavoriteGames { get; set; }
     }
 }

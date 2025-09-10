@@ -73,7 +73,7 @@ namespace LingvoGameOs.Db
                 {
                     Name = "Владислав",
                     Surname = "Петров",
-                    AvatarImgPath = "/img/avatars/VslavAva.jpg",
+                    AvatarImgPath = "/Avatars/VslavAva.jpg",
                     Description = "Разработчик игр",
                     UserName = "VladislavPetrov@gmail.com",
                     Email = "VladislavPetrov@gmail.com"

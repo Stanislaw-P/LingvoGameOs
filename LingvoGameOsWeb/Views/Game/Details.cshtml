@@ -66,9 +66,9 @@
                     </a>
                 }
 
-                <button class="game-hero__share profile__button">
-                    <img src="/icon/share.svg" alt="Share" class="game-hero__share-icon">
-                </button>
+                <a asp-area="" asp-controller="Favorites" asp-action="Add" asp-route-gameId="@Model.Id" class="game-hero__share profile__button">
+                    <img src="/icon/share.svg" alt="Save" class="game-hero__share-icon">
+                </a>
             </div>
         </div>
     </div>

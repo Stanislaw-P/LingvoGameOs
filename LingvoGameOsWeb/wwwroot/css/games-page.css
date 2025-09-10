@@ -1028,6 +1028,113 @@
     background: var(--accent-1);
 }
 
+/* Стили для кнопки избранного с прозрачным фоном */
+.games__favorite-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background: rgba(24, 32, 50, 0.6); /* Полупрозрачный темный фон */
+    border: 2px solid rgba(255, 255, 255, 0.6); /* Более яркая обводка */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+    .games__favorite-btn:hover {
+        background: rgba(63, 105, 210, 0.8); /* Полупрозрачный акцентный цвет */
+        border-color: var(--accent-2);
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(63, 105, 210, 0.4);
+    }
+
+.games__favorite-icon {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+    filter: brightness(0) invert(1); /* Белая иконка */
+}
+
+.games__favorite-btn:hover .games__favorite-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Состояние активного избранного */
+.games__favorite-btn.active {
+    background: rgba(63, 105, 210, 0.9); /* Полупрозрачный активный фон */
+    border-color: var(--accent-2);
+}
+
+    .games__favorite-btn.active .games__favorite-icon {
+        filter: brightness(0) invert(1);
+    }
+
+/* Анимация при добавлении в избранное */
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.games__favorite-btn.animating {
+    animation: heartBeat 0.6s ease;
+}
+
+/* Эффект свечения при активном состоянии */
+.games__favorite-btn.active::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    opacity: 0.3;
+    z-index: -1;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+}
+
 /* Индикатор активных фильтров */
 .games__active-filters {
     display: flex;

@@ -13,5 +13,6 @@ namespace LingvoGameOs.Db.Models
         public List<Game>? DevGames { get; set; }
         public List<PendingGame>? DevPendingGames { get; set; }
         public List<Review>? Reviews { get; set; }
+        public List<FavoriteGame>? FavoriteGames { get; set; }
     }
 }

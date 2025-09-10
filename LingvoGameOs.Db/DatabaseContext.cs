@@ -13,6 +13,7 @@ namespace LingvoGameOs.Db
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<PendingGame> PendingGames { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<FavoriteGame> FavoriteGames { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

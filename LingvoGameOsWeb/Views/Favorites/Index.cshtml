@@ -1,0 +1,230 @@
+﻿@model List<Game>
+
+@{
+    ViewData["Title"] = "Сипсок игр";
+}
+
+<link rel="stylesheet" href="/css/games-page.css" />
+
+@if (Model == null || !Model.Any())
+{
+    <div>
+        <h2 class="games__title">У вас ещё нет избранных игр :(</h2>
+        <a role="button" class="games__search-button">К списку всех игр</a>
+    </div>
+}
+else
+{
+    <section class="games">
+        <div class="games__filter">
+            @using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
+            {
+                HttpMethod = "get",
+                UpdateTargetId = "all-games",
+                LoadingElementId = "search-loading"
+            }))
+            {
+                <div class="games__filter-search">
+                    @if (ViewBag.GameName != null)
+                    {
+                        <input type="text" name="gameName" id="search-input" required value="@ViewBag.GameName" class="email-prompt-text-style games__search-input"
+                               placeholder="Найти игру...">
+                    }
+                    else
+                    {
+                        <input type="text" name="gameName" id="search-input" required class="email-prompt-text-style games__search-input" placeholder="Найти игру..." />
+                    }
+
+                    <button type="submit" class="games__search-button">Найти</button>
+                    <button type="button" onclick="resetGamesList()" class="games__search-button">Сброс</button>
+                </div>
+            }
+
+            <!-- Индикатор активных фильтров -->
+            <div id="active-filters" class="games__active-filters" style="display: none;">
+                <span class="games__active-filters-label">Активные фильтры:</span>
+                <div id="active-filters-list" class="games__active-filters-list"></div>
+                <button type="button" onclick="clearAllFilters()" class="games__clear-filters-btn">Очистить все</button>
+            </div>
+
+            <div class="games__filter-dropdowns">
+                <div class="games__dropdown">
+                    <button class="games__dropdown-toggle">
+                        <span>Категории</span>
+                        <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                    </button>
+                    <div class="games__dropdown-menu">
+                        <div class="games__dropdown-search">
+                            <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
+                        </div>
+                        <ul class="games__dropdown-list">
+                            @foreach (var skill in ViewBag.SkillsLearning)
+                            {
+                                <li class="games__dropdown-item" data-filter="category" data-value="@skill.ToLower()">
+                                    @skill
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="games__dropdown">
+                    <button class="games__dropdown-toggle">
+                        <span>Ключевые слова</span>
+                        <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                    </button>
+                    <div class="games__dropdown-menu">
+                        <div class="games__dropdown-search">
+                            <input type="text" class="games__dropdown-search-input" placeholder="Поиск...">
+                        </div>
+                        <ul class="games__dropdown-list">
+                            <li class="games__dropdown-item" data-filter="keyword" data-value="культура">
+                                Культура
+                            </li>
+                            <li class="games__dropdown-item" data-filter="keyword" data-value="история">
+                                История
+                            </li>
+                            <li class="games__dropdown-item" data-filter="keyword" data-value="язык">
+                                Язык
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="games__dropdown">
+                    <button class="games__dropdown-toggle">
+                        <span>Рейтинг</span>
+                        <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                    </button>
+                    <div class="games__dropdown-menu">
+                        <ul class="games__dropdown-list">
+                            <li class="games__dropdown-item" data-filter="rating" data-value="5">
+                                <img src="/icon/star.svg" alt="Star" class="rating-star filled"> 5
+                            </li>
+                            <li class="games__dropdown-item" data-filter="rating" data-value="4">
+                                <img src="/icon/star.svg" alt="Star" class="rating-star filled"> 4
+                            </li>
+                            <li class="games__dropdown-item" data-filter="rating" data-value="3">
+                                <img src="/icon/star.svg" alt="Star" class="rating-star filled"> 3
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (ViewBag.GameName != null)
+        {
+            <!-- Это сейчас не отображается, не работает-->
+            <h2 class="games__title">Игры по запросу: @ViewBag.GameName</h2>
+        }
+        else
+        {
+            <h2 class="games__title">Все игры</h2>
+        }
+
+        <!-- Индикатор загрузки -->
+        <div id="search-loading" style="display: none; margin: 20px 0;">
+            <!-- Тут хотелось бы спинер загрузки-->
+            @* <div role="status">
+                <span">Загрузка...</span>
+            </div> *@
+            <p class="game-play__loading-text">Идет поиск игр...</p>
+        </div>
+
+        <div class="games__list" id="all-games">
+            @foreach (var game in Model)
+            {
+                <div class="games__item"
+                     data-rating="@game.RaitingPlayers"
+                     data-categories="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")"
+                     data-keywords="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")">
+                    <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
+                    <div class="games__content">
+                        <h3 class="games__name">@game.Title</h3>
+                        <div class="games__stats">
+                            <span class="games__rating">
+                                <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                <img src="/icon/star.svg" alt="star" class="rating-star filled">
+                                <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
+                            </span>
+                            <span class="games__likes">
+                                <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> 120
+                            </span>
+                            <span class="games__views">
+                                <img src="/icon/eye.svg" alt="view" class="stat-icon"> @game.NumberDownloads
+                            </span>
+                        </div>
+                        <div class="games__actions">
+                            @if (game.GamePlatform.Name == "Desktop")
+                            {
+                                <a href="@game.GameURL" download role="button" class="games__button">Скачать</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                            }
+                            <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    @section Scripts {
+        <script>
+            function resetGamesList() {
+                $('#search-input').val('');
+                $('#all-games').load('@Url.Action("FullGamesList", "Home")');
+            }
+
+            function clearAllFilters() {
+                localStorage.removeItem('gameFilters');
+                document.querySelectorAll('.games__dropdown-item.selected').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                document.getElementById('active-filters').style.display = 'none';
+                document.querySelectorAll('.games__item').forEach(item => {
+                    item.style.display = 'flex';
+                });
+                showNotification('Все фильтры очищены', 'info');
+            }
+
+            function showNotification(message, type) {
+                let notification = document.querySelector('.notification');
+                if (!notification) {
+                    notification = document.createElement('div');
+                    notification.className = 'notification';
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        color: white;
+                        font-weight: 500;
+                        z-index: 1000;
+                        opacity: 0;
+                        transition: opacity 0.3s ease;
+                        max-width: 300px;
+                    `;
+                    document.body.appendChild(notification);
+                }
+
+                notification.textContent = message;
+                notification.className = `notification notification--${type}`;
+                notification.style.display = 'block';
+                notification.style.opacity = '1';
+
+                setTimeout(function() {
+                    notification.style.opacity = '0';
+                    setTimeout(function() {
+                        notification.style.display = 'none';
+                    }, 300);
+                }, 3000);
+            }
+        </script>
+    }
+}
+
