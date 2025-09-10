@@ -6289,3 +6289,142 @@ game-pause-modal {
 }
 
 /* #endregion */
+
+
+/* Стили для загрузки аватара ddkhugaev */
+.profile__avatar__settings {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 25px;
+    cursor: pointer;
+}
+
+.profile__avatar-wrapper__settings {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+    .profile__avatar-wrapper__settings:hover {
+        box-shadow: 0 0 0 3px var(--accent-2);
+    }
+
+        .profile__avatar-wrapper__settings:hover .profile__avatar-overlay__settings {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .profile__avatar-wrapper__settings:hover .profile__image__settings {
+            filter: brightness(0.7);
+        }
+
+.profile__image__settings {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+.profile__avatar-overlay__settings {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+
+.profile__avatar-upload__settings {
+    background: var(--accent-2);
+    color: var(--text-light);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: "Axiforma", sans-serif;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: none;
+}
+
+    .profile__avatar-upload__settings:hover {
+        background: var(--secondary-1);
+        transform: scale(1.05);
+    }
+
+.profile__form__settings label[for="UploadedFile"] {
+    display: none;
+}
+
+.profile__form__settings input[type="file"] {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.profile__avatar-wrapper__settings.preview-active__settings {
+    border: 2px dashed var(--accent-2);
+}
+
+    .profile__avatar-wrapper__settings.preview-active__settings .profile__image__settings {
+        filter: brightness(1);
+    }
+
+.profile__avatar-success__settings {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: var(--success-color);
+    color: var(--text-light);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    animation: fadeInScale 0.5s ease;
+}
+
+/* Скрываем кнопку выбора картинки*/
+.uploaded__file__settings {
+    display: none;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .profile__avatar-wrapper__settings {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile__avatar-upload__settings {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+/* Конец стилей для загрузки аватара */

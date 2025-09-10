@@ -9,15 +9,20 @@
         <!-- Профиль пользователя -->
         <div class="profile">
             <h3 class="profile__title">Профиль пользователя</h3>
-            <div class="profile__avatar">
-                <div class="profile__avatar-wrapper">
-                    <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image">
+
+            <div class="profile__avatar profile__avatar__settings">
+                <div class="profile__avatar-wrapper profile__avatar-wrapper__settings">
+                    <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image profile__image__settings">
+                    <div class="profile__avatar-overlay__settings">
+                        <button type="button" class="profile__avatar-upload__settings">
+                            Сменить
+                        </button>
+                    </div>
                 </div>
             </div>
+
             <form class="profile__form" method="post" enctype="multipart/form-data">
-                <!-- Загрузка авы -->
-                <label for="UploadedFile">Изменить изображение</label>
-                <input asp-for="UploadedFile" type="file">
+                <input asp-for="UploadedFile" type="file" class="uploaded__file__settings" accept="image/*">
 
                 <input asp-for="AvatarImgPath" type="hidden" value="@Model.AvatarImgPath">
 
