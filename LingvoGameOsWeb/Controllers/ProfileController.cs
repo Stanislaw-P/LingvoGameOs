@@ -97,7 +97,7 @@ namespace LingvoGameOs.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("EmailIsNotAvailable", "Такой email уже используется");
+                        ModelState.AddModelError("", "Такой email уже используется");
                     }
                 }
                 if (user.Name != settings.Name)
@@ -114,12 +114,19 @@ namespace LingvoGameOs.Controllers
                 }
                 if (settings.UploadedFile != null)
                 {
-                    user.AvatarImgPath = await fileProvider.SaveProfileImgFileAsync(settings.UploadedFile, Folders.Avatars);
-                    if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png")
+                    if (settings.UploadedFile.ContentType.Split("/")[0] == "image")
                     {
-                        fileProvider.DeleteFile(settings.AvatarImgPath);
+                        user.AvatarImgPath = await fileProvider.SaveProfileImgFileAsync(settings.UploadedFile, Folders.Avatars);
+                        if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png")
+                        {
+                            fileProvider.DeleteFile(settings.AvatarImgPath);
+                        }
+                        settings.AvatarImgPath = user.AvatarImgPath;
                     }
-                    settings.AvatarImgPath = user.AvatarImgPath;
+                    else
+                    {
+                        ModelState.AddModelError("", "Загрузите файл изображения");
+                    }
                 }
                 await userManager.UpdateAsync(user);
                 await signInManager.RefreshSignInAsync(user);
