@@ -18,6 +18,7 @@ namespace LingvoGameOs.Db
                 .Include(g => g.SkillsLearning)
                 .Include(g => g.GamePlatform)
                 .Include(g => g.Author)
+                .AsSplitQuery()
                 .ToListAsync();
         }
 
@@ -29,6 +30,7 @@ namespace LingvoGameOs.Db
                 .Include(g => g.GamePlatform)
                 .Include(g => g.Author)
                 .ThenInclude(a => a.DevGames)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(game => game.Id == idGame);
         }
 
@@ -98,15 +100,12 @@ namespace LingvoGameOs.Db
             return newGame;
         }
 
-        public async Task<List<PendingGame>?> TryGetUserDevGamesAsync(User user)
+        public async Task<List<PendingGame>> TryGetUserDevGamesAsync(User user)
         {
-            var existingUser = await databaseContext.Users
-                .Include(u => u.DevPendingGames)
-                .ThenInclude(g => g.GamePlatform)
-                .FirstOrDefaultAsync(u => u.Id == user.Id);
-            if (existingUser == null)
-                return null;
-            return existingUser.DevPendingGames;
+            return await databaseContext.PendingGames
+                .Where(g => g.Author.Id == user.Id)
+                .Include(g => g.GamePlatform)
+                .ToListAsync();
         }
     }
 }

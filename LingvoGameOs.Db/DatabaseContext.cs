@@ -12,6 +12,7 @@ namespace LingvoGameOs.Db
         public DbSet<LanguageLevel> LanguageLevels { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<PendingGame> PendingGames { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

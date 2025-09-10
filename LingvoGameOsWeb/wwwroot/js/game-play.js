@@ -3,7 +3,7 @@ let isSoundOn = true;
 const soundToggle = document.querySelector('.game-play__sound-toggle');
 const successSound = document.getElementById('successSound');
 const errorSound = document.getElementById('errorSound');
-const titleButton = document.querySelector('.game-play__title-button');
+//const titleButton = document.querySelector('.game-play__title-button');
 const gameInfoModal = document.getElementById('gameInfoModal');
 const pauseModal = document.getElementById('pauseModal');
 const pauseButton = document.querySelector('.game-play__pause');
@@ -117,22 +117,14 @@ function handleModalKeyboard(event) {
 
 // Header functionality
 function initializeHeader() {
-    // Logo navigation
-    //if (logoLink) {
-    //    logoLink.addEventListener('click', (e) => {
-    //        e.preventDefault();
-    //        window.location.href = 'index.html';
-    //    });
-    //} else {
-    //    console.warn('Logo link element (.game-play__logo) not found');
-    //}
+    // TODO: Закоментировал код ниже, потому что не работает!
 
     // Title button - Show game info modal
-    if (titleButton) {
-        titleButton.addEventListener('click', openGameInfoModal);
-    } else {
-        console.error('Title button (.game-play__title-button) not found in DOM');
-    }
+    //if (titleButton) {
+    //    titleButton.addEventListener('click', openGameInfoModal);
+    //} else {
+    //    console.error('Title button (.game-play__title-button) not found in DOM');
+    //}
 
     // Pause button - Show pause modal
     if (pauseButton && pauseModal) {

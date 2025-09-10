@@ -3,6 +3,7 @@ using System;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250903161119_AddGameColumnToRevieww")]
+    partial class AddGameColumnToRevieww
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
@@ -240,13 +243,9 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GameId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsApproved")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("PublicationDate")
@@ -604,9 +603,7 @@ namespace LingvoGameOs.Db.Migrations
                 {
                     b.HasOne("LingvoGameOs.Db.Models.User", "Author")
                         .WithMany("Reviews")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
                         .WithMany()

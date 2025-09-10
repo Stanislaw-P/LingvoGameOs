@@ -39,7 +39,8 @@
                             <div class="user-profile__menu">
                                 @if (User.IsInRole(Constants.AdminRoleName))
                                 {
-                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Home" asp-action="Index">Панель админа</a></div>
+                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Home" asp-action="Index">Панель игр</a></div>
+                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Reviews" asp-action="Index" asp-route-userId="@userId">Панель отзывов</a></div>
                                 }
                                 else
                                 {

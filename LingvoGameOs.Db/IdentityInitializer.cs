@@ -69,12 +69,22 @@ namespace LingvoGameOs.Db
                     Email = "AnastasiaChuvenkova@gmail.com"
                 };
 
+                var devVlad = new User
+                {
+                    Name = "Владислав",
+                    Surname = "Петров",
+                    AvatarImgPath = "/img/avatars/VslavAva.jpg",
+                    Description = "Разработчик игр",
+                    UserName = "VladislavPetrov@gmail.com",
+                    Email = "VladislavPetrov@gmail.com"
+                };
                 // создаем пользователя, если его нет
                 await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
                 await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devIlona, password, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devNastya, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devVlad, password, Constants.DevRoleName);
 
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
@@ -267,6 +277,40 @@ namespace LingvoGameOs.Db
                     await context.AddRangeAsync(game1, game2, game3, game4, game5, game6);
                     await context.SaveChangesAsync();
                 }
+
+                var review1 = new Review
+                {
+                    AuthorId = devDavid.Id,
+                    GameId = game1.Id,
+                    Rating = 4,
+                    PublicationDate = new DateTime(2025, 7, 24),
+                    Text = "Игра прикольная! Как интересно собирается картинка, мне интересно как разработчику. Иногда задания кажутся сложноватыми, но это только подогревает интерес!",
+                    IsApproved = true,
+                };
+                var review2 = new Review
+                {
+                    AuthorId = devMarat.Id,
+                    GameId = game2.Id,
+                    Rating = 5,
+                    PublicationDate = new DateTime(2025, 8, 4),
+                    Text = "Мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются.",
+                    IsApproved = true,
+                };
+                var review3 = new Review
+                {
+                    AuthorId = devVlad.Id,
+                    GameId = game3.Id,
+                    Rating = 4,
+                    PublicationDate = new DateTime(2025, 9, 1),
+                    Text = "Очень сложная игра, подсказки тоже не помогли. Хоть головоломки и заставляют думать, но мне в нее пока играть рано.",
+                    IsApproved = true,
+                };
+
+                if (!await context.Reviews.AnyAsync())
+                {
+                    await context.Reviews.AddRangeAsync(review1, review2, review3);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
@@ -281,7 +325,7 @@ namespace LingvoGameOs.Db
 
         private static async Task _CreateUserAsync(UserManager<User> userManager, User user, string pass, string roleName)
         {
-            if (await userManager.FindByEmailAsync(user.Email) == null)
+            if (await userManager.FindByEmailAsync(user.Email!) == null)
             {
                 var result = await userManager.CreateAsync(user, pass);
                 if (result.Succeeded)

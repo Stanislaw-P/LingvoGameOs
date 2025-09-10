@@ -1,7 +1,7 @@
 // Homepage JavaScript - Interactive functionality
 import { showReviewModal, initializeReviews } from './reviews.js';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize all homepage components
     initCarousels();
     initFAQ();
@@ -9,62 +9,62 @@ document.addEventListener('DOMContentLoaded', function() {
     initSmoothScrolling();
     initAnimations();
     initCTA();
-    
+
     // Initialize enhanced category cards
     initializeEnhancedCategoryCards();
-    
+
     // Initialize existing homepage functionality
     initializeHomepageFeatures();
-    
-    // Initialize reviews
+
+    //Initialize reviews
     if (document.querySelector('.game-reviews__container')) {
         initializeReviews();
     }
-    
+
     // Add event listener for review button
-    const reviewButton = document.querySelector('.game-reviews__button');
-    if (reviewButton) {
-        
-        reviewButton.addEventListener('click', showReviewModal);
-    }
+    //const reviewButton = document.querySelector('.game-reviews__button');
+    //if (reviewButton) {
+
+    //    reviewButton.addEventListener('click', showReviewModal);
+    //}
 });
 
 // Carousel functionality
 function initCarousels() {
     const carousels = document.querySelectorAll('.homepage-categories__carousel, .homepage-games__carousel');
-    
+
     carousels.forEach(carousel => {
         const list = carousel.querySelector('.homepage-categories__list, .homepage-games__list');
         const prevBtn = carousel.parentElement.querySelector('.homepage-categories__prev, .homepage-games__prev');
         const nextBtn = carousel.parentElement.querySelector('.homepage-categories__next, .homepage-games__next');
         const counter = carousel.parentElement.querySelector('.homepage-carousel-page-counter');
-        
+
         if (!list || !prevBtn || !nextBtn) return;
-        
+
         const items = list.children;
         const itemWidth = items[0].offsetWidth + 32; // 32px is gap
         const visibleItems = Math.floor(carousel.offsetWidth / itemWidth);
         const totalPages = Math.ceil(items.length / visibleItems);
         let currentPage = 0;
-        
+
         // Update counter
         function updateCounter() {
             if (counter) {
                 counter.textContent = `${currentPage + 1} из ${totalPages}`;
             }
         }
-        
+
         // Update carousel position
         function updateCarousel() {
             const translateX = -currentPage * itemWidth * visibleItems;
             list.style.transform = `translateX(${translateX}px)`;
             updateCounter();
-            
+
             // Update button states
             prevBtn.disabled = currentPage === 0;
             nextBtn.disabled = currentPage === totalPages - 1;
         }
-        
+
         // Event listeners
         prevBtn.addEventListener('click', () => {
             if (currentPage > 0) {
@@ -72,17 +72,17 @@ function initCarousels() {
                 updateCarousel();
             }
         });
-        
+
         nextBtn.addEventListener('click', () => {
             if (currentPage < totalPages - 1) {
                 currentPage++;
                 updateCarousel();
             }
         });
-        
+
         // Initialize
         updateCarousel();
-        
+
         // Handle window resize
         window.addEventListener('resize', () => {
             const newVisibleItems = Math.floor(carousel.offsetWidth / itemWidth);
@@ -96,20 +96,20 @@ function initCarousels() {
 // FAQ Accordion functionality
 function initFAQ() {
     const faqItems = document.querySelectorAll('.homepage-faq__item');
-    
+
     faqItems.forEach(item => {
         const question = item.querySelector('.homepage-faq__question');
-        
+
         question.addEventListener('click', () => {
             const isActive = item.classList.contains('active');
-            
+
             // Close all other items
             faqItems.forEach(otherItem => {
                 if (otherItem !== item) {
                     otherItem.classList.remove('active');
                 }
             });
-            
+
             // Toggle current item
             if (isActive) {
                 item.classList.remove('active');
@@ -126,29 +126,29 @@ function initReviewsNavigation() {
     const indicators = document.querySelectorAll('.homepage-reviews__indicator');
     const prevBtn = document.querySelector('.homepage-reviews__nav-button--prev');
     const nextBtn = document.querySelector('.homepage-reviews__nav-button--next');
-    
+
     if (!reviewsList || indicators.length === 0) return;
-    
+
     const reviews = reviewsList.children;
     let currentReview = 0;
-    
+
     // Update active review
     function updateReview() {
         // Hide all reviews
         Array.from(reviews).forEach((review, index) => {
             review.style.display = index === currentReview ? 'block' : 'none';
         });
-        
+
         // Update indicators
         indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === currentReview);
         });
-        
+
         // Update button states
         if (prevBtn) prevBtn.disabled = currentReview === 0;
         if (nextBtn) nextBtn.disabled = currentReview === reviews.length - 1;
     }
-    
+
     // Event listeners for indicators
     indicators.forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
@@ -156,7 +156,7 @@ function initReviewsNavigation() {
             updateReview();
         });
     });
-    
+
     // Event listeners for navigation buttons
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -166,7 +166,7 @@ function initReviewsNavigation() {
             }
         });
     }
-    
+
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             if (currentReview < reviews.length - 1) {
@@ -175,7 +175,7 @@ function initReviewsNavigation() {
             }
         });
     }
-    
+
     // Initialize
     updateReview();
 }
@@ -183,18 +183,18 @@ function initReviewsNavigation() {
 // Smooth scrolling for anchor links
 function initSmoothScrolling() {
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    
+
     anchorLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            
+
             const targetId = link.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
                 const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -210,7 +210,7 @@ function initAnimations() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -218,12 +218,12 @@ function initAnimations() {
             }
         });
     }, observerOptions);
-    
+
     // Observe elements for animation
     const animateElements = document.querySelectorAll(
         '.homepage-categories__item, .homepage-games__item, .homepage-new-games__item, .homepage-reviews__card, .homepage-faq__item'
     );
-    
+
     animateElements.forEach(el => {
         observer.observe(el);
     });
@@ -237,33 +237,33 @@ function initCTA() {
 
     // Button hover effects
     if (ctaButton) {
-        ctaButton.addEventListener('mouseenter', function() {
+        ctaButton.addEventListener('mouseenter', function () {
             this.style.transform = 'translateY(-3px)';
         });
 
-        ctaButton.addEventListener('mouseleave', function() {
+        ctaButton.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0)';
         });
     }
 
     // Icon hover animation
     if (ctaIcon) {
-        ctaIcon.addEventListener('mouseenter', function() {
+        ctaIcon.addEventListener('mouseenter', function () {
             this.style.transform = 'scale(1.1)';
         });
 
-        ctaIcon.addEventListener('mouseleave', function() {
+        ctaIcon.addEventListener('mouseleave', function () {
             this.style.transform = 'scale(1)';
         });
     }
 
     // Stats hover effects
     ctaStats.forEach((stat) => {
-        stat.addEventListener('mouseenter', function() {
+        stat.addEventListener('mouseenter', function () {
             this.style.transform = 'translateY(-2px)';
         });
 
-        stat.addEventListener('mouseleave', function() {
+        stat.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0)';
         });
     });
@@ -314,9 +314,9 @@ function showError(message) {
         z-index: 1000;
         animation: slideInRight 0.3s ease;
     `;
-    
+
     document.body.appendChild(errorDiv);
-    
+
     setTimeout(() => {
         errorDiv.remove();
     }, 5000);
@@ -338,27 +338,27 @@ function showSuccess(message) {
         z-index: 1000;
         animation: slideInRight 0.3s ease;
     `;
-    
+
     document.body.appendChild(successDiv);
-    
+
     setTimeout(() => {
         successDiv.remove();
     }, 3000);
 }
 
 // Handle form submissions
-document.addEventListener('submit', function(e) {
+document.addEventListener('submit', function (e) {
     if (e.target.classList.contains('homepage-form')) {
         e.preventDefault();
-        
+
         const form = e.target;
         const submitBtn = form.querySelector('button[type="submit"]');
-        
+
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправка...';
         }
-        
+
         // Simulate form submission
         setTimeout(() => {
             if (submitBtn) {
@@ -371,25 +371,25 @@ document.addEventListener('submit', function(e) {
 });
 
 // Handle button clicks
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     // FAQ button
     if (e.target.classList.contains('homepage-faq__button')) {
         e.preventDefault();
         showSuccess('Вопрос отправлен! Мы ответим вам в ближайшее время.');
     }
-    
+
     // Reviews button
     if (e.target.classList.contains('homepage-reviews__button')) {
         e.preventDefault();
         showSuccess('Форма отзыва открыта!');
     }
-    
+
     // Game buttons
     if (e.target.classList.contains('homepage-games__button')) {
         // Add loading state
         e.target.style.pointerEvents = 'none';
         e.target.textContent = 'Загрузка...';
-        
+
         setTimeout(() => {
             e.target.style.pointerEvents = 'auto';
             e.target.textContent = e.target.textContent === 'Загрузка...' ? 'Играть' : e.target.textContent;
@@ -413,67 +413,67 @@ function initializeEnhancedCategoryCards() {
         const iconWrapper = card.querySelector('.homepage-category-card__icon-wrapper');
         const arrow = card.querySelector('.homepage-category-card__arrow');
         const overlay = card.querySelector('.homepage-category-card__overlay');
-        
+
         // Enhanced hover effects
-        card.addEventListener('mouseenter', function() {
+        card.addEventListener('mouseenter', function () {
             // Scale images with different timing
             images.forEach((img, index) => {
                 img.style.transform = 'scale(1.05)';
                 img.style.transitionDelay = `${index * 0.1}s`;
             });
-            
+
             // Animate icon wrapper
             if (iconWrapper) {
                 iconWrapper.style.transform = 'scale(1.1) rotate(5deg)';
             }
-            
+
             // Animate arrow
             if (arrow) {
                 arrow.style.transform = 'translateX(6px)';
             }
-            
+
             // Show overlay with animation
             if (overlay) {
                 overlay.style.opacity = '0.1';
             }
-            
+
             // Add subtle glow effect
             card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.2)';
         });
-        
-        card.addEventListener('mouseleave', function() {
+
+        card.addEventListener('mouseleave', function () {
             // Reset image transforms
             images.forEach(img => {
                 img.style.transform = 'scale(1)';
                 img.style.transitionDelay = '0s';
             });
-            
+
             // Reset icon wrapper
             if (iconWrapper) {
                 iconWrapper.style.transform = 'scale(1) rotate(0deg)';
             }
-            
+
             // Reset arrow
             if (arrow) {
                 arrow.style.transform = 'translateX(0)';
             }
-            
+
             // Hide overlay
             if (overlay) {
                 overlay.style.opacity = '0';
             }
-            
+
             // Reset shadow
             card.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
         });
-        
+
         // Add click feedback
-        card.addEventListener('click', function(e) {
+        card.addEventListener('click', function (e) {
             createRippleEffect(e, card);
         });
-        
+
         // Add keyboard navigation
-        card.addEventListener('keydown', function(e) {
+        card.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 card.click();
@@ -485,10 +485,10 @@ function initializeEnhancedCategoryCards() {
 function initializeHomepageFeatures() {
     // Initialize existing carousel functionality
     initializeCarousels();
-    
+
     // Initialize smooth scrolling
     initializeSmoothScrolling();
-    
+
     // Initialize animations
     initializeAnimations();
 }
@@ -500,16 +500,16 @@ function initializeCarousels() {
         // Add touch/swipe support for mobile
         let startX = 0;
         let currentX = 0;
-        
-        categoryCarousel.addEventListener('touchstart', function(e) {
+
+        categoryCarousel.addEventListener('touchstart', function (e) {
             startX = e.touches[0].clientX;
         });
-        
-        categoryCarousel.addEventListener('touchmove', function(e) {
+
+        categoryCarousel.addEventListener('touchmove', function (e) {
             currentX = e.touches[0].clientX;
         });
-        
-        categoryCarousel.addEventListener('touchend', function() {
+
+        categoryCarousel.addEventListener('touchend', function () {
             const diff = startX - currentX;
             if (Math.abs(diff) > 50) {
                 // Swipe detected - you can add carousel navigation here
@@ -541,7 +541,7 @@ function initializeAnimations() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -550,7 +550,7 @@ function initializeAnimations() {
             }
         });
     }, observerOptions);
-    
+
     // Observe category cards
     document.querySelectorAll('.homepage-category-card').forEach(card => {
         card.style.opacity = '0';
@@ -558,7 +558,7 @@ function initializeAnimations() {
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(card);
     });
-    
+
     // Observe game cards
     document.querySelectorAll('.homepage-games__item').forEach(item => {
         item.style.opacity = '0';
@@ -574,14 +574,14 @@ function createRippleEffect(event, element) {
     const size = Math.max(rect.width, rect.height);
     const x = event.clientX - rect.left - size / 2;
     const y = event.clientY - rect.top - size / 2;
-    
+
     ripple.style.width = ripple.style.height = size + 'px';
     ripple.style.left = x + 'px';
     ripple.style.top = y + 'px';
     ripple.classList.add('ripple');
-    
+
     element.appendChild(ripple);
-    
+
     setTimeout(() => {
         ripple.remove();
     }, 600);
@@ -663,10 +663,10 @@ document.head.appendChild(styleSheet);
 
 // Add loading states for better UX
 document.querySelectorAll('.homepage-category-card').forEach(card => {
-    card.addEventListener('click', function() {
+    card.addEventListener('click', function () {
         // Add loading state
         this.classList.add('loading');
-        
+
         // Remove loading state after navigation
         setTimeout(() => {
             this.classList.remove('loading');
@@ -674,18 +674,6 @@ document.querySelectorAll('.homepage-category-card').forEach(card => {
     });
 });
 
-// Add performance optimizations
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
 
 // Optimize scroll events
 const optimizedScrollHandler = debounce(() => {
@@ -702,10 +690,10 @@ document.querySelectorAll('.homepage-category-card').forEach(element => {
 });
 
 // Add keyboard navigation support
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     const focusableElements = document.querySelectorAll('.homepage-category-card, .homepage-games__button, .homepage-games__preview');
     const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
-    
+
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault();
         const nextIndex = (currentIndex + 1) % focusableElements.length;
