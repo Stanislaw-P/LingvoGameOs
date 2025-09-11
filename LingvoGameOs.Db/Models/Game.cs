@@ -33,5 +33,6 @@ namespace LingvoGameOs.Db.Models
         public string? GameFolderName { get; set; }
         public string? VideoUrl { get; set; }
         public List<FavoriteGame>? FavoriteGames { get; set; }
+        public int Port { get; set; }
     }
 }
