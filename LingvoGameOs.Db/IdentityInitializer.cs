@@ -1,13 +1,17 @@
-﻿using LingvoGameOs.Db.Models;
+﻿using System.Reflection;
+using LingvoGameOs.Db.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace LingvoGameOs.Db
 {
     public class IdentityInitializer
     {
-        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DbContextOptions<DatabaseContext> dbContextOptions)
+        public static async Task InitializeAsync(
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
+            DbContextOptions<DatabaseContext> dbContextOptions
+        )
         {
             using (DatabaseContext context = new DatabaseContext(dbContextOptions))
             {
@@ -26,7 +30,7 @@ namespace LingvoGameOs.Db
                     AvatarImgPath = "/Avatars/admin-avatar-11.png",
                     Name = "Админ",
                     Surname = "Админов",
-                    Description = "Администрация сайта"
+                    Description = "Администрация сайта",
                 };
 
                 var devMarat = new User
@@ -34,9 +38,10 @@ namespace LingvoGameOs.Db
                     Name = "Марат",
                     Surname = "Дзиов",
                     AvatarImgPath = "/Avatars/MaraAva.jpg",
-                    Description = "Выпускниц яндекс лицея. В совершенстве знает python и даже был в офисе Яндекс.",
+                    Description =
+                        "Выпускниц яндекс лицея. В совершенстве знает python и даже был в офисе Яндекс.",
                     UserName = "MaratTest@gmail.com",
-                    Email = "MaratTest@gmail.com"
+                    Email = "MaratTest@gmail.com",
                 };
 
                 var devDavid = new User
@@ -44,9 +49,10 @@ namespace LingvoGameOs.Db
                     Name = "Дэвид",
                     Surname = "Кадиев",
                     AvatarImgPath = "/Avatars/DavaAva.jpg",
-                    Description = "Лучший составитель тестов и кроссвордов. Сдал ЕГЭ по информатике на 98 баллов и теперь пишет игры для Осетии.",
+                    Description =
+                        "Лучший составитель тестов и кроссвордов. Сдал ЕГЭ по информатике на 98 баллов и теперь пишет игры для Осетии.",
                     UserName = "DavidTest@gmail.com",
-                    Email = "DavidTest@gmail.com"
+                    Email = "DavidTest@gmail.com",
                 };
 
                 var devIlona = new User
@@ -54,9 +60,10 @@ namespace LingvoGameOs.Db
                     Name = "Илона",
                     Surname = "Бекоева",
                     AvatarImgPath = "/Avatars/Ilona-ava933.jpg",
-                    Description = "Окончила СОГУ с красным дипломом. Вложила душу в проект платформы. Обладательница премии 'Лучшая игра на WinForms' в 2022 году.",
+                    Description =
+                        "Окончила СОГУ с красным дипломом. Вложила душу в проект платформы. Обладательница премии 'Лучшая игра на WinForms' в 2022 году.",
                     UserName = "IlonaBekoeva@gmail.com",
-                    Email = "IlonaBekoeva@gmail.com"
+                    Email = "IlonaBekoeva@gmail.com",
                 };
 
                 var devNastya = new User
@@ -66,7 +73,7 @@ namespace LingvoGameOs.Db
                     AvatarImgPath = "/Avatars/anastasia-ava.jpg",
                     Description = "Ученица яндекс лицея.",
                     UserName = "AnastasiaChuvenkova@gmail.com",
-                    Email = "AnastasiaChuvenkova@gmail.com"
+                    Email = "AnastasiaChuvenkova@gmail.com",
                 };
 
                 var devVlad = new User
@@ -76,7 +83,7 @@ namespace LingvoGameOs.Db
                     AvatarImgPath = "/Avatars/VslavAva.jpg",
                     Description = "Разработчик игр",
                     UserName = "VladislavPetrov@gmail.com",
-                    Email = "VladislavPetrov@gmail.com"
+                    Email = "VladislavPetrov@gmail.com",
                 };
                 // создаем пользователя, если его нет
                 await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
@@ -87,14 +94,50 @@ namespace LingvoGameOs.Db
                 await _CreateUserAsync(userManager, devVlad, password, Constants.DevRoleName);
 
                 // Далее инициализация и добавление в БД данных
-                var languageLevelBeginning = new LanguageLevel { Id = 1, Name = "Барашек, который пытается говорить", Description = "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно." };
-                var languageLevelIntermediate = new LanguageLevel { Id = 2, Name = "Юный нарт", Description = "«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка." };
-                var languageLevelAdvanced = new LanguageLevel { Id = 3, Name = "Кавказский орёл", Description = "«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор." };
-                var languageLevelPro = new LanguageLevel { Id = 4, Name = "Старейшина, который говорит тосты", Description = "«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы." };
-                var languageLevelGrandMaster = new LanguageLevel { Id = 5, Name = "Хранитель языка", Description = "«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков." };
+                var languageLevelBeginning = new LanguageLevel
+                {
+                    Id = 1,
+                    Name = "Барашек, который пытается говорить",
+                    Description =
+                        "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.",
+                };
+                var languageLevelIntermediate = new LanguageLevel
+                {
+                    Id = 2,
+                    Name = "Юный нарт",
+                    Description =
+                        "«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.",
+                };
+                var languageLevelAdvanced = new LanguageLevel
+                {
+                    Id = 3,
+                    Name = "Кавказский орёл",
+                    Description =
+                        "«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.",
+                };
+                var languageLevelPro = new LanguageLevel
+                {
+                    Id = 4,
+                    Name = "Старейшина, который говорит тосты",
+                    Description =
+                        "«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.",
+                };
+                var languageLevelGrandMaster = new LanguageLevel
+                {
+                    Id = 5,
+                    Name = "Хранитель языка",
+                    Description =
+                        "«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.",
+                };
                 if (!await context.LanguageLevels.AnyAsync())
                 {
-                    context.AddRange(languageLevelBeginning, languageLevelIntermediate, languageLevelAdvanced, languageLevelPro, languageLevelGrandMaster);
+                    context.AddRange(
+                        languageLevelBeginning,
+                        languageLevelIntermediate,
+                        languageLevelAdvanced,
+                        languageLevelPro,
+                        languageLevelGrandMaster
+                    );
                     await context.SaveChangesAsync();
                 }
 
@@ -106,7 +149,14 @@ namespace LingvoGameOs.Db
                 var gameType6 = new SkillLearning { Id = 6, Name = "Диктант" };
                 if (!context.SkillsLearning.Any())
                 {
-                    await context.SkillsLearning.AddRangeAsync(gameType1, gameType2, gameType3, gameType4, gameType5, gameType6);
+                    await context.SkillsLearning.AddRangeAsync(
+                        gameType1,
+                        gameType2,
+                        gameType3,
+                        gameType4,
+                        gameType5,
+                        gameType6
+                    );
                     await context.SaveChangesAsync();
                 }
 
@@ -124,7 +174,8 @@ namespace LingvoGameOs.Db
                     Id = 1,
                     Title = "Мир по кусочкам",
                     Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
-                    Rules = "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
+                    Rules =
+                        "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
                     GameFolderName = "lingvo-piece-by-piece",
                     AuthorId = devMarat.Id,
                     PublicationDate = new DateTime(2025, 4, 14),
@@ -138,20 +189,23 @@ namespace LingvoGameOs.Db
                     {
                         "/img/games/gameplay-animal.png",
                         "/img/games/gameplay-animal-1.jpg",
-                        "/img/games/gameplay-animal-2.jpg"
+                        "/img/games/gameplay-animal-2.jpg",
                     },
-                    GameURL = "http://158.160.104.26:5001",
+                    // GameURL = "http://158.160.104.26:5001",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
-                    NumberDownloads = 5
+                    NumberDownloads = 5,
+                    Port = 5001,
                 };
 
                 var game2 = new Game
                 {
                     Id = 2,
                     Title = "Кроссворд осетинских слов",
-                    Description = "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
-                    Rules = "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n" +
-                "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
+                    Description =
+                        "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
+                    Rules =
+                        "На верхней части страницы находиться кроссворд, который образован из множества вертикальных линий из квадратов, создающие в центре другую линию из квадратов. Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец. После ответа на все вопросы в центре кроссворда на выделенной строке составляется слово на русском языке. В ответ нужно ввести это слово, но на осетинском языке.\n"
+                        + "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
                     GameFolderName = "crossword-ossetia",
                     AuthorId = devDavid.Id,
                     PublicationDate = new DateTime(2025, 4, 27),
@@ -164,19 +218,22 @@ namespace LingvoGameOs.Db
                     ImagesPaths = new List<string>
                     {
                         "/img/games/93a62f0945389b9_920x0.jpg",
-                        "/img/games/cross-1.jpg"
+                        "/img/games/cross-1.jpg",
                     },
-                    GameURL = "http://158.160.104.26:5002",
+                    // GameURL = "http://158.160.104.26:5002",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
-                    NumberDownloads = 10
+                    NumberDownloads = 10,
+                    Port = 5002,
                 };
 
                 var game3 = new Game
                 {
                     Id = 3,
                     Title = "Ребусы на осетинском",
-                    Description = "Игра развивает логическое мышление, расширяет словарный запас и предоставляет возможность для развлечения.",
-                    Rules = "Отгадайте ребус, используя подсказки. Для ввода ответа используйте кнопки с буквами осетинского алфавита. У вас есть 3 подсказки для каждого ребуса. За каждый правильный ответ вы получаете 20 очков.",
+                    Description =
+                        "Игра развивает логическое мышление, расширяет словарный запас и предоставляет возможность для развлечения.",
+                    Rules =
+                        "Отгадайте ребус, используя подсказки. Для ввода ответа используйте кнопки с буквами осетинского алфавита. У вас есть 3 подсказки для каждого ребуса. За каждый правильный ответ вы получаете 20 очков.",
                     GameFolderName = "linvgo-puzzles_in_ossetian",
                     AuthorId = devNastya.Id,
                     PublicationDate = new DateTime(2025, 5, 10),
@@ -190,19 +247,22 @@ namespace LingvoGameOs.Db
                     {
                         "/img/games/puzzle-1.jpg",
                         "/img/games/puzzle-2.png",
-                        "/img/games/puzzle-3.jpg"
+                        "/img/games/puzzle-3.jpg",
                     },
-                    GameURL = "http://158.160.104.26:5003",
+                    // GameURL = "http://158.160.104.26:5003",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
-                    NumberDownloads = 0
+                    NumberDownloads = 0,
+                    Port = 5003,
                 };
 
                 var game4 = new Game
                 {
                     Id = 4,
                     Title = "Горный лабиринт",
-                    Description = "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
-                    Rules = "ИГРА В РАЗРАБОТКЕ!\nЕсть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
+                    Description =
+                        "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
+                    Rules =
+                        "ИГРА В РАЗРАБОТКЕ!\nЕсть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
                     AuthorId = devMarat.Id,
                     PublicationDate = new DateTime(2025, 5, 16),
                     LastUpdateDate = new DateTime(2025, 6, 3),
@@ -215,18 +275,20 @@ namespace LingvoGameOs.Db
                     {
                         "/img/games/game-banner.png",
                         "/img/games/mountain-labyrinth-banner-2.png",
-                        "/img/games/mountain-labyrinth-banner-3.png"
+                        "/img/games/mountain-labyrinth-banner-3.png",
                     },
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2 },
-                    NumberDownloads = 1000
+                    NumberDownloads = 1000,
                 };
 
                 var game5 = new Game
                 {
                     Id = 5,
                     Title = "Тур-викторина 'Арт объекты Осетии'",
-                    Description = "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
-                    Rules = "ИГРА В РАЗРАБОТКЕ!\nСлушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
+                    Description =
+                        "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
+                    Rules =
+                        "ИГРА В РАЗРАБОТКЕ!\nСлушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
                     AuthorId = devMarat.Id,
                     PublicationDate = new DateTime(2025, 3, 7),
                     LastUpdateDate = new DateTime(2025, 4, 30),
@@ -239,18 +301,20 @@ namespace LingvoGameOs.Db
                     {
                         "/img/games/art-object-1.png",
                         "/img/games/art-object-2.jpeg",
-                        "/img/games/art-object-3.png"
+                        "/img/games/art-object-3.png",
                     },
                     SkillsLearning = new List<SkillLearning> { gameType3, gameType5 },
-                    NumberDownloads = 241
+                    NumberDownloads = 241,
                 };
 
                 var game6 = new Game
                 {
                     Id = 6,
                     Title = "Поезд",
-                    Description = "Игра развивает память, а также навыки чтения и произношения. В игре доступны три языка: осетинский, грузинский и армянский, а также три уровня сложности.",
-                    Rules = "Цель игры: Изучить осетинский, грузинский или армянский язык, сопоставляя слова с картинками и зарабатывая баллы. Успешное завершение уровней повышает рейтинг.\r\nРежимы игры:\r\nУчить слова: Изучайте слова с картинками и озвучкой. Нажмите на картинку, чтобы услышать произношение и запомнить.\r\nИграть: Перетаскивайте картинки в вагоны поезда, подписанные на выбранном языке.\r\nУровни сложности:\r\n1 уровень: 8 вагонов, картинки с подписями на русском, озвучка при нажатии.\r\n2 уровень: 12 вагонов, картинки с подписями на русском, без озвучки.\r\n3 уровень: 19 вагонов, только картинки, без подписей и озвучки.",
+                    Description =
+                        "Игра развивает память, а также навыки чтения и произношения. В игре доступны три языка: осетинский, грузинский и армянский, а также три уровня сложности.",
+                    Rules =
+                        "Цель игры: Изучить осетинский, грузинский или армянский язык, сопоставляя слова с картинками и зарабатывая баллы. Успешное завершение уровней повышает рейтинг.\r\nРежимы игры:\r\nУчить слова: Изучайте слова с картинками и озвучкой. Нажмите на картинку, чтобы услышать произношение и запомнить.\r\nИграть: Перетаскивайте картинки в вагоны поезда, подписанные на выбранном языке.\r\nУровни сложности:\r\n1 уровень: 8 вагонов, картинки с подписями на русском, озвучка при нажатии.\r\n2 уровень: 12 вагонов, картинки с подписями на русском, без озвучки.\r\n3 уровень: 19 вагонов, только картинки, без подписей и озвучки.",
                     AuthorId = devIlona.Id,
                     PublicationDate = new DateTime(2025, 9, 3),
                     LastUpdateDate = new DateTime(2025, 9, 3),
@@ -263,14 +327,14 @@ namespace LingvoGameOs.Db
                     {
                         "/Games/6/train scrin-1.jpg",
                         "/Games/6/train scrin-2.jpg",
-                        "/Games/6/train scrin-3.jpg"
+                        "/Games/6/train scrin-3.jpg",
                     },
                     SkillsLearning = new List<SkillLearning> { gameType4, gameType5 },
                     NumberDownloads = 4,
                     GameURL = "/Games/6/Поезд.msi",
-                    VideoUrl = "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1"
+                    VideoUrl =
+                        "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1",
                 };
-
 
                 if (!await context.Games.AnyAsync())
                 {
@@ -284,7 +348,8 @@ namespace LingvoGameOs.Db
                     GameId = game1.Id,
                     Rating = 4,
                     PublicationDate = new DateTime(2025, 7, 24),
-                    Text = "Игра прикольная! Как интересно собирается картинка, мне интересно как разработчику. Иногда задания кажутся сложноватыми, но это только подогревает интерес!",
+                    Text =
+                        "Игра прикольная! Как интересно собирается картинка, мне интересно как разработчику. Иногда задания кажутся сложноватыми, но это только подогревает интерес!",
                     IsApproved = true,
                 };
                 var review2 = new Review
@@ -293,7 +358,8 @@ namespace LingvoGameOs.Db
                     GameId = game2.Id,
                     Rating = 5,
                     PublicationDate = new DateTime(2025, 8, 4),
-                    Text = "Мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются.",
+                    Text =
+                        "Мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются.",
                     IsApproved = true,
                 };
                 var review3 = new Review
@@ -302,7 +368,8 @@ namespace LingvoGameOs.Db
                     GameId = game3.Id,
                     Rating = 4,
                     PublicationDate = new DateTime(2025, 9, 1),
-                    Text = "Очень сложная игра, подсказки тоже не помогли. Хоть головоломки и заставляют думать, но мне в нее пока играть рано.",
+                    Text =
+                        "Очень сложная игра, подсказки тоже не помогли. Хоть головоломки и заставляют думать, но мне в нее пока играть рано.",
                     IsApproved = true,
                 };
 
@@ -314,7 +381,10 @@ namespace LingvoGameOs.Db
             }
         }
 
-        private static async Task _CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
+        private static async Task _CreateRole(
+            RoleManager<IdentityRole> roleManager,
+            string roleName
+        )
         {
             // создаем роль, если ее нет
             if (await roleManager.FindByNameAsync(roleName) == null)
@@ -323,7 +393,12 @@ namespace LingvoGameOs.Db
             }
         }
 
-        private static async Task _CreateUserAsync(UserManager<User> userManager, User user, string pass, string roleName)
+        private static async Task _CreateUserAsync(
+            UserManager<User> userManager,
+            User user,
+            string pass,
+            string roleName
+        )
         {
             if (await userManager.FindByEmailAsync(user.Email!) == null)
             {

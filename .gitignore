@@ -365,3 +365,5 @@ FodyWeavers.xsd
 LingvoGameOsWeb/lingvo.db
 LingvoGameOsWeb/lingvo.db-shm
 LingvoGameOsWeb/lingvo.db-wal
+
+.env*
