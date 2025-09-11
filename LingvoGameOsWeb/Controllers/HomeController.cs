@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using LingvoGameOs.Models;
 using LingvoGameOs.Db;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Identity;
+using LingvoGameOs.Db.Models;
 
 
 namespace LingvoGameOs.Controllers;
@@ -10,19 +12,46 @@ namespace LingvoGameOs.Controllers;
 public class HomeController : Controller
 {
     readonly IGamesRepository gamesRepository;
-    readonly DatabaseContext newDatabaseContext;
+    readonly IFavoriteGamesRepository _favoriteGamesRepository;
+    readonly UserManager<User> _userManager;
+    readonly ISkillsLearningRepository _skillsLearningRepository;
 
-    public HomeController(IGamesRepository gamesRepository, DatabaseContext newDatabaseContext)
+    public HomeController(IGamesRepository gamesRepository, IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository)
     {
         this.gamesRepository = gamesRepository;
-        this.newDatabaseContext = newDatabaseContext;
+        _favoriteGamesRepository = favoriteGamesRepository;
+        _userManager = userManager;
+        _skillsLearningRepository = skillsLearningRepository;
     }
 
     public async Task<IActionResult> Index()
     {
+        var currentUser = await _userManager.GetUserAsync(User);
         var games = await gamesRepository.GetAllAsync();
-        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
-        return View(games);
+
+        var gameTasks = games.Select(async game => new GameViewModel
+        {
+            Id = game.Id,
+            Title = game.Title,
+            Author = game.Author,
+            CoverImagePath = game.CoverImagePath,
+            Description = game.Description,
+            GameFolderName = game.GameFolderName,
+            GameURL = game.GameURL,
+            GamePlatform = game.GamePlatform,
+            ImagesPaths = game.ImagesPaths,
+            VideoUrl = game.VideoUrl,
+            LanguageLevel = game.LanguageLevel,
+            PublicationDate = game.PublicationDate,
+            SkillsLearning = game.SkillsLearning,
+            RaitingPlayers = game.RaitingPlayers,
+            IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
+        }).ToList();
+        var gamesViewModel = await Task.WhenAll(gameTasks);
+
+        var skillsLearning = await _skillsLearningRepository.GetAllAsync();
+        ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
+        return View(gamesViewModel.ToList());
     }
 
     public async Task<IActionResult> Search(string gameName)
@@ -51,30 +80,60 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Games()
     {
+        var currentUser = await _userManager.GetUserAsync(User);
         var games = await gamesRepository.GetAllAsync();
-        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
-        return View(games);
+
+        var gameTasks = games.Select(async game => new GameViewModel
+        {
+            Id = game.Id,
+            Title = game.Title,
+            Author = game.Author,
+            CoverImagePath = game.CoverImagePath,
+            Description = game.Description,
+            GameFolderName = game.GameFolderName,
+            GameURL = game.GameURL,
+            GamePlatform = game.GamePlatform,
+            ImagesPaths = game.ImagesPaths,
+            VideoUrl = game.VideoUrl,
+            LanguageLevel = game.LanguageLevel,
+            PublicationDate = game.PublicationDate,
+            SkillsLearning = game.SkillsLearning,
+            RaitingPlayers = game.RaitingPlayers,
+            IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
+        }).ToList();
+        var gamesViewModel = await Task.WhenAll(gameTasks);
+
+        var skillsLearning = await _skillsLearningRepository.GetAllAsync();
+        ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
+
+        return View(gamesViewModel.ToList());
     }
 
     public async Task<IActionResult> Categories()
     {
         var games = await gamesRepository.GetAllAsync();
-        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        
+        var skillsLearning = await _skillsLearningRepository.GetAllAsync();
+        ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
+
         return View(games);
     }
 
     public async Task<IActionResult> CategoryGames(string category)
     {
         var games = await gamesRepository.GetAllAsync();
-        var filteredGames = games.Where(game => 
-            game.SkillsLearning != null && 
-            game.SkillsLearning.Any(skill => 
+        var filteredGames = games.Where(game =>
+            game.SkillsLearning != null &&
+            game.SkillsLearning.Any(skill =>
                 skill.Name.Equals(category, StringComparison.OrdinalIgnoreCase)
             )
         ).ToList();
-        
+
         ViewBag.Category = category;
-        ViewBag.SkillsLearning = newDatabaseContext.SkillsLearning.Select(type => type.Name);
+        
+        var skillsLearning = await _skillsLearningRepository.GetAllAsync();
+        ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
+        
         return View(filteredGames);
     }
 }

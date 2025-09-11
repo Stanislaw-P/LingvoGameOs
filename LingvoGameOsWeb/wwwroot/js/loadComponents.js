@@ -1,5 +1,4 @@
 import { initializeDropdown } from './dropdown.js';
-import { initializeFavoritesLink } from './favorites.js';
 
 // Функция для загрузки HTML-компонентов
 export function loadComponent(url, placeholderId) {
@@ -9,7 +8,6 @@ export function loadComponent(url, placeholderId) {
             document.getElementById(placeholderId).innerHTML = data;
             if (placeholderId === 'header-placeholder') {
                 initializeDropdown();
-                initializeFavoritesLink();
             }
         })
         .catch(error => console.error('Ошибка при загрузке компонента:', error));

@@ -1,6 +1,5 @@
 import { loadComponent } from './loadComponents.js';
 import { showReviewModal, initializeReviews } from './reviews.js';
-import { toggleFavorite, updateFavoritesPage, getFavorites } from './favorites.js';
 import { initializeLeaderboard } from './leaderboard.js';
 import { initializeActivityChart } from './activityChart.js';
 import { showNotification } from './notifications.js';
@@ -56,18 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (document.querySelector('.game-reviews__container')) initializeReviews();
-
-    const gameLikeButton = document.querySelector('.header__like');
-    if (gameLikeButton && window.location.pathname.includes('game.html')) {
-        const gameData = { id: 'game1', name: 'Сокровища Осетии', image: 'img/game-banner.png' };
-        gameLikeButton.addEventListener('click', () => toggleFavorite(gameData.id, gameData));
-        if (getFavorites().some(game => game.id === gameData.id)) gameLikeButton.querySelector('img').src = 'icon/like-filled.svg';
-    }
-
-    // Обновление страницы избранного
-    if (window.location.pathname.includes('favorites.html')) {
-        updateFavoritesPage();
-    }
 
     // Инициализация таблицы лидеров
     if (window.location.pathname.includes('leaderboard_game-id.html')) {

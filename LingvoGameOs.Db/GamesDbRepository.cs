@@ -67,7 +67,7 @@ namespace LingvoGameOs.Db
 				.Include(u => u.PlayerGames)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
-			if (existingUser.PlayerGames == null)
+			if (existingUser?.PlayerGames == null)
 				return new List<Game>();
 			return existingUser.PlayerGames;
 		}

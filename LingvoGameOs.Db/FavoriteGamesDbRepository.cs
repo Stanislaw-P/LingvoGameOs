@@ -67,8 +67,18 @@ namespace LingvoGameOs.Db
             return await _databaseContext.FavoriteGames
                 .Where(f => f.UserId == userId)
                 .Include(f => f.Game)
+                .Include(f => f.Game.GamePlatform)
+                .AsSplitQuery()
                 .Select(f => f.Game)
                 .ToListAsync();
+        }
+
+        public async Task<bool> IsGameInFavoritesAsync(string userId, int gameId)
+        {
+            if (string.IsNullOrEmpty(userId)) return false;
+            var existingFavorite = await TryGetFavoriteAsync(userId, gameId);
+            return existingFavorite != null;
+
         }
     }
 }
