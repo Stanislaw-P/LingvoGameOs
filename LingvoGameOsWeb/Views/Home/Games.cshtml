@@ -132,12 +132,23 @@
                      data-keywords="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")">
 
                     <!-- Кнопка добавления в избранное -->
-                    <button class="games__favorite-btn @(game.IsFavorite ? "active" : "")"
-                             data-game-id="@game.Id">
-                        <img src="@(game.IsFavorite ? "/icon/like2.svg" : "/icon/like.svg")"
-                             alt="Добавить в избранное"
-                             class="games__favorite-icon">
-                    </button>
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <button class="games__favorite-btn @(game.IsFavorite ? "active" : "")"
+                                data-game-id="@game.Id">
+                            <img src="@(game.IsFavorite ? "/icon/like2.svg" : "/icon/like.svg")"
+                                 alt="Добавить в избранное"
+                                 class="games__favorite-icon">
+                        </button>
+                    }
+                    else
+                    {
+                        <a role="button" asp-area="" asp-controller="Account" asp-action="Login" class="games__favorite-btn">
+                            <img src="/icon/like.svg"
+                                 alt="Добавить в избранное"
+                                 class="games__favorite-icon">
+                        </a>
+                    }
 
                     <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
                     <div class="games__content">
