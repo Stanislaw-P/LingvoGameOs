@@ -44,7 +44,7 @@ namespace LingvoGameOs.Controllers
                 CoverImagePath = game.CoverImagePath,
                 Description = game.Description,
                 GameFolderName = game.GameFolderName,
-                GameFilePath = game.GameFilePath,
+                GameURL = game.GameFilePath,
                 GamePlatform = game.GamePlatform,
                 ImagesPaths = game.ImagesPaths,
                 VideoUrl = game.VideoUrl,

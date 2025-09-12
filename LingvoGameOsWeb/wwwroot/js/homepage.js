@@ -31,10 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Carousel functionality
 function initCarousels() {
-    const carousels = document.querySelectorAll('.homepage-categories__carousel, .homepage-games__carousel');
+    const carousels = document.querySelectorAll('.homepage-categories__carousel');
 
     carousels.forEach(carousel => {
-        const list = carousel.querySelector('.homepage-categories__list, .homepage-games__list');
+        const list = carousel.querySelector('.homepage-categories__list');
         const prevBtn = carousel.parentElement.querySelector('.homepage-categories__prev, .homepage-games__prev');
         const nextBtn = carousel.parentElement.querySelector('.homepage-categories__next, .homepage-games__next');
         const counter = carousel.parentElement.querySelector('.homepage-carousel-page-counter');
@@ -220,13 +220,13 @@ function initAnimations() {
     }, observerOptions);
 
     // Observe elements for animation
-    const animateElements = document.querySelectorAll(
-        '.homepage-categories__item, .homepage-games__item, .homepage-new-games__item, .homepage-reviews__card, .homepage-faq__item'
-    );
+    //const animateElements = document.querySelectorAll(
+    //    '.homepage-categories__item, .homepage-games__item, .homepage-new-games__item, .homepage-reviews__card, .homepage-faq__item'
+    //);
 
-    animateElements.forEach(el => {
-        observer.observe(el);
-    });
+    //animateElements.forEach(el => {
+    //    observer.observe(el);
+    //});
 }
 
 // CTA Section Animations and Interactions
@@ -288,39 +288,6 @@ window.addEventListener('resize', debounce(() => {
     initCarousels();
 }, 250));
 
-// Add loading states
-function showLoading(element) {
-    element.classList.add('loading');
-    element.innerHTML = '<div class="homepage-loading"><div class="homepage-loading__spinner"></div>Загрузка...</div>';
-}
-
-function hideLoading(element) {
-    element.classList.remove('loading');
-}
-
-// Error handling
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'homepage-error';
-    errorDiv.textContent = message;
-    errorDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #d54646;
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        z-index: 1000;
-        animation: slideInRight 0.3s ease;
-    `;
-
-    document.body.appendChild(errorDiv);
-
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
-}
 
 // Success notification
 function showSuccess(message) {
@@ -385,16 +352,16 @@ document.addEventListener('click', function (e) {
     }
 
     // Game buttons
-    if (e.target.classList.contains('homepage-games__button')) {
-        // Add loading state
-        e.target.style.pointerEvents = 'none';
-        e.target.textContent = 'Загрузка...';
+    //if (e.target.classList.contains('homepage-games__button')) {
+    //    // Add loading state
+    //    e.target.style.pointerEvents = 'none';
+    //    e.target.textContent = 'Загрузка...';
 
-        setTimeout(() => {
-            e.target.style.pointerEvents = 'auto';
-            e.target.textContent = e.target.textContent === 'Загрузка...' ? 'Играть' : e.target.textContent;
-        }, 1000);
-    }
+    //    setTimeout(() => {
+    //        e.target.style.pointerEvents = 'auto';
+    //        e.target.textContent = e.target.textContent === 'Загрузка...' ? 'Играть' : e.target.textContent;
+    //    }, 1000);
+    //}
 });
 
 // Add CSS for ripple effect
@@ -560,12 +527,12 @@ function initializeAnimations() {
     });
 
     // Observe game cards
-    document.querySelectorAll('.homepage-games__item').forEach(item => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(30px)';
-        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(item);
-    });
+    //document.querySelectorAll('.homepage-games__item').forEach(item => {
+    //    item.style.opacity = '0';
+    //    item.style.transform = 'translateY(30px)';
+    //    item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    //    observer.observe(item);
+    //});
 }
 
 function createRippleEffect(event, element) {
@@ -691,7 +658,7 @@ document.querySelectorAll('.homepage-category-card').forEach(element => {
 
 // Add keyboard navigation support
 document.addEventListener('keydown', function (e) {
-    const focusableElements = document.querySelectorAll('.homepage-category-card, .homepage-games__button, .homepage-games__preview');
+    const focusableElements = document.querySelectorAll('.homepage-category-card');
     const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
 
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
