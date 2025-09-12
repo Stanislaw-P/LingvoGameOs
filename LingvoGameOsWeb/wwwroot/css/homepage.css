@@ -520,13 +520,13 @@ body {
 
 /* New Games Section */
 .homepage-new-games {
-    padding: 6rem 2rem;
+    padding: 6rem 0;
     margin: 0;
     border-radius: 20px;
 }
 
 .homepage-new-games__container {
-    max-width: 1240px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
