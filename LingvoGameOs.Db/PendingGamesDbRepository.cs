@@ -88,7 +88,7 @@ namespace LingvoGameOs.Db
                 SkillsLearning = pendingGame.SkillsLearning,
                 GamePlatform = pendingGame.GamePlatform,
                 GameFolderName = pendingGame.GameFolderName,
-                GameURL = pendingGame.GameURL,
+                GameFilePath = pendingGame.GameURL,
                 VideoUrl = pendingGame.VideoUrl,
                 PublicationDate = DateTime.Now,
                 LastUpdateDate = DateTime.Now,

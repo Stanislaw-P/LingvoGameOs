@@ -331,7 +331,7 @@ namespace LingvoGameOs.Db
                     },
                     SkillsLearning = new List<SkillLearning> { gameType4, gameType5 },
                     NumberDownloads = 4,
-                    GameURL = "/Games/6/Поезд.msi",
+                    GameFilePath = "/Games/6/Поезд.msi",
                     VideoUrl =
                         "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1",
                 };

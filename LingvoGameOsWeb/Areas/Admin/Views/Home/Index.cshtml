@@ -95,7 +95,7 @@
                         <div class="admin-game-card__actions">
                             @if (game.GamePlatform?.Name == "Desktop")
                             {
-                                <a href="@game.GameURL" download class="admin-btn admin-btn--primary">Скачать</a>
+                                <a href="@game.GameFilePath" download class="admin-btn admin-btn--primary">Скачать</a>
                             }
                             else
                             {

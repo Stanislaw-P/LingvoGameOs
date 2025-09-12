@@ -70,7 +70,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
                 if (publishedGame.GamePlatform.Name == "Desktop")
                 {
-                    publishedGame.GameURL = _fileProvider.UpdateFilePath(
+                    publishedGame.GameFilePath = _fileProvider.UpdateFilePath(
                     pendingGame.GameURL!,
                     $"{Folders.PendingGames}/{pendingGame.Id}",
                     $"{Folders.Games}/{publishedGame.Id}");
@@ -112,7 +112,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                         authorName = $"{publishedGame.Author.Name} {publishedGame.Author.Surname}",
                         publicationDate = publishedGame.PublicationDate.ToString("dd.MM.yyyy"),
                         imagePath = publishedGame.CoverImagePath,
-                        gameUrl = publishedGame.GameURL,
+                        gameUrl = publishedGame.GameFilePath,
                         platform = publishedGame.GamePlatform.Name
                     }
                 });

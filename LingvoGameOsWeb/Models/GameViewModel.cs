@@ -19,7 +19,7 @@ namespace LingvoGameOs.Models
         public double RaitingTeachers { get; set; }
         public string? CoverImagePath { get; set; }
         public List<string>? ImagesPaths { get; set; }
-        public string? GameURL { get; set; }
+        public string? GameFilePath { get; set; }
         public Platform GamePlatform { get; set; } = null!;
         public int NumberDownloads { get; set; }
         public List<User>? Players { get; set; }

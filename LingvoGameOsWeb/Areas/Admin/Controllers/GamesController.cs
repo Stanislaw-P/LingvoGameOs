@@ -43,8 +43,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             FileInfo? msiFileInfo = null;
             if (existingGame.GamePlatform.Name == "Desktop")
             {
-                if (existingGame.GameURL != null)
-                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameURL));
+                if (existingGame.GameFilePath != null)
+                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new EditGameViewModel
@@ -59,7 +59,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
                 AuthorId = existingGame.Author.Id,
-                GameURL = existingGame.GameURL,
+                GameURL = existingGame.GameFilePath,
                 GameFolderName = existingGame.GameFolderName,
                 GameFileInfo = msiFileInfo,
                 GamePlatform = existingGame.GamePlatform.Name,
@@ -153,7 +153,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         {
             if (editGame.GameURL != editGame.CurrentGameURL)
             {
-                existingGame.GameURL = editGame.GameURL;
+                existingGame.GameFilePath = editGame.GameURL;
             }
         }
 
@@ -214,7 +214,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             {
                 if (editGame.CurrentGameURL != null)
                 {
-                    existingGame.GameURL = null;
+                    existingGame.GameFilePath = null;
                     _fileProvider.DeleteFile(editGame.CurrentGameURL);
                 }
             }
@@ -224,14 +224,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         {
             if (editGame.GamePlatform == "Desktop")
             {
-                if (editGame.Title != existingGame.Title && existingGame.GameURL != null)
+                if (editGame.Title != existingGame.Title && existingGame.GameFilePath != null)
                 {
                     string newGameFileName = editGame.Title.Trim();
                     // TODO: Необходимо будет изменить код если появятся Unity игры
                     string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameURL, newGameFileName + ".msi"); 
                     editGame.GameURL = newGameFilePath;
                     existingGame.Title = newGameFileName;
-                    _fileProvider.MoveGameFile(existingGame.GameURL, editGame.GameURL);
+                    _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameURL);
                 }
             }
         }

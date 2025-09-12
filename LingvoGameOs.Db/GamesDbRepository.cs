@@ -81,7 +81,7 @@ namespace LingvoGameOs.Db
 
 		public async Task ChangeGameUrl(string newGameUrl, Game game)
 		{
-			game.GameURL = newGameUrl;
+			game.GameFilePath = newGameUrl;
 			await databaseContext.SaveChangesAsync();
 		}
 
