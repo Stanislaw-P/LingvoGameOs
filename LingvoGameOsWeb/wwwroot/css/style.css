@@ -9,6 +9,7 @@
 }
 
 a {
+    
     text-decoration: none;
 }
 
@@ -97,6 +98,11 @@ body {
 }
 
 /* #endregion */
+
+a.link {
+    color: var(--accent-2); /* основной цвет ссылки */
+    transition: color .2s ease;
+}
 
 /* #region Шрифты */
 @font-face {
