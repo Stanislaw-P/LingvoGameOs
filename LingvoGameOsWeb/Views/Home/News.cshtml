@@ -6,9 +6,8 @@
     <link rel="stylesheet" href="~/css/news.css" asp-append-version="true" />
 }
 
-@section Scripts {
-    <script src="~/js/news.js" asp-append-version="true"></script>
-}
+@* @section Scripts { <script src="~/js/news.js" asp-append-version="true"></script> } *@
+
 
 <div class="news-page">
     <!-- Заголовок будет вставлен сюда -->
@@ -29,8 +28,8 @@
         <div class="news-main">
             <!-- Основные новости -->
             <div class="news-featured">
-                <!-- Новость 1 -->
-                <article class="news-card">
+                <!-- Новость 3 -->
+                <article class="news-card" id="new3">
                     <img src="/img/news/top.png" alt="кто пишет все эти игры" class="news-card__image">
                     <div class="news-card__content">
                         <div class="news-card__meta">
@@ -56,7 +55,7 @@
                 </article>
 
                 <!-- Новость 2 -->
-                <article class="news-card">
+                <article class="news-card" id="news2">
                     <img src="/img/news/developers.png" alt="для разработчиков" class="news-card__image">
                     <div class="news-card__content">
                         <div class="news-card__meta">
@@ -82,8 +81,8 @@
                     </div>
                 </article>
 
-                <!-- Новость 3 -->
-                <article class="news-card">
+                <!-- Новость 1 -->
+                <article class="news-card" id="news1">
                     <img src="/img/news/manukaync1.png" alt="Зачем мы сделали портал" class="news-card__image">
                     <div class="news-card__content">
                         <div class="news-card__meta">
@@ -124,25 +123,31 @@
                     <h3 class="news-sidebar__title">Популярные новости</h3>
                     <div class="news-sidebar__list">
                         <div class="news-sidebar__item">
-                            <img src="/img/news/top_small.png" alt="кто пишет все эти игры" class="news-sidebar__item-image">
-                            <div class="news-sidebar__item-content">
-                                <h4 class="news-sidebar__item-title">Кто пишет все эти игры</h4>
-                                <span class="news-sidebar__item-date">10.09.2025</span>
-                            </div>
+                            <a href="#news3">
+                                <img src="/img/news/top_small.png" alt="кто пишет все эти игры" class="news-sidebar__item-image">
+                                <div class="news-sidebar__item-content">
+                                    <h4 class="news-sidebar__item-title">Кто пишет все эти игры</h4>
+                                    <span class="news-sidebar__item-date">10.09.2025</span>
+                                </div>
+                            </a>
                         </div>
                         <div class="news-sidebar__item">
-                            <img src="/img/news/developers_small.png" alt="Для разработчиков игр" class="news-sidebar__item-image">
-                            <div class="news-sidebar__item-content">
-                                <h4 class="news-sidebar__item-title">Для разработчиков игр</h4>
-                                <span class="news-sidebar__item-date">9.09.2025</span>
-                            </div>
+                            <a href="#news2">
+                                <img src="/img/news/developers_small.png" alt="Для разработчиков игр" class="news-sidebar__item-image">
+                                <div class="news-sidebar__item-content">
+                                    <h4 class="news-sidebar__item-title">Для разработчиков игр</h4>
+                                    <span class="news-sidebar__item-date">9.09.2025</span>
+                                </div>
+                            </a>
                         </div>
                         <div class="news-sidebar__item">
-                            <img src="/img/news/manukaync1_small.png" alt="Зачем мы сделали портал" class="news-sidebar__item-image">
-                            <div class="news-sidebar__item-content">
-                                <h4 class="news-sidebar__item-title">Зачем мы сделали портал</h4>
-                                <span class="news-sidebar__item-date">8.09.2025</span>
-                            </div>
+                            <a href="#news1">
+                                <img src="/img/news/manukaync1_small.png" alt="Зачем мы сделали портал" class="news-sidebar__item-image">
+                                <div class="news-sidebar__item-content">
+                                    <h4 class="news-sidebar__item-title">Зачем мы сделали портал</h4>
+                                    <span class="news-sidebar__item-date">8.09.2025</span>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>

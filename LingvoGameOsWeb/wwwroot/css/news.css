@@ -427,7 +427,7 @@
     border-radius: 10px 70px;
     overflow: hidden;
     transition: all 0.3s ease;
-    cursor: pointer;
+   /* cursor: pointer;*/
     box-shadow: var(--shadow);
 }
 
