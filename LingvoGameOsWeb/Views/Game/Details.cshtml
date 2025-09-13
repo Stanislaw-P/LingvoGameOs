@@ -1,4 +1,4 @@
-﻿@model Game
+﻿@model GameViewModel
 
 @{
     ViewData["Title"] = Model.Title;
@@ -66,9 +66,19 @@
                     </a>
                 }
 
-                <a asp-area="" asp-controller="Favorites" asp-action="Add" asp-route-gameId="@Model.Id" class="game-hero__share profile__button">
-                    <img src="/icon/share.svg" alt="Save" class="game-hero__share-icon">
-                </a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <button data-game-id="@Model.Id" class="game-hero__favorite profile__button @(Model.IsFavorite ? "active" : "")">
+                        <img src="@(Model.IsFavorite ? "/icon/like3.svg" : "/icon/like.svg")" alt="Добавить в избранное" class="game-hero__favorite-icon">
+                    </button>
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="Account" asp-action="Login" class="game-hero__favorite profile__button">
+                        <img src="/icon/like.svg" alt="Добавить в избранное" class="game-hero__favorite-icon">
+                    </a>
+                }
+
             </div>
         </div>
     </div>

@@ -28,6 +28,7 @@ namespace LingvoGameOs.Db
 				.Include(g => g.SkillsLearning)
 				.Include(g => g.LanguageLevel)
 				.Include(g => g.GamePlatform)
+				.Include(g => g.FavoriteGames)
 				.Include(g => g.Players)
 				.Include(g => g.Author)
 				.ThenInclude(a => a.DevGames)

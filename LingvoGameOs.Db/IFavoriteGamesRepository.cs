@@ -9,5 +9,6 @@ namespace LingvoGameOs.Db
         Task<bool> RemoveFromFavoritesAsync(string userId, int gameId);
         Task<FavoriteGame?> TryGetFavoriteAsync(string userId, int gameId);
         Task<bool> IsGameInFavoritesAsync(string userId, int gameId);
+        Task<int> GetGameFavoritesCountAsync(int gameId);
     }
 }

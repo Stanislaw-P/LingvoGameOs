@@ -44,7 +44,7 @@ namespace LingvoGameOs.Controllers
                 CoverImagePath = game.CoverImagePath,
                 Description = game.Description,
                 GameFolderName = game.GameFolderName,
-                GameURL = game.GameFilePath,
+                GameFilePath = game.GameFilePath,
                 GamePlatform = game.GamePlatform,
                 ImagesPaths = game.ImagesPaths,
                 VideoUrl = game.VideoUrl,
@@ -52,6 +52,7 @@ namespace LingvoGameOs.Controllers
                 PublicationDate = game.PublicationDate,
                 SkillsLearning = game.SkillsLearning,
                 RaitingPlayers = game.RaitingPlayers,
+                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
                 IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
             }).ToList();
             var gamesViewModel = await Task.WhenAll(gameTasks);
@@ -80,7 +81,7 @@ namespace LingvoGameOs.Controllers
             bool result = await _favoriteGamesRepository.AddAsync(currentUser.Id, gameId);
             if(result)
                 return Ok();
-            return BadRequest("Не удалось сохранить игру.");
+            return BadRequest("Не удалось сохранить игру. Попробуйте позже или обновите страницу.");
         }
 
         [HttpDelete]
@@ -105,7 +106,7 @@ namespace LingvoGameOs.Controllers
             bool result = await _favoriteGamesRepository.RemoveFromFavoritesAsync(currentUser.Id, gameId);
             if (result)
                 return Ok();
-            return BadRequest("Не удалось удалить игру из избранного.");
+            return BadRequest("Не удалось удалить игру из избранного. Попробуйте позже или обновите страницу.");
         }
     }
 }

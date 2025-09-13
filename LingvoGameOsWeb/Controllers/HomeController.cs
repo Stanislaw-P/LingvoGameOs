@@ -37,7 +37,7 @@ public class HomeController : Controller
             CoverImagePath = game.CoverImagePath,
             Description = game.Description,
             GameFolderName = game.GameFolderName,
-            GameURL = game.GameFilePath,
+            GameFilePath = game.GameFilePath,
             GamePlatform = game.GamePlatform,
             ImagesPaths = game.ImagesPaths,
             VideoUrl = game.VideoUrl,
@@ -45,6 +45,7 @@ public class HomeController : Controller
             PublicationDate = game.PublicationDate,
             SkillsLearning = game.SkillsLearning,
             RaitingPlayers = game.RaitingPlayers,
+            FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
             IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
         }).ToList();
         var gamesViewModel = await Task.WhenAll(gameTasks);
@@ -91,7 +92,7 @@ public class HomeController : Controller
             CoverImagePath = game.CoverImagePath,
             Description = game.Description,
             GameFolderName = game.GameFolderName,
-            GameURL = game.GameFilePath,
+            GameFilePath = game.GameFilePath,
             GamePlatform = game.GamePlatform,
             ImagesPaths = game.ImagesPaths,
             VideoUrl = game.VideoUrl,
@@ -99,6 +100,7 @@ public class HomeController : Controller
             PublicationDate = game.PublicationDate,
             SkillsLearning = game.SkillsLearning,
             RaitingPlayers = game.RaitingPlayers,
+            FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
             IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
         }).ToList();
         var gamesViewModel = await Task.WhenAll(gameTasks);

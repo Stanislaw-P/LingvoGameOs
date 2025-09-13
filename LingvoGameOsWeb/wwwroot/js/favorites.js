@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const favoriteButtons = document.querySelectorAll('.games__favorite-btn');
+    const favoriteButtons = document.querySelectorAll('.games__favorite-btn, .game-hero__favorite');
 
     favoriteButtons.forEach(favoriteButton => {
         favoriteButton.addEventListener('click', async function () {
             const isFavoritesPage = window.location.pathname.includes('Favorites');
+            const isHeroButton = this.classList.contains('game-hero__favorite');
 
             const gameId = this.dataset.gameId;
             const isFavorite = this.classList.contains('active');
-            const icon = this.querySelector('.games__favorite-icon');
+            const icon = this.querySelector('.games__favorite-icon, .game-hero__favorite-icon');
             const gameCard = this.closest('.games__item'); // Находим карточку игры
             const fetchUrl = isFavorite ? `/Favorites/Remove?gameId=${gameId}` : `/Favorites/Add?gameId=${gameId}`
 
@@ -20,40 +21,48 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (response.ok) {
-                    // Если удаляем из избранного - удаляем карточку
+                    // If delete from favorites page - delete game-cart
                     if (isFavorite) {
-                        if (isFavoritesPage) {
-                            // Анимация исчезновения
+                        if (isFavoritesPage && !isHeroButton) {
+                            // Fade animation only for cards on favorites page
                             gameCard.style.transition = 'all 0.3s ease';
                             gameCard.style.opacity = '0';
                             gameCard.style.transform = 'translateY(20px)';
 
-                            // Удаляем после анимации
+                            // Delete after animation
                             setTimeout(() => {
                                 gameCard.remove();
-
-                                // Обновляем layout если нужно
                                 updateGamesLayout();
                             }, 300);
                         } else {
-                            // Если добавляем в избранное - просто меняем стиль
+                            // For hero buttons or not on the favorites page - just change the style
                             this.classList.toggle('active');
-                            // Меняем иконку
                             if (icon) {
+                                if (isHeroButton) {
+                                    icon.src = this.classList.contains('active') ?
+                                        '/icon/like3.svg' :
+                                        '/icon/like.svg';
+                                } else {
+                                    icon.src = this.classList.contains('active') ?
+                                        '/icon/like2.svg' :
+                                        '/icon/like.svg';
+                                }
+                            }
+                        }
+                    } else {
+                        // Если добавляем в избранное - меняем стиль
+                        this.classList.toggle('active');
+                        if (icon) {
+                            // Для hero кнопки меняем на share.svg при сохранении
+                            if (isHeroButton) {
+                                icon.src = this.classList.contains('active') ?
+                                    '/icon/share.svg' :
+                                    '/icon/like.svg';
+                            } else {
                                 icon.src = this.classList.contains('active') ?
                                     '/icon/like2.svg' :
                                     '/icon/like.svg';
                             }
-                        }
-                    } else {
-
-                        // Если добавляем в избранное - просто меняем стиль
-                        this.classList.toggle('active');
-                        // Меняем иконку
-                        if (icon) {
-                            icon.src = this.classList.contains('active') ?
-                                '/icon/like2.svg' :
-                                '/icon/like.svg';
                         }
                     }
                 } else {
@@ -70,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateGamesLayout() {
         const gamesContainer = document.getElementById('all-games');
+        if (!gamesContainer) return; // Если контейнера нет (например, на странице hero), выходим
+
         const remainingGames = gamesContainer.querySelectorAll('.games__item');
 
         if (remainingGames.length === 0) {

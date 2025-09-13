@@ -73,6 +73,14 @@ namespace LingvoGameOs.Db
                 .ToListAsync();
         }
 
+        public async Task<int> GetGameFavoritesCountAsync(int gameId)
+        {
+            var existingGame = await _gamesRepository.TryGetByIdAsync(gameId);
+            if(existingGame == null) 
+                return 0;
+            return existingGame?.FavoriteGames?.Count ?? 0;
+        }
+
         public async Task<bool> IsGameInFavoritesAsync(string userId, int gameId)
         {
             if (string.IsNullOrEmpty(userId)) return false;

@@ -22,6 +22,7 @@ namespace LingvoGameOs.Controllers
         readonly FileProvider _fileProvider;
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly ILogger<GameController> _logger;
+        readonly IFavoriteGamesRepository _favoriteGamesRepository;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -33,7 +34,8 @@ namespace LingvoGameOs.Controllers
             IPendingGamesRepository pendingGamesRepository,
             ILogger<GameController> logger,
             IConfiguration configuration
-        )
+,
+            IFavoriteGamesRepository favoriteGamesRepository)
         {
             _configuration = configuration;
 
@@ -45,6 +47,7 @@ namespace LingvoGameOs.Controllers
             _languageLevelsRepository = languageLevelsRepository;
             _pendingGamesRepository = pendingGamesRepository;
             _logger = logger;
+            _favoriteGamesRepository = favoriteGamesRepository;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -53,7 +56,29 @@ namespace LingvoGameOs.Controllers
             if (existingGame == null)
                 return NotFound();
 
-            return View(existingGame);
+            var currentUser = await _userManager.GetUserAsync(User);
+            var gameViewModel = new GameViewModel
+            {
+                Id = existingGame.Id,
+                Title = existingGame.Title,
+                Author = existingGame.Author,
+                CoverImagePath = existingGame.CoverImagePath,
+                Description = existingGame.Description,
+                Rules = existingGame.Rules,
+                GameFolderName = existingGame.GameFolderName,
+                GameFilePath = existingGame.GameFilePath,
+                GamePlatform = existingGame.GamePlatform,
+                ImagesPaths = existingGame.ImagesPaths,
+                VideoUrl = existingGame.VideoUrl,
+                LanguageLevel = existingGame.LanguageLevel,
+                PublicationDate = existingGame.PublicationDate,
+                SkillsLearning = existingGame.SkillsLearning,
+                RaitingPlayers = existingGame.RaitingPlayers,
+                RaitingTeachers = existingGame.RaitingTeachers,
+                IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", existingGame.Id)
+            };
+
+            return View(gameViewModel);
         }
 
         public async Task<IActionResult> StartAsync(int idGame)

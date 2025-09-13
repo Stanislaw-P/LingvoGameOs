@@ -158,16 +158,16 @@
                                 <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
                             </span>
                             <span class="games__likes">
-                                <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> 120
+                                <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> @game.FavoritesCount
                             </span>
-                            <span class="games__views">
+                            @* <span class="games__views">
                                 <img src="/icon/eye.svg" alt="view" class="stat-icon"> @game.NumberDownloads
-                            </span>
+                            </span> *@
                         </div>
                         <div class="games__actions">
                             @if (game.GamePlatform.Name == "Desktop")
                             {
-                                <a href="@game.GameURL" download role="button" class="games__button">Скачать</a>
+                                <a href="@game.GameFilePath" download role="button" class="games__button">Скачать</a>
                             }
                             else
                             {
