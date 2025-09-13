@@ -277,14 +277,19 @@
                 <span asp-validation-for="Password" class="login-validation" />
             </div>
             <button type="submit" asp-controller="Account" asp-action="Login" class="login-btn-main">Продолжить</button>
-            <button type="button" class="login-btn-vk">
+            @* <button type="button" class="login-btn-vk">
                 <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
-            </button>
+            </button> *@
 
             <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
         </form>
         <div class="login-bottom-link">
             Ещё не зарегистрированы? <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрироваться</a>
+        </div>
+
+        <!-- Восстановление пароля -->
+        <div class="login-bottom-link">
+            Забыли пароль? <a asp-area="" asp-controller="" asp-action="">Сбросить</a>
         </div>
     </div>
     <div class="login-main-right">
