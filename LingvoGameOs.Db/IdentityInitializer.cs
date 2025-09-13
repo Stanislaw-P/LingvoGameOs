@@ -258,58 +258,6 @@ namespace LingvoGameOs.Db
                 var game4 = new Game
                 {
                     Id = 4,
-                    Title = "Горный лабиринт",
-                    Description =
-                        "Отправляйтесь в увлекательное путешествие, проходите сказочные лабиринты и создавайте собственные в удобном редакторе.",
-                    Rules =
-                        "ИГРА В РАЗРАБОТКЕ!\nЕсть 10 уровней. На каждом из которых будут распологаться ловушки и монетки. За сбор 15 монет, вам открывается переход на следующий уровень. Но будьте внимательны! Ведь вам дано только 3 жизни, израсходовав которые, все начинается снова.",
-                    AuthorId = devMarat.Id,
-                    PublicationDate = new DateTime(2025, 5, 16),
-                    LastUpdateDate = new DateTime(2025, 6, 3),
-                    LanguageLevelId = languageLevelBeginning.Id,
-                    GamePlatformId = platform2.Id,
-                    RaitingPlayers = 4.6,
-                    RaitingTeachers = 4.8,
-                    CoverImagePath = "/img/games/game-banner.png",
-                    ImagesPaths = new List<string>
-                    {
-                        "/img/games/game-banner.png",
-                        "/img/games/mountain-labyrinth-banner-2.png",
-                        "/img/games/mountain-labyrinth-banner-3.png",
-                    },
-                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2 },
-                    NumberDownloads = 1000,
-                };
-
-                var game5 = new Game
-                {
-                    Id = 5,
-                    Title = "Тур-викторина 'Арт объекты Осетии'",
-                    Description =
-                        "Супер интересная викторина для компании. Узнайте популярные туристические объекст гор Осетии в игровой форме.",
-                    Rules =
-                        "ИГРА В РАЗРАБОТКЕ!\nСлушайте гида и выбирайте правильные ответы на его вопросы. Изначально у всех участников 50 баллов, но за неправильный ответ снимают 5 баллов.",
-                    AuthorId = devMarat.Id,
-                    PublicationDate = new DateTime(2025, 3, 7),
-                    LastUpdateDate = new DateTime(2025, 4, 30),
-                    LanguageLevelId = languageLevelBeginning.Id,
-                    GamePlatformId = platform1.Id,
-                    RaitingPlayers = 4.4,
-                    RaitingTeachers = 4,
-                    CoverImagePath = "/img/games/art-object-1.png",
-                    ImagesPaths = new List<string>
-                    {
-                        "/img/games/art-object-1.png",
-                        "/img/games/art-object-2.jpeg",
-                        "/img/games/art-object-3.png",
-                    },
-                    SkillsLearning = new List<SkillLearning> { gameType3, gameType5 },
-                    NumberDownloads = 241,
-                };
-
-                var game6 = new Game
-                {
-                    Id = 6,
                     Title = "Поезд",
                     Description =
                         "Игра развивает память, а также навыки чтения и произношения. В игре доступны три языка: осетинский, грузинский и армянский, а также три уровня сложности.",
@@ -322,23 +270,23 @@ namespace LingvoGameOs.Db
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.0,
                     RaitingTeachers = 3.7,
-                    CoverImagePath = "/Games/6/train-cover.png",
+                    CoverImagePath = "/Games/4/train-cover.png",
                     ImagesPaths = new List<string>
                     {
-                        "/Games/6/train scrin-1.jpg",
-                        "/Games/6/train scrin-2.jpg",
-                        "/Games/6/train scrin-3.jpg",
+                        "/Games/4/train scrin-1.jpg",
+                        "/Games/4/train scrin-2.jpg",
+                        "/Games/4/train scrin-3.jpg",
                     },
                     SkillsLearning = new List<SkillLearning> { gameType4, gameType5 },
                     NumberDownloads = 4,
-                    GameFilePath = "/Games/6/Поезд.msi",
+                    GameFilePath = "/Games/4/Поезд.msi",
                     VideoUrl =
                         "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1",
                 };
 
                 if (!await context.Games.AnyAsync())
                 {
-                    await context.AddRangeAsync(game1, game2, game3, game4, game5, game6);
+                    await context.AddRangeAsync(game1, game2, game3, game4);
                     await context.SaveChangesAsync();
                 }
 

@@ -11,26 +11,27 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load environment variables from .env file
 Env.Load();
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// ��������� ������ ����������� �� appsettings.json
+// Get database connection string from configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// ��������� ��� ������������ � ����
+// Configure ASP.NET Core Identity with custom User and IdentityRole
 builder
     .Services.AddIdentity<User, IdentityRole>()
-    // ������������� ��� ��������� - ��� ��������
+    // Add Entity Framework store for Identity using our DatabaseContext
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
 
-// ����������� ��������� ��
+// Register DatabaseContext with SQLite provider
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionString));
 
-// ��������� cookie
+// Configure application cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromHours(8);
@@ -39,6 +40,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie = new CookieBuilder { IsEssential = true };
 });
 
+
+// Register repository interfaces and implementations for dependency injection
 builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbRepository>();
 builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
@@ -47,16 +50,16 @@ builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>
 builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepository>();
 
-// ���������� ������������� Ajax
+// Add support for unobtrusive AJAX functionality
 builder.Services.AddUnobtrusiveAjax();
 
-// �����������
+// Configure Serilog for application logging
 builder.Host.UseSerilog(
     (context, services, configuration) =>
         configuration.ReadFrom.Configuration(context.Configuration)
 );
 
-// ����������� �����������
+// Add in-memory caching service
 builder.Services.AddMemoryCache();
 
 var app = builder.Build();
@@ -67,6 +70,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 
+// Serve static files with caching headers
 app.UseStaticFiles(
     new StaticFileOptions()
     {
@@ -79,19 +83,19 @@ app.UseStaticFiles(
 
 app.UseRouting();
 
-// ����������� ��������������
+// Enable authentication middleware
 app.UseAuthentication();
 
-// ����������� �����������
+// Enable authorization middleware
 app.UseAuthorization();
 
-// ����������� ������������� Ajax
+// Enable unobtrusive AJAX support
 app.UseUnobtrusiveAjax();
 
-// ������������
+// Uncomment to enable Serilog request logging
 //app.UseSerilogRequestLogging();
 
-// ������������� ��������������
+// Initialize identity system with default roles and users
 using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
@@ -101,6 +105,7 @@ using (var serviceScope = app.Services.CreateScope())
     await IdentityInitializer.InitializeAsync(userManager, rolesManager, dbContextOptions);
 }
 
+// Configure area routing
 app.MapControllerRoute(
     name: "MyAreas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
