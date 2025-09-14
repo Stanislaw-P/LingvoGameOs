@@ -102,7 +102,8 @@ using (var serviceScope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<User>>();
     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var dbContextOptions = services.GetRequiredService<DbContextOptions<DatabaseContext>>();
-    await IdentityInitializer.InitializeAsync(userManager, rolesManager, dbContextOptions);
+    var conf = services.GetRequiredService<IConfiguration>();
+    await IdentityInitializer.InitializeAsync(userManager, rolesManager, dbContextOptions, conf);
 }
 
 // Configure area routing

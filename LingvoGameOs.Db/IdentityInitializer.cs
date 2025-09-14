@@ -1,7 +1,8 @@
-﻿using System.Reflection;
-using LingvoGameOs.Db.Models;
+﻿using LingvoGameOs.Db.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace LingvoGameOs.Db
 {
@@ -10,7 +11,8 @@ namespace LingvoGameOs.Db
         public static async Task InitializeAsync(
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
-            DbContextOptions<DatabaseContext> dbContextOptions
+            DbContextOptions<DatabaseContext> dbContextOptions,
+            IConfiguration configuration
         )
         {
             using (DatabaseContext context = new DatabaseContext(dbContextOptions))
@@ -21,7 +23,10 @@ namespace LingvoGameOs.Db
                 await _CreateRole(roleManager, Constants.DevRoleName);
 
                 // инициализация пользователей
-                var password = "Aa123456_";
+                string passwordDev = configuration["DEVELOPER_USER_PASSWORD"]
+                    ?? throw new InvalidOperationException("DEVELOPER_USER_PASSWORD environment variable is required for developer user creation."); ;
+                string passwordAdmin = configuration["ADMIN_USER_PASSWORD"]
+                    ?? throw new InvalidOperationException("ADMIN_USER_PASSWORD environment variable is required for admin user creation.");
 
                 var adminUser = new User
                 {
@@ -86,12 +91,12 @@ namespace LingvoGameOs.Db
                     Email = "VladislavPetrov@gmail.com",
                 };
                 // создаем пользователя, если его нет
-                await _CreateUserAsync(userManager, adminUser, password, Constants.AdminRoleName);
-                await _CreateUserAsync(userManager, devMarat, password, Constants.DevRoleName);
-                await _CreateUserAsync(userManager, devDavid, password, Constants.DevRoleName);
-                await _CreateUserAsync(userManager, devIlona, password, Constants.DevRoleName);
-                await _CreateUserAsync(userManager, devNastya, password, Constants.DevRoleName);
-                await _CreateUserAsync(userManager, devVlad, password, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, adminUser, passwordAdmin, Constants.AdminRoleName);
+                await _CreateUserAsync(userManager, devMarat, passwordDev, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devDavid, passwordDev, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devIlona, passwordDev, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devNastya, passwordDev, Constants.DevRoleName);
+                await _CreateUserAsync(userManager, devVlad, passwordDev, Constants.DevRoleName);
 
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel

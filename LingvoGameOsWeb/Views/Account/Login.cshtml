@@ -281,7 +281,7 @@
                 <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
             </button>
 
-            <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
+            <div style="color:red" class="text-danger font-weight-bold" asp-validation-summary="All"></div>
         </form>
         <div class="login-bottom-link">
             Ещё не зарегистрированы? <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрироваться</a>
