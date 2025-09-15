@@ -4,7 +4,7 @@ namespace LingvoGameOs.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Введите логин")]
+        [Required(ErrorMessage = "Введите email")]
         [EmailAddress(ErrorMessage = "Введите корректный email")]
         public string UserName { get; set; }
 

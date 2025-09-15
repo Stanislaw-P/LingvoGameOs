@@ -3,6 +3,7 @@ using AspNetCore.Unobtrusive.Ajax;
 using DotNetEnv;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,10 @@ builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbReposit
 builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>();
 builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepository>();
+
+// ¬страивание зависимости дл€ работы с почтой
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<EmailService>();
 
 // Add support for unobtrusive AJAX functionality
 builder.Services.AddUnobtrusiveAjax();
