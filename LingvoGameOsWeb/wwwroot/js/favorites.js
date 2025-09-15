@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Если добавляем в избранное - меняем стиль
                         this.classList.toggle('active');
                         if (icon) {
-                            // Для hero кнопки меняем на share.svg при сохранении
+                            // Для hero кнопки меняем на like3.svg при сохранении
                             if (isHeroButton) {
                                 icon.src = this.classList.contains('active') ?
-                                    '/icon/share.svg' :
+                                    '/icon/like3.svg' :
                                     '/icon/like.svg';
                             } else {
                                 icon.src = this.classList.contains('active') ?
