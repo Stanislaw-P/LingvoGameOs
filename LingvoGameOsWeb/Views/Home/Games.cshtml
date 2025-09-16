@@ -1,21 +1,21 @@
 @model List<GameViewModel>
 
 @{
-    ViewData["Title"] = "Сипсок игр";
+    ViewData["Title"] = "Список игр";
 }
 
 <link rel="stylesheet" href="/css/games-page.css" />
 
 <section class="games">
-    <div class="games__filter">
-        @using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
+    @*<div class="games__filter">
+        using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
          {
              HttpMethod = "get",
              UpdateTargetId = "all-games",
              LoadingElementId = "search-loading"
          }))
         {
-            <div class="games__filter-search">
+             <div class="games__filter-search">
                 @if (ViewBag.GameName != null)
                 {
                     <input type="text" name="gameName" id="search-input" required value="@ViewBag.GameName" class="email-prompt-text-style games__search-input"
@@ -28,17 +28,17 @@
 
                 <button type="submit" class="games__search-button">Найти</button>
                 <button type="button" onclick="resetGamesList()" class="games__search-button">Сброс</button>
-            </div>
+            </div> 
         }
 
         <!-- Индикатор активных фильтров -->
-        <div id="active-filters" class="games__active-filters" style="display: none;">
+         <div id="active-filters" class="games__active-filters" style="display: none;">
             <span class="games__active-filters-label">Активные фильтры:</span>
             <div id="active-filters-list" class="games__active-filters-list"></div>
             <button type="button" onclick="clearAllFilters()" class="games__clear-filters-btn">Очистить все</button>
-        </div>
+        </div> 
 
-        <div class="games__filter-dropdowns">
+         <div class="games__filter-dropdowns">
             <div class="games__dropdown">
                 <button class="games__dropdown-toggle">
                     <span>Категории</span>
@@ -99,8 +99,8 @@
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
+        </div> 
+    </div>*@
 
     @if (ViewBag.GameName != null)
     {
