@@ -112,8 +112,12 @@ namespace LingvoGameOs.Controllers
                     userEmail = email,
                     userCode = code
                 }, protocol: HttpContext.Request.Scheme);
-                await emailService.SendEmailAsync(email, "Сброс пароля", $"Для сброса пароля, перейдите <a href='{callBackUrl}'>по ссылке</a>");
-                return View("EmailNotification");
+                var result = await emailService.TrySendEmailAsync(email, "Сброс пароля", $"Для сброса пароля, перейдите <a href='{callBackUrl}'>по ссылке</a>");
+                if (result)
+                {
+                    return View("EmailNotificationSuccess");
+                }
+                return View("EmailNotificationError");
             }
             return View(model);
         }
