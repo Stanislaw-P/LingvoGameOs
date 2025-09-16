@@ -131,6 +131,10 @@ namespace LingvoGameOs.Controllers
                 await userManager.UpdateAsync(user);
                 await signInManager.RefreshSignInAsync(user);
             }
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Profile", "Profile", new {userId = user.Id});
+            }
             return View(settings);
         }
     }
