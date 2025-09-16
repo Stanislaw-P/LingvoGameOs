@@ -1,12 +1,10 @@
-﻿@model ResetPasswordViewModel
-
-@{
-    Layout = null;
-    ViewData["Title"] = "Сброс пароля";
+﻿@{
+    Layout = null; // Remove header and footer for this page only
+    ViewData["Title"] = "Забыли пароль?";
+    ViewData["FaviconUrl"] = "/img/Logo.png";
 }
-
 <head>
-    <title>Сброс пароля</title>
+    <title>Забыли пароль?</title>
     <link rel="icon" href="~/img/Logo.png" type="image/x-icon" />
 </head>
 
@@ -26,18 +24,18 @@
         background: url('/img/b11ed6d9-17da-4307-9a85-eebe93cdb78e.jpg') no-repeat center center fixed;
         background-size: cover;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: center; /* Вертикальное центрирование */
+        justify-content: center; /* Горизонтальное центрирование */
     }
 
-    .register-main-block {
-        background: rgba(255,255,255,0.96);
+    .login-main-block {
+        background: rgba(255, 255, 255, 0.96);
         box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
         border-radius: 10px 70px 10px 70px;
         padding: 40px 32px 32px 32px;
-        width: 80%;
-        max-width: 1200px;
-        max-height: calc(100vh - 48px);
+        width: 80%; /* Ограничиваем ширину, например, 80% от viewport */
+        max-width: 1200px; /* Максимальная ширина для больших экранов */
+        max-height: calc(100vh - 48px); /* Ограничиваем высоту */
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -48,18 +46,18 @@
         position: relative;
     }
 
-    .register-main-left {
-        flex: 1.5 1 0;
+    .login-main-left {
+        flex: 1 1 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 22px;
+        gap: 28px;
         min-width: 0;
         font-family: 'Axiforma', Arial, sans-serif;
         overflow: hidden;
     }
 
-    .register-main-right {
+    .login-main-right {
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -69,7 +67,7 @@
         overflow: hidden;
     }
 
-    .register-photo-inside {
+    .login-photo-inside {
         width: 100%;
         height: 100%;
         max-width: 100%;
@@ -83,7 +81,7 @@
         display: block;
     }
 
-    .register-back-btn {
+    .login-back-btn {
         position: absolute;
         top: 32px;
         left: 40px;
@@ -105,18 +103,18 @@
         gap: 8px;
     }
 
-        .register-back-btn:hover {
+        .login-back-btn:hover {
             background: #e6ecfa;
             color: #4666d0;
         }
 
-    .register-logo-img {
+    .login-logo-img {
         width: 60px;
         height: auto;
         margin-bottom: 4px;
     }
 
-    .register-logo-text {
+    .login-logo-text {
         font-family: 'Axiforma', Arial, sans-serif;
         font-size: 22px;
         color: #2c51ae;
@@ -125,7 +123,7 @@
         margin-bottom: 12px;
     }
 
-    .register-title {
+    .login-title {
         font-size: 32px;
         color: #2c51ae;
         font-family: 'Axiforma', Arial, sans-serif;
@@ -134,29 +132,16 @@
         margin-bottom: 12px;
     }
 
-    .register-form {
+    .login-form {
         width: 100%;
-        max-width: 520px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 18px;
+        gap: 22px;
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-    .register-fields-row {
-        display: flex;
-        gap: 16px;
-        width: 100%;
-    }
-
-    .register-passwords-row {
-        display: flex;
-        gap: 16px;
-        width: 100%;
-    }
-
-    .register-field {
+    .login-field {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -164,14 +149,14 @@
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-    .register-label {
+    .login-label {
         font-size: 15px;
         color: #7a7a7a;
         font-weight: 500;
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-    .register-input {
+    .login-input {
         width: 100%;
         padding: 15px;
         border-radius: 73px;
@@ -184,37 +169,11 @@
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-        .register-input:focus {
+        .login-input:focus {
             border: 1.5px solid #2c51ae;
         }
 
-    .register-checkbox-row {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
-
-    .register-checkbox {
-        width: 22px;
-        height: 22px;
-        accent-color: #2c51ae;
-        border-radius: 8px;
-        margin-right: 8px;
-    }
-
-    .register-checkbox-label {
-        font-size: 15px;
-        color: #2c51ae;
-        font-family: 'Axiforma', Arial, sans-serif;
-        font-weight: 500;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .register-btn-main {
+    .login-btn-main {
         width: 100%;
         background: #2c51ae;
         color: #fff;
@@ -230,11 +189,40 @@
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-        .register-btn-main:hover {
+        .login-btn-main:hover {
             background: #4666d0;
         }
 
-    .register-agreement {
+    .login-btn-vk {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: #f8fafe;
+        color: #2c51ae;
+        border: 1.5px solid #e6ecfa;
+        border-radius: 73px;
+        padding: 13px 0;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 2px;
+        transition: border 0.2s, background 0.2s;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+        .login-btn-vk:hover {
+            border: 1.5px solid #2c51ae;
+            background: #e6ecfa;
+        }
+
+    .login-btn-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .login-agreement {
         font-size: 12px;
         color: #7a7a7a;
         text-align: center;
@@ -242,12 +230,12 @@
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-        .register-agreement a {
+        .login-agreement a {
             color: #2c51ae;
             text-decoration: underline;
         }
 
-    .register-bottom-link {
+    .login-bottom-link {
         width: 100%;
         text-align: center;
         margin-top: 10px;
@@ -255,7 +243,7 @@
         font-family: 'Axiforma', Arial, sans-serif;
     }
 
-        .register-bottom-link a {
+        .login-bottom-link a {
             color: #2c51ae;
             text-decoration: underline;
             font-size: 15px;
@@ -263,46 +251,29 @@
             font-family: 'Axiforma', Arial, sans-serif;
         }
 
-    .register-validation {
+    .login-validation {
         color: #e74c3c;
         font-size: 13px;
         font-family: 'Axiforma', Arial, sans-serif;
     }
 </style>
 
-<div class="register-main-block">
-    <a href="/" class="register-back-btn">Назад</a>
-    <div class="register-main-left">
-        <h1 class="register-title">Сброс пароля</h1>
-        <form method="post" class="register-form">
-            <div class="register-field" style="width:100%">
-                <label asp-for="UserName" class="register-label">Email</label>
-                <input type="email" asp-for="UserName" value="@Model.UserName" class="register-input" required />
-                <span asp-validation-for="UserName" class="register-validation" />
-            </div>
-            <div class="register-passwords-row">
-                <div class="register-field">
-                    <label asp-for="Password" class="register-label">Пароль</label>
-                    <input type="password" asp-for="Password" class="register-input" required />
-                    <span asp-validation-for="Password" class="register-validation" />
-                </div>
-                <div class="register-field">
-                    <label asp-for="ConfirmPassword" class="register-label">Подтвердите пароль</label>
-                    <input type="password" asp-for="ConfirmPassword" class="register-input" required />
-                    <span asp-validation-for="ConfirmPassword" class="register-validation" />
-                </div>
-            </div>
-
-            <input asp-for="Code" value="@Model.Code" type="hidden" />
-
-            <button type="submit" asp-controller="Account" asp-action="ResetPassword" class="register-btn-main">Сменить пароль</button>
-
-            <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
-        </form>
+<div class="login-main-block">
+    <div class="login-main-left">
+        <h1 class="login-title">Забыли пароль?</h1>
+        <p>На вашу почту отправлено письмо с ссылкой для сброса пароля</p>
+        <p>Если не находите письмо, проерьте папку спама</p>
+        <a asp-controller="Home" asp-action="Index">Перейти на главную</a>
     </div>
-    <div class="register-main-right">
-        <img src="~/img/Registration.png" alt="Историческая сцена" class="register-photo-inside" />
+    <div class="login-main-right">
+        <img src="~/img/Registration.png" alt="Историческая сцена" class="login-photo-inside" />
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Password field is now always visible, so no JS needed for reveal
+    </script>
+}
 
 @await Html.PartialAsync("_ValidationScriptsPartial")
