@@ -16,16 +16,14 @@ namespace LingvoGameOs.Controllers
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly FileProvider fileProvider;
-        readonly IFavoriteGamesRepository _favoriteGamesRepository;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
             this.fileProvider = new FileProvider(webHostEnvironment);
-            _favoriteGamesRepository = favoriteGamesRepository;
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
