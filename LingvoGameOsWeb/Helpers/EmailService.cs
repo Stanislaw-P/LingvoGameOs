@@ -5,7 +5,7 @@ using NuGet.Protocol.Plugins;
 
 namespace LingvoGameOs.Helpers
 {
-    public class EmailService : ImailService
+    public class EmailService
     {
         private readonly MailSettings mailSettings;
         public EmailService(IOptions<MailSettings> mailSettings)
