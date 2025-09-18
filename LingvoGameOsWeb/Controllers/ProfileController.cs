@@ -15,15 +15,16 @@ namespace LingvoGameOs.Controllers
         readonly IGamesRepository gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly FileProvider fileProvider;
+        readonly IFavoriteGamesRepository _favoriteGamesRepository;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
             this.fileProvider = new FileProvider(webHostEnvironment);
-
+            _favoriteGamesRepository = favoriteGamesRepository;
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
@@ -35,6 +36,8 @@ namespace LingvoGameOs.Controllers
                 user.DevGames = games;
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
+                var gamesHistory = await gamesRepository.TryGetUserGameHistoryAsync(user);
+
                 var userViewModel = new UserViewModel()
                 {
                     Id = user.Id,
@@ -45,8 +48,7 @@ namespace LingvoGameOs.Controllers
                     AvatarImgPath = user.AvatarImgPath,
                     DevGames = user.DevGames,
                     DevPendingGames = user.DevPendingGames,
-                    PlayerGames = user.PlayerGames,
-                    UserGames = user.UserGames
+                    GamesHistory = gamesHistory,
                 };
 
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
@@ -155,8 +157,6 @@ namespace LingvoGameOs.Controllers
                     Description = user.Description,
                     AvatarImgPath = user.AvatarImgPath,
                     DevGames = user.DevGames,
-                    PlayerGames = user.PlayerGames,
-                    UserGames = user.UserGames
                 };
 
                 if (userId == userManager.GetUserAsync(User).Result.Id)

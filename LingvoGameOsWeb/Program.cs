@@ -29,7 +29,7 @@ builder
     .AddDefaultTokenProviders();
 
 // Register DatabaseContext with SQLite provider
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
 // Configure application cookie settings
 builder.Services.ConfigureApplicationCookie(options =>

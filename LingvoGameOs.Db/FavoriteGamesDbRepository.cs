@@ -37,7 +37,7 @@ namespace LingvoGameOs.Db
             {
                 GameId = gameId,
                 UserId = userId,
-                DateAdded = DateTime.Now,
+                DateAdded = DateTimeOffset.UtcNow,
             };
 
             await _databaseContext.FavoriteGames.AddAsync(favorite);

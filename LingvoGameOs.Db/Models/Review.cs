@@ -13,7 +13,7 @@ namespace LingvoGameOs.Db.Models
         public User Author { get; set; } = null!;
         public string AuthorId { get; set; }
         public int Rating { get; set; }
-        public DateTime PublicationDate { get; set; }
+        public DateTimeOffset PublicationDate { get; set; }
         public int GameId { get; set; }
         public Game? Game { get; set; }
         public bool IsApproved { get; set; }

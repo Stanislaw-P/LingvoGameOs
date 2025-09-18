@@ -170,16 +170,8 @@
                     <h3 class="recent-games__title">Недавние игры</h3>
                     <div class="recent-games__controls">
                         <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
-                        @{
-                            var placeholderGames = new[]
-                            {
-                                                new { Id = 1, Title = "Словарный Бой", Description = "Изучайте слова с удовольствием.", CoverImageURL = "/img/game1.png" },
-                                                new { Id = 2, Title = "Грамматический Штурм", Description = "Практикуйте грамматику весело.", CoverImageURL = "/img/game2.png" },
-                                                new { Id = 3, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" },
-                                                new { Id = 4, Title = "Уши на Макушке", Description = "Тренируйте аудирование.", CoverImageURL = "/img/game3.png" }
-                                                };
-                        }
-                        @if (placeholderGames.Any())
+
+                        @if (Model.GamesHistory != null && Model.GamesHistory.Any())
                         {
                             <div class="carousel-controls">
                                 <button class="carousel-control carousel-control--prev recent-games__prev" aria-label="Предыдущие игры">
@@ -197,15 +189,15 @@
                         }
                     </div>
                 </header>
-                @if (placeholderGames.Any())
+                @if (Model.GamesHistory != null && Model.GamesHistory.Any())
                 {
                     <div class="recent-games__carousel">
                         <div class="recent-games__list">
-                            @foreach (var game in placeholderGames)
+                            @foreach (var game in Model.GamesHistory)
                             {
                                 <article class="recent-games__item">
-                                    <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="recent-games__link">
-                                        <img src="@game.CoverImageURL" alt="Обложка @game.Title" class="recent-games__image" loading="lazy">
+                                    <a asp-area="" asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" class="recent-games__link">
+                                        <img src="@game.CoverImagePath" alt="Обложка @game.Title" class="recent-games__image" loading="lazy">
                                         <div class="recent-games__content">
                                             <h4 class="recent-games__name">@game.Title</h4>
                                             <p class="recent-games__description">@game.Description</p>
@@ -221,7 +213,7 @@
                 {
                     <div class="recent-games__empty">
                         <p class="recent-games__empty-text">Откройте новые игры для изучения!</p>
-                        <a href="/games" class="recent-games__button">Найти игры</a>
+                        <a href="/" class="recent-games__button">Найти игры</a>
                     </div>
                 }
             </section>

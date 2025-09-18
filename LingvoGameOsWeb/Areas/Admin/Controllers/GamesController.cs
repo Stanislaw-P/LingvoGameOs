@@ -99,7 +99,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LanguageLevel = languageLvl!;
                 existingGame.VideoUrl = editGame.VideoUrl;
                 existingGame.GameFolderName = editGame.GameFolderName;
-                existingGame.LastUpdateDate = DateTime.Now;
+                existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImageAsync(editGame, existingGame);
@@ -128,7 +128,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
                     DevUserId = existingGame.Author.Id,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 200
                 });
 
@@ -142,7 +142,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);

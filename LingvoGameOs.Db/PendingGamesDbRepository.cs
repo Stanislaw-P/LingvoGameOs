@@ -6,10 +6,16 @@ namespace LingvoGameOs.Db
     public class PendingGamesDbRepository : IPendingGamesRepository
     {
         readonly DatabaseContext databaseContext;
+        readonly ISkillsLearningRepository _skillsLearningRepository;
+        readonly IPlatformsRepository _platformsRepository;
+        readonly ILanguageLevelsRepository _languageLevelsRepository;
 
-        public PendingGamesDbRepository(DatabaseContext newDatabaseContext)
+        public PendingGamesDbRepository(DatabaseContext newDatabaseContext, ISkillsLearningRepository skillsLearningRepository, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository)
         {
             this.databaseContext = newDatabaseContext;
+            _skillsLearningRepository = skillsLearningRepository;
+            _platformsRepository = platformsRepository;
+            _languageLevelsRepository = languageLevelsRepository;
         }
 
         public async Task<List<PendingGame>> GetAllAsync()
@@ -78,20 +84,24 @@ namespace LingvoGameOs.Db
 
         public async Task<Game> PublishAsync(PendingGame pendingGame)
         {
+            var authorId = pendingGame.Author.Id;
+            var languageLevelId = pendingGame.LanguageLevel.Id;
+            var gamePlatformId = pendingGame.GamePlatform.Id;
+            var skillIds = pendingGame.SkillsLearning?.Select(s => s.Id).ToList();
+
             var newGame = new Game
             {
                 Title = pendingGame.Title,
                 Description = pendingGame.Description,
                 Rules = pendingGame.Rules,
-                Author = pendingGame.Author,
-                LanguageLevel = pendingGame.LanguageLevel,
-                SkillsLearning = pendingGame.SkillsLearning,
-                GamePlatform = pendingGame.GamePlatform,
+                AuthorId = authorId, // ← Только ID
+                LanguageLevelId = languageLevelId, // ← Только ID
+                GamePlatformId = gamePlatformId, // ← Только ID
                 GameFolderName = pendingGame.GameFolderName,
                 GameFilePath = pendingGame.GameURL,
                 VideoUrl = pendingGame.VideoUrl,
-                PublicationDate = DateTime.Now,
-                LastUpdateDate = DateTime.Now,
+                PublicationDate = DateTimeOffset.UtcNow,
+                LastUpdateDate = DateTimeOffset.UtcNow,
             };
 
             databaseContext.PendingGames.Remove(pendingGame);

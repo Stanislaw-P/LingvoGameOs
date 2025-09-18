@@ -31,10 +31,10 @@ namespace LingvoGameOs.Db
                 .HasForeignKey(g => g.AuthorId);
 
             // Настройка связи многие-ко-многим
-            modelBuilder.Entity<Game>()
-                .HasMany(g => g.Players)
-                .WithMany(u => u.PlayerGames)
-                .UsingEntity<PlayerGame>();
+            //modelBuilder.Entity<Game>()
+            //    .HasMany(g => g.Players)
+            //    .WithMany(u => u.PlayerGames)
+            //    .UsingEntity<GameHistory>();
 
             modelBuilder.Entity<Game>()
                 .HasMany(g => g.SkillsLearning)

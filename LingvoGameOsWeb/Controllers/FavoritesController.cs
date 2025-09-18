@@ -35,28 +35,32 @@ namespace LingvoGameOs.Controllers
             // Получаем все избранные игры пользователя
             var favoritesGamesUser = await _favoriteGamesRepository.GetUserFavoritesAsync(currentUser.Id);
             
-            // Преобразуем их во ViewModel
-            var gameTasks = favoritesGamesUser.Select(async game => new GameViewModel
+            var gamesViewModel = new List<GameViewModel>();
+
+            foreach (var game in favoritesGamesUser)
             {
-                Id = game.Id,
-                Title = game.Title,
-                Author = game.Author,
-                CoverImagePath = game.CoverImagePath,
-                Description = game.Description,
-                GameFolderName = game.GameFolderName,
-                GameFilePath = game.GameFilePath,
-                GamePlatform = game.GamePlatform,
-                ImagesPaths = game.ImagesPaths,
-                VideoUrl = game.VideoUrl,
-                LanguageLevel = game.LanguageLevel,
-                PublicationDate = game.PublicationDate,
-                SkillsLearning = game.SkillsLearning,
-                RaitingPlayers = game.RaitingPlayers,
-                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
-                IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
-            }).ToList();
-            var gamesViewModel = await Task.WhenAll(gameTasks);
-            return View(gamesViewModel.ToList());
+                gamesViewModel.Add(new GameViewModel
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                    Author = game.Author,
+                    CoverImagePath = game.CoverImagePath,
+                    Description = game.Description,
+                    GameFolderName = game.GameFolderName,
+                    GameFilePath = game.GameFilePath,
+                    GamePlatform = game.GamePlatform,
+                    ImagesPaths = game.ImagesPaths,
+                    VideoUrl = game.VideoUrl,
+                    LanguageLevel = game.LanguageLevel,
+                    PublicationDate = game.PublicationDate,
+                    SkillsLearning = game.SkillsLearning,
+                    RaitingPlayers = game.RaitingPlayers,
+                    FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                    IsFavorite = currentUser != null &&
+                               await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id)
+                });
+            }
+            return View(gamesViewModel);
         }
 
         [HttpPost]
