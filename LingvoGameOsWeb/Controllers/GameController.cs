@@ -254,7 +254,7 @@ namespace LingvoGameOs.Controllers
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
                             AuthorId = authorId!,
-                            DispatchDate = DateTimeOffset.Now,
+                            DispatchDate = DateTimeOffset.UtcNow,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,

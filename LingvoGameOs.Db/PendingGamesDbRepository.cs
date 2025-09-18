@@ -1,5 +1,6 @@
 ﻿using LingvoGameOs.Db.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace LingvoGameOs.Db
 {
@@ -84,19 +85,26 @@ namespace LingvoGameOs.Db
 
         public async Task<Game> PublishAsync(PendingGame pendingGame)
         {
-            var authorId = pendingGame.Author.Id;
-            var languageLevelId = pendingGame.LanguageLevel.Id;
-            var gamePlatformId = pendingGame.GamePlatform.Id;
-            var skillIds = pendingGame.SkillsLearning?.Select(s => s.Id).ToList();
+            // Получаем из БД выбранные скиллы и платформу
+            List<SkillLearning> skills =
+                await _skillsLearningRepository.GetExistingSkillsAsync(pendingGame.SkillsLearning.Select(sk => sk.Name).ToList());
+            var platform = await _platformsRepository.GetExistingPlatformAsync(
+                pendingGame.GamePlatform.Name
+            );
+            var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(
+                pendingGame.LanguageLevel.Name
+            );
+
+            var author = await databaseContext.Users.FirstOrDefaultAsync(u => u.Id == pendingGame.AuthorId);
 
             var newGame = new Game
             {
                 Title = pendingGame.Title,
                 Description = pendingGame.Description,
                 Rules = pendingGame.Rules,
-                AuthorId = authorId, // ← Только ID
-                LanguageLevelId = languageLevelId, // ← Только ID
-                GamePlatformId = gamePlatformId, // ← Только ID
+                Author = author,
+                LanguageLevelId = languageLvl.Id, 
+                GamePlatformId = platform.Id,
                 GameFolderName = pendingGame.GameFolderName,
                 GameFilePath = pendingGame.GameURL,
                 VideoUrl = pendingGame.VideoUrl,
