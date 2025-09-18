@@ -49,9 +49,9 @@ namespace LingvoGameOs.Areas.Admin.Models
         public int Port { get; set; }
         //[Required(ErrorMessage = "Обязательное поле")]
         public string GamePlatform { get; set; } = null!;
-        public DateTime DispatchDate { get; set; }
-        public DateTime PublicationDate { get; set; }
-        public DateTime LastUpdateDate { get; set; }
+        public DateTimeOffset DispatchDate { get; set; }
+        public DateTimeOffset PublicationDate { get; set; }
+        public DateTimeOffset LastUpdateDate { get; set; }
         public User Author { get; set; } = null!;
         public string AuthorId { get; set; } = null!;
         public string? LastMessage { get; set; }

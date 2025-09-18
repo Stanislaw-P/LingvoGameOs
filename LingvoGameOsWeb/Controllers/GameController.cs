@@ -100,14 +100,16 @@ namespace LingvoGameOs.Controllers
 
             string runningScript = Path.Combine(gameFolder, existingGame.GameFolderName, "run.sh");
             var currentUser = await _userManager.GetUserAsync(User);
-
+            // Добавление игры в историю пользователя
+            if (currentUser != null)
+                await _gamesRepository.AddPlayerToGameHistoryAsync(existingGame, currentUser);
             var logData = new
             {
                 GameId = idGame,
                 UserId = currentUser?.Id ?? "Anonymous",
                 UserIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
                 UserAgent = Request.Headers.UserAgent.ToString(),
-                RequestTime = DateTime.UtcNow,
+                RequestTime = DateTimeOffset.UtcNow,
             };
 
             if (!System.IO.File.Exists(runningScript))
@@ -150,9 +152,7 @@ namespace LingvoGameOs.Controllers
 
                 ViewBag.GameUrl = $"{URL}:{existingGame.Port}";
 
-                // Добавление игры в историю пользователя
-                if (currentUser != null)
-                    await _gamesRepository.AddPlayerToGameHistoryAsync(existingGame, currentUser);
+                
 
                 _logger.LogInformation(
                     "Запуск игры {@GameStartData}",
@@ -245,7 +245,7 @@ namespace LingvoGameOs.Controllers
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
                             AuthorId = authorId!,
-                            DispatchDate = DateTime.Now,
+                            DispatchDate = DateTimeOffset.Now,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,
@@ -290,7 +290,7 @@ namespace LingvoGameOs.Controllers
                                 logData.UserId,
                                 logData.UserIP,
                                 logData.UserAgent,
-                                RequestTime = DateTime.UtcNow,
+                                RequestTime = DateTimeOffset.UtcNow,
                                 PendingGameId = pendingGame.Id,
                                 PendingGamePlatform = pendingGame.GamePlatform.Name,
                                 ResponseStatusCode = 200,
@@ -317,7 +317,7 @@ namespace LingvoGameOs.Controllers
                             Description = gameViewModel.Description,
                             Rules = gameViewModel.Rules,
                             AuthorId = authorId!,
-                            DispatchDate = DateTime.Now,
+                            DispatchDate = DateTimeOffset.UtcNow,
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,
@@ -353,7 +353,7 @@ namespace LingvoGameOs.Controllers
                                 logData.UserId,
                                 logData.UserIP,
                                 logData.UserAgent,
-                                RequestTime = DateTime.UtcNow,
+                                RequestTime = DateTimeOffset.UtcNow,
                                 PendingGameId = pendingGame.Id,
                                 PendingGamePlatform = pendingGame.GamePlatform.Name,
                                 ResponseStatusCode = 200,
@@ -389,7 +389,7 @@ namespace LingvoGameOs.Controllers
                         logData.UserId,
                         logData.UserIP,
                         logData.UserAgent,
-                        RequestTime = DateTime.UtcNow,
+                        RequestTime = DateTimeOffset.UtcNow,
                         ResponseStatusCode = 500,
                     }
                 );

@@ -16,6 +16,7 @@ namespace LingvoGameOs.Controllers
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly FileProvider fileProvider;
+        readonly IFavoriteGamesRepository _favoriteGamesRepository;
 
         public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository)
         {
@@ -58,10 +59,7 @@ namespace LingvoGameOs.Controllers
                 }
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
-
-                // Временные меры
-                var allGames = await gamesRepository.GetAllAsync();
-                ViewBag.AllGames = allGames;
+                var gamesHistory = await gamesRepository.TryGetUserGameHistoryAsync(user);
 
                 var userViewModel = new UserViewModel()
                 {
@@ -73,8 +71,7 @@ namespace LingvoGameOs.Controllers
                     AvatarImgPath = user.AvatarImgPath,
                     DevGames = devGamesViewModel,
                     DevPendingGames = user.DevPendingGames,
-                    PlayerGames = user.PlayerGames,
-                    UserGames = user.UserGames
+                    GamesHistory = gamesHistory,
                 };
 
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
@@ -159,9 +156,38 @@ namespace LingvoGameOs.Controllers
                 await userManager.UpdateAsync(user);
                 await signInManager.RefreshSignInAsync(user);
             }
-            if (ModelState.IsValid)
+            return View(settings);
+        }
+
+        public async Task<IActionResult> ProfileAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user != null)
             {
-                return RedirectToAction("Index", "Profile", new {userId = user.Id});
+                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
+                user.DevGames = games;
+
+                var currentUser = await userManager.GetUserAsync(User);
+                ViewData["UserImageURL"] = currentUser?.AvatarImgPath; // Передаем URL аватара текущего пользователя
+                ViewData["Username"] = currentUser?.UserName ?? "Пользователь"; // Передаем имя
+
+                var userViewModel = new UserViewModel
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    UserName = user.UserName,
+                    Description = user.Description,
+                    AvatarImgPath = user.AvatarImgPath,
+                    DevGames = user.DevGames,
+                };
+
+                if (userId == userManager.GetUserAsync(User).Result.Id)
+                {
+                    userViewModel.IsMyProfile = true;
+                }
+
+                return View(userViewModel);
             }
             return View(settings);
         }

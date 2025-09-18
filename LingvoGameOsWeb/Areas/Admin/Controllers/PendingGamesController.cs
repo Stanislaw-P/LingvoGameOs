@@ -61,7 +61,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     publishedGame.Id,
                     Folders.PendingGames,
                     Folders.Games);
-
+                
                 // Обновляем пути к файлам
                 publishedGame.CoverImagePath = _fileProvider.UpdateFilePath(
                     pendingGame.CoverImagePath!,
@@ -95,7 +95,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     PendingGameId = pendingGame.Id,
                     PendingGamePlatform = pendingGame.GamePlatform.Name,
                     NewGameId = publishedGame.Id,
@@ -124,7 +124,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
@@ -170,7 +170,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
                     DevUserId = existingGame.Author.Id,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 200
                 });
                 return Ok(new
@@ -187,7 +187,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return StatusCode(500, new { error = ex.Message });
@@ -312,7 +312,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
                     DevUserId = existingGame.Author.Id,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 200
                 });
                 return Redirect("/Admin/Home/Index");
@@ -325,7 +325,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);

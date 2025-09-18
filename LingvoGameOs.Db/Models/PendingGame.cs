@@ -14,7 +14,7 @@ namespace LingvoGameOs.Db.Models
         [MaxLength(201)]
         public string Description { get; set; }
         public string Rules { get; set; }
-        public DateTime DispatchDate { get; set; }
+        public DateTimeOffset DispatchDate { get; set; }
         public User Author { get; set; }
         public string AuthorId { get; set; }
         public LanguageLevel LanguageLevel { get; set; }

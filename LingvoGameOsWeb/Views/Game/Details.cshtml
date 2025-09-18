@@ -102,7 +102,7 @@
                     <img src="/icon/calendar.svg" alt="Calendar" class="game-info__metadata-icon">
                     <h4 class="game-info__metadata-title">Дата выхода</h4>
                 </div>
-                <p class="game-info__metadata-value">@Model.PublicationDate.ToShortDateString()</p>
+                <p class="game-info__metadata-value">@Model.PublicationDate.ToString("dd:MM:yyyy")</p>
             </div>
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">

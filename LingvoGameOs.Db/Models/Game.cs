@@ -15,8 +15,8 @@ namespace LingvoGameOs.Db.Models
         public string Rules { get; set; }
         public User Author { get; set; }
         public string AuthorId { get; set; }
-		public DateTime PublicationDate { get; set; }
-		public DateTime LastUpdateDate { get; set; }
+		public DateTimeOffset PublicationDate { get; set; }
+		public DateTimeOffset LastUpdateDate { get; set; }
 		public LanguageLevel LanguageLevel { get; set; }
 		public int LanguageLevelId { get; set; }
 		public List<SkillLearning> SkillsLearning { get; set; }
@@ -28,8 +28,7 @@ namespace LingvoGameOs.Db.Models
 		public Platform GamePlatform { get; set; }
 		public int GamePlatformId { get; set; }
 		public int NumberDownloads { get; set; }
-        public List<User>? Players { get; set; }
-		public List<PlayerGame> UserGames { get; set; }
+		public List<GameHistory> PlayersHistory { get; set; }
         public string? GameFolderName { get; set; }
         public string? VideoUrl { get; set; }
         public List<FavoriteGame>? FavoriteGames { get; set; }
