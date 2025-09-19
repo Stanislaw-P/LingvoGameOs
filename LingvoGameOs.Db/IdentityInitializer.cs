@@ -101,35 +101,30 @@ namespace LingvoGameOs.Db
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel
                 {
-                    Id = 1,
                     Name = "Барашек, который пытается говорить",
                     Description =
                         "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.",
                 };
                 var languageLevelIntermediate = new LanguageLevel
                 {
-                    Id = 2,
                     Name = "Юный нарт",
                     Description =
                         "«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.",
                 };
                 var languageLevelAdvanced = new LanguageLevel
                 {
-                    Id = 3,
                     Name = "Кавказский орёл",
                     Description =
                         "«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.",
                 };
                 var languageLevelPro = new LanguageLevel
                 {
-                    Id = 4,
                     Name = "Старейшина, который говорит тосты",
                     Description =
                         "«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.",
                 };
                 var languageLevelGrandMaster = new LanguageLevel
                 {
-                    Id = 5,
                     Name = "Хранитель языка",
                     Description =
                         "«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.",
@@ -146,12 +141,12 @@ namespace LingvoGameOs.Db
                     await context.SaveChangesAsync();
                 }
 
-                var gameType1 = new SkillLearning { Id = 1, Name = "Словарный запас" };
-                var gameType2 = new SkillLearning { Id = 2, Name = "Грамматика" };
-                var gameType3 = new SkillLearning { Id = 3, Name = "Аудирование" };
-                var gameType4 = new SkillLearning { Id = 4, Name = "Чтение" };
-                var gameType5 = new SkillLearning { Id = 5, Name = "Говорение" };
-                var gameType6 = new SkillLearning { Id = 6, Name = "Диктант" };
+                var gameType1 = new SkillLearning { Name = "Словарный запас" };
+                var gameType2 = new SkillLearning { Name = "Грамматика" };
+                var gameType3 = new SkillLearning { Name = "Аудирование" };
+                var gameType4 = new SkillLearning { Name = "Чтение" };
+                var gameType5 = new SkillLearning { Name = "Говорение" };
+                var gameType6 = new SkillLearning { Name = "Диктант" };
                 if (!context.SkillsLearning.Any())
                 {
                     await context.SkillsLearning.AddRangeAsync(
@@ -165,9 +160,9 @@ namespace LingvoGameOs.Db
                     await context.SaveChangesAsync();
                 }
 
-                var platform1 = new Platform { Id = 1, Name = "Web-Desktop" };
-                var platform2 = new Platform { Id = 2, Name = "Desktop" };
-                var platform3 = new Platform { Id = 3, Name = "Web-Mobile" };
+                var platform1 = new Platform { Name = "Web-Desktop" };
+                var platform2 = new Platform { Name = "Desktop" };
+                var platform3 = new Platform { Name = "Web-Mobile" };
                 if (!await context.Platforms.AnyAsync())
                 {
                     await context.Platforms.AddRangeAsync(platform1, platform2, platform3);
@@ -176,7 +171,6 @@ namespace LingvoGameOs.Db
 
                 var game1 = new Game
                 {
-                    Id = 1,
                     Title = "Мир по кусочкам",
                     Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
                     Rules =
@@ -204,7 +198,6 @@ namespace LingvoGameOs.Db
 
                 var game2 = new Game
                 {
-                    Id = 2,
                     Title = "Кроссворд осетинских слов",
                     Description =
                         "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
@@ -233,7 +226,6 @@ namespace LingvoGameOs.Db
 
                 var game3 = new Game
                 {
-                    Id = 3,
                     Title = "Ребусы на осетинском",
                     Description =
                         "Игра развивает логическое мышление, расширяет словарный запас и предоставляет возможность для развлечения.",
@@ -262,7 +254,6 @@ namespace LingvoGameOs.Db
 
                 var game4 = new Game
                 {
-                    Id = 4,
                     Title = "Поезд",
                     Description =
                         "Игра развивает память, а также навыки чтения и произношения. В игре доступны три языка: осетинский, грузинский и армянский, а также три уровня сложности.",

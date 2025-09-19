@@ -85,26 +85,15 @@ namespace LingvoGameOs.Db
 
         public async Task<Game> PublishAsync(PendingGame pendingGame)
         {
-            // Получаем из БД выбранные скиллы и платформу
-            List<SkillLearning> skills =
-                await _skillsLearningRepository.GetExistingSkillsAsync(pendingGame.SkillsLearning.Select(sk => sk.Name).ToList());
-            var platform = await _platformsRepository.GetExistingPlatformAsync(
-                pendingGame.GamePlatform.Name
-            );
-            var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(
-                pendingGame.LanguageLevel.Name
-            );
-
-            var author = await databaseContext.Users.FirstOrDefaultAsync(u => u.Id == pendingGame.AuthorId);
-
             var newGame = new Game
             {
                 Title = pendingGame.Title,
                 Description = pendingGame.Description,
                 Rules = pendingGame.Rules,
-                Author = author,
-                LanguageLevelId = languageLvl.Id, 
-                GamePlatformId = platform.Id,
+                AuthorId = pendingGame.AuthorId,
+                LanguageLevelId = pendingGame.LanguageLevelId, 
+                GamePlatformId = pendingGame.GamePlatformId,
+                SkillsLearning = pendingGame.SkillsLearning,
                 GameFolderName = pendingGame.GameFolderName,
                 GameFilePath = pendingGame.GameURL,
                 VideoUrl = pendingGame.VideoUrl,
