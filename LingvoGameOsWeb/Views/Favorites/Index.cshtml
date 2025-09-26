@@ -16,7 +16,7 @@
 else
 {
     <section class="games">
-        <div class="games__filter">
+        @* <div class="games__filter">
             @using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
             {
                 HttpMethod = "get",
@@ -109,7 +109,7 @@ else
                     </div>
                 </div>
             </div>
-        </div>
+        </div> *@
 
         @if (ViewBag.GameName != null)
         {

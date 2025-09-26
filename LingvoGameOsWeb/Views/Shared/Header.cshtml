@@ -7,6 +7,12 @@
         <a class="header__logo" asp-area="" asp-controller="Home" asp-action="Index">
             <img src="~/img/logo/logo_2.3.svg" alt="Логотип" class="logo-image" />
         </a>
+        <!-- Кнопка бургер-меню (только для мобильных) -->
+        <div class="header__burger burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <nav class="header__menu menu">
             <ul class="menu__list">
                 <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
@@ -14,6 +20,59 @@
                 <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
             </ul>
         </nav>
+        <!-- Боковое меню -->
+        <div class="sidebar-overlay"></div>
+        <aside class="sidebar-menu">
+            <div class="sidebar-menu__header">
+                <span class="sidebar-menu__title">Меню</span>
+                <button class="sidebar-menu__close">×</button>
+            </div>
+            <nav class="sidebar-menu__nav">
+                <ul class="sidebar-menu__list">
+                    <li class="sidebar-menu__item">
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
+                    </li>
+                    <li class="sidebar-menu__item">
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="Games">Все игры</a>
+                    </li>
+                    <li class="sidebar-menu__item">
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a>
+                    </li>
+                    <li class="sidebar-menu__item">
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Favorites" asp-action="Index">Избранное</a>
+                    </li>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                        var userId = userIdClaim?.Value;
+                        var username = User.Identity?.Name ?? "Пользователь";
+
+                        <li class="sidebar-menu__item sidebar-menu__item--user">
+                            <div class="sidebar-menu__user-info">
+                                @* <img src="@await Component.InvokeAsync("Avatar")" alt="Аватар" class="sidebar-menu__avatar" /> *@
+                                <span class="sidebar-menu__username">@username</span>
+                            </div>
+                        </li>
+
+                        <li class="sidebar-menu__item">
+                            <a class="sidebar-menu__link" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId">Профиль</a>
+                        </li>
+
+                        <li class="sidebar-menu__item">
+                            <a class="sidebar-menu__link" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
+                        </li>
+                    }
+                    else
+                    {
+                        
+                        <li class="sidebar-menu__item">
+                            <a class="sidebar-menu__link" asp-controller="Account" asp-action="Login">Войти</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </aside>
         <a role="button" asp-area="" asp-controller="Favorites" asp-action="Index" class="header__like" aria-label="Избранное">
             <img src="~/icon/like.svg" alt="Избранное" class="like-icon" />
         </a>
@@ -62,3 +121,4 @@
         }
     </div>
 </header>
+
