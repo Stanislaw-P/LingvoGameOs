@@ -334,7 +334,7 @@ document.addEventListener('submit', function (e) {
             }
             showSuccess('Форма успешно отправлена!');
         }, 2000);
-    }
+    }   
 });
 
 // Handle button clicks

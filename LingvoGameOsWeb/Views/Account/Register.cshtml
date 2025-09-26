@@ -8,239 +8,391 @@
 <head>
     <title>Регистрация</title>
     <link rel="icon" href="~/img/Logo.png" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <style>
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-body {
-    min-height: 100vh;
-    min-width: 100vw;
-    width: 100vw;
-    height: 100vh;
-    background: url('/img/b11ed6d9-17da-4307-9a85-eebe93cdb78e.jpg') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.register-main-block {
-    background: rgba(255,255,255,0.96);
-    box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
-    border-radius: 10px 70px 10px 70px;
-    padding: 40px 32px 32px 32px;
-    width: 80%;
-    max-width: 1200px;
-    max-height: calc(100vh - 48px);
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 32px;
-    font-family: 'Axiforma', Arial, sans-serif;
-    box-sizing: border-box;
-    overflow: hidden;
-    position: relative;
-}
-.register-main-left {
-    flex: 1.5 1 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 22px;
-    min-width: 0;
-    font-family: 'Axiforma', Arial, sans-serif;
-    overflow: hidden;
-}
-.register-main-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 50%;
-    overflow: hidden;
-}
-.register-photo-inside {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 651/716;
-    border-radius: 10px 70px 10px 70px;
-    object-fit: cover;
-    box-shadow: 0 4px 24px rgba(44, 81, 174, 0.10);
-    border: 3px solid #f8fafe;
-    background: #f8fafe;
-    display: block;
-}
-.register-back-btn {
-    position: absolute;
-    top: 32px;
-    left: 40px;
-    background: #f8fafe;
-    color: #2c51ae;
-    font-family: 'Axiforma', Arial, sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    border: none;
-    border-radius: 73px;
-    padding: 12px 32px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(44, 81, 174, 0.08);
-    transition: background 0.2s, color 0.2s;
-    z-index: 2;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.register-back-btn:hover {
-    background: #e6ecfa;
-    color: #4666d0;
-}
-.register-logo-img {
-    width: 60px;
-    height: auto;
-    margin-bottom: 4px;
-}
-.register-logo-text {
-    font-family: 'Axiforma', Arial, sans-serif;
-    font-size: 22px;
-    color: #2c51ae;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-}
-.register-title {
-    font-size: 32px;
-    color: #2c51ae;
-    font-family: 'Axiforma', Arial, sans-serif;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 12px;
-}
-.register-form {
-    width: 100%;
-    max-width: 520px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-fields-row {
-    display: flex;
-    gap: 16px;
-    width: 100%;
-}
-.register-passwords-row {
-    display: flex;
-    gap: 16px;
-    width: 100%;
-}
-.register-field {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-label {
-    font-size: 15px;
-    color: #7a7a7a;
-    font-weight: 500;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-input {
-    width: 100%;
-    padding: 15px;
-    border-radius: 73px;
-    border: 1px solid #e6ecfa;
-    background: #f8fafe;
-    font-size: 16px;
-    outline: none;
-    transition: border 0.2s;
-    box-sizing: border-box;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-input:focus {
-    border: 1.5px solid #2c51ae;
-}
-.register-checkbox-row {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-.register-checkbox {
-    width: 22px;
-    height: 22px;
-    accent-color: #2c51ae;
-    border-radius: 8px;
-    margin-right: 8px;
-}
-.register-checkbox-label {
-    font-size: 15px;
-    color: #2c51ae;
-    font-family: 'Axiforma', Arial, sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    user-select: none;
-}
-.register-btn-main {
-    width: 100%;
-    background: #2c51ae;
-    color: #fff;
-    border: none;
-    border-radius: 73px;
-    padding: 15px 0;
-    font-size: 19px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 4px;
-    transition: background 0.2s;
-    box-shadow: 0 2px 8px rgba(44, 81, 174, 0.08);
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-btn-main:hover {
-    background: #4666d0;
-}
-.register-agreement {
-    font-size: 12px;
-    color: #7a7a7a;
-    text-align: center;
-    margin-top: 2px;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-agreement a {
-    color: #2c51ae;
-    text-decoration: underline;
-}
-.register-bottom-link {
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 15px;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-bottom-link a {
-    color: #2c51ae;
-    text-decoration: underline;
-    font-size: 15px;
-    cursor: pointer;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
-.register-validation {
-    color: #e74c3c;
-    font-size: 13px;
-    font-family: 'Axiforma', Arial, sans-serif;
-}
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+    }
+
+    body {
+        min-height: 100vh;
+        min-width: 100vw;
+        width: 100vw;
+        height: auto;
+        background: url('/img/b11ed6d9-17da-4307-9a85-eebe93cdb78e.jpg') no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .register-main-block {
+        background: rgba(255,255,255,0.96);
+        box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
+        border-radius: 10px 70px 10px 70px;
+        padding: 40px 32px 32px 32px;
+        width: 80%;
+        max-width: 1200px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 32px;
+        font-family: 'Axiforma', Arial, sans-serif;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    .register-main-left {
+        flex: 1.5 1 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 22px;
+        min-width: 0;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+    .register-main-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 50%;
+    }
+
+    .register-photo-inside {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        aspect-ratio: 651/716;
+        border-radius: 10px 70px 10px 70px;
+        object-fit: cover;
+        box-shadow: 0 4px 24px rgba(44, 81, 174, 0.10);
+        border: 3px solid #f8fafe;
+        background: #f8fafe;
+        display: block;
+    }
+
+    .register-back-btn {
+        position: absolute;
+        top: 32px;
+        left: 40px;
+        background: #f8fafe;
+        color: #2c51ae;
+        font-family: 'Axiforma', Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        border: none;
+        border-radius: 73px;
+        padding: 12px 32px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(44, 81, 174, 0.08);
+        transition: background 0.2s, color 0.2s;
+        z-index: 2;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .register-back-btn:hover {
+            background: #e6ecfa;
+            color: #4666d0;
+        }
+
+    .register-logo-img {
+        width: 60px;
+        height: auto;
+        margin-bottom: 4px;
+    }
+
+    .register-logo-text {
+        font-family: 'Axiforma', Arial, sans-serif;
+        font-size: 22px;
+        color: #2c51ae;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+
+    .register-title {
+        font-size: 32px;
+        color: #2c51ae;
+        font-family: 'Axiforma', Arial, sans-serif;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 12px;
+        margin-top: 0;
+    }
+
+    .register-form {
+        width: 100%;
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+    .register-fields-row {
+        display: flex;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .register-passwords-row {
+        display: flex;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .register-field {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+    .register-label {
+        font-size: 15px;
+        color: #7a7a7a;
+        font-weight: 500;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+    .register-input {
+        width: 100%;
+        padding: 15px;
+        border-radius: 73px;
+        border: 1px solid #e6ecfa;
+        background: #f8fafe;
+        font-size: 16px;
+        outline: none;
+        transition: border 0.2s;
+        box-sizing: border-box;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+        .register-input:focus {
+            border: 1.5px solid #2c51ae;
+        }
+
+    .register-checkbox-row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    .register-checkbox {
+        width: 22px;
+        height: 22px;
+        accent-color: #2c51ae;
+        border-radius: 8px;
+        margin-right: 8px;
+    }
+
+    .register-checkbox-label {
+        font-size: 15px;
+        color: #2c51ae;
+        font-family: 'Axiforma', Arial, sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .register-btn-main {
+        width: 100%;
+        background: #2c51ae;
+        color: #fff;
+        border: none;
+        border-radius: 73px;
+        padding: 15px 0;
+        font-size: 19px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: background 0.2s;
+        box-shadow: 0 2px 8px rgba(44, 81, 174, 0.08);
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+        .register-btn-main:hover {
+            background: #4666d0;
+        }
+
+    .register-agreement {
+        font-size: 12px;
+        color: #7a7a7a;
+        text-align: center;
+        margin-top: 2px;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+        .register-agreement a {
+            color: #2c51ae;
+            text-decoration: underline;
+        }
+
+    .register-bottom-link {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 15px;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+        .register-bottom-link a {
+            color: #2c51ae;
+            text-decoration: underline;
+            font-size: 15px;
+            cursor: pointer;
+            font-family: 'Axiforma', Arial, sans-serif;
+        }
+
+    .register-validation {
+        color: #e74c3c;
+        font-size: 13px;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+    /* Мобильная адаптация */
+    @@media (max-width: 768px) {
+        body {
+            align-items: flex-start;
+            padding: 10px;
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .register-main-block {
+            width: 100%;
+            max-width: 100%;
+            max-height: none;
+            padding: 60px 20px 30px 20px;
+            flex-direction: column;
+            border-radius: 10px 40px 10px 40px;
+            gap: 25px;
+            margin: 0;
+        }
+
+        .register-main-right {
+            display: none;
+        }
+
+        .register-main-left {
+            width: 100%;
+            gap: 20px;
+            min-width: auto;
+        }
+
+        .register-back-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 16px;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .register-title {
+            font-size: 28px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .register-form {
+            gap: 16px;
+            max-width: 100%;
+        }
+
+        .register-fields-row,
+        .register-passwords-row {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .register-input {
+            padding: 14px 15px;
+            font-size: 16px;
+        }
+
+        .register-btn-main {
+            padding: 14px 0;
+            font-size: 17px;
+        }
+
+        .register-bottom-link {
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    }
+
+    /* Дополнительная адаптация для очень маленьких экранов */
+    @@media (max-width: 480px) {
+        body {
+            padding: 5px;
+        }
+
+        .register-main-block {
+            padding: 50px 15px 25px 15px;
+            border-radius: 10px 30px 10px 30px;
+            gap: 20px;
+        }
+
+        .register-back-btn {
+            top: 10px;
+            left: 10px;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+
+        .register-title {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .register-form {
+            gap: 14px;
+        }
+
+        .register-input {
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+
+        .register-btn-main {
+            padding: 12px 0;
+            font-size: 16px;
+        }
+
+        .register-bottom-link {
+            font-size: 13px;
+        }
+    }
+
+    /* Для очень высоких экранов */
+    @@media (min-height: 800px) and (max-width: 768px) {
+        body {
+            align-items: center;
+            padding: 20px;
+        }
+    }
 </style>
 
 <div class="register-main-block">
@@ -253,33 +405,33 @@ body {
                 <div class="register-field">
                     <label asp-for="Name" class="register-label">Имя</label>
                     <input type="text" asp-for="Name" class="register-input" required />
-                    <span asp-validation-for="Name" class="register-validation" />
+                    <span asp-validation-for="Name" class="register-validation"></span>
                 </div>
                 <div class="register-field">
                     <label asp-for="Surname" class="register-label">Фамилия</label>
                     <input type="text" asp-for="Surname" class="register-input" required />
-                    <span asp-validation-for="Surname" class="register-validation" />
+                    <span asp-validation-for="Surname" class="register-validation"></span>
                 </div>
             </div>
             <div class="register-field" style="width:100%">
                 <label asp-for="UserName" class="register-label">Email</label>
                 <input type="email" asp-for="UserName" class="register-input" required />
-                <span asp-validation-for="UserName" class="register-validation" />
+                <span asp-validation-for="UserName" class="register-validation"></span>
             </div>
             <div class="register-passwords-row">
                 <div class="register-field">
                     <label asp-for="Password" class="register-label">Пароль</label>
                     <input type="password" asp-for="Password" class="register-input" required />
-                    <span asp-validation-for="Password" class="register-validation" />
+                    <span asp-validation-for="Password" class="register-validation"></span>
                 </div>
                 <div class="register-field">
                     <label asp-for="ConfirmPassword" class="register-label">Подтвердите пароль</label>
                     <input type="password" asp-for="ConfirmPassword" class="register-input" required />
-                    <span asp-validation-for="ConfirmPassword" class="register-validation" />
+                    <span asp-validation-for="ConfirmPassword" class="register-validation"></span>
                 </div>
             </div>
             <button type="submit" asp-controller="Account" asp-action="Register" class="register-btn-main">Зарегистрироваться</button>
-           
+
             <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
         </form>
         <div class="register-bottom-link">

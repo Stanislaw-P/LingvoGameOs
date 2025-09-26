@@ -1528,7 +1528,7 @@ class Carousel extends BaseComponent {
       };
     }
 
-    const action = typeof config === 'string' ? config : _config.slide;
+    const x;
 
     if (typeof config === 'number') {
       data.to(config);

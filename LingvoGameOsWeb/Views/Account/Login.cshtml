@@ -1,13 +1,14 @@
 ﻿@model LoginViewModel
 
 @{
-    Layout = null; // Remove header and footer for this page only
+    Layout = null;
     ViewData["Title"] = "Вход";
     ViewData["FaviconUrl"] = "/img/Logo.png";
 }
 <head>
     <title>Авторизация</title>
     <link rel="icon" href="~/img/Logo.png" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <style>
@@ -15,19 +16,21 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        overflow: hidden;
+        overflow: auto; /* Изменено с hidden на auto */
     }
 
     body {
         min-height: 100vh;
         min-width: 100vw;
         width: 100vw;
-        height: 100vh;
+        height: auto; /* Изменено с 100vh на auto */
         background: url('/img/b11ed6d9-17da-4307-9a85-eebe93cdb78e.jpg') no-repeat center center fixed;
         background-size: cover;
         display: flex;
-        align-items: center; /* Вертикальное центрирование */
-        justify-content: center; /* Горизонтальное центрирование */
+        align-items: center;
+        justify-content: center;
+        padding: 20px; /* Добавлен отступ для мобильных */
+        box-sizing: border-box;
     }
 
     .login-main-block {
@@ -35,38 +38,35 @@
         box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
         border-radius: 10px 70px 10px 70px;
         padding: 40px 32px 32px 32px;
-        width: 80%; /* Ограничиваем ширину, например, 80% от viewport */
-        max-width: 1200px; /* Максимальная ширина для больших экранов */
-        max-height: calc(100vh - 48px); /* Ограничиваем высоту */
+        width: 80%;
+        max-width: 1200px;
+        max-height: 90vh; /* Изменено для лучшего отображения */
         display: flex;
         flex-direction: row;
         align-items: stretch;
         gap: 32px;
         font-family: 'Axiforma', Arial, sans-serif;
         box-sizing: border-box;
-        overflow: hidden;
-        position: relative;
+        overflow-y: auto; /* Добавлена вертикальная прокрутка */
     }
 
     .login-main-left {
-        flex: 1 1 0;
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 28px;
-        min-width: 0;
+        min-width: 300px;
         font-family: 'Axiforma', Arial, sans-serif;
-        overflow: hidden;
     }
 
     .login-main-right {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        flex: 1 1 0;
-        min-width: 0;
+        flex: 1;
+        min-width: 300px;
         max-width: 50%;
-        overflow: hidden;
     }
 
     .login-photo-inside {
@@ -110,21 +110,6 @@
             color: #4666d0;
         }
 
-    .login-logo-img {
-        width: 60px;
-        height: auto;
-        margin-bottom: 4px;
-    }
-
-    .login-logo-text {
-        font-family: 'Axiforma', Arial, sans-serif;
-        font-size: 22px;
-        color: #2c51ae;
-        font-weight: bold;
-        letter-spacing: 1px;
-        margin-bottom: 12px;
-    }
-
     .login-title {
         font-size: 32px;
         color: #2c51ae;
@@ -132,6 +117,7 @@
         font-weight: bold;
         text-align: center;
         margin-bottom: 12px;
+        margin-top: 0;
     }
 
     .login-form {
@@ -258,6 +244,130 @@
         font-size: 13px;
         font-family: 'Axiforma', Arial, sans-serif;
     }
+
+    /* Мобильная адаптация */
+    @@media (max-width: 768px) {
+        body {
+            align-items: flex-start;
+            padding: 10px;
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .login-main-block {
+            width: 100%;
+            max-width: 100%;
+            max-height: none;
+            padding: 60px 20px 30px 20px;
+            flex-direction: column;
+            border-radius: 10px 40px 10px 40px;
+            gap: 25px;
+            margin: 0;
+        }
+
+        .login-main-right {
+            display: none; /* Скрываем картинку на мобильных */
+        }
+
+        .login-main-left {
+            width: 100%;
+            gap: 20px;
+            min-width: auto;
+        }
+
+        .login-back-btn {
+            position: fixed; /* Изменено на fixed для мобильных */
+            top: 15px;
+            left: 15px;
+            font-size: 16px;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .login-title {
+            font-size: 28px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .login-form {
+            gap: 18px;
+        }
+
+        .login-input {
+            padding: 14px 15px;
+            font-size: 16px;
+        }
+
+        .login-btn-main,
+        .login-btn-vk {
+            padding: 14px 0;
+            font-size: 17px;
+        }
+
+        .login-btn-icon {
+            width: 35px;
+            height: 35px;
+        }
+
+        .login-bottom-link {
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    }
+
+    /* Дополнительная адаптация для очень маленьких экранов */
+    @@media (max-width: 480px) {
+        body {
+            padding: 5px;
+        }
+
+        .login-main-block {
+            padding: 50px 15px 25px 15px;
+            border-radius: 10px 30px 10px 30px;
+            gap: 20px;
+        }
+
+        .login-back-btn {
+            top: 10px;
+            left: 10px;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .login-form {
+            gap: 15px;
+        }
+
+        .login-input {
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+
+        .login-btn-main,
+        .login-btn-vk {
+            padding: 12px 0;
+            font-size: 16px;
+        }
+
+        .login-bottom-link {
+            font-size: 13px;
+        }
+    }
+
+    /* Для очень высоких экранов */
+    @@media (min-height: 800px) and (max-width: 768px) {
+        body {
+            align-items: center;
+            padding: 20px;
+        }
+    }
 </style>
 
 <div class="login-main-block">
@@ -269,12 +379,12 @@
             <div class="login-field">
                 <label asp-for="UserName" class="login-label">Введите электронную почту</label>
                 <input type="email" asp-for="UserName" class="login-input" placeholder="Введите электронную почту" />
-                <span asp-validation-for="UserName" class="login-validation" />
+                <span asp-validation-for="UserName" class="login-validation"></span>
             </div>
             <div class="login-field">
                 <label asp-for="Password" class="login-label">Введите пароль</label>
                 <input type="password" asp-for="Password" class="login-input" placeholder="Введите пароль" />
-                <span asp-validation-for="Password" class="login-validation" />
+                <span asp-validation-for="Password" class="login-validation"></span>
             </div>
             <button type="submit" asp-controller="Account" asp-action="Login" class="login-btn-main">Продолжить</button>
             <button type="button" class="login-btn-vk">
