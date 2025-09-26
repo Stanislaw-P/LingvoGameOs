@@ -199,7 +199,7 @@ namespace LingvoGameOs.Db
                     // GameURL = "http://158.160.104.26:5001",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5,
-                    Port = 5001,
+                    Port = 3001,
                 };
 
                 var game2 = new Game
@@ -228,7 +228,7 @@ namespace LingvoGameOs.Db
                     // GameURL = "http://158.160.104.26:5002",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10,
-                    Port = 5002,
+                    Port = 3002,
                 };
 
                 var game3 = new Game
@@ -257,7 +257,7 @@ namespace LingvoGameOs.Db
                     // GameURL = "http://158.160.104.26:5003",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 0,
-                    Port = 5003,
+                    Port = 3003,
                 };
 
                 var game4 = new Game

@@ -46,6 +46,8 @@ namespace LingvoGameOs.Areas.Admin.Models
         //[Required(ErrorMessage = "Обязательное поле")]
         public string? GameFolderName { get; set; }
         //[Required(ErrorMessage = "Обязательное поле")]
+        public int Port { get; set; }
+        //[Required(ErrorMessage = "Обязательное поле")]
         public string GamePlatform { get; set; } = null!;
         public DateTime DispatchDate { get; set; }
         public DateTime PublicationDate { get; set; }

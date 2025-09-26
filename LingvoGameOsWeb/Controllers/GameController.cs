@@ -93,15 +93,6 @@ namespace LingvoGameOs.Controllers
             if (existingGame.GameFolderName == null)
                 existingGame.GameFolderName = "temp";
 
-            // TODO: Нужно придумать что-нибудь с хранением расположения игры и портом
-
-            _logger.LogError(
-                "Game folder path: {YandexCloudPath} {TimewebCloudPath} {ENV}",
-                Constants.TimeWebCloudGameFolderPath,
-                Constants.YandexCloudGameFolderPath,
-                _configuration["ASPNETCORE_ENVIRONMENT"]
-            );
-
             string gameFolder =
                 _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
                     ? Constants.YandexCloudGameFolderPath

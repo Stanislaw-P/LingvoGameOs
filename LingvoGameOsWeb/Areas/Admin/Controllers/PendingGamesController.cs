@@ -250,6 +250,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 LanguageLevel = existingGame.LanguageLevel.Name,
                 VideoUrl = existingGame.VideoUrl ?? "Video doesn't exist",
                 LastMessage = existingGame.LastMessage,
+                Port = existingGame.Port
             });
         }
 
@@ -282,6 +283,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LanguageLevel = languageLvl!;
                 existingGame.VideoUrl = editGame.VideoUrl;
                 existingGame.GameFolderName = editGame.GameFolderName;
+                existingGame.Port = editGame.Port;
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImageAsync(editGame, existingGame);
@@ -294,7 +296,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
                 // Удаляем файл игры
                 ProcessDeleteGameFile(editGame, existingGame);
-                
+
                 // Меняем ия
                 ProcessRenameGameFile(editGame, existingGame);
 
@@ -327,7 +329,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
-            }           
+            }
         }
 
         private void ProcessChangeGameURL(EditGameViewModel editGame, PendingGame existingGame)
@@ -403,7 +405,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
         private void ProcessRenameGameFile(EditGameViewModel editGame, PendingGame existingGame)
         {
-            if(editGame.GamePlatform == "Desktop")
+            if (editGame.GamePlatform == "Desktop")
             {
                 if (editGame.Title != existingGame.Title && existingGame.GameURL != null)
                 {
