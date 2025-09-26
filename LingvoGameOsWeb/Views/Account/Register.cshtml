@@ -34,6 +34,7 @@
     }
 
     .register-main-block {
+        position: relative;
         background: rgba(255,255,255,0.96);
         box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
         border-radius: 10px 70px 10px 70px;
@@ -85,8 +86,8 @@
 
     .register-back-btn {
         position: absolute;
-        top: 32px;
-        left: 40px;
+        top: 8px;
+        left: 8px;
         background: #f8fafe;
         color: #2c51ae;
         font-family: 'Axiforma', Arial, sans-serif;
@@ -281,10 +282,11 @@
         }
 
         .register-main-block {
+            position: relative;
             width: 100%;
             max-width: 100%;
             max-height: none;
-            padding: 60px 20px 30px 20px;
+            padding: 50px 20px 30px 20px;
             flex-direction: column;
             border-radius: 10px 40px 10px 40px;
             gap: 25px;
@@ -302,12 +304,12 @@
         }
 
         .register-back-btn {
-            position: fixed;
-            top: 15px;
-            left: 15px;
+            position: absolute;
+            top: 8px;
+            left: 8px;
             font-size: 16px;
             padding: 10px 20px;
-            z-index: 1000;
+            z-index: 2;
         }
 
         .register-title {
@@ -350,14 +352,14 @@
         }
 
         .register-main-block {
-            padding: 50px 15px 25px 15px;
+            padding: 45px 15px 25px 15px;
             border-radius: 10px 30px 10px 30px;
             gap: 20px;
         }
 
         .register-back-btn {
-            top: 10px;
-            left: 10px;
+            top: 8px;
+            left: 8px;
             font-size: 14px;
             padding: 8px 16px;
         }
@@ -391,6 +393,45 @@
         body {
             align-items: center;
             padding: 20px;
+        }
+
+        .register-main-block {
+            margin-top: 40px;
+        }
+    }
+
+    /* Для горизонтальной ориентации на мобильных */
+    @@media (max-width: 768px) and (orientation: landscape) {
+        body {
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        .register-main-block {
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .register-back-btn {
+            top: 8px;
+            left: 8px;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+    }
+
+    /* Для планшетов */
+    @@media (min-width: 769px) and (max-width: 1024px) {
+        .register-main-block {
+            width: 90%;
+            padding: 35px 28px 28px 28px;
+        }
+
+        .register-back-btn {
+            top: 8px;
+            left: 8px;
+            font-size: 17px;
+            padding: 11px 28px;
         }
     }
 </style>

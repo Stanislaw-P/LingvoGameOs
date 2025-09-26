@@ -16,38 +16,39 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        overflow: auto; /* Изменено с hidden на auto */
+        overflow: auto;
     }
 
     body {
         min-height: 100vh;
         min-width: 100vw;
         width: 100vw;
-        height: auto; /* Изменено с 100vh на auto */
+        height: auto;
         background: url('/img/b11ed6d9-17da-4307-9a85-eebe93cdb78e.jpg') no-repeat center center fixed;
         background-size: cover;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px; /* Добавлен отступ для мобильных */
+        padding: 20px;
         box-sizing: border-box;
     }
 
     .login-main-block {
+        position: relative;
         background: rgba(255, 255, 255, 0.96);
         box-shadow: 0 8px 32px rgba(44, 81, 174, 0.18);
         border-radius: 10px 70px 10px 70px;
         padding: 40px 32px 32px 32px;
         width: 80%;
         max-width: 1200px;
-        max-height: 90vh; /* Изменено для лучшего отображения */
+        max-height: 90vh;
         display: flex;
         flex-direction: row;
         align-items: stretch;
         gap: 32px;
         font-family: 'Axiforma', Arial, sans-serif;
         box-sizing: border-box;
-        overflow-y: auto; /* Добавлена вертикальная прокрутка */
+        overflow-y: auto;
     }
 
     .login-main-left {
@@ -85,8 +86,8 @@
 
     .login-back-btn {
         position: absolute;
-        top: 32px;
-        left: 40px;
+        top: 8px;
+        left: 8px;
         background: #f8fafe;
         color: #2c51ae;
         font-family: 'Axiforma', Arial, sans-serif;
@@ -256,10 +257,11 @@
         }
 
         .login-main-block {
+            position: relative;
             width: 100%;
             max-width: 100%;
             max-height: none;
-            padding: 60px 20px 30px 20px;
+            padding: 50px 20px 30px 20px;
             flex-direction: column;
             border-radius: 10px 40px 10px 40px;
             gap: 25px;
@@ -267,7 +269,7 @@
         }
 
         .login-main-right {
-            display: none; /* Скрываем картинку на мобильных */
+            display: none;
         }
 
         .login-main-left {
@@ -277,12 +279,12 @@
         }
 
         .login-back-btn {
-            position: fixed; /* Изменено на fixed для мобильных */
-            top: 15px;
-            left: 15px;
+            position: absolute;
+            top: 8px;
+            left: 8px;
             font-size: 16px;
             padding: 10px 20px;
-            z-index: 1000;
+            z-index: 2;
         }
 
         .login-title {
@@ -324,14 +326,12 @@
         }
 
         .login-main-block {
-            padding: 50px 15px 25px 15px;
+            padding: 45px 15px 25px 15px;
             border-radius: 10px 30px 10px 30px;
             gap: 20px;
         }
 
         .login-back-btn {
-            top: 10px;
-            left: 10px;
             font-size: 14px;
             padding: 8px 16px;
         }
@@ -366,6 +366,45 @@
         body {
             align-items: center;
             padding: 20px;
+        }
+
+        .login-main-block {
+            margin-top: 40px;
+        }
+    }
+
+    /* Для горизонтальной ориентации на мобильных */
+    @@media (max-width: 768px) and (orientation: landscape) {
+        body {
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        .login-main-block {
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .login-back-btn {
+            top: -10px;
+            left: -10px;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+    }
+
+    /* Для планшетов */
+    @@media (min-width: 769px) and (max-width: 1024px) {
+        .login-main-block {
+            width: 90%;
+            padding: 35px 28px 28px 28px;
+        }
+
+        .login-back-btn {
+            top: -18px;
+            left: -18px;
+            font-size: 17px;
+            padding: 11px 28px;
         }
     }
 </style>
