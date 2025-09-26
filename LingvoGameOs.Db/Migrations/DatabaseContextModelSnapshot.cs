@@ -231,6 +231,9 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<int>("Port")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Port")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Rules")
                         .IsRequired()
                         .HasColumnType("text");
