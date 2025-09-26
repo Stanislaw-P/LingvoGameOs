@@ -2484,6 +2484,23 @@ a.link {
         margin-bottom: 15px;
     }
 
+.game-reviews__card {
+    background: var(--bg-light);
+    border: 2px solid var(--accent-2);
+    padding: 30px;
+    border-radius: 10px 70px;
+    flex: 0 0 32%;
+    max-width: 33%;
+    box-sizing: border-box;
+}
+
+.game-reviews__reviewer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
     .game-reviews__avatar {
         width: 40px;
         height: 40px;
