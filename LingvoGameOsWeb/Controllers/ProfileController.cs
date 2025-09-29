@@ -133,7 +133,7 @@ namespace LingvoGameOs.Controllers
             }
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Profile", "Profile", new {userId = user.Id});
+                return RedirectToAction("Index", "Profile", new {userId = user.Id});
             }
             return View(settings);
         }
