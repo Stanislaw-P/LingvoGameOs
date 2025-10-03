@@ -167,7 +167,7 @@
                         <div class="games__actions">
                             @if (game.GamePlatform.Name == "Desktop")
                             {
-                                <a href="@game.GameFilePath" download role="button" class="games__button">Скачать</a>
+                                <a href="@game.GameFilePath" onclick="return confirmDownload()" download role="button" class="games__button">Скачать</a>
                             }
                             else
                             {
@@ -182,6 +182,7 @@
     </div>
 </section>
 
+<script src="/js/download-handler.js"></script>
 @section Scripts {
     <script>
         function resetGamesList() {

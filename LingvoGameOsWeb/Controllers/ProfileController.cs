@@ -14,9 +14,10 @@ namespace LingvoGameOs.Controllers
         private readonly SignInManager<User> signInManager;
         readonly IGamesRepository gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
+        readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly FileProvider fileProvider;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -30,8 +31,9 @@ namespace LingvoGameOs.Controllers
             var user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
-                user.DevGames = games;
+                var devGames = await gamesRepository.TryGetUserDevGamesAsync(user);
+               
+                user.DevGames = devGames;
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
                 var gamesHistory = await gamesRepository.TryGetUserGameHistoryAsync(user);
