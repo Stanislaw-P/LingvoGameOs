@@ -33,8 +33,29 @@ namespace LingvoGameOs.Controllers
             if (user != null)
             {
                 var devGames = await gamesRepository.TryGetUserDevGamesAsync(user);
-               
-                user.DevGames = devGames;
+                var devGamesViewModel = new List<GameViewModel>();
+
+                foreach (var game in devGames)
+                {
+                    devGamesViewModel.Add(new GameViewModel
+                    {
+                        Id = game.Id,
+                        Title = game.Title,
+                        Author = game.Author,
+                        CoverImagePath = game.CoverImagePath,
+                        Description = game.Description,
+                        GameFolderName = game.GameFolderName,
+                        GameFilePath = game.GameFilePath,
+                        GamePlatform = game.GamePlatform,
+                        ImagesPaths = game.ImagesPaths,
+                        VideoUrl = game.VideoUrl,
+                        LanguageLevel = game.LanguageLevel,
+                        PublicationDate = game.PublicationDate,
+                        SkillsLearning = game.SkillsLearning,
+                        RaitingPlayers = game.RaitingPlayers,
+                        FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                    });
+                }
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
 
@@ -50,7 +71,7 @@ namespace LingvoGameOs.Controllers
                     UserName = user.UserName,
                     Description = user.Description,
                     AvatarImgPath = user.AvatarImgPath,
-                    DevGames = user.DevGames,
+                    DevGames = devGamesViewModel,
                     DevPendingGames = user.DevPendingGames,
                     PlayerGames = user.PlayerGames,
                     UserGames = user.UserGames
