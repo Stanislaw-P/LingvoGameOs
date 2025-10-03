@@ -13,14 +13,14 @@ namespace LingvoGameOs.Models
         public User Author { get; set; } = null!;
         public DateTimeOffset PublicationDate { get; set; }
         public DateTimeOffset LastUpdateDate { get; set; }
-        public LanguageLevel LanguageLevel { get; set; } = null!;
-        public List<SkillLearning> SkillsLearning { get; set; } = null!;
+        public LanguageLevel? LanguageLevel { get; set; }
+        public List<SkillLearning>? SkillsLearning { get; set; }
         public double RaitingPlayers { get; set; }
         public double RaitingTeachers { get; set; }
         public string? CoverImagePath { get; set; }
         public List<string>? ImagesPaths { get; set; }
         public string? GameFilePath { get; set; }
-        public Platform GamePlatform { get; set; } = null!;
+        public Platform? GamePlatform { get; set; }
         public int NumberDownloads { get; set; }
         public List<User>? Players { get; set; }
         public string? GameFolderName { get; set; }

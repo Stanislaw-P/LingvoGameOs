@@ -24,6 +24,7 @@ namespace LingvoGameOs.Controllers
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
             this.fileProvider = new FileProvider(webHostEnvironment);
+            _favoriteGamesRepository = favoriteGamesRepository;
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
@@ -33,10 +34,10 @@ namespace LingvoGameOs.Controllers
             {
                 var devGames = await gamesRepository.TryGetUserDevGamesAsync(user);
                 var devGamesViewModel = new List<GameViewModel>();
-
+                
                 foreach (var game in devGames)
                 {
-                    devGamesViewModel.Add(new GameViewModel
+                    var gameViewModel = new GameViewModel
                     {
                         Id = game.Id,
                         Title = game.Title,
@@ -53,7 +54,8 @@ namespace LingvoGameOs.Controllers
                         SkillsLearning = game.SkillsLearning,
                         RaitingPlayers = game.RaitingPlayers,
                         FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
-                    });
+                    };
+                    devGamesViewModel.Add(gameViewModel);
                 }
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
