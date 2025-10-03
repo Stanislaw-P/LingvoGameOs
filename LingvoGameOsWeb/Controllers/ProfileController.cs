@@ -17,7 +17,7 @@ namespace LingvoGameOs.Controllers
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly FileProvider fileProvider;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
