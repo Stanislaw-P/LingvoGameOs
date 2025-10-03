@@ -128,7 +128,7 @@
                             <div class="games__actions">
                                 @if (game.GamePlatform.Name == "Desktop")
                                 {
-                                    <a href="@game.GameFilePath" download role="button" class="games__button">Скачать</a>
+                                    <a href="@game.GameFilePath" download onclick="return confirmDownload()" role="button" class="games__button">Скачать</a>
                                 }
                                 else
                                 {
@@ -142,13 +142,12 @@
             }
         </div>
     </div>
-
-    
 </section>
 
 <!-- Отзывы -->
 @await Component.InvokeAsync("Reviews", false)
 <script src="/js/carouselForFeedback.js"></script>
+<script src="/js/download-handler.js"></script>
 <!-- FAQ Section
 <section class="homepage-faq">
     <div class="homepage-faq__container">

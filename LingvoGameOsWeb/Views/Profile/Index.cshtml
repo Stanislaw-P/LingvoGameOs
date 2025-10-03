@@ -90,7 +90,7 @@
                                                     <img src="/icon/shape.svg" alt="star" class="rating-star"> @game.RaitingPlayers
                                                 </span>
                                                 <span class="user-added-games__likes">
-                                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> 0
+                                                    <img src="/icon/like2.svg" alt="like" class="stat-icon"> @game.fa
                                                 </span>
                                                 <span class="user-added-games__views">
                                                     <img src="/icon/eye.svg" alt="view" class="stat-icon"> 130
@@ -101,7 +101,7 @@
                                     <div class="user-added-games__actions">
                                         @if (game.GamePlatform.Name == "Desktop")
                                         {
-                                            <a role="button" href="@game.GameFilePath" download class="user-added-games__button">Скачать</a>
+                                            <a role="button" href="@game.GameFilePath" onclick="return confirmDownload()" download class="user-added-games__button">Скачать</a>
                                         }
                                         else
                                         {
@@ -268,3 +268,4 @@
     </div>
 </div>
 @* <script type="module" src="/js/script.js"></script> *@
+<script src="/js/download-handler.js"></script>
