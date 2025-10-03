@@ -35,6 +35,11 @@ namespace LingvoGameOs.Controllers
                 user.DevGames = games;
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
+
+                // Временные меры
+                var allGames = await gamesRepository.GetAllAsync();
+                ViewBag.AllGames = allGames;
+
                 var userViewModel = new UserViewModel()
                 {
                     Id = user.Id,
