@@ -30,7 +30,8 @@ builder
     .Services.AddIdentity<User, IdentityRole>()
     // Add Entity Framework store for Identity using our DatabaseContext
     .AddEntityFrameworkStores<DatabaseContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<RussianIdentityErrorDescriber>();
 
 // Register DatabaseContext with SQLite provider
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
