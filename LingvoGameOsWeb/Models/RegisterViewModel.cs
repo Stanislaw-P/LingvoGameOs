@@ -6,6 +6,8 @@ namespace LingvoGameOs.Models
     {
         [Required(ErrorMessage = "Введите email")]
         [EmailAddress(ErrorMessage = "Введите корректный email")]
+        [RegularExpression(@"^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+        ErrorMessage = "Недопустимые символы в названии почты")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Введите имя")]
