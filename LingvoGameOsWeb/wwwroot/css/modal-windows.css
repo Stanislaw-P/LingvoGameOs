@@ -1,0 +1,140 @@
+﻿/* Стили модального окна скачивания */
+.download-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+    .download-modal.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+.download-modal__content {
+    background: var(--bg-white);
+    max-width: 400px;
+    width: 90%;
+    border-radius: 12px;
+    padding: 30px;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.download-modal.active .download-modal__content {
+    transform: scale(1);
+}
+
+.download-modal__close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    color: var(--text-body);
+}
+
+    .download-modal__close:hover {
+        background: var(--bg-light);
+        color: var(--text-primary);
+    }
+
+.download-modal__header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.download-modal__title {
+    font: 600 20px "Axiforma", sans-serif;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.download-modal__body {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.download-modal__icon {
+    margin-bottom: 15px;
+}
+
+.download-modal__message {
+    font: 400 16px "Axiforma", sans-serif;
+    color: var(--text-body);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.download-modal__footer {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.download-modal__cancel,
+.download-modal__confirm {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font: 600 14px "Axiforma", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    min-width: 120px;
+}
+
+.download-modal__cancel {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+}
+
+    .download-modal__cancel:hover {
+        background: var(--bg-white);
+        border-color: var(--accent-2);
+        transform: translateY(-2px);
+    }
+
+.download-modal__confirm {
+    background: var(--accent-2);
+    color: var(--text-light);
+}
+
+    .download-modal__confirm:hover {
+        background: var(--accent-1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(63, 105, 210, 0.3);
+    }
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .download-modal__content {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .download-modal__footer {
+        flex-direction: column;
+    }
+
+    .download-modal__cancel,
+    .download-modal__confirm {
+        min-width: auto;
+    }
+}
