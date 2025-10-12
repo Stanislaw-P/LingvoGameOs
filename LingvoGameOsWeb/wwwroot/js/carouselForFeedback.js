@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0;
 
     function getCardWidth() {
-        // Получаем ширину карточки + gap
         const card = cards[0];
         const style = window.getComputedStyle(carousel);
         const gap = parseInt(style.gap) || 20;
@@ -106,8 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Обновляем состояние кнопок
-        const visibleCards = getVisibleCardsCount();
-        const maxIndex = Math.max(0, cards.length - visibleCards);
+        const maxIndex = getMaxIndex();
 
         prevButton.disabled = currentIndex === 0;
         nextButton.disabled = currentIndex >= maxIndex;
