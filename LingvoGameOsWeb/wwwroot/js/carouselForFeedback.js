@@ -105,8 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Обновляем состояние кнопок
-        const maxIndex = getMaxIndex();
-
         prevButton.disabled = currentIndex === 0;
         nextButton.disabled = currentIndex >= maxIndex;
 
