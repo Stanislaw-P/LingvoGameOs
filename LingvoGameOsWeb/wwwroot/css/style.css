@@ -4530,7 +4530,7 @@ a.link {
 
         .profile__input:disabled {
             background: #F0F0F0;
-            color: var(--text-muted);
+            color: #141c30;
             border-color: var(--border-light);
             cursor: not-allowed;
         }
