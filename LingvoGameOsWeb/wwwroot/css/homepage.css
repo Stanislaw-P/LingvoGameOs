@@ -1048,6 +1048,13 @@ body {
     }
 }
 
+@media (max-width: 340px) {
+    .homepage-hero__title {
+        font-size: 30px;
+        line-height: 1.3;
+    }
+}
+
 /* Loading States */
 .homepage-loading {
     display: flex;
