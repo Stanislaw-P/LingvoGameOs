@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0;
 
     function getCardWidth() {
-        // Получаем ширину карточки + gap
         const card = cards[0];
         const style = window.getComputedStyle(carousel);
         const gap = parseInt(style.gap) || 20;
@@ -18,9 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getVisibleCardsCount() {
-        const containerWidth = carousel.offsetWidth;
+        const containerWidth = carousel.parentElement.offsetWidth; // Используем родительский контейнер
         const cardWidth = getCardWidth();
         return Math.floor(containerWidth / cardWidth);
+    }
+
+    function getMaxIndex() {
+        const visibleCards = getVisibleCardsCount();
+        // Максимальный индекс - когда последняя карточка видна
+        return Math.max(0, cards.length - visibleCards);
     }
 
     function updateCarousel() {
@@ -34,16 +39,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Обновляем состояние кнопок
-        const visibleCards = getVisibleCardsCount();
-        const maxIndex = Math.max(0, cards.length - visibleCards);
+        const maxIndex = getMaxIndex();
 
         prevButton.disabled = currentIndex === 0;
         nextButton.disabled = currentIndex >= maxIndex;
+
+        // Если после ресайза currentIndex стал больше максимального, корректируем
+        if (currentIndex > maxIndex) {
+            currentIndex = maxIndex;
+            updateCarousel();
+        }
     }
 
     function goToSlide(index) {
-        const visibleCards = getVisibleCardsCount();
-        const maxIndex = Math.max(0, cards.length - visibleCards);
+        const maxIndex = getMaxIndex();
         currentIndex = Math.max(0, Math.min(index, maxIndex));
         updateCarousel();
     }
@@ -56,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     nextButton.addEventListener('click', () => {
-        const visibleCards = getVisibleCardsCount();
-        if (currentIndex < cards.length - visibleCards) {
+        const maxIndex = getMaxIndex();
+        if (currentIndex < maxIndex) {
             goToSlide(currentIndex + 1);
         }
     });
@@ -68,9 +77,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Обработчик ресайза
+    // Обработчик ресайза с debounce
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        updateCarousel();
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            updateCarousel();
+        }, 250);
     });
 
     // Touch/swipe для мобильных
@@ -81,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         isDragging = true;
-        carousel.style.transition = 'none'; // Отключаем анимацию во время драга
+        carousel.style.transition = 'none';
     });
 
     carousel.addEventListener('touchmove', (e) => {
@@ -95,21 +108,21 @@ document.addEventListener('DOMContentLoaded', function () {
     carousel.addEventListener('touchend', () => {
         if (!isDragging) return;
         isDragging = false;
-        carousel.style.transition = 'transform 0.5s ease-in-out'; // Включаем анимацию обратно
+        carousel.style.transition = 'transform 0.5s ease-in-out';
 
         const diff = startX - currentX;
-        const visibleCards = getVisibleCardsCount();
+        const maxIndex = getMaxIndex();
 
-        if (Math.abs(diff) > 50) { // Минимальное расстояние для свайпа
-            if (diff > 0 && currentIndex < cards.length - visibleCards) {
-                goToSlide(currentIndex + 1); // Свайп влево
+        if (Math.abs(diff) > 50) {
+            if (diff > 0 && currentIndex < maxIndex) {
+                goToSlide(currentIndex + 1);
             } else if (diff < 0 && currentIndex > 0) {
-                goToSlide(currentIndex - 1); // Свайп вправо
+                goToSlide(currentIndex - 1);
             } else {
-                updateCarousel(); // Возвращаем на место
+                updateCarousel();
             }
         } else {
-            updateCarousel(); // Возвращаем на место
+            updateCarousel();
         }
     });
 
