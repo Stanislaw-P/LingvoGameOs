@@ -2319,10 +2319,8 @@ a.link {
 .game-reviews__container {
     display: flex;
     gap: 20px;
-    /* Убираем трансформацию у контейнера */
-    overflow-x: hidden; /* скрываем всё что выходит за границы */
+    overflow-x: hidden;
     padding: 10px 0;
-    /* Контейнер остается на месте */
     position: relative;
     transition: transform 0.5s ease-in-out;
 }
@@ -2336,8 +2334,7 @@ a.link {
     max-width: 33%;
     box-sizing: border-box;
     min-width: 0;
-    flex-shrink: 0; /* важно чтобы карточки не сжимались */
-    /* Добавляем переход для карточек */
+    flex-shrink: 0;
     transition: transform 0.5s ease-in-out;
 }
 
@@ -2362,22 +2359,22 @@ a.link {
     transition: all 0.3s ease;
 }
 
-.game-reviews__nav-button:hover {
-    background: var(--accent-2);
-    transform: scale(1.1);
-}
+    .game-reviews__nav-button:hover {
+        background: var(--accent-2);
+        transform: scale(1.1);
+    }
 
-.game-reviews__nav-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: scale(1);
-}
+    .game-reviews__nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: scale(1);
+    }
 
-.game-reviews__nav-button img {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) invert(1);
-}
+    .game-reviews__nav-button img {
+        width: 20px;
+        height: 20px;
+        filter: brightness(0) invert(1);
+    }
 
 .game-reviews__indicators {
     display: flex;
@@ -2393,10 +2390,10 @@ a.link {
     transition: all 0.3s ease;
 }
 
-.game-reviews__indicator.active {
-    background: var(--accent-2);
-    transform: scale(1.2);
-}
+    .game-reviews__indicator.active {
+        background: var(--accent-2);
+        transform: scale(1.2);
+    }
 
 /* Адаптивность */
 @media (max-width: 1024px) {
@@ -2414,12 +2411,6 @@ a.link {
 }
 
 @media (max-width: 480px) {
-/*    .game-reviews__card {
-        flex: 0 0 85%;
-        max-width: 86%;
-        padding: 20px;
-    }*/
-    
     .game-reviews__nav-button {
         width: 40px;
         height: 40px;
@@ -2438,6 +2429,7 @@ a.link {
         padding: 20px;
     }
 }
+
 @media (max-width: 346px) {
     .game-reviews {
         position: relative;
@@ -2445,126 +2437,87 @@ a.link {
     }
 }
 
+.game-reviews {
+    margin-top: 40px;
+    padding: 30px;
+    color: var(--text-primary);
+}
 
+.game-reviews__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
 
-    .game-reviews {
-        margin-top: 40px;
-        padding: 30px;
-        color: var(--text-primary);
-    }
+.game-reviews__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-gray);
+}
 
-    .game-reviews__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
+.game-reviews__button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-    .game-reviews__title {
-        font-size: 24px;
-        font-weight: 600;
-        color: var(--text-gray);
-    }
+.game-reviews__icon {
+    width: 18px;
+    height: 18px;
+}
 
-    .game-reviews__button {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+.game-reviews__reviewer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
 
-    .game-reviews__icon {
-        width: 18px;
-        height: 18px;
-    }
+.game-reviews__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
 
-    .game-reviews__reviewer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 15px;
-    }
+.game-reviews__reviewer-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
-    .game-reviews__avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 15px;
-    }
+.game-reviews__reviewer-name {
+    font-size: 16px;
+    font-weight: 500;
+}
 
-    .game-reviews__reviewer-details {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
+.game-reviews__reviewer-location {
+    font-size: 14px;
+    color: var(--text-body);
+}
 
-    .game-reviews__reviewer-name {
-        font-size: 16px;
-        font-weight: 500;
-    }
+.game-reviews__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-    .game-reviews__reviewer-location {
-        font-size: 14px;
-        color: var(--text-body);
-    }
+.game-reviews__rating-score {
+    font-size: 16px;
+    font-weight: 500;
+}
 
-    .game-reviews__rating {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
+.game-reviews__star {
+    width: 16px;
+    height: 16px;
+}
 
-    .game-reviews__rating-score {
-        font-size: 16px;
-        font-weight: 500;
-    }
-
-    .game-reviews__star {
-        width: 16px;
-        height: 16px;
-    }
-
-    .game-reviews__text {
-        font-size: 14px;
-        line-height: 22px;
-    }
-
-    .game-reviews__navigation {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .game-reviews__nav-button {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-    }
-
-        .game-reviews__nav-button img {
-            width: 40px;
-            height: 40px;
-        }
-
-    .game-reviews__indicators {
-        display: flex;
-        gap: 5px;
-    }
-
-    .game-reviews__indicator {
-        width: 16px;
-        height: 4px;
-        background: var(--border-outline-dark);
-        border-radius: 2px;
-    }
-
-        .game-reviews__indicator.active {
-            width: 23px;
-            background: var(--accent-2);
-        }
+.game-reviews__text {
+    font-size: 14px;
+    line-height: 22px;
+}
 
 
     /* === Стили модального окна для отзывов === */
