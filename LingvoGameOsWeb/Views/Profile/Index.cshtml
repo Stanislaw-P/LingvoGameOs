@@ -111,7 +111,7 @@
                                         @if (Model.IsMyProfile)
                                         {
                                             <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                            <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                            <a asp-area="Developer" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
                                                 <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
                                             </a>
                                         }
@@ -133,7 +133,7 @@
                                         <div class="user-added-games__actions">
                                             @if (pendingGame.GamePlatform.Name == "Desktop")
                                             {
-                                                <a role="button" href="@pendingGame.GameURL" download class="user-added-games__button">Скачать</a>
+                                                <a role="button" href="@pendingGame.GameFilePath" download class="user-added-games__button">Скачать</a>
                                             }
                                             else
                                             {
@@ -142,7 +142,7 @@
                                             @if (Model.IsMyProfile)
                                             {
                                                 <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                                <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                                <a asp-area="" asp-controller="Game" asp-action="PendingGameEdit" asp-route-gameId="@pendingGame.Id" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
                                                     <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
                                                 </a>
                                             }
@@ -170,12 +170,9 @@
                 <header class="recent-games__header">
                     <h3 class="recent-games__title">Все игры</h3>
                     <div class="recent-games__controls">
-                        <a href="/Home/Games/" class="recent-games__view-all-button">Посмотреть все</a>
-                        @{
-                            var placeholderGames = ViewBag.AllGames;
+                        <a href="#" class="recent-games__view-all-button">Посмотреть все</a>
 
-                        }
-                        @if (ViewBag.AllGames != null)
+                        @if (Model.GamesHistory != null && Model.GamesHistory.Any())
                         {
                             <div class="carousel-controls">
                                 <button class="carousel-control carousel-control--prev recent-games__prev" aria-label="Предыдущие игры">
@@ -193,11 +190,11 @@
                         }
                     </div>
                 </header>
-                @if (placeholderGames != null)
+                @if (Model.GamesHistory != null && Model.GamesHistory.Any())
                 {
                     <div class="recent-games__carousel">
                         <div class="recent-games__list">
-                            @foreach (var game in placeholderGames)
+                            @foreach (var game in Model.GamesHistory)
                             {
                                 <article class="recent-games__item">
                                     <a asp-area="" asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" class="recent-games__link">
@@ -217,7 +214,7 @@
                 {
                     <div class="recent-games__empty">
                         <p class="recent-games__empty-text">Откройте новые игры для изучения!</p>
-                        <a href="/games" class="recent-games__button">Найти игры</a>
+                        <a href="/" class="recent-games__button">Найти игры</a>
                     </div>
                 }
             </section>

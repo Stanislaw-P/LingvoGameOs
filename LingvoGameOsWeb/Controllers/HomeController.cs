@@ -11,14 +11,14 @@ namespace LingvoGameOs.Controllers;
 
 public class HomeController : Controller
 {
-    readonly IGamesRepository gamesRepository;
+    readonly IGamesRepository _gamesRepository;
     readonly IFavoriteGamesRepository _favoriteGamesRepository;
     readonly UserManager<User> _userManager;
     readonly ISkillsLearningRepository _skillsLearningRepository;
 
     public HomeController(IGamesRepository gamesRepository, IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository)
     {
-        this.gamesRepository = gamesRepository;
+        _gamesRepository = gamesRepository;
         _favoriteGamesRepository = favoriteGamesRepository;
         _userManager = userManager;
         _skillsLearningRepository = skillsLearningRepository;
@@ -27,37 +27,43 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var currentUser = await _userManager.GetUserAsync(User);
-        var games = await gamesRepository.GetAllAsync();
+        var games = await _gamesRepository.GetAllAsync();
 
-        var gameTasks = games.Select(async game => new GameViewModel
+        var gamesViewModel = new List<GameViewModel>();
+
+        foreach (var game in games)
         {
-            Id = game.Id,
-            Title = game.Title,
-            Author = game.Author,
-            CoverImagePath = game.CoverImagePath,
-            Description = game.Description,
-            GameFolderName = game.GameFolderName,
-            GameFilePath = game.GameFilePath,
-            GamePlatform = game.GamePlatform,
-            ImagesPaths = game.ImagesPaths,
-            VideoUrl = game.VideoUrl,
-            LanguageLevel = game.LanguageLevel,
-            PublicationDate = game.PublicationDate,
-            SkillsLearning = game.SkillsLearning,
-            RaitingPlayers = game.RaitingPlayers,
-            FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
-            IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
-        }).ToList();
-        var gamesViewModel = await Task.WhenAll(gameTasks);
+            gamesViewModel.Add(new GameViewModel
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Author = game.Author,
+                CoverImagePath = game.CoverImagePath,
+                Description = game.Description,
+                GameFolderName = game.GameFolderName,
+                GameFilePath = game.GameFilePath,
+                GamePlatform = game.GamePlatform,
+                ImagesPaths = game.ImagesPaths,
+                VideoUrl = game.VideoUrl,
+                LanguageLevel = game.LanguageLevel,
+                PublicationDate = game.PublicationDate,
+                SkillsLearning = game.SkillsLearning,
+                RaitingPlayers = game.RaitingPlayers,
+                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                IsFavorite = currentUser != null &&
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id)
+            });
+        }
 
         var skillsLearning = await _skillsLearningRepository.GetAllAsync();
         ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
-        return View(gamesViewModel.ToList());
+
+        return View(gamesViewModel);
     }
 
     public async Task<IActionResult> Search(string gameName)
     {
-        var games = await gamesRepository.GetAllAsync();
+        var games = await _gamesRepository.GetAllAsync();
 
         if (gameName != null)
         {
@@ -70,7 +76,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> FullGamesList()
     {
-        var games = await gamesRepository.GetAllAsync();
+        var games = await _gamesRepository.GetAllAsync();
         return PartialView("_GamesListPartial", games);
     }
 
@@ -82,38 +88,43 @@ public class HomeController : Controller
     public async Task<IActionResult> Games()
     {
         var currentUser = await _userManager.GetUserAsync(User);
-        var games = await gamesRepository.GetAllAsync();
+        var games = await _gamesRepository.GetAllAsync();
 
-        var gameTasks = games.Select(async game => new GameViewModel
+        var gamesViewModel = new List<GameViewModel>();
+
+        foreach (var game in games)
         {
-            Id = game.Id,
-            Title = game.Title,
-            Author = game.Author,
-            CoverImagePath = game.CoverImagePath,
-            Description = game.Description,
-            GameFolderName = game.GameFolderName,
-            GameFilePath = game.GameFilePath,
-            GamePlatform = game.GamePlatform,
-            ImagesPaths = game.ImagesPaths,
-            VideoUrl = game.VideoUrl,
-            LanguageLevel = game.LanguageLevel,
-            PublicationDate = game.PublicationDate,
-            SkillsLearning = game.SkillsLearning,
-            RaitingPlayers = game.RaitingPlayers,
-            FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
-            IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", game.Id)
-        }).ToList();
-        var gamesViewModel = await Task.WhenAll(gameTasks);
+            gamesViewModel.Add(new GameViewModel
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Author = game.Author,
+                CoverImagePath = game.CoverImagePath,
+                Description = game.Description,
+                GameFolderName = game.GameFolderName,
+                GameFilePath = game.GameFilePath,
+                GamePlatform = game.GamePlatform,
+                ImagesPaths = game.ImagesPaths,
+                VideoUrl = game.VideoUrl,
+                LanguageLevel = game.LanguageLevel,
+                PublicationDate = game.PublicationDate,
+                SkillsLearning = game.SkillsLearning,
+                RaitingPlayers = game.RaitingPlayers,
+                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                IsFavorite = currentUser != null &&
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id)
+            });
+        }
 
         var skillsLearning = await _skillsLearningRepository.GetAllAsync();
         ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
 
-        return View(gamesViewModel.ToList());
+        return View(gamesViewModel);
     }
 
     public async Task<IActionResult> Categories()
     {
-        var games = await gamesRepository.GetAllAsync();
+        var games = await _gamesRepository.GetAllAsync();
         
         var skillsLearning = await _skillsLearningRepository.GetAllAsync();
         ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
@@ -123,7 +134,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> CategoryGames(string category)
     {
-        var games = await gamesRepository.GetAllAsync();
+        var games = await _gamesRepository.GetAllAsync();
         var filteredGames = games.Where(game =>
             game.SkillsLearning != null &&
             game.SkillsLearning.Any(skill =>

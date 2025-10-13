@@ -16,6 +16,6 @@ namespace LingvoGameOs.Db.Models
         public Game Game { get; set; } = null!;
         public int GameId { get; set; }
 
-        public DateTime DateAdded { get; set; }
+        public DateTimeOffset DateAdded { get; set; }
     }
 }

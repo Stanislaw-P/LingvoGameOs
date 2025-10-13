@@ -58,10 +58,7 @@ namespace LingvoGameOs.Controllers
                 }
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
                 user.DevPendingGames = pendingGames;
-
-                // Временные меры
-                var allGames = await gamesRepository.GetAllAsync();
-                ViewBag.AllGames = allGames;
+                var gamesHistory = await gamesRepository.TryGetUserGameHistoryAsync(user);
 
                 var userViewModel = new UserViewModel()
                 {
@@ -73,8 +70,7 @@ namespace LingvoGameOs.Controllers
                     AvatarImgPath = user.AvatarImgPath,
                     DevGames = devGamesViewModel,
                     DevPendingGames = user.DevPendingGames,
-                    PlayerGames = user.PlayerGames,
-                    UserGames = user.UserGames
+                    GamesHistory = gamesHistory,
                 };
 
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
@@ -164,6 +160,6 @@ namespace LingvoGameOs.Controllers
                 return RedirectToAction("Index", "Profile", new {userId = user.Id});
             }
             return View(settings);
-        }
+        }           
     }
 }

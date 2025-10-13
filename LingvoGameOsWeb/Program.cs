@@ -20,7 +20,10 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddControllersWithViews();
 
 // Get database connection string from configuration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
+var dbName = Environment.GetEnvironmentVariable("POSTGRES_DB");
+var dbPass = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
 builder
@@ -31,7 +34,7 @@ builder
     .AddErrorDescriber<RussianIdentityErrorDescriber>();
 
 // Register DatabaseContext with SQLite provider
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
 // Configure application cookie settings
 builder.Services.ConfigureApplicationCookie(options =>

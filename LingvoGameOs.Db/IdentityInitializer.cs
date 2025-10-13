@@ -101,35 +101,30 @@ namespace LingvoGameOs.Db
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel
                 {
-                    Id = 1,
                     Name = "Барашек, который пытается говорить",
                     Description =
                         "«Барашек, который пытается говорить» – начинаешь издавать осмысленные звуки, но пока не всё понятно.",
                 };
                 var languageLevelIntermediate = new LanguageLevel
                 {
-                    Id = 2,
                     Name = "Юный нарт",
                     Description =
                         "«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.",
                 };
                 var languageLevelAdvanced = new LanguageLevel
                 {
-                    Id = 3,
                     Name = "Кавказский орёл",
                     Description =
                         "«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.",
                 };
                 var languageLevelPro = new LanguageLevel
                 {
-                    Id = 4,
                     Name = "Старейшина, который говорит тосты",
                     Description =
                         "«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы, можешь красиво говорить и даже вести застольные беседы.",
                 };
                 var languageLevelGrandMaster = new LanguageLevel
                 {
-                    Id = 5,
                     Name = "Хранитель языка",
                     Description =
                         "«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.",
@@ -146,12 +141,12 @@ namespace LingvoGameOs.Db
                     await context.SaveChangesAsync();
                 }
 
-                var gameType1 = new SkillLearning { Id = 1, Name = "Словарный запас" };
-                var gameType2 = new SkillLearning { Id = 2, Name = "Грамматика" };
-                var gameType3 = new SkillLearning { Id = 3, Name = "Аудирование" };
-                var gameType4 = new SkillLearning { Id = 4, Name = "Чтение" };
-                var gameType5 = new SkillLearning { Id = 5, Name = "Говорение" };
-                var gameType6 = new SkillLearning { Id = 6, Name = "Диктант" };
+                var gameType1 = new SkillLearning { Name = "Словарный запас" };
+                var gameType2 = new SkillLearning { Name = "Грамматика" };
+                var gameType3 = new SkillLearning { Name = "Аудирование" };
+                var gameType4 = new SkillLearning { Name = "Чтение" };
+                var gameType5 = new SkillLearning { Name = "Говорение" };
+                var gameType6 = new SkillLearning { Name = "Диктант" };
                 if (!context.SkillsLearning.Any())
                 {
                     await context.SkillsLearning.AddRangeAsync(
@@ -165,9 +160,9 @@ namespace LingvoGameOs.Db
                     await context.SaveChangesAsync();
                 }
 
-                var platform1 = new Platform { Id = 1, Name = "Web-Desktop" };
-                var platform2 = new Platform { Id = 2, Name = "Desktop" };
-                var platform3 = new Platform { Id = 3, Name = "Web-Mobile" };
+                var platform1 = new Platform { Name = "Web-Desktop" };
+                var platform2 = new Platform { Name = "Desktop" };
+                var platform3 = new Platform { Name = "Web-Mobile" };
                 if (!await context.Platforms.AnyAsync())
                 {
                     await context.Platforms.AddRangeAsync(platform1, platform2, platform3);
@@ -176,15 +171,14 @@ namespace LingvoGameOs.Db
 
                 var game1 = new Game
                 {
-                    Id = 1,
                     Title = "Мир по кусочкам",
                     Description = "Узнавайте новые слова и практикуйтесь в языке, складывая пазл.",
                     Rules =
                         "Игра состоит из двух уровней никак не связанных друг с другом.Собирайте животное, выбирая правильное название части тела на осетинском языке. За неправильные ответы вы теряете 5 очков. Когда животное собрано, требуется написать его название. Буква 'æ' считается как 2 символа (писать: 'ае').",
                     GameFolderName = "lingvo-piece-by-piece",
                     AuthorId = devMarat.Id,
-                    PublicationDate = new DateTime(2025, 4, 14),
-                    LastUpdateDate = new DateTime(2025, 4, 20),
+                    PublicationDate = new DateTimeOffset(2025, 6, 14, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2025, 7, 1, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelIntermediate.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 4.2,
@@ -200,11 +194,11 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5,
                     Port = 3001,
+                    GameGitHubUrl = "https://github.com/AmletixQ/lingvo-piece-by-piece"
                 };
 
                 var game2 = new Game
                 {
-                    Id = 2,
                     Title = "Кроссворд осетинских слов",
                     Description =
                         "Кроссворд на осетинском языке, разработанный по последнему писку моды.",
@@ -213,8 +207,8 @@ namespace LingvoGameOs.Db
                         + "Каждая из колонок кроссворда помечена цифрой Под кроссвордом находятся вопросы на русском языке, где ответом является слово на осетинском. Это слово необходимо ввести в соответствующий номеру вопроса столбец.",
                     GameFolderName = "crossword-ossetia",
                     AuthorId = devDavid.Id,
-                    PublicationDate = new DateTime(2025, 4, 27),
-                    LastUpdateDate = new DateTime(2025, 5, 1),
+                    PublicationDate = new DateTimeOffset(2025, 8, 21, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2025, 8, 25, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 5,
@@ -229,11 +223,11 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10,
                     Port = 3002,
+                    GameGitHubUrl = "https://github.com/AmletixQ/crossword-ossetia"
                 };
 
                 var game3 = new Game
                 {
-                    Id = 3,
                     Title = "Ребусы на осетинском",
                     Description =
                         "Игра развивает логическое мышление, расширяет словарный запас и предоставляет возможность для развлечения.",
@@ -241,8 +235,8 @@ namespace LingvoGameOs.Db
                         "Отгадайте ребус, используя подсказки. Для ввода ответа используйте кнопки с буквами осетинского алфавита. У вас есть 3 подсказки для каждого ребуса. За каждый правильный ответ вы получаете 20 очков.",
                     GameFolderName = "linvgo-puzzles_in_ossetian",
                     AuthorId = devNastya.Id,
-                    PublicationDate = new DateTime(2025, 5, 10),
-                    LastUpdateDate = new DateTime(2025, 5, 25),
+                    PublicationDate = new DateTimeOffset(2025, 9, 10, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2025, 9, 15, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     RaitingPlayers = 0,
@@ -258,19 +252,19 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 0,
                     Port = 3003,
+                    GameGitHubUrl = "https://github.com/AmletixQ/linvgo-puzzles_in_ossetian"
                 };
 
                 var game4 = new Game
                 {
-                    Id = 4,
                     Title = "Поезд",
                     Description =
                         "Игра развивает память, а также навыки чтения и произношения. В игре доступны три языка: осетинский, грузинский и армянский, а также три уровня сложности.",
                     Rules =
                         "Цель игры: Изучить осетинский, грузинский или армянский язык, сопоставляя слова с картинками и зарабатывая баллы. Успешное завершение уровней повышает рейтинг.\r\nРежимы игры:\r\nУчить слова: Изучайте слова с картинками и озвучкой. Нажмите на картинку, чтобы услышать произношение и запомнить.\r\nИграть: Перетаскивайте картинки в вагоны поезда, подписанные на выбранном языке.\r\nУровни сложности:\r\n1 уровень: 8 вагонов, картинки с подписями на русском, озвучка при нажатии.\r\n2 уровень: 12 вагонов, картинки с подписями на русском, без озвучки.\r\n3 уровень: 19 вагонов, только картинки, без подписей и озвучки.",
                     AuthorId = devIlona.Id,
-                    PublicationDate = new DateTime(2025, 9, 3),
-                    LastUpdateDate = new DateTime(2025, 9, 3),
+                    PublicationDate = new DateTimeOffset(2025, 5, 20, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2025, 6, 10, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelAdvanced.Id,
                     GamePlatformId = platform2.Id,
                     RaitingPlayers = 4.0,
@@ -287,6 +281,7 @@ namespace LingvoGameOs.Db
                     GameFilePath = "/Games/4/Поезд.msi",
                     VideoUrl =
                         "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1",
+                    GameGitHubUrl = ""
                 };
 
                 if (!await context.Games.AnyAsync())
@@ -300,7 +295,7 @@ namespace LingvoGameOs.Db
                     AuthorId = devDavid.Id,
                     GameId = game1.Id,
                     Rating = 4,
-                    PublicationDate = new DateTime(2025, 7, 24),
+                    PublicationDate = new DateTimeOffset(2025, 7, 20, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     Text =
                         "Игра прикольная! Как интересно собирается картинка, мне интересно как разработчику. Иногда задания кажутся сложноватыми, но это только подогревает интерес!",
                     IsApproved = true,
@@ -310,7 +305,7 @@ namespace LingvoGameOs.Db
                     AuthorId = devMarat.Id,
                     GameId = game2.Id,
                     Rating = 5,
-                    PublicationDate = new DateTime(2025, 8, 4),
+                    PublicationDate = new DateTimeOffset(2025, 7, 12, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     Text =
                         "Мне понравилось, что игры разделены на категории и есть подробности об игре. При этом оформление очень красивое, я как пользователь и как разработчик кайфую. Самое моё любимое это прозвища в профиле, которые за баллы улучшаются.",
                     IsApproved = true,
@@ -320,7 +315,7 @@ namespace LingvoGameOs.Db
                     AuthorId = devVlad.Id,
                     GameId = game3.Id,
                     Rating = 4,
-                    PublicationDate = new DateTime(2025, 9, 1),
+                    PublicationDate = new DateTimeOffset(2025, 5, 28, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     Text =
                         "Очень сложная игра, подсказки тоже не помогли. Хоть головоломки и заставляют думать, но мне в нее пока играть рано.",
                     IsApproved = true,

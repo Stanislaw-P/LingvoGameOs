@@ -42,7 +42,7 @@ namespace LingvoGameOs.Controllers
             try
             {
                 newReview.Author = currentUser;
-                newReview.PublicationDate = DateTime.Now;
+                newReview.PublicationDate = DateTimeOffset.UtcNow;
                 var existingReview = await _reviewsRepository.TryGetUserReviewAsync(currentUser.Id, newReview.GameId);
                 if (existingReview == null)
                     await _reviewsRepository.AddAsync(newReview);
@@ -61,7 +61,7 @@ namespace LingvoGameOs.Controllers
                     logData.UserId,
                     logData.UserIP,
                     logData.UserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     GameId = existingGame.Id,
                     ReviewId = newReview.Id,
                     ResponseStatusCode = 200
@@ -88,7 +88,7 @@ namespace LingvoGameOs.Controllers
                     logData.UserId,
                     logData.UserIP,
                     logData.UserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     GameId = existingGame.Id,
                     ResponseStatusCode = 500
                 });

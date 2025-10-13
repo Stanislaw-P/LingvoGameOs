@@ -2,12 +2,11 @@
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
+using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using System.Text.Json;
 
 namespace LingvoGameOs.Areas.Admin.Controllers
 {
@@ -71,7 +70,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 if (publishedGame.GamePlatform.Name == "Desktop")
                 {
                     publishedGame.GameFilePath = _fileProvider.UpdateFilePath(
-                    pendingGame.GameURL!,
+                    pendingGame.GameFilePath!,
                     $"{Folders.PendingGames}/{pendingGame.Id}",
                     $"{Folders.Games}/{publishedGame.Id}");
                 }
@@ -95,7 +94,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     PendingGameId = pendingGame.Id,
                     PendingGamePlatform = pendingGame.GamePlatform.Name,
                     NewGameId = publishedGame.Id,
@@ -124,7 +123,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
@@ -170,7 +169,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
                     DevUserId = existingGame.Author.Id,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 200
                 });
                 return Ok(new
@@ -187,7 +186,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return StatusCode(500, new { error = ex.Message });
@@ -226,8 +225,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             FileInfo? msiFileInfo = null;
             if (existingGame.GamePlatform.Name == "Desktop")
             {
-                if (existingGame.GameURL != null)
-                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameURL));
+                if (existingGame.GameFilePath != null)
+                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new EditGameViewModel
@@ -243,7 +242,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Author = existingGame.Author,
                 AuthorId = existingGame.Author.Id,
                 DispatchDate = existingGame.DispatchDate,
-                GameURL = existingGame.GameURL,
+                GameFilePath = existingGame.GameFilePath,
+                GameGitHubUrl = existingGame.GameGitHubUrl,
                 GameFolderName = existingGame.GameFolderName,
                 GameFileInfo = msiFileInfo,
                 GamePlatform = existingGame.GamePlatform.Name,
@@ -257,6 +257,18 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DetailsAsync(EditGameViewModel editGame)
         {
+            if (!ModelState.IsValid)
+            {
+                var skillLearnings = await _skillsLearningRepository.GetAllAsync();
+                ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
+                
+                var authorGame = await _userManager.FindByIdAsync(editGame.AuthorId);
+                if (authorGame != null)
+                    editGame.Author = authorGame;
+                
+                return View(editGame);
+            }
+
             var adminUserId = _userManager.GetUserId(User);
             var logData = new
             {
@@ -271,6 +283,13 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 var existingGame = await _pendingGamesRepository.TryGetByIdAsync(editGame.Id);
                 if (existingGame == null) return NotFound($"Игра с Id: {editGame.Id} не найдена :(");
 
+                if (editGame.SkillsLearning == null || editGame.SkillsLearning.Count == 0)
+                {
+                    ModelState.AddModelError("SkillsLearning", "Нужно выбрать хотя бы один развиваемый навык!");
+                    return View(editGame);
+                }
+
+                // Получаем данные с формы
                 List<string>? selectedSkills = editGame.SkillsLearning[0].Split(',').ToList();
                 List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
                 var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
@@ -283,6 +302,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LanguageLevel = languageLvl!;
                 existingGame.VideoUrl = editGame.VideoUrl;
                 existingGame.GameFolderName = editGame.GameFolderName;
+                existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
+                existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
                 existingGame.Port = editGame.Port;
 
                 // Если есть новое изображение - меняем
@@ -300,19 +321,19 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Меняем ия
                 ProcessRenameGameFile(editGame, existingGame);
 
-                // Меняем адрес игры, если он изменился
-                ProcessChangeGameURL(editGame, existingGame);
+                // Меняем путь к файлу игры, если он изменился
+                ProcessChangeGameFilePath(editGame, existingGame);
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
 
-                _logger.LogInformation("Именение данных игры на модерации {@PendingGameEditData}", new
+                _logger.LogInformation("Изменение данных игры на модерации {@PendingGameEditData}", new
                 {
                     logData.PendingGameId,
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
                     DevUserId = existingGame.Author.Id,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 200
                 });
                 return Redirect("/Admin/Home/Index");
@@ -325,18 +346,18 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserId,
                     logData.AdminUserIP,
                     logData.AdminUserAgent,
-                    RequestTime = DateTime.UtcNow,
+                    RequestTime = DateTimeOffset.UtcNow,
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
             }
         }
 
-        private void ProcessChangeGameURL(EditGameViewModel editGame, PendingGame existingGame)
+        private void ProcessChangeGameFilePath(EditGameViewModel editGame, PendingGame existingGame)
         {
-            if (editGame.GameURL != editGame.CurrentGameURL)
+            if (editGame.GameFilePath != editGame.CurrentGameFilePath)
             {
-                existingGame.GameURL = editGame.GameURL;
+                existingGame.GameFilePath = editGame.GameFilePath;
             }
         }
 
@@ -393,12 +414,12 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
         private void ProcessDeleteGameFile(EditGameViewModel editGame, PendingGame existingGame)
         {
-            if (editGame.GamePlatform == "Desktop" && editGame.GameURL == null)
+            if (editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null)
             {
-                if (editGame.CurrentGameURL != null)
+                if (editGame.CurrentGameFilePath != null)
                 {
-                    existingGame.GameURL = null;
-                    _fileProvider.DeleteFile(editGame.CurrentGameURL);
+                    existingGame.GameFilePath = null;
+                    _fileProvider.DeleteFile(editGame.CurrentGameFilePath);
                 }
             }
         }
@@ -407,15 +428,19 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         {
             if (editGame.GamePlatform == "Desktop")
             {
-                if (editGame.Title != existingGame.Title && existingGame.GameURL != null)
+                if (editGame.Title != existingGame.Title && existingGame.GameFilePath != null)
                 {
                     string newGameFileName = editGame.Title.Trim();
-                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameURL, newGameFileName + ".msi");
-                    editGame.GameURL = newGameFilePath;
+                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameFilePath!, newGameFileName + ".msi");
+                    editGame.GameFilePath = newGameFilePath;
                     existingGame.Title = newGameFileName;
-                    _fileProvider.MoveGameFile(existingGame.GameURL, editGame.GameURL);
+                    _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameFilePath);
                 }
+                else
+                    existingGame.Title = editGame.Title.Trim();
             }
+            else
+                existingGame.Title = editGame.Title.Trim();
         }
     }
 }
