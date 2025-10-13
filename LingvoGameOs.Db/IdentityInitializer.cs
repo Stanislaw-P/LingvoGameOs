@@ -194,6 +194,7 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
                     NumberDownloads = 5,
                     Port = 3001,
+                    GameGitHubUrl = "https://github.com/AmletixQ/lingvo-piece-by-piece"
                 };
 
                 var game2 = new Game
@@ -222,6 +223,7 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 10,
                     Port = 3002,
+                    GameGitHubUrl = "https://github.com/AmletixQ/crossword-ossetia"
                 };
 
                 var game3 = new Game
@@ -250,6 +252,7 @@ namespace LingvoGameOs.Db
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
                     NumberDownloads = 0,
                     Port = 3003,
+                    GameGitHubUrl = "https://github.com/AmletixQ/linvgo-puzzles_in_ossetian"
                 };
 
                 var game4 = new Game
@@ -278,6 +281,7 @@ namespace LingvoGameOs.Db
                     GameFilePath = "/Games/4/Поезд.msi",
                     VideoUrl =
                         "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1",
+                    GameGitHubUrl = ""
                 };
 
                 if (!await context.Games.AnyAsync())

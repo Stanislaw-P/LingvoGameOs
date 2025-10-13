@@ -101,7 +101,7 @@
                             {
                                 <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="admin-btn admin-btn--primary">Играть</a>
                             }
-                            <a asp-area="Admin" asp-controller="Games" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</a>
+                            <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</a>
                             <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button>
                         </div>
                     </div>
@@ -263,4 +263,6 @@
 </div>
 
 <link rel="stylesheet" href="/css/admin/admin-panel.css">
-<script src="/js/admin/admin-panel.js"></script>
+@section Scripts {
+    <script src="/js/admin/admin-panel.js" type="module"></script>
+}

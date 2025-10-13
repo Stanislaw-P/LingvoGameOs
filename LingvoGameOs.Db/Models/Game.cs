@@ -25,7 +25,8 @@ namespace LingvoGameOs.Db.Models
         public string? CoverImagePath { get; set; }
         public List<string>? ImagesPaths { get; set; }
         public string? GameFilePath { get; set; }
-		public Platform GamePlatform { get; set; }
+		public string GameGitHubUrl { get; set; } = null!;
+        public Platform GamePlatform { get; set; }
 		public int GamePlatformId { get; set; }
 		public int NumberDownloads { get; set; }
 		public List<GameHistory> PlayersHistory { get; set; }

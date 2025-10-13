@@ -91,7 +91,7 @@
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="upload-form__group">
                                 <label class="upload-form__label">Уровень <span class="required">*</span></label>
@@ -342,9 +342,10 @@
     </main>
     <div id="footer-placeholder"></div>
 </div>
-<div class="notification" id="notification" aria-live="assertive"></div>
-<script type="module" src="/js/upload.js"></script>
-<script type="module" src="/js/script.js"></script>
+@section Scripts {
+    <script type="module" src="/js/upload.js"></script>
+@*     <script type="module" src="/js/script.js"></script> *@
+}
 <script>
     // Вариант с возможностью добавлять файлы по одному
     document.addEventListener('DOMContentLoaded', function() {

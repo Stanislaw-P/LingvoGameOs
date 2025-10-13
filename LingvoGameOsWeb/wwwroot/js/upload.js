@@ -367,7 +367,8 @@ function initializeUploadForm() {
         const platforms = formData.get('GamePlatform').split(',').filter(p => p);
         const actionUrl = form.getAttribute('data-action');
         // Validate required fields
-        //if (!formData.get('title').trim()) {
+        //if (!formData.get('
+        //').trim()) {
         //    showFormError('title-error', 'Название игры обязательно');
         //    submitButton.setAttribute('aria-busy', 'false');
         //    return;
