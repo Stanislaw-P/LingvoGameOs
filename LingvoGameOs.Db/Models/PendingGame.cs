@@ -15,6 +15,7 @@ namespace LingvoGameOs.Db.Models
         public string Description { get; set; }
         public string Rules { get; set; }
         public DateTimeOffset DispatchDate { get; set; }
+        public DateTimeOffset LastUpdateDate { get; set; }
         public User Author { get; set; }
         public string AuthorId { get; set; }
         public LanguageLevel LanguageLevel { get; set; }
@@ -23,11 +24,12 @@ namespace LingvoGameOs.Db.Models
         public string? CoverImagePath { get; set; }
         public List<string>? ImagesPaths { get; set; }
         public string? VideoUrl { get; set; }
-        public string? GameURL { get; set; }
+        public string? GameFilePath { get; set; }
+        public string GameGitHubUrl { get; set; } = null!;
+        public int Port { get; set; }
         public string? GameFolderName { get; set; }
         public Platform GamePlatform { get; set; }
         public int GamePlatformId { get; set; }
         public string? LastMessage { get; set; }
-        public int Port { get; set; }
     }
 }

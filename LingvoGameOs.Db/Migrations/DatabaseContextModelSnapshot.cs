@@ -74,6 +74,10 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<string>("GameFolderName")
                         .HasColumnType("text");
 
+                    b.Property<string>("GameGitHubUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("GamePlatformId")
                         .HasColumnType("integer");
 
@@ -210,6 +214,9 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<DateTimeOffset>("DispatchDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("GameFilePath")
+                        .HasColumnType("text");
+
                     b.Property<string>("GameFolderName")
                         .HasColumnType("text");
 
@@ -232,7 +239,7 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Port")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Rules")
                         .IsRequired()

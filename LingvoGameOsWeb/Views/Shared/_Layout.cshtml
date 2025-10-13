@@ -36,7 +36,31 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
     @Html.RenderUnobtrusiveAjaxScript()
-    <script asp-src-include="~/js/**/*.js" type="module"></script>
+    <script src="~/js/activityChart.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/carousel.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/categories-page.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/category-games.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/components.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/config.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/dom.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/dropdown.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/favorites.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/game.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/gameBlocks.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/game-play.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/games-page-filter.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/homepage.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/leaderboard.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/loadComponents.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/notifications.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/profile.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/profileModal.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/registration.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/reviews.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/script.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/slider.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/utils.js" asp-append-version="true" type="module"></script>
+    @* <script asp-src-include="~/js/**/*.js" type="module"></script> *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

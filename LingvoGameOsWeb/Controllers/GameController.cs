@@ -321,7 +321,7 @@ namespace LingvoGameOs.Controllers
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,
-                            GameURL = gameViewModel.GameURL!,
+                            GameFilePath = gameViewModel.GameURL!,
                             VideoUrl = gameViewModel.VideoUrl,
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);

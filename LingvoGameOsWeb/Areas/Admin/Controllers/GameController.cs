@@ -1,7 +1,7 @@
-﻿using LingvoGameOs.Areas.Admin.Models;
-using LingvoGameOs.Db;
+﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
+using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +11,17 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 {
     [Area(Constants.AdminRoleName)]
     [Authorize(Roles = Constants.AdminRoleName)]
-    public class GamesController : Controller
+    public class GameController : Controller
     {
         readonly IGamesRepository _gamesRepository;
-        readonly ILogger<GamesController> _logger;
+        readonly ILogger<GameController> _logger;
         readonly FileProvider _fileProvider;
         readonly UserManager<User> _userManager;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly IPlatformsRepository _platformsRepository;
 
-        public GamesController(IGamesRepository gamesRepository, ILogger<GamesController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository)
+        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository)
         {
             _gamesRepository = gamesRepository;
             _logger = logger;
@@ -59,7 +59,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
                 AuthorId = existingGame.Author.Id,
-                GameURL = existingGame.GameFilePath,
+                GameFilePath = existingGame.GameFilePath,
+                GameGitHubUrl = existingGame.GameGitHubUrl,
+                Port = existingGame.Port,
                 GameFolderName = existingGame.GameFolderName,
                 GameFileInfo = msiFileInfo,
                 GamePlatform = existingGame.GamePlatform.Name,
@@ -100,6 +102,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.VideoUrl = editGame.VideoUrl;
                 existingGame.GameFolderName = editGame.GameFolderName;
                 existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
+                existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
+                existingGame.Port = editGame.Port;
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImageAsync(editGame, existingGame);
@@ -116,8 +120,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Меняем ия
                 ProcessRenameGameFile(editGame, existingGame);
 
-                // Меняем адрес игры, если он изменился
-                ProcessChangeGameURL(editGame, existingGame);
+                // Меняем путь к файлу игры, если он изменился
+                ProcessChangeGameFilePath(editGame, existingGame);
 
                 await _gamesRepository.UpdateAsync(existingGame);
 
@@ -149,11 +153,11 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
         }
 
-        private void ProcessChangeGameURL(EditGameViewModel editGame, Game existingGame)
+        private void ProcessChangeGameFilePath(EditGameViewModel editGame, Game existingGame)
         {
-            if (editGame.GameURL != editGame.CurrentGameURL)
+            if (editGame.GameFilePath != editGame.CurrentGameFilePath)
             {
-                existingGame.GameFilePath = editGame.GameURL;
+                existingGame.GameFilePath = editGame.GameFilePath;
             }
         }
 
@@ -210,12 +214,12 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
         private void ProcessDeleteGameFile(EditGameViewModel editGame, Game existingGame)
         {
-            if (editGame.GamePlatform == "Desktop" && editGame.GameURL == null)
+            if (editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null)
             {
-                if (editGame.CurrentGameURL != null)
+                if (editGame.CurrentGameFilePath != null)
                 {
                     existingGame.GameFilePath = null;
-                    _fileProvider.DeleteFile(editGame.CurrentGameURL);
+                    _fileProvider.DeleteFile(editGame.CurrentGameFilePath);
                 }
             }
         }
@@ -228,10 +232,10 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 {
                     string newGameFileName = editGame.Title.Trim();
                     // TODO: Необходимо будет изменить код если появятся Unity игры
-                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameURL, newGameFileName + ".msi"); 
-                    editGame.GameURL = newGameFilePath;
+                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameFilePath!, newGameFileName + ".msi");
+                    editGame.GameFilePath = newGameFilePath;
                     existingGame.Title = newGameFileName;
-                    _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameURL);
+                    _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameFilePath);
                 }
             }
         }

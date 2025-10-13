@@ -1,13 +1,15 @@
-﻿using LingvoGameOs.Db.Models;
+﻿using LingvoGameOs.Areas.Admin.Models;
+using LingvoGameOs.Db.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace LingvoGameOs.Areas.Admin.Models
+namespace LingvoGameOs.Models
 {
     public class EditGameViewModel
     {
         public int Id { get; set; }
-        //[Required(ErrorMessage ="Обязательное поле")]
-        //[MaxLength(21, ErrorMessage ="Максимальная длина 21 символ")]
-        //[MinLength(4, ErrorMessage ="Минимальная длина 4 символа")]
+        //[Required(ErrorMessage = "Обязательное поле")]
+        //[MaxLength(21, ErrorMessage = "Максимальная длина 51 символ")]
+        //[MinLength(4, ErrorMessage = "Минимальная длина 4 символа")]
         public string Title { get; set; } = null!;
 
         //[Required(ErrorMessage = "Обязательное поле")]
@@ -39,8 +41,9 @@ namespace LingvoGameOs.Areas.Admin.Models
         //[Required(ErrorMessage = "Обязательное поле")]
         public string VideoUrl { get; set; } = null!;
 
-        public string? CurrentGameURL { get; set; }
-        public string? GameURL { get; set; }
+        public string? CurrentGameFilePath { get; set; }
+        public string? GameFilePath { get; set; }
+        public string GameGitHubUrl { get; set; } = null!;
         public FileInfo? GameFileInfo { get; set; }
 
         //[Required(ErrorMessage = "Обязательное поле")]

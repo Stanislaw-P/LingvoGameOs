@@ -47,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Developer\Models\" />
     <Folder Include="wwwroot\img\news\" />
   </ItemGroup>
 

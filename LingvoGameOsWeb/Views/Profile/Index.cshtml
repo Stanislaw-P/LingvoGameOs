@@ -111,7 +111,7 @@
                                         @if (Model.IsMyProfile)
                                         {
                                             <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                            <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                            <a asp-area="Developer" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
                                                 <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
                                             </a>
                                         }
@@ -133,7 +133,7 @@
                                         <div class="user-added-games__actions">
                                             @if (pendingGame.GamePlatform.Name == "Desktop")
                                             {
-                                                <a role="button" href="@pendingGame.GameURL" download class="user-added-games__button">Скачать</a>
+                                                <a role="button" href="@pendingGame.GameFilePath" download class="user-added-games__button">Скачать</a>
                                             }
                                             else
                                             {
@@ -142,7 +142,7 @@
                                             @if (Model.IsMyProfile)
                                             {
                                                 <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                                <a href="#" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                                <a asp-area="" asp-controller="Game" asp-action="PendingGameEdit" asp-route-gameId="@pendingGame.Id" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
                                                     <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
                                                 </a>
                                             }

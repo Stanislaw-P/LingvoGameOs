@@ -161,6 +161,6 @@ namespace LingvoGameOs.Controllers
                 return RedirectToAction("Index", "Profile", new {userId = user.Id});
             }
             return View(settings);
-        }
+        }           
     }
 }

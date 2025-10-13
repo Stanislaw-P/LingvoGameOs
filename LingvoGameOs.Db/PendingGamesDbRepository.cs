@@ -55,7 +55,7 @@ namespace LingvoGameOs.Db
 
         public async Task ChangeGameUrlAsync(string newGameUrl, PendingGame game)
         {
-            game.GameURL = newGameUrl;
+            game.GameFilePath = newGameUrl;
             await databaseContext.SaveChangesAsync();
         }
 
@@ -95,7 +95,7 @@ namespace LingvoGameOs.Db
                 GamePlatformId = pendingGame.GamePlatformId,
                 SkillsLearning = pendingGame.SkillsLearning,
                 GameFolderName = pendingGame.GameFolderName,
-                GameFilePath = pendingGame.GameURL,
+                GameFilePath = pendingGame.GameFilePath,
                 VideoUrl = pendingGame.VideoUrl,
                 PublicationDate = DateTimeOffset.UtcNow,
                 LastUpdateDate = DateTimeOffset.UtcNow,
