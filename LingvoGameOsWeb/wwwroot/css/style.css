@@ -7006,79 +7006,184 @@ a.link {
         }
     }
 
-    @media (max-width: 480px) {
-        /* Дополнительные стили для очень маленьких экранов */
-        ._container {
-            padding: 0 10px;
-        }
+@media (max-width: 480px) {
+    /* Дополнительные стили для очень маленьких экранов */
+    ._container {
+        padding: 0 10px;
+    }
 
-        .game-hero__main-title {
-            font-size: 24px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            hyphens: auto;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            max-width: 370px;
-        }
+    .game-hero__main-title {
+        font-size: 24px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        line-height: 1.2;
+        margin-bottom: 15px;
+        max-width: 370px;
+    }
 
-        .game-hero__main-description {
+    .game-hero__main-description {
+        font-size: 14px;
+        max-width: 370px;
+    }
+
+    .game-hero__content {
+        min-height: 250px;
+        padding: 15px;
+    }
+
+    .game-info__title {
+        font-size: 24px;
+    }
+
+    .profile__button {
+        padding: 7px 13px;
+        font-size: 13px;
+        margin-left: auto;
+    }
+
+    .header__container {
+        padding: 8px 10px;
+    }
+
+    /* Улучшение касаний */
+    .game-hero__carousel-button,
+    .user-profile__toggle {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Улучшение читаемости текста */
+    .game-info__text {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    /* Компактные отступы */
+    .content {
+        padding: 15px 0;
+    }
+
+    .content__container {
+        gap: 15px;
+    }
+
+    .game-reviews__button {
+        padding: 5px 8px;
+        min-width: 90px;
+        font-size: 10px;
+        line-height: 1.0;
+    }
+
+    .game-reviews__icon {
+        width: 10px;
+        height: 10px;
+    }
+
+    .game-hero__main-title {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .game-hero__info {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 75%;
+        height: 75%;
+    }
+
+    .game-hero__title {
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    .game-hero__actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    /* Маленькие кнопки */
+    .game-hero__button {
+        padding: 6px 12px;
+        font-size: 12px;
+        height: 32px;
+        min-width: 80px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        justify-content: center;
+    }
+
+    .game-hero__favorite {
+        padding: 6px;
+        width: 32px;
+        height: 32px;
+        min-width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .game-hero__play-icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .game-hero__favorite-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+
+    /* Карусель */
+
+    .game-hero__carousel {
+        width: 100%;
+        height: 100%;
+    }
+
+    @media (max-width: 768px) {
+        /* Общие стили для мобильных */
+        html, body {
             font-size: 14px;
-            max-width: 370px;
-        }
-
-        .game-hero__content {
-            min-height: 250px;
-            padding: 15px;
-        }
-
-        .game-info__title {
-            font-size: 24px;
-        }
-
-        .profile__button {
-            padding: 7px 13px;
-            font-size: 13px;
-            margin-left: auto;
-        }
-
-        .header__container {
-            padding: 8px 10px;
-        }
-
-        /* Улучшение касаний */
-        .game-hero__carousel-button,
-        .user-profile__toggle {
-            min-height: 44px;
-            min-width: 44px;
-        }
-
-        /* Улучшение читаемости текста */
-        .game-info__text {
-            font-size: 13px;
             line-height: 1.4;
         }
 
-        /* Компактные отступы */
+        ._container {
+            max-width: 100%;
+            padding: 0 15px;
+            margin: 0 auto;
+        }
+
+        .wrapper {
+            min-height: 100vh;
+        }
+
+        /* Главный контент */
         .content {
-            padding: 15px 0;
+            padding: 20px 0;
         }
 
         .content__container {
-            gap: 15px;
+            gap: 20px;
         }
 
-        .game-reviews__button {
-            padding: 5px 8px;
-            min-width: 90px;
-            font-size: 10px;
-            line-height: 1.0;
+        /* Герой игры */
+        .game-hero {
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .game-reviews__icon {
-            width: 10px;
-            height: 10px;
+        .game-hero__text {
+            padding-right: 0;
+            text-align: center;
         }
 
         .game-hero__main-title {
@@ -7086,242 +7191,138 @@ a.link {
             margin-bottom: 15px;
         }
 
-        .game-hero__info {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 75%;
-            height: 75%;
+        .game-hero__main-description {
+            font-size: 16px;
+        }
+
+        .game-hero__content {
+            width: 100%;
+            min-height: 300px;
+            padding: 20px;
         }
 
         .game-hero__title {
-            text-align: center;
-            margin-bottom: 0;
+            font-size: 18px;
         }
+
+
 
         .game-hero__actions {
-            display: flex;
+            flex-direction: row;
             gap: 10px;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: nowrap;
         }
 
-        /* Маленькие кнопки */
         .game-hero__button {
-            padding: 6px 12px;
-            font-size: 12px;
-            height: 32px;
-            min-width: 80px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            justify-content: center;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
         }
 
-        .game-hero__favorite {
-            padding: 6px;
-            width: 32px;
-            height: 32px;
-            min-width: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Карусель */
+        .game-hero__carousel-button {
+            padding: 8px;
         }
 
-        .game-hero__play-icon {
+            .game-hero__carousel-button img {
+                width: 18px;
+                height: 18px;
+            }
+
+        /* Информация об игре */
+        .game-info__row {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-info__description,
+        .game-info__metadata {
+            flex: 1 1 100%;
+        }
+
+        .game-info__title {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .game-info__subtitle {
+            font-size: 18px;
+        }
+
+        .game-info__text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Кнопки и интерактивные элементы */
+        .profile__button {
+            padding: 10px 15px;
+            font-size: 10px;
+            margin-left: auto;
+        }
+
+
+        .game-reviews__button {
+            padding: 5px 8px;
+            font-size: 11px;
+            min-width: 90px;
+        }
+
+        .game-reviews__icon {
+            width: 10px;
+            height: 10px;
+        }
+
+        /* Формы */
+        .profile__form {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .profile__button {
+            grid-column: span 1;
+            width: 50%;
+        }
+
+        .profile__input,
+        .profile__input select {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        /* Аватары */
+        .profile__avatar-wrapper {
+            width: 80px;
+            height: 80px;
+        }
+
+        .game-info__developer-avatar {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Иконки */
+        .game-hero__play-icon,
+        .game-hero__favorite-icon {
             width: 14px;
             height: 14px;
         }
 
-        .game-hero__favorite-icon {
-            width: 16px;
-            height: 16px;
+        /* Тексты */
+        .game-info__metadata-value,
+        .game-info__developer-name,
+        .game-info__developer-games {
+            font-size: 12px;
         }
 
-
-        /* Карусель */
-
-        .game-hero__carousel {
-            width: 100%;
-            height: 100%;
+        /* Отступы */
+        .game-info,
+        .game-reviews {
+            margin-top: 30px;
         }
 
-        @media (max-width: 768px) {
-            /* Общие стили для мобильных */
-            html, body {
-                font-size: 14px;
-                line-height: 1.4;
-            }
-
-            ._container {
-                max-width: 100%;
-                padding: 0 15px;
-                margin: 0 auto;
-            }
-
-            .wrapper {
-                min-height: 100vh;
-            }
-
-            /* Главный контент */
-            .content {
-                padding: 20px 0;
-            }
-
-            .content__container {
-                gap: 20px;
-            }
-
-            /* Герой игры */
-            .game-hero {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .game-hero__text {
-                padding-right: 0;
-                text-align: center;
-            }
-
-            .game-hero__main-title {
-                font-size: 32px;
-                margin-bottom: 15px;
-            }
-
-            .game-hero__main-description {
-                font-size: 16px;
-            }
-
-            .game-hero__content {
-                width: 100%;
-                min-height: 300px;
-                padding: 20px;
-            }
-
-            .game-hero__title {
-                font-size: 18px;
-            }
-
-
-
-            .game-hero__actions {
-                flex-direction: row;
-                gap: 10px;
-            }
-
-            .game-hero__button {
-                width: 100%;
-                max-width: 200px;
-                margin: 0 auto;
-            }
-
-            /* Карусель */
-            .game-hero__carousel-button {
-                padding: 8px;
-            }
-
-                .game-hero__carousel-button img {
-                    width: 18px;
-                    height: 18px;
-                }
-
-            /* Информация об игре */
-            .game-info__row {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .game-info__description,
-            .game-info__metadata {
-                flex: 1 1 100%;
-            }
-
-            .game-info__title {
-                font-size: 28px;
-                margin-bottom: 20px;
-            }
-
-            .game-info__subtitle {
-                font-size: 18px;
-            }
-
-            .game-info__text {
-                font-size: 14px;
-                line-height: 1.5;
-            }
-
-            /* Кнопки и интерактивные элементы */
-            .profile__button {
-                padding: 10px 15px;
-                font-size: 10px;
-                margin-left: auto;
-            }
-
-
-            .game-reviews__button {
-                padding: 5px 8px;
-                font-size: 11px;
-                min-width: 90px;
-            }
-
-            .game-reviews__icon {
-                width: 10px;
-                height: 10px;
-            }
-
-            /* Формы */
-            .profile__form {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .profile__button {
-                grid-column: span 1;
-                width: 50%;
-            }
-
-            .profile__input,
-            .profile__input select {
-                padding: 10px 12px;
-                font-size: 14px;
-            }
-
-            /* Аватары */
-            .profile__avatar-wrapper {
-                width: 80px;
-                height: 80px;
-            }
-
-            .game-info__developer-avatar {
-                width: 30px;
-                height: 30px;
-            }
-
-            /* Иконки */
-            .game-hero__play-icon,
-            .game-hero__favorite-icon {
-                width: 14px;
-                height: 14px;
-            }
-
-            /* Тексты */
-            .game-info__metadata-value,
-            .game-info__developer-name,
-            .game-info__developer-games {
-                font-size: 12px;
-            }
-
-            /* Отступы */
-            .game-info,
-            .game-reviews {
-                margin-top: 30px;
-            }
-
-            .game-info__description,
-            .game-info__metadata {
-                padding: 20px;
-            }
+        .game-info__description,
+        .game-info__metadata {
+            padding: 20px;
         }
+    }
+}
