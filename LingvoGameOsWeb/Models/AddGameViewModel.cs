@@ -19,7 +19,7 @@ namespace LingvoGameOs.Models
         //[MaxLength(550, ErrorMessage = "Максимальная длина 550 символов")]
         //[MinLength(10, ErrorMessage = "Минимальная длина 10 символов")]
         public string Rules { get; set; }
-        
+
         //[Required(ErrorMessage = "Обязательное поле")]
         public string LanguageLevel { get; set; }
         
@@ -35,7 +35,7 @@ namespace LingvoGameOs.Models
         //[Required(ErrorMessage = "Обязательное поле")]
         public string VideoUrl { get; set; }
 
-        public string? GameURL { get; set; }
+        public string GameGitHubUrl { get; set; } = null!;
         public IFormFile? UploadedGame { get; set; }
 
         //[Required(ErrorMessage = "Обязательное поле")]
