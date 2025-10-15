@@ -14,12 +14,10 @@ function initializeUploadForm() {
     const skillsLearningOptions = skillsLearningDropdown.querySelectorAll('.custom-dropdown__option');
     const selectedskillsLearningList = document.querySelector('#selected-skillsLearning-list');
     const skillsLearningInput = document.querySelector('#game-skillsLearning');
-    const skillsLearningError = document.querySelector('#skillsLearning-error');
     const coverDropzone = document.querySelector('#cover-dropzone');
     const fileDropzone = document.querySelector('#file-dropzone');
     const coverFileInput = document.querySelector('#game-cover-file');
     const gameFileInput = document.querySelector('#game-file-file');
-    const notification = document.querySelector('#notification');
     const modalOverlay = document.querySelector('#qualityModalOverlay');
     const modalCloseButton = document.querySelector('#qualityModalClose');
     const openModalLink = document.querySelector('#open-quality-modal');
@@ -30,7 +28,6 @@ function initializeUploadForm() {
     const platformOptions = platformDropdown.querySelectorAll('.custom-dropdown__option');
     const selectedPlatformsList = document.querySelector('#selected-platforms-list');
     const platformInput = document.querySelector('#game-platform');
-    const platformError = document.querySelector('#platform-error');
     const fileUrlGroup = document.querySelector('#game-file-url-group');
     const fileUploadGroup = document.querySelector('#game-file-upload-group');
     let lastFocusedElement = null;
@@ -66,7 +63,6 @@ function initializeUploadForm() {
     function updateSelectedItems(list, input, selectedItems, options, placeholderElement) {
         list.innerHTML = '';
         input.value = selectedItems.join(',');
-        //placeholderElement.textContent = selectedItems.length ? `${selectedItems.length} выбрано` : `Выберите ${input.id.includes('platform') ? 'платформу' : 'навыки'}`;
         updatePlaceholderText(placeholderElement, selectedItems.length);
         selectedItems.forEach(value => {
             const option = Array.from(options).find(opt => opt.dataset.value === value);
@@ -75,9 +71,9 @@ function initializeUploadForm() {
                 item.className = 'selected-item';
                 item.dataset.value = value;
                 item.innerHTML = `
-                    ${option.textContent.trim()}
-                    <span class="selected-item__remove" role="button" aria-label="Удалить ${option.textContent.trim()}">×</span>
-                `;
+                ${option.textContent.trim()}
+                <span class="selected-item__remove" role="button" aria-label="Удалить ${option.textContent.trim()}">×</span>
+            `;
                 list.appendChild(item);
             }
         });
@@ -88,11 +84,9 @@ function initializeUploadForm() {
 
         // Update visibility of file input fields for platforms
         if (input.id === 'game-platform') {
-            fileUrlGroup.style.display = 'none';
             fileUploadGroup.style.display = 'none';
-            if (selectedItems.includes('Web-Mobile') || selectedItems.includes('Web-Desktop')) {
-                fileUrlGroup.style.display = 'block';
-            }
+
+            // Показываем загрузку файла ТОЛЬКО для Desktop
             if (selectedItems.includes('Desktop')) {
                 fileUploadGroup.style.display = 'block';
             }
@@ -366,61 +360,6 @@ function initializeUploadForm() {
         const formData = new FormData(form);
         const platforms = formData.get('GamePlatform').split(',').filter(p => p);
         const actionUrl = form.getAttribute('data-action');
-        // Validate required fields
-        //if (!formData.get('
-        //').trim()) {
-        //    showFormError('title-error', 'Название игры обязательно');
-        //    submitButton.setAttribute('aria-busy', 'false');
-        //    return;
-        //}
-        //if (!formData.get('description').trim()) {
-        //    showFormError('description-error', 'Краткое описание обязательно');
-        //    submitButton.setAttribute('aria-busy', 'false');
-        //    return;
-        //}
-        //if (formData.get('description').length > 200) {
-        //    showFormError('description-error', 'Краткое описание должно быть не длиннее 200 символов');
-        //    submitButton.setAttribute('aria-busy', 'false');
-        //    return;
-        //}
-        //if (!formData.get('rules').trim()) {
-        //    showFormError('rules-error', 'Правила игры обязательны');
-        //    submitButton.setAttribute('aria-busy', 'false');
-        //    return;
-        //}
-        //if (selectedSkillsLearning.length === 0) {
-        //    showFormError('skillsLearning-error', 'Необходимо выбрать хотя бы один навык');
-        //    submitButton.setAttribute('aria-busy', 'false');
-        //    return;
-        //}
-        //if (selectedPlatforms.length === 0) {
-        //    showFormError('platform-error', 'Необходимо выбрать хотя бы одну платформу');
-        //    submitButton.setAttribute('aria-busy', 'false');
-        //    return;
-        //}
-        //if (platforms.includes('Web-Mobile') || platforms.includes('Web-Desktop')) {
-        //    if (!formData.get('GameURL').trim()) {
-        //        showFormError('file-url-error', 'URL игры обязателен для веб-платформ');
-        //        submitButton.setAttribute('aria-busy', 'false');
-        //        return;
-        //    }
-        //}
-        //if (platforms.includes('Desktop')) {
-        //    if (!formData.get('UploadedGame')) {
-        //        showFormError('file-error', 'Файл игры обязателен для десктопной платформы');
-        //        submitButton.setAttribute('aria-busy', 'false');
-        //        return;
-        //    }
-        //    const gameFile = gameFileInput.files[0];
-        //    if (gameFile) {
-        //        const fileExtension = gameFile.name.slice(gameFile.name.lastIndexOf('.')).toLowerCase();
-        //        if (!ALLOWED_GAME_EXTENSIONS.includes(fileExtension)) {
-        //            showFormError('file-error', `Недопустимое расширение файла. Разрешено: ${ALLOWED_GAME_EXTENSIONS.join(', ')}`);
-        //            submitButton.setAttribute('aria-busy', 'false');
-        //            return;
-        //        }
-        //    }
-        //}
 
         formData.set('skillsLearning', JSON.stringify(selectedSkillsLearning));
         formData.set('platform', JSON.stringify(platforms));
@@ -450,10 +389,9 @@ function initializeUploadForm() {
             updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
             document.querySelector('#cover-preview').innerHTML = '';
             document.querySelector('#file-preview').innerHTML = '';
-            fileUrlGroup.style.display = 'none';
             fileUploadGroup.style.display = 'none';
         } catch (error) {
-            showNotification(error.message || 'Не удалось загрузить игру. Попробуйте снова.', 'error');
+            showNotification('Не удалось загрузить игру. Попробуйте снова.', 'error');
             console.error('Upload error:', error);
         } finally {
             submitButton.setAttribute('aria-busy', 'false');
@@ -580,9 +518,11 @@ function handleFiles(files, fileInput, preview, maxSize, allowedTypes, allowedEx
         reader.readAsDataURL(file);
     }
 
-    // Handle file removal
+    // Handle file removal - ИСПРАВЛЕННАЯ ЧАСТЬ
     fileItem.querySelector('.file-upload__file-trash').addEventListener('click', () => {
-        fileItem.remove();
+        // Полностью очищаем preview контейнер
+        preview.innerHTML = '';
+        // Сбрасываем значение file input
         fileInput.value = '';
     });
 }
