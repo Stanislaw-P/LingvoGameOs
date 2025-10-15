@@ -30,10 +30,10 @@ namespace LingvoGameOs.Models
 
         public string? CurrentCoverImagePath { get; set; }
         //[Required(ErrorMessage = "Обязательное поле")]
-        public IFormFile CoverImage { get; set; } = null!;
+        public IFormFile? CoverImage { get; set; }
         public FileInfo? CoverImageInfo { get; set; }
 
-        public List<ImageFileInfo> ImagesFilesInfo { get; set; } = null!;
+        public List<ImageFileInfo>? ImagesFilesInfo { get; set; }
         //[Required(ErrorMessage = "Обязательное поле")]
         public IFormFile[]? UploadedImages { get; set; }
         public List<string>? DeletedImages { get; set; }
@@ -55,7 +55,7 @@ namespace LingvoGameOs.Models
         public DateTimeOffset DispatchDate { get; set; }
         public DateTimeOffset PublicationDate { get; set; }
         public DateTimeOffset LastUpdateDate { get; set; }
-        public User Author { get; set; } = null!;
+        public User? Author { get; set; }
         public string AuthorId { get; set; } = null!;
         public string? LastMessage { get; set; }
     }

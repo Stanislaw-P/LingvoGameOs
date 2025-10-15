@@ -635,5 +635,86 @@ function clearErrors() {
     });
 }
 
+/**
+ * Initializes multiple file upload functionality for screenshots
+ */
+function initializeScreenshotsUpload() {
+    const MAX_IMAGES = 3;
+    const fileInput = document.getElementById('game-screenshots-file');
+    const previewContainer = document.getElementById('screenshots-preview');
+    const errorElement = document.getElementById('screenshots-error');
+
+    // Если элементы не найдены на странице, выходим
+    if (!fileInput || !previewContainer || !errorElement) {
+        return;
+    }
+
+    let currentFiles = [];
+
+    fileInput.addEventListener('change', function (e) {
+        errorElement.textContent = '';
+        const newFiles = Array.from(e.target.files);
+
+        if (currentFiles.length + newFiles.length > MAX_IMAGES) {
+            errorElement.textContent = `Максимум можно загрузить ${MAX_IMAGES} изображения`;
+            return;
+        }
+
+        newFiles.forEach(file => {
+            if (!file.type.match('image.*')) {
+                errorElement.textContent = 'Пожалуйста, загружайте только изображения';
+                return;
+            }
+
+            // Проверяем на дубликаты
+            if (!currentFiles.some(f => f.name === file.name && f.size === file.size)) {
+                currentFiles.push(file);
+            }
+        });
+
+        renderPreviews();
+        updateFileInput();
+    });
+
+    function renderPreviews() {
+        previewContainer.innerHTML = '';
+
+        currentFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const previewElement = document.createElement('div');
+                previewElement.className = 'preview-item';
+                previewElement.innerHTML = `
+                    <div class="file-upload__file">
+                        <span class="file-upload__file-name">${file.name}</span>
+                        <span class="file-upload__file-size">${formatFileSize(file.size)}</span>
+                        <img src="/icon/trash.svg" class="file-upload__file-trash"
+                             alt="Удалить" title="Удалить">
+                    </div>
+                    <img src="${event.target.result}" class="file-upload__preview-image">
+                `;
+
+                previewElement.querySelector('.file-upload__file-trash').addEventListener('click', () => {
+                    currentFiles.splice(index, 1);
+                    renderPreviews();
+                    updateFileInput();
+                });
+
+                previewContainer.appendChild(previewElement);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function updateFileInput() {
+        const dataTransfer = new DataTransfer();
+        currentFiles.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+    }
+}
+
 // Initialize on DOM content loaded
-document.addEventListener('DOMContentLoaded', initializeUploadForm);
+document.addEventListener('DOMContentLoaded', function () {
+    initializeUploadForm();
+    initializeScreenshotsUpload();
+});
