@@ -99,6 +99,7 @@ namespace LingvoGameOs.Db
                 VideoUrl = pendingGame.VideoUrl,
                 PublicationDate = DateTimeOffset.UtcNow,
                 LastUpdateDate = DateTimeOffset.UtcNow,
+                GameGitHubUrl = pendingGame.GameGitHubUrl
             };
 
             databaseContext.PendingGames.Remove(pendingGame);
