@@ -70,6 +70,7 @@ builder.Host.UseSerilog(
 
 // Add in-memory caching service
 builder.Services.AddMemoryCache();
+builder.Services.AddHostedService<ReviewCache>();
 
 var app = builder.Build();
 
