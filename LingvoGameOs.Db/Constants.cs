@@ -15,5 +15,6 @@ namespace LingvoGameOs.Db
         public const string TeacherRoleName = "Teacher";
         public const string YandexCloudGameFolderPath = "/home/gameportal/games/";
         public const string TimeWebCloudGameFolderPath = "/root/games/";
+        public const string CacheAllReviewsKey = "all_reviews_cache_key";
     }
 }

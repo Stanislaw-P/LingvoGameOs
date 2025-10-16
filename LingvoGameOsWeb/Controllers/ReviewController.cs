@@ -54,8 +54,7 @@ namespace LingvoGameOs.Controllers
                     existingReview.IsApproved = false;
                     await _reviewsRepository.UpdateAsync(existingReview);
                 }
-                // Очищаем Кеш после добавления отзыва
-                await _reviewsRepository.InvalidateCacheAsync();
+
                 _logger.LogInformation("Успешная отправка отзыва {@SendReviewsData}", new
                 {
                     logData.UserId,

@@ -42,7 +42,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             try
             {
                 await _reviewsRepository.PublishAsync(reviewId);
-                await _reviewsRepository.InvalidateCacheAsync();
                 return Ok(new
                 {
                     success = true
@@ -64,7 +63,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             try
             {
                 await _reviewsRepository.DeleteAsync(reviewId);
-                await _reviewsRepository.InvalidateCacheAsync();
                 return Ok(new
                 {
                     success = true
