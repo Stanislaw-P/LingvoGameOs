@@ -152,7 +152,7 @@ namespace LingvoGameOs.Controllers
 
                 ViewBag.GameUrl = $"{URL}:{existingGame.Port}";
 
-                
+
 
                 _logger.LogInformation(
                     "Запуск игры {@GameStartData}",
@@ -210,18 +210,6 @@ namespace LingvoGameOs.Controllers
             };
             try
             {
-                //if (gameViewModel.UploadedGame == null && gameViewModel.GameURL == null)
-                //{
-                //    ModelState.AddModelError("", "Необходимо добавить ссылку на игру, либо загрузить файл игры");
-                //    return View(gameViewModel);
-                //}
-
-                //if (gameViewModel.UploadedGame != null && gameViewModel.GameURL != null)
-                //{
-                //    ModelState.AddModelError("", "Можно выбрать только одну платформу для игры");
-                //    return View(gameViewModel);
-                //}
-
                 if (ModelState.IsValid)
                 {
                     // Получаем из БД выбранные скиллы и платформу
@@ -379,7 +367,18 @@ namespace LingvoGameOs.Controllers
                 // Нужно чтобы отобразить список скиллов из БД для игры
                 var skillLearnings = await _skillsLearningRepository.GetAllAsync();
                 ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
-                return View(gameViewModel);
+
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return StatusCode(422, new
+                {
+                    success = false,
+                    message = "Ошибки валидации",
+                    errors
+                });
             }
             catch (Exception ex)
             {

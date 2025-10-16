@@ -350,12 +350,25 @@ function initializeUploadForm() {
         }
     });
 
+    
+    function resetForm() {
+        form.reset();
+        selectedSkillsLearning = [];
+        selectedPlatforms = [];
+        updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
+        updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
+        document.querySelector('#cover-preview').innerHTML = '';
+        document.querySelector('#file-preview').innerHTML = '';
+        fileUploadGroup.style.display = 'none';
+    }
+
     // Form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitButton = form.querySelector('.upload-form__submit');
         submitButton.setAttribute('aria-busy', 'true');
         clearErrors();
+        clearValidationSummary();
 
         const formData = new FormData(form);
         const platforms = formData.get('GamePlatform').split(',').filter(p => p);
@@ -367,41 +380,49 @@ function initializeUploadForm() {
         try {
             const response = await fetch(actionUrl, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             });
-
+            
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Ошибка загрузки игры');
+                const result = await response.json();
+                if (response.status === 422 && result.errors && result.errors.length > 0) {
+                    showValidationSummary(result.errors);
+                    throw new Error(result.message || 'Ошибки валидации');
+                }
+                throw new Error(result.message || 'Ошибка загрузки игры');
             }
 
             const successData = await response.json(); // Парсим успешный ответ
             if (successData.success && successData.redirectUrl) {
                 window.location.href = successData.redirectUrl; // Перенаправляем
-                return; // Прерываем выполнение, так как происходит переход
+                return; 
             }
 
             showNotification('Игра успешно загружена!', 'success');
-            form.reset();
-            selectedSkillsLearning = [];
-            selectedPlatforms = [];
-            updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
-            updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
-            document.querySelector('#cover-preview').innerHTML = '';
-            document.querySelector('#file-preview').innerHTML = '';
-            fileUploadGroup.style.display = 'none';
+            resetForm();
         } catch (error) {
-            showNotification('Не удалось загрузить игру. Попробуйте снова.', 'error');
+            // Показываем уведомление только если это не ошибки валидации (они уже показаны в summary)
+            if (!error.message.includes('Ошибки валидации')) {
+                showNotification(error.message || 'Не удалось загрузить игру. Попробуйте снова.', 'error');
+            }
+
             console.error('Upload error:', error);
         } finally {
             submitButton.setAttribute('aria-busy', 'false');
         }
     });
 
+    
+
     // Initialize dropdowns
     updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
     updateSelectedItems(selectedPlatformsList, platformInput, selectedPlatforms, platformOptions, platformSelected.querySelector('.custom-dropdown__placeholder'));
 }
+
+
 
 function updatePlaceholderText(placeholderElement, count) {
     placeholderElement.textContent = count ? `${count} выбрано` : 'Выберите развиваемые навыки';
@@ -565,14 +586,62 @@ function showFormError(errorId, message) {
     errorElement.classList.add('error-message--visible');
 }
 
+function showValidationSummary(errors) {
+    const validationSummary = document.getElementById('validation-summary');
+    const errorsList = document.getElementById('validation-errors-list');
+
+    if (!validationSummary) return;
+
+    if (errorsList) {
+        // Для спискового отображения
+        errorsList.innerHTML = '';
+        errors.forEach(error => {
+            const li = document.createElement('li');
+            li.textContent = error;
+            li.className = 'validation-summary__error';
+            errorsList.appendChild(li);
+        });
+    } else {
+        // Для простого отображения
+        validationSummary.innerHTML = errors.map(error =>
+            `<div class="error-message">${error}</div>`
+        ).join('');
+    }
+
+    validationSummary.style.display = 'block';
+
+    // Прокручиваем к ошибкам
+    validationSummary.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+    });
+}
+
+function clearValidationSummary() {
+    const validationSummary = document.getElementById('validation-summary');
+    if (validationSummary) {
+        validationSummary.style.display = 'none';
+        const errorsList = document.getElementById('validation-errors-list');
+        if (errorsList) {
+            errorsList.innerHTML = '';
+        } else {
+            validationSummary.innerHTML = '';
+        }
+    }
+}
+
 /**
  * Clears all form errors
  */
 function clearErrors() {
+    // Очищаем field-specific errors
     document.querySelectorAll('.error-message').forEach((el) => {
         el.textContent = '';
         el.classList.remove('error-message--visible');
     });
+
+    // Очищаем validation summary
+    clearValidationSummary();
 }
 
 /**

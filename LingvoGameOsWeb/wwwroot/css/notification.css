@@ -1,0 +1,39 @@
+﻿/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    max-width: 300px;
+}
+
+.notification--success {
+    background: #28a745;
+}
+
+.notification--warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.notification--error {
+    background: #dc3545;
+}
+
+.notification--info {
+    background: #17a2b8;
+}
+
+.notification--visible {
+    transform: translateX(0);
+}
+
+.notification:hover {
+    opacity: 0.9;
+}
