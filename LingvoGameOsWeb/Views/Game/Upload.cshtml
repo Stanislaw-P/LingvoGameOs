@@ -4,6 +4,8 @@
     ViewData["Title"] = "Загрузка игры";
 }
 
+<link rel="stylesheet" href="~/css/game-valdate.css" asp-append-version="true">
+
 <div class="wrapper">
     <div id="header-placeholder"></div>
     <main class="content">
@@ -20,8 +22,14 @@
                             перед публикацией вашего проекта.
                         </p>
                         <form method="post" class="upload-form" id="upload-game-form" data-action="/game/upload" enctype="multipart/form-data">
-                            <div asp-validation-summary="All" style="color:red"></div>
 
+                            <div id="validation-summary" class="validation-summary" style="display: none;">
+                                <div class="validation-summary__header">
+                                    <h4>Пожалуйста, исправьте следующие ошибки:</h4>
+                                </div>
+                                <ul id="validation-errors-list" class="validation-summary__errors"></ul>
+                            </div>
+                            
                             <div class="upload-form__group">
                                 <label for="game-title" class="upload-form__label">
                                     Название игры <span class="required">*</span>
@@ -341,6 +349,8 @@
         </div>
     </main>
 </div>
+
+<div id="notification"></div>
 
 @section Scripts {
     <script type="module" src="/js/upload.js"></script>
