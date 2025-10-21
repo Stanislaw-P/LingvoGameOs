@@ -57,7 +57,8 @@ namespace LingvoGameOs.Controllers
                     RaitingPlayers = game.RaitingPlayers,
                     FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
                     IsFavorite = currentUser != null &&
-                               await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id)
+                               await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id),
+                    IsActive = game.IsActive
                 });
             }
             return View(gamesViewModel);

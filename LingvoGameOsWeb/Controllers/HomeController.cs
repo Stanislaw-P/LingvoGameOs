@@ -51,7 +51,8 @@ public class HomeController : Controller
                 RaitingPlayers = game.RaitingPlayers,
                 FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
                 IsFavorite = currentUser != null &&
-                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id)
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id),
+                IsActive = game.IsActive
             });
         }
 
@@ -112,7 +113,8 @@ public class HomeController : Controller
                 RaitingPlayers = game.RaitingPlayers,
                 FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
                 IsFavorite = currentUser != null &&
-                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id)
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id),
+                IsActive = game.IsActive
             });
         }
 

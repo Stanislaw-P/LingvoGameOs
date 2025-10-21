@@ -32,6 +32,19 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _platformsRepository = platformsRepository;
         }
 
+        public async Task<IActionResult> DeactivateAsync(int gameId)
+        {
+            await _gamesRepository.Deactivate(gameId);
+            return Redirect("/Admin/Home/");
+        }
+
+ 
+        public async Task<IActionResult> ActivateAsync(int gameId)
+        {
+            await _gamesRepository.Activate(gameId);
+            return Redirect("/Admin/Home/");
+        }
+
         public async Task<IActionResult> EditAsync(int gameId)
         {
             var existingGame = await _gamesRepository.TryGetByIdAsync(gameId);

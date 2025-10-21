@@ -79,11 +79,11 @@
         </div>
 
         <div class="admin-games-grid" id="published-games-list">
-            @if (Model?.ExistingDevGames != null && Model.ExistingDevGames.Any())
+            @if (Model?.ExistingDevGames != null && Model.ExistingDevGames.Where(g => g.IsActive).Any())
             {
-                @foreach (var game in Model.ExistingDevGames)
+                @foreach (var game in Model.ExistingDevGames.Where(g => g.IsActive))
                 {
-                    <div class="admin-game-card">
+                    <div class="admin-game-card" id="published-game-@game.Id">
                         <div class="admin-game-card__image">
                             <img src="@(game.CoverImagePath ?? "/img/default-game.png")" alt="@game.Title">
                         </div>
@@ -103,6 +103,7 @@
                             }
                             <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</a>
                             <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button>
+                            <a asp-area="Admin" asp-controller="Game" asp-action="Deactivate" asp-route-gameId="@game.Id" class="admin-btn admin-btn--danger">Скрыть</a>
                         </div>
                     </div>
                 }
@@ -157,6 +158,51 @@
             {
                 <div class="admin-empty">
                     <p>Нет игр на модерации</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Inactive Games Section -->
+    <div class="admin-section">
+        <div class="admin-section__header">
+            <h2 class="admin-section__title">Неактивные игры</h2>
+            <div class="admin-section__controls">
+                <input type="search" class="admin-search" placeholder="Поиск игр..." id="inactive-search">
+                <select class="admin-select" id="inactive-sort">
+                    <option value="date">По дате</option>
+                    <option value="title">По названию</option>
+                    <option value="developer">По разработчику</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="admin-games-grid">
+            @if (Model?.InactiveGames != null && Model.InactiveGames.Any())
+            {
+                @foreach (var inactiveGame in Model.InactiveGames)
+                {
+                    <div class="admin-game-card admin-game-card--inactive" id="inactive-game-@inactiveGame.Id">
+                        <div class="admin-game-card__image">
+                            <img src="@(inactiveGame.CoverImagePath ?? "/img/default-game.png")" alt="@inactiveGame.Title">
+                            <div class="admin-game-card__status admin-game-card__status--inactive">Неактивна</div>
+                        </div>
+                        <div class="admin-game-card__content">
+                            <h3 class="admin-game-card__title">@inactiveGame.Title</h3>
+                            <p class="admin-game-card__developer">@inactiveGame.Author?.Name @inactiveGame.Author?.Surname</p>
+                            <p class="admin-game-card__date">@inactiveGame.PublicationDate.ToString("dd.MM.yyyy")</p>
+                        </div>
+                        <div class="admin-game-card__actions">
+                            <a asp-area="Admin" asp-controller="Games" asp-action="Details" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
+                            <a asp-area="Admin" asp-controller="Game" asp-action="Activate" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--success">Активировать</a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="admin-empty">
+                    <p>Нет неактивных игр</p>
                 </div>
             }
         </div>
