@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LingvoGameOs.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251021094709_AddIsActiveColumnToGame")]
+    partial class AddIsActiveColumnToGame
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,11 +226,12 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<string>("GameFolderName")
                         .HasColumnType("text");
 
+                    b.Property<string>("GameGitHubUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("GamePlatformId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("GameURL")
-                        .HasColumnType("text");
 
                     b.Property<List<string>>("ImagesPaths")
                         .HasColumnType("text[]");
@@ -238,8 +242,8 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<string>("LastMessage")
                         .HasColumnType("text");
 
-                    b.Property<int>("Port")
-                        .HasColumnType("INTEGER");
+                    b.Property<DateTimeOffset>("LastUpdateDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Port")
                         .HasColumnType("integer");

@@ -28,5 +28,6 @@ namespace LingvoGameOs.Models
         //public List<FavoriteGame>? FavoriteGames { get; set; }
         public bool IsFavorite { get; set; }
         public int FavoritesCount{ get; set; }
+        public bool IsActive { get; set; }
     }
 }

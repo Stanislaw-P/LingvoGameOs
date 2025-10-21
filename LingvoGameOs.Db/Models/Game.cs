@@ -34,5 +34,6 @@ namespace LingvoGameOs.Db.Models
         public string? VideoUrl { get; set; }
         public List<FavoriteGame>? FavoriteGames { get; set; }
         public int Port { get; set; }
+		public bool IsActive { get; set; } = true;
     }
 }

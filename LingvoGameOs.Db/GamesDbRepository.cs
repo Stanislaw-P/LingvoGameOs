@@ -112,5 +112,25 @@ namespace LingvoGameOs.Db
             databaseContext.Games.Update(updatedGame);
             await databaseContext.SaveChangesAsync();
         }
+
+        public async Task Deactivate(int gameId)
+        {
+            var existingGame = await TryGetByIdAsync(gameId);
+            if (existingGame == null)
+                return;
+
+            existingGame.IsActive = false;
+            await databaseContext.SaveChangesAsync();
+        }
+
+        public async Task Activate(int gameId)
+        {
+            var existingGame = await TryGetByIdAsync(gameId);
+            if (existingGame == null)
+                return;
+
+            existingGame.IsActive = true;
+            await databaseContext.SaveChangesAsync();
+        }
     }
 }
