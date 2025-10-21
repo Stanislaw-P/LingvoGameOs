@@ -130,6 +130,21 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(int gameId)
+        {
+            var pendingGameForDelete = await _pendingGamesRepository.TryGetByIdAsync(gameId);
+
+            if (pendingGameForDelete == null)
+                return NotFound();
+
+            string directoryPendingGamePath = _fileProvider.GetGameDirectoryPath(gameId, Folders.PendingGames);
+            _fileProvider.DeleteDirectory(directoryPendingGamePath);
+
+            await _pendingGamesRepository.RemoveAsync(pendingGameForDelete);
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SendFeedbackAsync([FromBody] FeedBackViewModel feedBackView)
         {
@@ -261,11 +276,11 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             {
                 var skillLearnings = await _skillsLearningRepository.GetAllAsync();
                 ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
-                
+
                 var authorGame = await _userManager.FindByIdAsync(editGame.AuthorId);
                 if (authorGame != null)
                     editGame.Author = authorGame;
-                
+
                 return View(editGame);
             }
 

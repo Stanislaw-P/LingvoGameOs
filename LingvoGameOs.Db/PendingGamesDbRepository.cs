@@ -91,7 +91,7 @@ namespace LingvoGameOs.Db
                 Description = pendingGame.Description,
                 Rules = pendingGame.Rules,
                 AuthorId = pendingGame.AuthorId,
-                LanguageLevelId = pendingGame.LanguageLevelId, 
+                LanguageLevelId = pendingGame.LanguageLevelId,
                 GamePlatformId = pendingGame.GamePlatformId,
                 SkillsLearning = pendingGame.SkillsLearning,
                 GameFolderName = pendingGame.GameFolderName,
@@ -99,7 +99,8 @@ namespace LingvoGameOs.Db
                 VideoUrl = pendingGame.VideoUrl,
                 PublicationDate = DateTimeOffset.UtcNow,
                 LastUpdateDate = DateTimeOffset.UtcNow,
-                GameGitHubUrl = pendingGame.GameGitHubUrl
+                GameGitHubUrl = pendingGame.GameGitHubUrl,
+                IsActive = true
             };
 
             databaseContext.PendingGames.Remove(pendingGame);

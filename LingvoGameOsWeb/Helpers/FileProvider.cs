@@ -121,6 +121,11 @@ namespace LingvoGameOs.Helpers
                 .ToList();
         }
 
+        public string GetGameDirectoryPath(int gameId, Folders folder)
+        {
+            return Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
+        }
+
         public void MoveGameFiles(int sourceGameId, int destGameId, Folders sourceGameFolder, Folders destGameFolder)
         {
             try
@@ -198,6 +203,12 @@ namespace LingvoGameOs.Helpers
             string fullFilePath = Path.Combine(_appEnvironment.WebRootPath + filePath);
             if (File.Exists(fullFilePath))
                 File.Delete(fullFilePath);
+        }
+
+        public void DeleteDirectory(string path)
+        {
+            if(Directory.Exists(path))
+                Directory.Delete(path, true);
         }
 
         public void DeleteImages(List<string> imagesPaths, Folders gameFolder, int gameId)

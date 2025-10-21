@@ -38,10 +38,23 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             return Redirect("/Admin/Home/");
         }
 
- 
         public async Task<IActionResult> ActivateAsync(int gameId)
         {
             await _gamesRepository.Activate(gameId);
+            return Redirect("/Admin/Home/");
+        }
+
+        public async Task<IActionResult> DeleteInactiveAsync(int gameId)
+        {
+            var gameForDelete = await _gamesRepository.TryGetByIdAsync(gameId);
+
+            if (gameForDelete == null)
+                return NotFound();
+
+            string directoryPendingGamePath = _fileProvider.GetGameDirectoryPath(gameId, Folders.Games);
+            _fileProvider.DeleteDirectory(directoryPendingGamePath);
+
+            await _gamesRepository.RemoveAsync(gameForDelete);
             return Redirect("/Admin/Home/");
         }
 

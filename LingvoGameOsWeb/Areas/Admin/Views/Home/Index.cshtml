@@ -4,6 +4,10 @@
     ViewData["Title"] = "Админ-панель";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="/css/admin/admin-panel.css">
+}
+
 <!-- Admin Panel Header -->
 <div class="admin-header">
     <div class="admin-header__container">
@@ -33,7 +37,7 @@
                 </svg>
             </div>
             <div class="admin-stats__content">
-                <span class="admin-stats__value">@Model?.ExistingDevGames?.Count</span>
+                <span class="admin-stats__value">@Model?.ExistingDevGames?.Count(g => g.IsActive)</span>
                 <span class="admin-stats__label">Игр на платформе</span>
             </div>
         </div>
@@ -102,7 +106,7 @@
                                 <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="admin-btn admin-btn--primary">Играть</a>
                             }
                             <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</a>
-                            <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button>
+                            @* <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button> *@
                             <a asp-area="Admin" asp-controller="Game" asp-action="Deactivate" asp-route-gameId="@game.Id" class="admin-btn admin-btn--danger">Скрыть</a>
                         </div>
                     </div>
@@ -150,6 +154,11 @@
                             <a asp-area="Admin" asp-controller="PendingGames" asp-action="Details" asp-route-gameId="@pendingGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
                             <button class="admin-btn admin-btn--outline" onclick="openFeedback(@pendingGame.Id)">Обратная связь</button>
                             <button class="admin-btn admin-btn--success" onclick="approveGame(@pendingGame.Id)">Опубликовать</button>
+                            <button class="admin-btn admin-btn--danger delete-game-btn"
+                                    data-game-id="@pendingGame.Id"
+                                    data-game-title="@pendingGame.Title">
+                                Удалить
+                            </button>
                         </div>
                     </div>
                 }
@@ -195,6 +204,7 @@
                         <div class="admin-game-card__actions">
                             <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
                             <a asp-area="Admin" asp-controller="Game" asp-action="Activate" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--success">Активировать</a>
+                            <a asp-area="Admin" asp-controller="Game" asp-action="DeleteInactive" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--danger">Удалить</a>
                         </div>
                     </div>
                 }
@@ -205,58 +215,6 @@
                     <p>Нет неактивных игр</p>
                 </div>
             }
-        </div>
-    </div>
-</div>
-
-<!-- Game Details Modal -->
-<div id="game-details-modal" class="admin-modal" aria-hidden="true">
-    <div class="admin-modal__content">
-        <button class="admin-modal__close" onclick="closeGameDetails()">×</button>
-        <div class="admin-modal__header">
-            <h2>Детали игры</h2>
-        </div>
-        <div class="admin-modal__body">
-            <div class="game-details">
-                <div class="game-details__cover">
-                    <img id="modal-game-cover" src="" alt="Обложка игры">
-                </div>
-                <div class="game-details__info">
-                    <div class="game-details__field">
-                        <label>Разработчик</label>
-                        <input type="text" id="modal-game-developer" readonly>
-                    </div>
-                    <div class="game-details__field">
-                        <label>Название игры</label>
-                        <input type="text" id="modal-game-title">
-                    </div>
-                    <div class="game-details__field">
-                        <label>Описание</label>
-                        <textarea id="modal-game-description"></textarea>
-                    </div>
-                    <div class="game-details__field">
-                        <label>Правила</label>
-                        <textarea id="modal-game-rules"></textarea>
-                    </div>
-                    <div class="game-details__field">
-                        <label>Дата подачи</label>
-                        <input type="text" id="modal-game-date" readonly>
-                    </div>
-                    <div class="game-details__field">
-                        <label>Скриншоты</label>
-                        <div id="modal-game-screenshots" class="game-screenshots"></div>
-                    </div>
-                    <div class="game-details__field">
-                        <label>Файл игры</label>
-                        <a id="modal-game-file" href="#" class="admin-btn admin-btn--primary">Скачать/Играть</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="admin-modal__footer">
-            <button class="admin-btn admin-btn--outline" onclick="closeGameDetails()">Отмена</button>
-            <button class="admin-btn admin-btn--primary" onclick="saveGameChanges()">Сохранить</button>
-            <button class="admin-btn admin-btn--success" id="approve-game-btn" onclick="approveGameFromModal()">Подтвердить игру</button>
         </div>
     </div>
 </div>
@@ -308,7 +266,50 @@
     </div>
 </div>
 
-<link rel="stylesheet" href="/css/admin/admin-panel.css">
+<!-- Модальное окно подтверждения удаления игры -->
+<div id="delete-modal" class="admin-modal" aria-hidden="true">
+    <div class="admin-modal__content">
+        <button class="admin-modal__close" onclick="closeDeleteModal()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+
+        <div class="admin-modal__header">
+            <h2>Подтверждение удаления</h2>
+        </div>
+
+        <div class="admin-modal__body">
+            <div class="delete-modal__content">
+                <div class="delete-modal__icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20"
+                              stroke="var(--error-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="delete-modal__text">
+                    <h3 class="delete-modal__title">Вы уверены, что хотите удалить игру?</h3>
+                    <p class="delete-modal__message">Игра "<span id="delete-game-title"></span>" будет полностью удалена из системы. Это действие нельзя отменить.</p>
+                    <div class="delete-modal__warning">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z"
+                                  stroke="var(--error-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span>Это действие приведет к безвозвратному удалению всех данных игры</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-modal__footer">
+            <button type="button" class="admin-btn admin-btn--secondary" onclick="closeDeleteModal()">Отмена</button>
+            <button type="button" class="admin-btn admin-btn--danger" id="confirm-delete-btn" onclick="confirmDeleteGame()">
+                Удалить игру
+            </button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="/js/admin/admin-panel.js" type="module"></script>
 }

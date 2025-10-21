@@ -82,33 +82,33 @@ export async function showReviewModal(gameId) {
 }
 
 // Добавление отзыва в список
-export function addReviewToList(review) {
-    const reviewsList = document.querySelector('.game-reviews__container');
-    if (!reviewsList) return;
+//export function addReviewToList(review) {
+//    const reviewsList = document.querySelector('.game-reviews__container');
+//    if (!reviewsList) return;
 
-    const reviewCard = document.createElement('article');
-    reviewCard.className = 'game-reviews__card';
+//    const reviewCard = document.createElement('article');
+//    reviewCard.className = 'game-reviews__card';
 
-    // Определяем аватарку: если есть avatar в review, используем её, иначе ищем по имени
-    const avatarSrc = review.authorAvatarPath;
+//    // Определяем аватарку: если есть avatar в review, используем её, иначе ищем по имени
+//    const avatarSrc = review.authorAvatarPath;
 
-    reviewCard.innerHTML = `
-        <div class="game-reviews__reviewer">
-            <img src="${avatarSrc}" alt="Reviewer" class="game-reviews__avatar">
-            <div class="game-reviews__reviewer-details">
-                <span class="game-reviews__reviewer-name">${review.authorName}</span>
-                <span class="game-reviews__reviewer-location">${review.gameTitle}</span>
-            </div>
-            <div class="game-reviews__rating">
-                <span class="game-reviews__rating-score">${review.rating}</span>
-                <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
-            </div>
-        </div>
-        <p class="game-reviews__text">${review.text}</p>
-    `;
-    reviewsList.insertBefore(reviewCard, reviewsList.firstChild);
-    updatePagination();
-}
+//    reviewCard.innerHTML = `
+//        <div class="game-reviews__reviewer">
+//            <img src="${avatarSrc}" alt="Reviewer" class="game-reviews__avatar">
+//            <div class="game-reviews__reviewer-details">
+//                <span class="game-reviews__reviewer-name">${review.authorName}</span>
+//                <span class="game-reviews__reviewer-location">${review.gameTitle}</span>
+//            </div>
+//            <div class="game-reviews__rating">
+//                <span class="game-reviews__rating-score">${review.rating}</span>
+//                <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
+//            </div>
+//        </div>
+//        <p class="game-reviews__text">${review.text}</p>
+//    `;
+//    reviewsList.insertBefore(reviewCard, reviewsList.firstChild);
+//    updatePagination();
+//}
 
 //Инициализация отзывов
 export function initializeReviews() {

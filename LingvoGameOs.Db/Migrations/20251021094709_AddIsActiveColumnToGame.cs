@@ -15,7 +15,7 @@ namespace LingvoGameOs.Db.Migrations
                 table: "Games",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: true);
         }
 
         /// <inheritdoc />

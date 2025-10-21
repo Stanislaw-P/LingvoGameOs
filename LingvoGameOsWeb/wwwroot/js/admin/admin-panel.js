@@ -1,81 +1,3 @@
-// admin-panel.js — логика для админ-панели LingvoGameOS
-// Мок-данные и имитация API-вызовов для демонстрации функционала
-
-// Мок-данные для игр на модерации
-const pendingGamesData = [
-    {
-        id: 1,
-        title: "Словарный Бой",
-        developer: "Иван Иванов",
-        developerEmail: "ivan@example.com",
-        description: "Интерактивная игра для изучения новых слов. Игроки должны угадывать значения слов, используя контекст и подсказки.",
-        rules: "1. Выберите уровень сложности\n2. Читайте предложения с новыми словами\n3. Выбирайте правильное значение слова\n4. Зарабатывайте очки за правильные ответы",
-        date: "20.06.2024",
-        cover: "/img/game1.png",
-        screenshots: ["/img/games/puzzle-1.jpg", "/img/games/puzzle-2.png", "/img/games/puzzle-3.jpg"],
-        gameFile: "/games/slovarny-boy.zip",
-        platform: "Desktop"
-    },
-    {
-        id: 2,
-        title: "Грамматический Штурм",
-        developer: "Мария Петрова",
-        developerEmail: "maria@example.com",
-        description: "Игра для практики грамматических правил. Игроки составляют предложения, исправляют ошибки и изучают структуру языка.",
-        rules: "1. Выберите грамматическую тему\n2. Составьте предложения из слов\n3. Исправьте ошибки в тексте\n4. Пройдите тесты на понимание",
-        date: "22.06.2024",
-        cover: "/img/game2.png",
-        screenshots: ["/img/games/art-object-1.png", "/img/games/art-object-2.jpeg"],
-        gameFile: "/games/grammatichesky-shturm.zip",
-        platform: "Desktop"
-    },
-    {
-        id: 3,
-        title: "Уши на Макушке",
-        developer: "Алексей Смирнов",
-        developerEmail: "alex@example.com",
-        description: "Аудио-игра для тренировки восприятия речи на слух. Игроки слушают диалоги и выполняют задания.",
-        rules: "1. Включите звук\n2. Слушайте диалоги и монологи\n3. Отвечайте на вопросы по содержанию\n4. Повторяйте фразы для тренировки произношения",
-        date: "25.06.2024",
-        cover: "/img/game3.png",
-        screenshots: ["/img/games/gameplay-animal-1.jpg", "/img/games/gameplay-animal-2.jpg"],
-        gameFile: "/games/ushi-na-makushke.zip",
-        platform: "Desktop"
-    }
-];
-
-// Мок-данные для опубликованных игр
-const publishedGamesData = [
-    {
-        id: 4,
-        title: "Пазл Мастер",
-        developer: "Ольга Кузнецова",
-        date: "15.06.2024",
-        cover: "/img/games/puzzle-1.jpg",
-        platform: "Web",
-        gameUrl: "/game/4"
-    },
-    {
-        id: 5,
-        title: "Горный Лабиринт",
-        developer: "Дмитрий Волков",
-        date: "10.06.2024",
-        cover: "/img/games/mountain-labyrinth-banner-1.png",
-        platform: "Desktop",
-        gameUrl: "/games/mountain-labyrinth.zip"
-    }
-];
-
-// Имитация API-вызовов
-function fakeApiCall(data, delay = 500) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            console.log('API Call:', data);
-            resolve(data);
-        }, delay);
-    });
-}
-
 // Функции для работы с модальными окнами
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -89,107 +11,7 @@ function closeModal(modalId) {
     document.body.style.overflow = '';
 }
 
-// Закрытие модальных окон по клику вне их
-document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('admin-modal')) {
-        closeModal(e.target.id);
-    }
-});
-
-// Закрытие по Escape
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-        const openModal = document.querySelector('.admin-modal[aria-hidden="false"]');
-        if (openModal) {
-            closeModal(openModal.id);
-        }
-    }
-});
-
-// Функции для работы с играми
-function openGameDetails(gameId) {
-    const game = pendingGamesData.find(g => g.id === gameId) ||
-        publishedGamesData.find(g => g.id === gameId);
-
-    if (!game) {
-        console.error('Игра не найдена:', gameId);
-        return;
-    }
-
-    // Заполняем модальное окно данными
-    document.getElementById('modal-game-cover').src = game.cover;
-    document.getElementById('modal-game-developer').value = game.developer;
-    document.getElementById('modal-game-title').value = game.title;
-    document.getElementById('modal-game-description').value = game.description || '';
-    document.getElementById('modal-game-rules').value = game.rules || '';
-    document.getElementById('modal-game-date').value = game.date;
-
-    // Скриншоты
-    const screenshotsContainer = document.getElementById('modal-game-screenshots');
-    screenshotsContainer.innerHTML = '';
-    if (game.screenshots) {
-        game.screenshots.forEach(screenshot => {
-            const img = document.createElement('img');
-            img.src = screenshot;
-            img.alt = 'Скриншот игры';
-            screenshotsContainer.appendChild(img);
-        });
-    }
-
-    // Файл игры
-    const gameFileLink = document.getElementById('modal-game-file');
-    if (game.platform === 'Desktop') {
-        gameFileLink.href = game.gameFile || game.gameUrl;
-        gameFileLink.textContent = 'Скачать игру';
-    } else {
-        gameFileLink.href = game.gameUrl;
-        gameFileLink.textContent = 'Играть онлайн';
-    }
-
-    // Показываем/скрываем кнопку подтверждения
-    const approveBtn = document.getElementById('approve-game-btn');
-    if (pendingGamesData.find(g => g.id === gameId)) {
-        approveBtn.style.display = 'inline-flex';
-    } else {
-        approveBtn.style.display = 'none';
-    }
-
-    openModal('game-details-modal');
-}
-
-function closeGameDetails() {
-    closeModal('game-details-modal');
-}
-
-function saveGameChanges() {
-    // Имитация сохранения изменений
-    console.log('Сохранение изменений игры...');
-
-    // В реальном проекте: PUT /api/games/:id
-    fakeApiCall({ success: true, message: 'Изменения сохранены' })
-        .then(() => {
-            alert('Изменения успешно сохранены!');
-            closeGameDetails();
-        })
-        .catch(error => {
-            console.error('Ошибка сохранения:', error);
-            alert('Ошибка при сохранении изменений');
-        });
-}
-
-function approveGameFromModal() {
-    const gameId = getCurrentGameId(); // Нужно реализовать получение ID текущей игры
-    approveGame(gameId);
-    closeGameDetails();
-}
-
 async function approveGame(gameId) {
-    const button = document.getElementById('approve-game-btn');
-
-    // Показываем индикатор загрузки
-    button.textContent = 'Загрузка...';
-    button.disabled = true;
-
     try {
         const response = await fetch(`/Admin/PendingGames/Publish?gameId=${gameId}`, {
             method: 'POST',
@@ -219,23 +41,7 @@ async function approveGame(gameId) {
     } catch (error) {
         console.error('Ошибка подтверждения:', error);
         alert('Ошибка при подтверждении игры');
-        button.textContent = 'Опубликовать игру';
-        button.disabled = false;
     }
-
-    //console.log('Подтверждение игры:', gameId);
-
-    //// В реальном проекте: POST /api/games/:id/approve
-    //fakeApiCall({ success: true, message: 'Игра подтверждена' })
-    //    .then(() => {
-    //        alert('Игра успешно подтверждена и опубликована!');
-    //        // Обновляем UI - убираем игру из списка на модерации
-    //        updatePendingGamesList();
-    //    })
-    //    .catch(error => {
-    //        console.error('Ошибка подтверждения:', error);
-    //        alert('Ошибка при подтверждении игры');
-    //    });
 }
 
 function addToPublishedList(gameData) {
@@ -293,11 +99,6 @@ async function openFeedback(gameId) {
         console.error('Ошибка:', error);
         document.getElementById('feedback-game-info').textContent = 'Ошибка загрузки';
     }
-
-    //if (game) {
-    //  document.getElementById('feedback-message').placeholder = 
-    //    `Сообщение для разработчика "${game.developer}" (${game.developerEmail})`;
-    //}
 
     openModal('feedback-modal');
 }
@@ -359,17 +160,6 @@ async function sendFeedback() {
         sendButton.textContent = 'Отправить';
         sendButton.disabled = false;
     }
-
-    // В реальном проекте: POST /api/games/:id/feedback
-    //fakeApiCall({ success: true, message: 'Обратная связь отправлена' })
-    //  .then(() => {
-    //    alert('Обратная связь успешно отправлена разработчику!');
-    //    closeFeedback();
-    //  })
-    //  .catch(error => {
-    //    console.error('Ошибка отправки:', error);
-    //    alert('Ошибка при отправке обратной связи');
-    //  });
 }
 
 function openAnalytics(gameId) {
@@ -482,14 +272,107 @@ function updateStats() {
     console.log('Обновление статистики...');
 }
 
+
+
+let currentDeleteGameId = null;
+let currentDeleteGameTitle = null;
+
+// Открытие модального окна удаления
+function openDeleteModal(gameId, gameTitle) {
+    currentDeleteGameId = gameId;
+    currentDeleteGameTitle = gameTitle;
+
+    // Заполняем информацию об игре
+    document.getElementById('delete-game-title').textContent = gameTitle;
+
+    // Сбрасываем состояние кнопки
+    const deleteBtn = document.getElementById('confirm-delete-btn');
+    deleteBtn.textContent = 'Удалить игру';
+    deleteBtn.disabled = false;
+
+    openModal('delete-modal');
+}
+
+// Закрытие модального окна удаления
+function closeDeleteModal() {
+    closeModal('delete-modal');
+    currentDeleteGameId = null;
+    currentDeleteGameTitle = null;
+}
+
+// Подтверждение удаления игры
+async function confirmDeleteGame() {
+    if (!currentDeleteGameId) {
+        alert('Ошибка: игра не выбрана');
+        return;
+    }
+
+    const deleteBtn = document.getElementById('confirm-delete-btn');
+
+    // Показываем индикатор загрузки
+    deleteBtn.textContent = 'Удаление...';
+    deleteBtn.disabled = true;
+
+    try {
+        const response = await fetch(`/Admin/PendingGames/Delete?gameId=${currentDeleteGameId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            // Удаляем игру из DOM
+            const gameElement = document.getElementById(`pending-game-${currentDeleteGameId}`);
+            if (gameElement) {
+                gameElement.style.opacity = '0';
+                gameElement.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    gameElement.remove();
+                    updatePendingGamesStats();
+                }, 300);
+            }
+
+            alert(`Игра "${currentDeleteGameTitle}" успешно удалена!`);
+            closeDeleteModal();
+        } else {
+            throw new Error('Ошибка удаления игры');
+        }
+    } catch (error) {
+        console.error('Ошибка удаления:', error);
+        alert('Ошибка при удалении игры');
+
+        // Восстанавливаем кнопку
+        deleteBtn.textContent = 'Удалить игру';
+        deleteBtn.disabled = false;
+    }
+}
+
+function initializeDeleteButtons() {
+    document.addEventListener('click', function (e) {
+        const deleteBtn = e.target.closest('.delete-game-btn');
+        if (deleteBtn) {
+            const gameId = deleteBtn.getAttribute('data-game-id');
+            const gameTitle = deleteBtn.getAttribute('data-game-title');
+            openDeleteModal(gameId, gameTitle);
+        }
+    });
+}
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    initializeDeleteButtons();
+});
+
 // Глобальные функции для вызова из HTML
-window.openGameDetails = openGameDetails;
-window.closeGameDetails = closeGameDetails;
-window.saveGameChanges = saveGameChanges;
-window.approveGameFromModal = approveGameFromModal;
 window.approveGame = approveGame;
 window.openFeedback = openFeedback;
 window.closeFeedback = closeFeedback;
 window.sendFeedback = sendFeedback;
 window.openAnalytics = openAnalytics;
 window.closeAnalytics = closeAnalytics;
+window.openDeleteModal = openDeleteModal;
+window.closeDeleteModal = closeDeleteModal;
+window.confirmDeleteGame = confirmDeleteGame;
+window.initializeDeleteButtons = initializeDeleteButtons;

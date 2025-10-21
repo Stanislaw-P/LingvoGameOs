@@ -216,5 +216,6 @@
 <!-- Отзывы -->
 @await Component.InvokeAsync("Reviews", new { isDetailsPage = true, gameId = Model.Id })
 
-<script type="module" src="/js/script.js"></script>
-<script src="/js/download-handler.js"></script>
+@section Scripts {
+    <script src="/js/download-handler.js"></script>
+}
