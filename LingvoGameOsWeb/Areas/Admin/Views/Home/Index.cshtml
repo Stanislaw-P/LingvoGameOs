@@ -193,7 +193,7 @@
                             <p class="admin-game-card__date">@inactiveGame.PublicationDate.ToString("dd.MM.yyyy")</p>
                         </div>
                         <div class="admin-game-card__actions">
-                            <a asp-area="Admin" asp-controller="Games" asp-action="Details" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
+                            <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
                             <a asp-area="Admin" asp-controller="Game" asp-action="Activate" asp-route-gameId="@inactiveGame.Id" class="admin-btn admin-btn--success">Активировать</a>
                         </div>
                     </div>
