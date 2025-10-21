@@ -24,10 +24,6 @@ namespace LingvoGameOs.Db
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Game>()
-                .Property(g => g.IsActive)
-                .HasDefaultValue(true);
-
             // Настройка связей
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.Author)

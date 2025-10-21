@@ -458,68 +458,75 @@
     justify-content: flex-end;
 }
 
-/* Game Details */
-.game-details {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 2rem;
-}
-
-.game-details__cover img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: var(--radius);
-}
-
-.game-details__field {
-    margin-bottom: 1.5rem;
-}
-
-    .game-details__field label {
-        display: block;
-        color: var(--text-body);
-        font-size: 0.875rem;
-        margin-bottom: 0.5rem;
-        font-family: "Axiforma", sans-serif;
-    }
-
-    .game-details__field input,
-    .game-details__field textarea {
-        width: 100%;
-        background: var(--bg-light);
-        border: 1px solid var(--border-outline);
-        border-radius: var(--radius);
-        color: var(--text-primary);
-        padding: 0.75rem;
-        font-size: 0.875rem;
-        transition: border-color 0.2s ease;
-        font-family: "Axiforma", sans-serif;
-    }
-
-        .game-details__field input:focus,
-        .game-details__field textarea:focus {
-            outline: none;
-            border-color: var(--accent-1);
-        }
-
-        .game-details__field input[readonly] {
-            background: var(--bg-body);
-            color: var(--text-muted);
-        }
-
-.game-screenshots {
+/* Delete Modal Styles */
+.delete-modal__content {
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem 0;
 }
 
-    .game-screenshots img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
+.delete-modal__icon {
+    flex-shrink: 0;
+    padding: 0.5rem;
+    background: rgba(213, 70, 70, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-modal__text {
+    flex: 1;
+}
+
+.delete-modal__title {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    font-family: "Axiforma", sans-serif;
+}
+
+.delete-modal__message {
+    color: var(--text-body);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    font-family: "Axiforma", sans-serif;
+}
+
+.delete-modal__warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(213, 70, 70, 0.05);
+    border: 1px solid rgba(213, 70, 70, 0.2);
+    border-radius: var(--radius);
+    color: var(--error-color);
+    font-size: 0.875rem;
+    font-family: "Axiforma", sans-serif;
+}
+
+    .delete-modal__warning svg {
+        flex-shrink: 0;
+        margin-top: 0.1rem;
     }
+
+/* Responsive for delete modal */
+@media (max-width: 768px) {
+    .delete-modal__content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .delete-modal__icon {
+        align-self: center;
+    }
+}
+
 
 /* Feedback Form */
 .feedback-form__field {

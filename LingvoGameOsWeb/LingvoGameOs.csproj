@@ -49,6 +49,7 @@
   <ItemGroup>
     <Folder Include="Areas\Developer\Models\" />
     <Folder Include="wwwroot\img\news\" />
+    <Folder Include="wwwroot\PendingGames\" />
   </ItemGroup>
 
 </Project>
