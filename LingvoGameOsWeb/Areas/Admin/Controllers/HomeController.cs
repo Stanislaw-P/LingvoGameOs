@@ -33,6 +33,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 return NotFound();
 
             var existingGames = await _gamesRepository.GetAllAsync();
+            var inactiveGames = existingGames.Where(game => !game.IsActive).ToList();
             var pendingGames = await _pendingGamesRepository.GetAllAsync();
             var devUsers = await _userManager.GetUsersInRoleAsync(Constants.DevRoleName);
             var numberDevUser = devUsers.Count;
@@ -46,6 +47,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 AvatarImgPath = adminUser.AvatarImgPath,
                 ExistingDevGames = existingGames,
                 PendingGames = pendingGames,
+                InactiveGames = inactiveGames,
                 NumberDevelopers = numberDevUser
             };
 

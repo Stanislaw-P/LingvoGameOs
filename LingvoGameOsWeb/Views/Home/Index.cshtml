@@ -47,29 +47,29 @@
                     new { Title = "Грамматика", Icons = new[] { "/img/games/gameplay-animal.png", "/img/games/mountain-labyrinth-banner-1.png" }, Icon = "/icon/categories.svg", Color = "#96CEB4", Description = "Изучай правила грамматики" }
                 })
 {
-                                <div class="homepage-categories__item">
-                                    <a href="@Url.Action("CategoryGames", "Home", new { category = category.Title })" class="homepage-category-card" style="--category-color: @category.Color">
-                                        <div class="homepage-category-card__images">
-                                            <img src="@category.Icons[0]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--primary" loading="lazy" />
-                                            <img src="@category.Icons[1]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--secondary" loading="lazy" />
-                                        </div>
-                                        <div class="homepage-category-card__info">
-                                            <div class="homepage-category-card__header">
-                                                <h3 class="homepage-category-card__title">@category.Title</h3>
-                                                <div class="homepage-category-card__icon-wrapper">
-                                                    <img src="@category.Icon" alt="Иконка @category.Title" class="homepage-category-card__icon" />
+                                    <div class="homepage-categories__item">
+                                        <a href="@Url.Action("CategoryGames", "Home", new { category = category.Title })" class="homepage-category-card" style="--category-color: @category.Color">
+                                            <div class="homepage-category-card__images">
+                                                <img src="@category.Icons[0]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--primary" loading="lazy" />
+                                                <img src="@category.Icons[1]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--secondary" loading="lazy" />
+                                            </div>
+                                            <div class="homepage-category-card__info">
+                                                <div class="homepage-category-card__header">
+                                                    <h3 class="homepage-category-card__title">@category.Title</h3>
+                                                    <div class="homepage-category-card__icon-wrapper">
+                                                        <img src="@category.Icon" alt="Иконка @category.Title" class="homepage-category-card__icon" />
+                                                    </div>
+                                                </div>
+                                                <p class="homepage-category-card__description">@category.Description</p>
+                                                <div class="homepage-category-card__arrow">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                                    </svg>
                                                 </div>
                                             </div>
-                                            <p class="homepage-category-card__description">@category.Description</p>
-                                            <div class="homepage-category-card__arrow">
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="homepage-category-card__overlay"></div>
-                                    </a>
-                                </div>
+                                            <div class="homepage-category-card__overlay"></div>
+                                        </a>
+                                    </div>
 }
             </div>
         </div>
@@ -90,54 +90,57 @@
             {
                 @foreach (var game in Model)
                 {
-                    <div class="games__item"
-                         data-rating="@game.RaitingPlayers">
-                        <!-- Кнопка добавления в избранное -->
-                        @if (User?.Identity?.IsAuthenticated == true)
-                        {
-                            <button class="games__favorite-btn @(game.IsFavorite ? "active" : "")"
-                                    data-game-id="@game.Id">
-                                <img src="@(game.IsFavorite ? "/icon/like2.svg" : "/icon/like.svg")"
-                                     alt="Добавить в избранное"
-                                     class="games__favorite-icon">
-                            </button>
-                        }
-                        else
-                        {
-                            <a role="button" asp-area="" asp-controller="Account" asp-action="Login" class="games__favorite-btn">
-                                <img src="/icon/like.svg"
-                                     alt="Добавить в избранное"
-                                     class="games__favorite-icon">
-                            </a>
-                        }
+                    @if (game.IsActive)
+                    {
+                        <div class="games__item"
+                             data-rating="@game.RaitingPlayers">
+                            <!-- Кнопка добавления в избранное -->
+                            @if (User?.Identity?.IsAuthenticated == true)
+                            {
+                                <button class="games__favorite-btn @(game.IsFavorite ? "active" : "")"
+                                        data-game-id="@game.Id">
+                                    <img src="@(game.IsFavorite ? "/icon/like2.svg" : "/icon/like.svg")"
+                                         alt="Добавить в избранное"
+                                         class="games__favorite-icon">
+                                </button>
+                            }
+                            else
+                            {
+                                <a role="button" asp-area="" asp-controller="Account" asp-action="Login" class="games__favorite-btn">
+                                    <img src="/icon/like.svg"
+                                         alt="Добавить в избранное"
+                                         class="games__favorite-icon">
+                                </a>
+                            }
 
-                        <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
-                        <div class="games__content">
-                            <h3 class="games__name">@game.Title</h3>
-                            <div class="games__stats">
-                                <span class="games__rating">
-                                    <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
-                                </span>
-                                <span class="games__likes">
-                                    <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> @game.FavoritesCount
-                                </span>
-                                @* <span class="games__views">
+                            <img class="games__image" src="@game.CoverImagePath" alt="@game.Title">
+                            <div class="games__content">
+                                <h3 class="games__name">@game.Title</h3>
+                                <div class="games__stats">
+                                    <span class="games__rating">
+                                        <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
+                                    </span>
+                                    <span class="games__likes">
+                                        <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> @game.FavoritesCount
+                                    </span>
+                                    @* <span class="games__views">
                                     <img src="/icon/eye.svg" alt="view" class="stat-icon"> @game.NumberDownloads
                                 </span> *@
-                            </div>
-                            <div class="games__actions">
-                                @if (game.GamePlatform.Name == "Desktop")
-                                {
-                                    <a href="@game.GameFilePath" download role="button" class="games__button download-btn">Скачать</a>
-                                }
-                                else
-                                {
-                                    <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
-                                }
-                                <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                                </div>
+                                <div class="games__actions">
+                                    @if (game.GamePlatform.Name == "Desktop")
+                                    {
+                                        <a href="@game.GameFilePath" download role="button" class="games__button download-btn">Скачать</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                                    }
+                                    <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
             }
         </div>
