@@ -220,11 +220,13 @@ namespace LingvoGameOs.Db.Migrations
                     CoverImagePath = table.Column<string>(type: "text", nullable: true),
                     ImagesPaths = table.Column<List<string>>(type: "text[]", nullable: true),
                     GameFilePath = table.Column<string>(type: "text", nullable: true),
+                    GameGitHubUrl = table.Column<string>(type: "text", nullable: false),
                     GamePlatformId = table.Column<int>(type: "integer", nullable: false),
                     NumberDownloads = table.Column<int>(type: "integer", nullable: false),
                     GameFolderName = table.Column<string>(type: "text", nullable: true),
                     VideoUrl = table.Column<string>(type: "text", nullable: true),
-                    Port = table.Column<int>(type: "integer", nullable: false)
+                    Port = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,12 +261,15 @@ namespace LingvoGameOs.Db.Migrations
                     Description = table.Column<string>(type: "character varying(201)", maxLength: 201, nullable: false),
                     Rules = table.Column<string>(type: "text", nullable: false),
                     DispatchDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastUpdateDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     AuthorId = table.Column<string>(type: "text", nullable: false),
                     LanguageLevelId = table.Column<int>(type: "integer", nullable: false),
                     CoverImagePath = table.Column<string>(type: "text", nullable: true),
                     ImagesPaths = table.Column<List<string>>(type: "text[]", nullable: true),
                     VideoUrl = table.Column<string>(type: "text", nullable: true),
-                    GameURL = table.Column<string>(type: "text", nullable: true),
+                    GameFilePath = table.Column<string>(type: "text", nullable: true),
+                    GameGitHubUrl = table.Column<string>(type: "text", nullable: false),
+                    Port = table.Column<int>(type: "integer", nullable: false),
                     GameFolderName = table.Column<string>(type: "text", nullable: true),
                     GamePlatformId = table.Column<int>(type: "integer", nullable: false),
                     LastMessage = table.Column<string>(type: "text", nullable: true)
