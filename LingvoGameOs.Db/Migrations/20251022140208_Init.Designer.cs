@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LingvoGameOs.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20251021094709_AddIsActiveColumnToGame")]
-    partial class AddIsActiveColumnToGame
+    [Migration("20251022140208_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,10 +76,13 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.Property<string>("GameFolderName")
                         .HasColumnType("text");
+<<<<<<<< HEAD:LingvoGameOs.Db/Migrations/20250919152409_Init.Designer.cs
+========
 
                     b.Property<string>("GameGitHubUrl")
                         .IsRequired()
                         .HasColumnType("text");
+>>>>>>>> Починил после слияния с мастером. Добавил game-edit.js для скриптов редактирования игр. Добавил ссылку на гит хаб для игр и ее изменение админом:LingvoGameOs.Db/Migrations/20251013164029_Init.Designer.cs
 
                     b.Property<int>("GamePlatformId")
                         .HasColumnType("integer");
@@ -219,6 +222,11 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.Property<DateTimeOffset>("DispatchDate")
                         .HasColumnType("timestamp with time zone");
+<<<<<<<< HEAD:LingvoGameOs.Db/Migrations/20250919152409_Init.Designer.cs
+
+                    b.Property<string>("GameFolderName")
+                        .HasColumnType("text");
+========
 
                     b.Property<string>("GameFilePath")
                         .HasColumnType("text");
@@ -229,10 +237,17 @@ namespace LingvoGameOs.Db.Migrations
                     b.Property<string>("GameGitHubUrl")
                         .IsRequired()
                         .HasColumnType("text");
+>>>>>>>> Починил после слияния с мастером. Добавил game-edit.js для скриптов редактирования игр. Добавил ссылку на гит хаб для игр и ее изменение админом:LingvoGameOs.Db/Migrations/20251013164029_Init.Designer.cs
 
                     b.Property<int>("GamePlatformId")
                         .HasColumnType("integer");
 
+<<<<<<<< HEAD:LingvoGameOs.Db/Migrations/20250919152409_Init.Designer.cs
+                    b.Property<string>("GameURL")
+                        .HasColumnType("text");
+
+========
+>>>>>>>> Починил после слияния с мастером. Добавил game-edit.js для скриптов редактирования игр. Добавил ссылку на гит хаб для игр и ее изменение админом:LingvoGameOs.Db/Migrations/20251013164029_Init.Designer.cs
                     b.Property<List<string>>("ImagesPaths")
                         .HasColumnType("text[]");
 
@@ -241,12 +256,16 @@ namespace LingvoGameOs.Db.Migrations
 
                     b.Property<string>("LastMessage")
                         .HasColumnType("text");
+<<<<<<<< HEAD:LingvoGameOs.Db/Migrations/20250919152409_Init.Designer.cs
+========
 
                     b.Property<DateTimeOffset>("LastUpdateDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Port")
                         .HasColumnType("integer");
+
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Rules")
                         .IsRequired()
