@@ -21,7 +21,7 @@ namespace LingvoGameOs.Helpers
             while (!stoppingToken.IsCancellationRequested)
             {
                 await CachingReviewsAsync();
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(3), stoppingToken);
             }
         }
 
@@ -36,7 +36,7 @@ namespace LingvoGameOs.Helpers
                 if (reviews == null)
                     return;
                 
-                _memoryCache.Set(Constants.CacheAllReviewsKey, reviews, TimeSpan.FromMinutes(10));
+                _memoryCache.Set(Constants.CacheAllReviewsKey, reviews, TimeSpan.FromMinutes(5));
             }
         }
     }
