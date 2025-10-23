@@ -31,6 +31,5 @@ namespace LingvoGameOs.Db.Models
         public Platform GamePlatform { get; set; }
         public int GamePlatformId { get; set; }
         public string? LastMessage { get; set; }
-        public int Port { get; set; }
     }
 }
