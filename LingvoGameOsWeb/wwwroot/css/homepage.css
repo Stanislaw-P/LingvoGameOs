@@ -955,7 +955,7 @@ body {
     }
 
     .homepage-hero__title {
-        font-size: 48px;
+        font-size: 44px;
         line-height: 1.2;
         margin-bottom: 1.5rem;
     }
@@ -1008,7 +1008,7 @@ body {
     }
 
     .homepage-hero__title {
-        font-size: 36px;
+        font-size: 30px;
         line-height: 1.3;
     }
 
@@ -1045,6 +1045,20 @@ body {
 
     .homepage-faq__item.active .homepage-faq__answer {
         padding: 0 1.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .homepage-hero__title {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+}
+
+@media (max-width: 305px) {
+    .homepage-hero__title {
+        font-size: 24px;
+        line-height: 1.3;
     }
 }
 
