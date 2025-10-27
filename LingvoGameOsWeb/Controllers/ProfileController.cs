@@ -162,38 +162,5 @@ namespace LingvoGameOs.Controllers
             }
             return View(settings);
         }
-
-        public async Task<IActionResult> ProfileAsync(string userId)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                var games = await gamesRepository.TryGetUserDevGamesAsync(user);
-                user.DevGames = games;
-
-                var currentUser = await userManager.GetUserAsync(User);
-                ViewData["UserImageURL"] = currentUser?.AvatarImgPath; // Передаем URL аватара текущего пользователя
-                ViewData["Username"] = currentUser?.UserName ?? "Пользователь"; // Передаем имя
-
-                var userViewModel = new UserViewModel
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Surname = user.Surname,
-                    UserName = user.UserName,
-                    Description = user.Description,
-                    AvatarImgPath = user.AvatarImgPath,
-                    DevGames = user.DevGames,
-                };
-
-                if (userId == userManager.GetUserAsync(User).Result.Id)
-                {
-                    userViewModel.IsMyProfile = true;
-                }
-
-                return View(userViewModel);
-            }
-            return View(settings);
-        }
     }
 }
