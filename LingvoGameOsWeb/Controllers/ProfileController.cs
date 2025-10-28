@@ -52,7 +52,7 @@ namespace LingvoGameOs.Controllers
                         LanguageLevel = game.LanguageLevel,
                         PublicationDate = game.PublicationDate,
                         SkillsLearning = game.SkillsLearning,
-                        RaitingPlayers = game.RaitingPlayers,
+                        AverageRaitingPlayers = game.AverageRaitingPlayers,
                         FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
                     };
                     devGamesViewModel.Add(gameViewModel);

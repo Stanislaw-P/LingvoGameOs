@@ -53,7 +53,7 @@
                                         <div class="category-games__stars">
                                             @for (int i = 1; i <= 5; i++)
                                             {
-                                                if (i <= game.RaitingPlayers)
+                                                if (i <= game.AverageRaitingPlayers)
                                                 {
                                                     <img src="/icon/star-filled.svg" alt="star" class="category-games__star filled">
                                                 }
@@ -63,7 +63,7 @@
                                                 }
                                             }
                                         </div>
-                                        <span class="category-games__rating-value">@game.RaitingPlayers</span>
+                                        <span class="category-games__rating-value">@game.AverageRaitingPlayers</span>
                                     </div>
                                     <div class="category-games__meta">
                                         <span class="category-games__downloads">

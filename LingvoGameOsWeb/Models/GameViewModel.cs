@@ -15,8 +15,7 @@ namespace LingvoGameOs.Models
         public DateTimeOffset LastUpdateDate { get; set; }
         public LanguageLevel? LanguageLevel { get; set; }
         public List<SkillLearning>? SkillsLearning { get; set; }
-        public double RaitingPlayers { get; set; }
-        public double RaitingTeachers { get; set; }
+        public double AverageRaitingPlayers { get; set; }
         public string? CoverImagePath { get; set; }
         public List<string>? ImagesPaths { get; set; }
         public string? GameFilePath { get; set; }
