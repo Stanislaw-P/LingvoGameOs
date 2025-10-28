@@ -137,7 +137,7 @@ else
                 @if (game.IsActive)
                 {
                     <div class="games__item"
-                         data-rating="@game.RaitingPlayers"
+                         data-rating="@game.AverageRaitingPlayers"
                          data-categories="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")"
                          data-keywords="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")">
 
@@ -154,7 +154,7 @@ else
                             <h3 class="games__name">@game.Title</h3>
                             <div class="games__stats">
                                 <span class="games__rating">
-                                    <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.RaitingPlayers
+                                    <img src="/icon/star.svg" alt="star" class="rating-star filled"> @game.AverageRaitingPlayers
                                 </span>
                                 <span class="games__likes">
                                     <img src="/icon/like2.svg" alt="like" class="stat-icon favorite-toggle"> @game.FavoritesCount

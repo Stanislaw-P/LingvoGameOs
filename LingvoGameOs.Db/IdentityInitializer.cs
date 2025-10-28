@@ -181,8 +181,7 @@ namespace LingvoGameOs.Db
                     LastUpdateDate = new DateTimeOffset(2025, 7, 1, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelIntermediate.Id,
                     GamePlatformId = platform3.Id,
-                    RaitingPlayers = 4.2,
-                    RaitingTeachers = 4.3,
+                    AverageRaitingPlayers = 4.2,
                     CoverImagePath = "/img/games/gameplay-animal.png",
                     ImagesPaths = new List<string>
                     {
@@ -211,8 +210,7 @@ namespace LingvoGameOs.Db
                     LastUpdateDate = new DateTimeOffset(2025, 8, 25, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
-                    RaitingPlayers = 5,
-                    RaitingTeachers = 4.9,
+                    AverageRaitingPlayers = 5,
                     CoverImagePath = "/img/games/93a62f0945389b9_920x0.jpg",
                     ImagesPaths = new List<string>
                     {
@@ -239,8 +237,7 @@ namespace LingvoGameOs.Db
                     LastUpdateDate = new DateTimeOffset(2025, 9, 15, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
-                    RaitingPlayers = 0,
-                    RaitingTeachers = 0,
+                    AverageRaitingPlayers = 0,
                     CoverImagePath = "/img/games/puzzle-1.jpg",
                     ImagesPaths = new List<string>
                     {
@@ -267,8 +264,7 @@ namespace LingvoGameOs.Db
                     LastUpdateDate = new DateTimeOffset(2025, 6, 10, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
                     LanguageLevelId = languageLevelAdvanced.Id,
                     GamePlatformId = platform2.Id,
-                    RaitingPlayers = 4.0,
-                    RaitingTeachers = 3.7,
+                    AverageRaitingPlayers = 4.0,
                     CoverImagePath = "/Games/4/train-cover.png",
                     ImagesPaths = new List<string>
                     {

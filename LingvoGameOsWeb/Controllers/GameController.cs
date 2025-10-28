@@ -73,8 +73,7 @@ namespace LingvoGameOs.Controllers
                 LanguageLevel = existingGame.LanguageLevel,
                 PublicationDate = existingGame.PublicationDate,
                 SkillsLearning = existingGame.SkillsLearning,
-                RaitingPlayers = existingGame.RaitingPlayers,
-                RaitingTeachers = existingGame.RaitingTeachers,
+                AverageRaitingPlayers = existingGame.AverageRaitingPlayers,
                 IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", existingGame.Id)
             };
 

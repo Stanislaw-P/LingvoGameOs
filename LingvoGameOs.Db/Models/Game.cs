@@ -20,8 +20,7 @@ namespace LingvoGameOs.Db.Models
 		public LanguageLevel LanguageLevel { get; set; }
 		public int LanguageLevelId { get; set; }
 		public List<SkillLearning> SkillsLearning { get; set; }
-		public double RaitingPlayers { get; set; }
-        public double RaitingTeachers { get; set; }
+		public double AverageRaitingPlayers { get; set; }
         public string? CoverImagePath { get; set; }
         public List<string>? ImagesPaths { get; set; }
         public string? GameFilePath { get; set; }
@@ -35,5 +34,7 @@ namespace LingvoGameOs.Db.Models
         public List<FavoriteGame>? FavoriteGames { get; set; }
         public int Port { get; set; }
 		public bool IsActive { get; set; } = true;
+        public int TotalRatingPoints { get; set; }
+        public int TotalReviews { get; set; }
     }
 }
