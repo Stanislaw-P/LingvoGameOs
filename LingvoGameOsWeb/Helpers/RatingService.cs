@@ -13,7 +13,7 @@ namespace LingvoGameOs.Helpers
             _databaseContext = databaseContext;
         }
 
-        public async Task UpdateGameRating(int gameId, int newRating)
+        public async Task UpdateGameRatingAsync(int gameId, int newRating)
         {
             var existingGame = await _databaseContext.Games.FirstOrDefaultAsync(game => game.Id == gameId);
             if (existingGame == null)
@@ -25,7 +25,7 @@ namespace LingvoGameOs.Helpers
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task CalculateRatingAfterDelete(int gameId, int deletedRating)
+        public async Task CalculateRatingAfterDeleteAsync(int gameId, int deletedRating)
         {
             var existingGame = await _databaseContext.Games.FirstOrDefaultAsync(game => game.Id == gameId);
             if (existingGame == null)
@@ -33,7 +33,14 @@ namespace LingvoGameOs.Helpers
 
             existingGame.TotalRatingPoints -= deletedRating;
             existingGame.TotalReviews -= 1;
-            existingGame.AverageRaitingPlayers = Math.Round((double)existingGame.TotalRatingPoints / existingGame.TotalReviews, 1);
+            if (existingGame.TotalRatingPoints < 0)
+            {
+                existingGame.TotalReviews = 0;
+                existingGame.TotalRatingPoints = 0;
+                existingGame.AverageRaitingPlayers = 0;
+            }
+            else
+                existingGame.AverageRaitingPlayers = Math.Round((double)existingGame.TotalRatingPoints / existingGame.TotalReviews, 1);
             await _databaseContext.SaveChangesAsync();
         }
     }

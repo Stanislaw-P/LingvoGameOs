@@ -1,5 +1,6 @@
 ﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,15 @@ namespace LingvoGameOs.Controllers
         readonly ILogger<ReviewController> _logger;
         readonly IReviewsRepository _reviewsRepository;
         readonly IGamesRepository _gamesRepository;
+        readonly RatingService _ratingService;
 
-        public ReviewController(UserManager<User> userManager, ILogger<ReviewController> logger, IReviewsRepository reviewsRepository, IGamesRepository gamesRepository)
+        public ReviewController(UserManager<User> userManager, ILogger<ReviewController> logger, IReviewsRepository reviewsRepository, IGamesRepository gamesRepository, RatingService ratingService)
         {
             _userManager = userManager;
             _logger = logger;
             _reviewsRepository = reviewsRepository;
             _gamesRepository = gamesRepository;
+            _ratingService = ratingService;
         }
 
         [HttpPost]
@@ -43,11 +46,14 @@ namespace LingvoGameOs.Controllers
             {
                 newReview.Author = currentUser;
                 newReview.PublicationDate = DateTimeOffset.UtcNow;
+
                 var existingReview = await _reviewsRepository.TryGetUserReviewAsync(currentUser.Id, newReview.GameId);
                 if (existingReview == null)
                     await _reviewsRepository.AddAsync(newReview);
                 else
                 {
+                    await _ratingService.CalculateRatingAfterDeleteAsync(existingReview.GameId, existingReview.Rating);
+
                     existingReview.Text = newReview.Text;
                     existingReview.PublicationDate = newReview.PublicationDate;
                     existingReview.Rating = newReview.Rating;
