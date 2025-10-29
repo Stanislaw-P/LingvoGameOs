@@ -81,6 +81,149 @@ export async function showReviewModal(gameId) {
     });
 }
 
+export function initReviewsCarousel() {
+    const container = document.querySelector('.game-reviews__container');
+    const reviews = document.querySelectorAll('.game-reviews__card');
+    const prevButton = document.querySelector('.game-reviews__prev');
+    const nextButton = document.querySelector('.game-reviews__next');
+    const indicatorsContainer = document.querySelector('.game-reviews__indicators');
+
+    if (!container || reviews.length === 0) return;
+
+    let currentSlide = 0;
+    let slidesToShow = getSlidesToShow();
+
+    function getSlidesToShow() {
+        if (window.innerWidth <= 480) return 1;
+        if (window.innerWidth <= 768) return 2;
+        return 3;
+    }
+
+    function getMaxSlide() {
+        return Math.max(reviews.length - slidesToShow, 0);
+    }
+
+    function updateCarousel() {
+        const slideWidth = 100 / slidesToShow;
+        const translateX = -currentSlide * slideWidth;
+
+        container.style.transform = `translateX(${translateX}%)`;
+        container.style.transition = 'transform 0.5s ease-in-out';
+
+        updateIndicators();
+        updateButtons();
+    }
+
+    function updateIndicators() {
+        if (!indicatorsContainer) return;
+
+        const totalSlides = getMaxSlide() + 1;
+        indicatorsContainer.innerHTML = '';
+
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('span');
+            indicator.className = `game-reviews__indicator ${i === currentSlide ? 'active' : ''}`;
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+    }
+
+    function updateButtons() {
+        const maxSlide = getMaxSlide();
+
+        if (prevButton) {
+            prevButton.disabled = currentSlide === 0;
+            prevButton.style.opacity = currentSlide === 0 ? '0.5' : '1';
+        }
+
+        if (nextButton) {
+            nextButton.disabled = currentSlide >= maxSlide;
+            nextButton.style.opacity = currentSlide >= maxSlide ? '0.5' : '1';
+        }
+    }
+
+    function goToSlide(slideIndex) {
+        const maxSlide = getMaxSlide();
+        currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
+        updateCarousel();
+    }
+
+    function nextSlide() {
+        const maxSlide = getMaxSlide();
+        if (currentSlide < maxSlide) {
+            currentSlide++;
+            updateCarousel();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateCarousel();
+        }
+    }
+
+    // Функция для расчета ширины карточек с учетом gap
+    function updateCardWidths() {
+        const containerWidth = container.offsetWidth;
+        let cardWidth;
+
+        if (window.innerWidth <= 480) {
+            // Для мобильных: 100% ширины минус половина gap
+            cardWidth = `calc(100% - 7.5px)`;
+        } else if (window.innerWidth <= 768) {
+            // Для планшетов: 50% ширины минус половина gap
+            cardWidth = `calc(50% - 10px)`;
+        } else {
+            // Для десктопов: 33.333% ширины минус две трети gap
+            cardWidth = `calc(33.333% - 13.333px)`;
+        }
+
+        reviews.forEach(review => {
+            review.style.flex = `0 0 ${cardWidth}`;
+            review.style.maxWidth = cardWidth;
+        });
+    }
+
+    // Инициализация
+    function init() {
+        slidesToShow = getSlidesToShow();
+        const maxSlide = getMaxSlide();
+
+        // Ограничиваем текущий слайд если он выходит за пределы
+        currentSlide = Math.min(currentSlide, maxSlide);
+
+        // Устанавливаем ширину карточек
+        updateCardWidths();
+
+        // Добавляем обработчики событий
+        if (prevButton) prevButton.addEventListener('click', prevSlide);
+        if (nextButton) nextButton.addEventListener('click', nextSlide);
+
+        // Обработчик изменения размера окна
+        window.addEventListener('resize', () => {
+            const newSlidesToShow = getSlidesToShow();
+            const newMaxSlide = Math.max(reviews.length - newSlidesToShow, 0);
+
+            if (newSlidesToShow !== slidesToShow) {
+                slidesToShow = newSlidesToShow;
+                // Ограничиваем текущий слайд новым максимумом
+                currentSlide = Math.min(currentSlide, newMaxSlide);
+
+                // Обновляем ширину карточек
+                updateCardWidths();
+
+                updateCarousel();
+            }
+        });
+
+        // Инициализируем карусель
+        updateCarousel();
+    }
+
+    init();
+}
+
 // Добавление отзыва в список
 //export function addReviewToList(review) {
 //    const reviewsList = document.querySelector('.game-reviews__container');
@@ -110,56 +253,3 @@ export async function showReviewModal(gameId) {
 //    updatePagination();
 //}
 
-//Инициализация отзывов
-export function initializeReviews() {
-    //const container = document.querySelector('.game-reviews__container');
-    //if (!container) return;
-
-    //container.innerHTML = '';
-
-    // Создаем отзывы с соответствующими аватарками
-    //const reviewsWithAvatars = sampleReviewsData.map(review => ({
-    //    ...review,
-    //    avatar: getAvatarByName(review.name)
-    //}));
-
-    //reviewsWithAvatars.forEach(review => addReviewToList(review));
-    updatePagination();
-}
-
-// Обновление пагинации отзывов
-export function updatePagination() {
-    const reviews = document.querySelectorAll('.game-reviews__card');
-    const itemsPerPage = 3;
-    let currentPage = 1;
-    const totalPages = Math.ceil(reviews.length / itemsPerPage);
-
-    function showPage(page) {
-        reviews.forEach((review, index) => {
-            review.style.display = (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) ? 'block' : 'none';
-        });
-
-        const indicators = document.querySelector('.game-reviews__indicators');
-        if (indicators) {
-            indicators.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                const indicator = document.createElement('span');
-                indicator.className = `game-reviews__indicator ${i === page ? 'active' : ''}`;
-                indicators.appendChild(indicator);
-            }
-        }
-    }
-
-    const prevButton = document.querySelector('.game-reviews__prev');
-    const nextButton = document.querySelector('.game-reviews__next');
-
-    if (prevButton) prevButton.addEventListener('click', () => {
-        if (currentPage > 1) showPage(--currentPage);
-    });
-
-    if (nextButton) nextButton.addEventListener('click', () => {
-        if (currentPage < totalPages) showPage(++currentPage);
-    });
-
-    showPage(currentPage);
-}

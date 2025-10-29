@@ -1,5 +1,5 @@
 import { loadComponent } from './loadComponents.js';
-import { showReviewModal, initializeReviews } from './reviews.js';
+import { showReviewModal, initReviewsCarousel } from './reviews.js';
 import { initializeLeaderboard } from './leaderboard.js';
 import { initializeActivityChart } from './activityChart.js';
 import { showNotification } from './notifications.js';
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showReviewModal(gameId);
     });
 
-    if (document.querySelector('.game-reviews__container')) initializeReviews();
+    if (document.querySelector('.game-reviews__container')) initReviewsCarousel();
 
     // Инициализация таблицы лидеров
     if (window.location.pathname.includes('leaderboard_game-id.html')) {

@@ -47,29 +47,29 @@
                     new { Title = "Грамматика", Icons = new[] { "/img/games/gameplay-animal.png", "/img/games/mountain-labyrinth-banner-1.png" }, Icon = "/icon/categories.svg", Color = "#96CEB4", Description = "Изучай правила грамматики" }
                 })
 {
-                                        <div class="homepage-categories__item">
-                                            <a href="@Url.Action("CategoryGames", "Home", new { category = category.Title })" class="homepage-category-card" style="--category-color: @category.Color">
-                                                <div class="homepage-category-card__images">
-                                                    <img src="@category.Icons[0]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--primary" loading="lazy" />
-                                                    <img src="@category.Icons[1]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--secondary" loading="lazy" />
-                                                </div>
-                                                <div class="homepage-category-card__info">
-                                                    <div class="homepage-category-card__header">
-                                                        <h3 class="homepage-category-card__title">@category.Title</h3>
-                                                        <div class="homepage-category-card__icon-wrapper">
-                                                            <img src="@category.Icon" alt="Иконка @category.Title" class="homepage-category-card__icon" />
+                                            <div class="homepage-categories__item">
+                                                <a href="@Url.Action("CategoryGames", "Home", new { category = category.Title })" class="homepage-category-card" style="--category-color: @category.Color">
+                                                    <div class="homepage-category-card__images">
+                                                        <img src="@category.Icons[0]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--primary" loading="lazy" />
+                                                        <img src="@category.Icons[1]" alt="@category.Title" class="homepage-category-card__image homepage-category-card__image--secondary" loading="lazy" />
+                                                    </div>
+                                                    <div class="homepage-category-card__info">
+                                                        <div class="homepage-category-card__header">
+                                                            <h3 class="homepage-category-card__title">@category.Title</h3>
+                                                            <div class="homepage-category-card__icon-wrapper">
+                                                                <img src="@category.Icon" alt="Иконка @category.Title" class="homepage-category-card__icon" />
+                                                            </div>
+                                                        </div>
+                                                        <p class="homepage-category-card__description">@category.Description</p>
+                                                        <div class="homepage-category-card__arrow">
+                                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                                            </svg>
                                                         </div>
                                                     </div>
-                                                    <p class="homepage-category-card__description">@category.Description</p>
-                                                    <div class="homepage-category-card__arrow">
-                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="homepage-category-card__overlay"></div>
-                                            </a>
-                                        </div>
+                                                    <div class="homepage-category-card__overlay"></div>
+                                                </a>
+                                            </div>
 }
             </div>
         </div>
@@ -181,8 +181,7 @@
 <!-- Отзывы -->
 @await Component.InvokeAsync("Reviews", false)
 @section Scripts {
-@*     <script src="/js/carouselForFeedback.js"></script>
- *@    <script src="/js/download-handler.js" type="module"></script>
+    <script src="/js/download-handler.js" type="module"></script>
 }
 <!-- FAQ Section
 <section class="homepage-faq">
