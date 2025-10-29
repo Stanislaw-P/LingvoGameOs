@@ -19,6 +19,11 @@ namespace LingvoGameOs.Db
                 .FirstOrDefaultAsync(r => r.Author.Id == userId && r.GameId == gameId);
         }
 
+        public async Task<Review?> TryGetByIdAsync(Guid reviewId)
+        {
+            return await _databaseContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
+        }
+
         public async Task AddAsync(Review review)
         {
             await _databaseContext.Reviews.AddAsync(review);
@@ -62,11 +67,6 @@ namespace LingvoGameOs.Db
                 _databaseContext.Reviews.Remove(existingReview);
                 await _databaseContext.SaveChangesAsync();
             }
-        }
-
-        private async Task<Review?> TryGetByIdAsync(Guid reviewId)
-        {
-            return await _databaseContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
         }
     }
 }

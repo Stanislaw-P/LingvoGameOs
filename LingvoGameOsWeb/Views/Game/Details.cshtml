@@ -124,7 +124,7 @@
                         <span class="game-info__metadata-tag">@gameType.Name</span>
                     }
                 </div>
-            </div>
+            </div> *@
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">
                     <img src="/icon/rating.svg" alt="Rating" class="game-info__metadata-icon">
@@ -136,15 +136,11 @@
                         <div class="game-info__rating-details">
                             <div class="game-info__stars">
                                 <img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
-                                <img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
-                                <img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
-                                <img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
-                                <img src="/icon/star-half.svg" alt="Half Star" class="game-info__star">
                             </div>
-                            <span class="game-info__rating-value">@Model.RaitingPlayers</span>
+                            <span class="game-info__rating-value">@Model.AverageRaitingPlayers</span>
                         </div>
                     </div>
-                    <div class="game-info__rating-group">
+                    @* <div class="game-info__rating-group">
                         <h5 class="game-info__rating-title">Учителя</h5>
                         <div class="game-info__rating-details">
                             <div class="game-info__stars">
@@ -156,9 +152,9 @@
                             </div>
                             <span class="game-info__rating-value">@Model.RaitingTeachers</span>
                         </div>
-                    </div>
+                    </div> *@
                 </div>
-            </div> *@
+            </div>
 
             <div class="game-info__metadata-item">
                 <h4 class="game-info__metadata-title">Разработчик</h4>

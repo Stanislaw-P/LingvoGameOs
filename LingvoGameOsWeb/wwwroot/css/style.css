@@ -2216,28 +2216,38 @@ a.link {
 }
 
 .game-info__ratings {
-    margin-top: 10px;
+    margin-top: 15px;
     display: flex;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .game-info__rating-group {
     background: var(--accent-3);
-    padding: 10px;
-    border-radius: 5px 25px;
-    margin-bottom: 10px;
+    padding: 20px 25px;
+    border-radius: 8px 35px;
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Минимальное расстояние - примерно один пробел */
+    min-width: 280px;
+    width: 100%;
+    max-width: 320px;
+    justify-content: flex-start;
+}
+.game-info__rating-title {
+    font-size: 18px;
+    color: var(--text-light);
+    white-space: nowrap;
+    font-weight: 500;
+    margin: 0;
 }
 
-.game-info__rating-title {
-    padding-block: 4px;
-    font-size: 14px;
-    color: var(--text-light);
-}
 
 .game-info__rating-details {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    margin-left: auto; /* Прижимаем рейтинг к правому краю */
 }
 
 .game-info__stars {
@@ -2252,7 +2262,9 @@ a.link {
 
 .game-info__rating-value {
     color: var(--text-light);
-    font-size: 14px;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
 }
 
 .game-info__developer {
@@ -2285,6 +2297,18 @@ a.link {
     display: flex;
     flex-direction: column;
     gap: 3px;
+}
+
+@media (max-width: 768px) {
+    .game-info__ratings {
+        flex-direction: column; /* Вертикальное расположение */
+        gap: 10px;
+    }
+
+    .game-info__rating-group {
+        max-width: none; /* Убираем ограничение */
+        min-width: auto;
+    }
 }
 
 /* === Стили блока отзывов === */
