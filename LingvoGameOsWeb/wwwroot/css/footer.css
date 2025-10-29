@@ -1,12 +1,7 @@
 /* #region Стили подвала */
 .footer {
     margin-top: 100px;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: 100%; 
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border-top: 1px solid #dee2e6;
     z-index: 50;

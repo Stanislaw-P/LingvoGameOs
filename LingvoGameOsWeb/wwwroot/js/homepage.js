@@ -1,11 +1,7 @@
-// Homepage JavaScript - Interactive functionality
-import { showReviewModal, initializeReviews } from './reviews.js';
-
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize all homepage components
     initCarousels();
     initFAQ();
-    initReviewsNavigation();
     initSmoothScrolling();
     initAnimations();
     initCTA();
@@ -15,18 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize existing homepage functionality
     initializeHomepageFeatures();
-
-    //Initialize reviews
-    if (document.querySelector('.game-reviews__container')) {
-        initializeReviews();
-    }
-
-    // Add event listener for review button
-    //const reviewButton = document.querySelector('.game-reviews__button');
-    //if (reviewButton) {
-
-    //    reviewButton.addEventListener('click', showReviewModal);
-    //}
 });
 
 // Carousel functionality
@@ -118,66 +102,6 @@ function initFAQ() {
             }
         });
     });
-}
-
-// Reviews navigation functionality
-function initReviewsNavigation() {
-    const reviewsList = document.querySelector('.homepage-reviews__list');
-    const indicators = document.querySelectorAll('.homepage-reviews__indicator');
-    const prevBtn = document.querySelector('.homepage-reviews__nav-button--prev');
-    const nextBtn = document.querySelector('.homepage-reviews__nav-button--next');
-
-    if (!reviewsList || indicators.length === 0) return;
-
-    const reviews = reviewsList.children;
-    let currentReview = 0;
-
-    // Update active review
-    function updateReview() {
-        // Hide all reviews
-        Array.from(reviews).forEach((review, index) => {
-            review.style.display = index === currentReview ? 'block' : 'none';
-        });
-
-        // Update indicators
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentReview);
-        });
-
-        // Update button states
-        if (prevBtn) prevBtn.disabled = currentReview === 0;
-        if (nextBtn) nextBtn.disabled = currentReview === reviews.length - 1;
-    }
-
-    // Event listeners for indicators
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            currentReview = index;
-            updateReview();
-        });
-    });
-
-    // Event listeners for navigation buttons
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (currentReview > 0) {
-                currentReview--;
-                updateReview();
-            }
-        });
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (currentReview < reviews.length - 1) {
-                currentReview++;
-                updateReview();
-            }
-        });
-    }
-
-    // Initialize
-    updateReview();
 }
 
 // Smooth scrolling for anchor links
