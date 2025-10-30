@@ -94,18 +94,17 @@ export function initReviewsCarousel() {
     let slidesToShow = getSlidesToShow();
 
     function getSlidesToShow() {
-        if (window.innerWidth <= 480) return 1;
-        if (window.innerWidth <= 768) return 2;
+        if (window.innerWidth <= 768) return 1;
         return 3;
     }
 
     function getMaxSlide() {
-        return Math.max(reviews.length - slidesToShow, 0);
+        return Math.ceil(reviews.length / slidesToShow) - 1;
     }
 
     function updateCarousel() {
         const slideWidth = 100 / slidesToShow;
-        const translateX = -currentSlide * slideWidth;
+        const translateX = -currentSlide * slideWidth * slidesToShow;
 
         container.style.transform = `translateX(${translateX}%)`;
         container.style.transition = 'transform 0.5s ease-in-out';
@@ -168,12 +167,9 @@ export function initReviewsCarousel() {
         const containerWidth = container.offsetWidth;
         let cardWidth;
 
-        if (window.innerWidth <= 480) {
-            // Для мобильных: 100% ширины минус половина gap
-            cardWidth = `calc(100% - 7.5px)`;
-        } else if (window.innerWidth <= 768) {
-            // Для планшетов: 50% ширины минус половина gap
-            cardWidth = `calc(50% - 10px)`;
+        if (window.innerWidth <= 768) {
+            // Для мобильных: 100% ширины
+            cardWidth = `100%`;
         } else {
             // Для десктопов: 33.333% ширины минус две трети gap
             cardWidth = `calc(33.333% - 13.333px)`;
@@ -203,7 +199,7 @@ export function initReviewsCarousel() {
         // Обработчик изменения размера окна
         window.addEventListener('resize', () => {
             const newSlidesToShow = getSlidesToShow();
-            const newMaxSlide = Math.max(reviews.length - newSlidesToShow, 0);
+            const newMaxSlide = Math.ceil(reviews.length / newSlidesToShow) - 1;
 
             if (newSlidesToShow !== slidesToShow) {
                 slidesToShow = newSlidesToShow;
