@@ -20,7 +20,6 @@
                             перед публикацией вашего проекта.
                         </p>
                         <form method="post" class="upload-form" id="upload-game-form" data-action="/admin/pendingGame/details" enctype="multipart/form-data">
-                            @* <div asp-validation-summary="All" style="color:red"></div> *@
 
                             <div class="upload-form__group">
                                 <label class="upload-form__label">
@@ -28,7 +27,7 @@
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="text" value="@Model.Author.Name @Model.Author.Surname - @Model.Author.Email" class="input-field__input"
+                                        <input type="text" value="@Model?.Author?.Name @Model?.Author?.Surname - @Model?.Author?.Email" class="input-field__input"
                                                readonly>
                                     </div>
                                 </div>
@@ -54,7 +53,7 @@
                                     <div class="input-field">
                                         <input type="text" asp-for="Title" id="game-title" class="input-field__input"
                                                placeholder="Введите название игры">
-                                        <span asp-validation-for="Title" style="color:red"></span>
+                                        <span asp-validation-for="Title" class="error-message"></span>
                                     </div>
                                 </div>
                             </div>
@@ -66,12 +65,13 @@
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
-                                        <textarea asp-for="Description" id="game-short-description" name="description"
+                                        <textarea asp-for="Description" id="game-short-description" 
                                                   class="input-field__textarea"
                                                   placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
                                                   required></textarea>
                                     </div>
-                                    <span id="short-description-error" class="error-message"></span>
+                                    <span asp-validation-for="Description" class="error-message"></span>
+
                                 </div>
                             </div>
 
@@ -81,10 +81,10 @@
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field input-field--textarea">
-                                        <textarea asp-for="Rules" id="game-rules" name="rules" class="input-field__textarea"
+                                        <textarea asp-for="Rules" id="game-rules"  class="input-field__textarea"
                                                   placeholder="Опишите правила игры" required></textarea>
                                     </div>
-                                    <span id="rules-error" class="error-message"></span>
+                                    <span asp-validation-for="Rules" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -120,9 +120,9 @@
                                                 }
                                             }
                                         </div>
-                                        <input asp-for="SkillsLearning" type="hidden" id="game-skillsLearning" name="skillsLearning" value="@(Model.SkillsLearning != null ? string.Join(",", Model.SkillsLearning) : "")" required>
+                                        <input asp-for="SkillsLearning" type="hidden" id="game-skillsLearning"  value="@(Model.SkillsLearning != null ? string.Join(",", Model.SkillsLearning) : "")" required>
                                     </div>
-                                    <span id="skillsLearning-error" class="error-message"></span>
+                                    <span asp-validation-for="SkillsLearning" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -132,7 +132,7 @@
                                     <div class="level-list">
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Барашек, который пытается говорить"
+                                                <input type="radio" asp-for="LanguageLevel" value="Барашек, который пытается говорить"
                                                        class="level-item__radio" required>
                                             </span>
                                             <span class="level-item__text">
@@ -142,7 +142,7 @@
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Юный нарт"
+                                                <input type="radio" asp-for="LanguageLevel" value="Юный нарт"
                                                        class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
@@ -152,7 +152,7 @@
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Кавказский орёл"
+                                                <input type="radio" asp-for="LanguageLevel" value="Кавказский орёл"
                                                        class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
@@ -162,7 +162,7 @@
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Старейшина, который говорит тосты"
+                                                <input type="radio" asp-for="LanguageLevel" value="Старейшина, который говорит тосты"
                                                        class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
@@ -173,7 +173,7 @@
                                         </label>
                                         <label class="level-item">
                                             <span class="level-item__input">
-                                                <input type="radio" asp-for="LanguageLevel" name="LanguageLevel" value="Хранитель языка"
+                                                <input type="radio" asp-for="LanguageLevel" value="Хранитель языка"
                                                        class="level-item__radio">
                                             </span>
                                             <span class="level-item__text">
@@ -181,7 +181,7 @@
                                             </span>
                                         </label>
                                     </div>
-                                    <span id="level-error" class="error-message"></span>
+                                    <span asp-validation-for="SkillsLearning" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -194,7 +194,7 @@
                                         <input type="url" asp-for="GameGitHubUrl" id="game-file-url"
                                                class="input-field__input" placeholder="Введите URL на Git Hub">
                                     </div>
-                                    <span id="file-url-error" class="error-message"></span>
+                                    <span asp-validation-for="GameGitHubUrl" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -204,7 +204,7 @@
                                 </label>
                                 <div class="upload-form__input-wrapper" data-tooltip="Выберите платформу для вашей игры">
                                     <div class="custom-dropdown" id="platform-dropdown">
-                                        <input type="hidden" asp-for="GamePlatform" id="game-platform" name="GamePlatform" required>
+                                        <input type="hidden" asp-for="GamePlatform" id="game-platform" required>
                                         <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите платформу">
                                             <span class="custom-dropdown__placeholder">Выберите платформу</span>
                                             <img src="/icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
@@ -226,7 +226,7 @@
                                             }
                                         </div>
                                     </div>
-                                    <span id="platform-error" class="error-message"></span>
+                                    <span asp-validation-for="GamePlatform" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -274,7 +274,7 @@
                                             <input type="text" asp-for="GameFolderName"
                                                    class="input-field__input" placeholder="Название папки игры на VM">
                                         </div>
-                                        <span class="error-message"></span>
+                                        <span asp-validation-for="GameFolderName" class="error-message"></span>
                                     </div>
                                 </div>
 
@@ -287,7 +287,7 @@
                                             <input type="number" asp-for="Port"
                                                    class="input-field__input" placeholder="Порт для запуска игры на VM">
                                         </div>
-                                        <span class="error-message"></span>
+                                        <span asp-validation-for="Port" class="error-message"></span>
                                     </div>
                                 </div> 
                             }
@@ -295,9 +295,9 @@
                             <div class="upload-form__group">
                                 <label for="game-cover-url" class="upload-form__label">
                                     Обложка
-                                    игры
+                                    игры  <span class="required">*</span>
                                 </label>
-                                <p class="upload-form__file-label">Прикрепите фото обложки игры</p>
+                                <p class="upload-form__file-label">Прикрепите фото обложки игры  <span class="required">*</span></p>
                                 <div class="upload-form__file-upload">
                                     <div class="file-upload" id="cover-dropzone">
                                         <div class="file-upload__dropzone">
@@ -330,15 +330,17 @@
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="url" asp-for="VideoUrl" id="game-video" name="VideoUrl" class="input-field__input"
+                                        <input type="url" asp-for="VideoUrl" id="game-video" class="input-field__input"
                                                placeholder="Вставьте URL адрес видео">
                                     </div>
-                                    <span id="video-error" class="error-message"></span>
                                 </div>
                             </div>
 
                             <div class="upload-form__group">
-                                <p class="upload-form__file-label">Прикрепите скриншоты игры (максимум 3)</p>
+                                <label for="game-video" class="upload-form__label">
+                                    Скриншоты игры  <span class="required">*</span>
+                                </label>
+                                <p class="upload-form__file-label">Прикрепите скриншоты игры (максимум 3)  <span class="required">*</span></p>
                                 <div class="upload-form__file-upload">
                                     <label class="file-upload" id="screenshots-dropzone">
                                         <div class="file-upload__dropzone">

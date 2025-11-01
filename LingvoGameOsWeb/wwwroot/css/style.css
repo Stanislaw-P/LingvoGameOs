@@ -3838,10 +3838,10 @@ a.link {
 }
 
 .error-message {
-    color: var(--error-color);
-    font: 400 12px/150% "Axiforma", sans-serif;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
 }
 
 .error-message--visible {

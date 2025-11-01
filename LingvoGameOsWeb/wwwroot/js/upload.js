@@ -350,7 +350,7 @@ function initializeUploadForm() {
         }
     });
 
-    
+
     function resetForm() {
         form.reset();
         selectedSkillsLearning = [];
@@ -385,7 +385,7 @@ function initializeUploadForm() {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             });
-            
+
             if (!response.ok) {
                 const result = await response.json();
                 if (response.status === 422 && result.errors && result.errors.length > 0) {
@@ -398,7 +398,7 @@ function initializeUploadForm() {
             const successData = await response.json(); // Парсим успешный ответ
             if (successData.success && successData.redirectUrl) {
                 window.location.href = successData.redirectUrl; // Перенаправляем
-                return; 
+                return;
             }
 
             showNotification('Игра успешно загружена!', 'success');
@@ -415,7 +415,7 @@ function initializeUploadForm() {
         }
     });
 
-    
+
 
     // Initialize dropdowns
     updateSelectedItems(selectedskillsLearningList, skillsLearningInput, selectedSkillsLearning, skillsLearningOptions, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'));
@@ -575,16 +575,7 @@ function showNotification(message, type) {
     }, 5000);
 }
 
-/**
- * Shows a form error message
- * @param {string} errorId - The ID of the error element
- * @param {string} message - The error message
- */
-function showFormError(errorId, message) {
-    const errorElement = document.querySelector(`#${errorId}`);
-    errorElement.textContent = message;
-    errorElement.classList.add('error-message--visible');
-}
+
 
 function showValidationSummary(errors) {
     const validationSummary = document.getElementById('validation-summary');
@@ -654,7 +645,7 @@ function initializeScreenshotsUpload() {
     const errorElement = document.getElementById('screenshots-error');
 
     // Если элементы не найдены на странице, выходим
-    if (!fileInput || !previewContainer || !errorElement) {
+    if (!fileInput || !previewContainer) {
         return;
     }
 

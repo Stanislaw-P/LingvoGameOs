@@ -63,7 +63,7 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 GameFileInfo = msiFileInfo,
                 GamePlatform = existingGame.GamePlatform.Name,
                 LanguageLevel = existingGame.LanguageLevel.Name,
-                VideoUrl = existingGame.VideoUrl ?? "Video doesn't exist",
+                VideoUrl = existingGame.VideoUrl,
                 LastUpdateDate = existingGame.LastUpdateDate,
                 PublicationDate = existingGame.PublicationDate
             });

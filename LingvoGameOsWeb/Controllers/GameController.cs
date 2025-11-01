@@ -200,6 +200,9 @@ namespace LingvoGameOs.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadAsync([FromForm] AddGameViewModel gameViewModel)
         {
+            if (gameViewModel.GamePlatform == "Desktop" && gameViewModel.UploadedGameFile == null)
+                ModelState.AddModelError("", "Для Desktop игры файл игры (.msi) обязателен!");
+
             string? authorId = _userManager.GetUserId(User);
             var logData = new
             {
@@ -224,7 +227,7 @@ namespace LingvoGameOs.Controllers
                         gameViewModel.LanguageLevel
                     );
 
-                    if (gameViewModel.UploadedGame != null) // Если файл загруженной игры не пустой, то она десктоп
+                    if (gameViewModel.UploadedGameFile != null) // Если файл загруженной игры не пустой, то она десктоп
                     {
                         PendingGame pendingGame = new PendingGame
                         {
@@ -243,7 +246,7 @@ namespace LingvoGameOs.Controllers
 
                         // Теперь можно использовать ID для сохранения файлов в соотв. директорию
                         string? gameUrl = await _fileProvider.SaveGameFileAsync(
-                            gameViewModel.UploadedGame,
+                            gameViewModel.UploadedGameFile,
                             pendingGame.Id,
                             pendingGame.Title,
                             Folders.PendingGames
