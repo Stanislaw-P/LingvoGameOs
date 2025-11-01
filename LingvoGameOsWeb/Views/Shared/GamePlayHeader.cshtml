@@ -8,7 +8,7 @@
                 @ViewBag.GameTitle
             </button>
         </h1>
-        <div class="game-play__score" role="status" aria-live="polite">
+        @* <div class="game-play__score" role="status" aria-live="polite">
             <span class="game-play__score-value">0 баллов</span>
         </div>
         <button class="game-play__pause" aria-label="Пауза" aria-pressed="false">
@@ -20,7 +20,7 @@
         </button>
         <button class="game-play__fullscreen" aria-label="Полноэкранный режим" aria-pressed="false">
             <img src="/icon/fullscreen.svg" alt="" class="game-play__fullscreen-icon">
-        </button>
+        </button> *@
         <a asp-controller="Game" asp-action="Details" asp-route-idGame="@ViewBag.GameId" class="game-play__close" aria-label="Закрыть игру">
             <img src="/icon/close.svg" alt="" class="game-play__close-icon">
         </a>
