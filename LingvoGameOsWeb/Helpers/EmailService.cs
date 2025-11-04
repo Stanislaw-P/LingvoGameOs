@@ -8,10 +8,12 @@ namespace LingvoGameOs.Helpers
     public class EmailService
     {
         private readonly MailSettings mailSettings;
-        
-        public EmailService(IOptions<MailSettings> mailSettings)
+        private readonly ILogger<EmailService> _logger;
+
+        public EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger)
         {
             this.mailSettings = mailSettings.Value;
+            _logger = logger;
         }
 
         public async Task<bool> TrySendEmailAsync(string email, string subject, string message)
@@ -37,9 +39,861 @@ namespace LingvoGameOs.Helpers
             }
             catch (SmtpCommandException ex)
             {
-                Console.WriteLine($"При попытке отправить письмо возникло исключение: {ex.Message}");
+                _logger.LogError(ex, "При попытке отправить письмо возникло исключение: {@SendEmailData}", new
+                {
+                    DeveloperEmail = email,
+                    TextMessage = message,
+                    RequestTime = DateTimeOffset.UtcNow,
+                    ResponseStatusCode = 500
+                });
                 return false;
             }
+        }
+
+        public async Task<bool> TrySendModerationRejectionAsync(string devName, string devEmail, string gameName, string feedbackText)
+        {
+            string subject = "Игра не прошла модерацию";
+            string htmlMessage = BuildModerationEmailHtml(devName, gameName, feedbackText);
+            return await TrySendEmailAsync(devEmail, subject, htmlMessage);
+        }
+
+        public async Task<bool> TrySendAboutPublicationAsync(string devName, string devEmail, string gameName)
+        {
+            string subject = "Игра опубликована";
+            string htmlMessage = BuildPublicationEmailHtml(devName, gameName);
+            return await TrySendEmailAsync(devEmail, subject, htmlMessage);
+        }
+
+        public async Task<bool> TrySendRefusalGameAsync(string devName, string devEmail, string gameName)
+        {
+            string subject = "Игра отклонена";
+            string htmlMessage = BuildRefusalGameEmailHtml(devName, gameName);
+            return await TrySendEmailAsync(devEmail, subject, htmlMessage);
+        }
+
+
+        private string BuildModerationEmailHtml(string developerName, string gameName, string feedbackText)
+        {
+            return $@"
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <style>
+        * {{
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            background: #141C30;
+            color: #F8FAFE;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }}
+        
+        .email-container {{
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }}
+        
+        .email-header {{
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #43495C;
+        }}
+        
+        .email-logo {{
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            color: #3F69D2;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }}
+        
+        .email-title {{
+            font-size: 28px;
+            font-weight: 600;
+            color: #D54646;
+            margin-bottom: 10px;
+        }}
+        
+        .email-subtitle {{
+            font-size: 18px;
+            color: #666D80;
+        }}
+        
+        .email-content {{
+            background: #F8FAFE;
+            border-radius: 10px 70px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }}
+        
+        .email-section {{
+            margin-bottom: 30px;
+        }}
+        
+        .email-section:last-child {{
+            margin-bottom: 0;
+        }}
+        
+        .email-greeting {{
+            font-size: 16px;
+            line-height: 1.6;
+            color: #182032;
+            margin-bottom: 20px;
+        }}
+        
+        .email-feedback {{
+            background: #FFFFFF;
+            padding: 25px;
+            border-radius: 10px 50px;
+            margin: 25px 0;
+            border-left: 4px solid #3F69D2;
+        }}
+        
+        .email-feedback-title {{
+            font-size: 18px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 15px;
+        }}
+        
+        .email-feedback-text {{
+            font-size: 15px;
+            line-height: 1.6;
+            color: #182032;
+            white-space: pre-line;
+        }}
+        
+        .email-note {{
+            background: #FFFFFF;
+            border-left: 4px solid #5B7FD9;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            color: #182032;
+        }}
+        
+        .email-footer {{
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #43495C;
+            color: #666D80;
+        }}
+        
+        .email-contact {{
+            margin: 20px 0;
+            padding: 15px;
+            background: #F8FAFE;
+            border-radius: 10px;
+        }}
+        
+        .email-support {{
+            font-size: 14px;
+            margin-top: 15px;
+        }}
+        
+        .email-signature {{
+            margin-top: 30px;
+            color: #666D80;
+        }}
+        
+        a {{
+            color: #3F69D2;
+            text-decoration: none;
+        }}
+        
+        strong {{
+            font-weight: 600;
+        }}
+        
+        h3 {{
+            font-size: 20px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 20px;
+        }}
+        
+        @media (max-width: 768px) {{
+            .email-container {{
+                padding: 20px 15px;
+            }}
+            
+            .email-content {{
+                padding: 30px 20px;
+                border-radius: 10px 50px;
+            }}
+            
+            .email-title {{
+                font-size: 24px;
+            }}
+        }}
+        
+        @media (max-width: 480px) {{
+            .email-content {{
+                padding: 20px 15px;
+            }}
+            
+            .email-feedback {{
+                padding: 20px;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class='email-container'>
+        <div class='email-header'>
+            <div class='email-logo'>Рудзынг</div>
+            <h1 class='email-title'>Игра не прошла модерацию</h1>
+            <p class='email-subtitle'>Уведомление от команды модерации</p>
+        </div>
+
+        <div class='email-content'>
+            <div class='email-section'>
+                <p class='email-greeting'>
+                    Уважаемый(ая) <strong>{developerName}</strong>,
+                </p>
+                <p class='email-greeting'>
+                    Команда «Рудзынг» благодарит вас за интерес к нашей платформе и за предоставленную игру 
+                    <strong>«{gameName}»</strong> для проверки.
+                </p>
+            </div>
+
+            <div class='email-section'>
+                <p class='email-greeting'>
+                    Мы внимательно изучили ваш проект и, к сожалению, не можем одобрить его публикацию в текущем виде.
+                </p>
+            </div>
+
+            <div class='email-section'>
+                <div class='email-feedback'>
+                    <div class='email-feedback-title'>Замечания по модерации:</div>
+                    <div class='email-feedback-text'>{feedbackText}</div>
+                </div>
+            </div>
+
+            <div class='email-section'>
+                <h3>Что делать дальше?</h3>
+                <p class='email-greeting'>
+                    После устранения указанных замечаний, пожалуйста, повторно загрузите новую сборку игры в ваш кабинет разработчика. 
+                    Мы проведем повторную, ускоренную модерацию.
+                </p>
+                
+                <div class='email-note'>
+                    <p>
+                        Если у вас возникли вопросы по какому-либо из пунктов, не стесняйтесь отвечать на это письмо. 
+                        Мы готовы дать более развернутые комментарии.
+                    </p>
+                </div>
+
+                <p class='email-greeting'>
+                    Желаем успехов в доработке и с нетерпением ждем исправленную версию!
+                </p>
+            </div>
+        </div>
+
+        <div class='email-footer'>
+            <div class='email-contact'>
+                <p><strong>С уважением,</strong></p>
+                <p>Команда модерации «Рудзынг»</p>
+            </div>
+            
+            <div class='email-support'>
+                <p><strong>Контакты для связи:</strong></p>
+                <p>Email: rudzyng@yandex.ru</p>
+            </div>
+
+            <div class='email-signature'>
+                <p>© 2025 Рудзынг. Северо-Осетинский государственный университет</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
+        }
+
+        private string BuildPublicationEmailHtml(string developerName, string gameName)
+        {
+            return $@"<!DOCTYPE html>
+<html lang=""ru"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Игра опубликована!</title>
+    <style>
+        * {{
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            background: #141C30;
+            color: #F8FAFE;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }}
+        
+        .email-container {{
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }}
+        
+        .email-header {{
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #43495C;
+        }}
+        
+        .email-logo {{
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            color: #51D546;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }}
+        
+        .email-title {{
+            font-size: 28px;
+            font-weight: 600;
+            color: #51D546;
+            margin-bottom: 10px;
+        }}
+        
+        .email-subtitle {{
+            font-size: 18px;
+            color: #666D80;
+        }}
+        
+        .email-content {{
+            background: #F8FAFE;
+            border-radius: 10px 70px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }}
+        
+        .email-section {{
+            margin-bottom: 30px;
+        }}
+        
+        .email-section:last-child {{
+            margin-bottom: 0;
+        }}
+        
+        .email-greeting {{
+            font-size: 16px;
+            line-height: 1.6;
+            color: #182032;
+            margin-bottom: 20px;
+        }}
+        
+        .email-success {{
+            background: #FFFFFF;
+            padding: 25px;
+            border-radius: 10px 50px;
+            margin: 25px 0;
+            border-left: 4px solid #51D546;
+        }}
+        
+        .email-success-title {{
+            font-size: 18px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 15px;
+        }}       
+        
+        .email-next-steps {{
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }}
+        
+        .email-next-title {{
+            font-size: 18px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 15px;
+        }}
+        
+        .email-list {{
+            margin: 15px 0;
+            padding-left: 20px;
+        }}
+        
+        .email-list-item {{
+            position: relative;
+            padding: 8px 0;
+            color: #182032;
+            line-height: 1.5;
+        }}
+        
+        .email-list-item::before {{
+            content: ""•"";
+            color: #51D546;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }}
+        
+        .email-note {{
+            background: #FFFFFF;
+            border-left: 4px solid #5B7FD9;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            color: #182032;
+        }}
+        
+        .email-footer {{
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #43495C;
+            color: #666D80;
+        }}
+        
+        .email-contact {{
+            margin: 20px 0;
+            padding: 15px;
+            background: #F8FAFE;
+            border-radius: 10px;
+        }}
+        
+        .email-support {{
+            font-size: 14px;
+            margin-top: 15px;
+        }}
+        
+        .email-signature {{
+            margin-top: 30px;
+            color: #666D80;
+        }}
+        
+        a {{
+            color: #3F69D2;
+            text-decoration: none;
+        }}
+        
+        strong {{
+            font-weight: 600;
+        }}
+        
+        h3 {{
+            font-size: 20px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 20px;
+        }}
+        
+        @media (max-width: 768px) {{
+            .email-container {{
+                padding: 20px 15px;
+            }}
+            
+            .email-content {{
+                padding: 30px 20px;
+                border-radius: 10px 50px;
+            }}
+            
+            .email-title {{
+                font-size: 24px;
+            }}
+        }}
+        
+        @media (max-width: 480px) {{
+            .email-content {{
+                padding: 20px 15px;
+            }}
+            
+            .email-success {{
+                padding: 20px;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class=""email-container"">
+        <div class=""email-header"">
+            <div class=""email-logo"">Рудзынг</div>
+            <h1 class=""email-title"">Игра опубликована!</h1>
+            <p class=""email-subtitle"">Поздравляем с успешной публикацией</p>
+        </div>
+
+        <div class=""email-content"">
+            <div class=""email-section"">
+                <p class=""email-greeting"">
+                    Уважаемый(ая) <strong>{developerName}</strong>,
+                </p>
+                
+                <div class=""email-success"">
+                    <div class=""email-success-title"">🎉 Поздравляем!</div>
+                    <p class=""email-greeting"" style=""margin-bottom: 0;"">
+                        Ваша игра <strong>«{gameName}»</strong> успешно прошла модерацию и опубликована на платформе «Рудзынг».
+                    </p>
+                </div>
+            </div>  
+
+            <div class=""email-section"">
+                <div class=""email-next-steps"">
+                    <div class=""email-next-title"">Что дальше?</div>
+                    <ul class=""email-list"">
+                        <li class=""email-list-item"">
+                            Рекомендуем поделиться ссылкой на игру в своих социальных сетях и сообществах
+                        </li>
+                        <li class=""email-list-item"">
+                            Следите за отзывами и оценками игроков на нашей платформе — это лучший источник обратной связи
+                        </li>
+                    </ul>
+                </div>
+
+                <div class=""email-note"">
+                    <p>
+                        Мы восхищены вашей работой и желаем вашей игре высокой популярности!<br>
+                        Не останавливайтесь на достигнутом — мы всегда рады вашим новым проектам.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class=""email-footer"">
+            <div class=""email-contact"">
+                <p><strong>С уважением и наилучшими пожеганиями,</strong></p>
+                <p>Команда «Рудзынг»</p>
+            </div>
+            
+            <div class=""email-support"">
+                <p><strong>Контакты для связи:</strong></p>
+                <p>Email: rudzyng@yandex.ru</p>
+            </div>
+
+            <div class=""email-signature"">
+                <p>© 2025 Рудзынг. Северо-Осетинский государственный университет</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
+        }
+        
+        private string BuildRefusalGameEmailHtml(string devName, string gameName)
+        {
+            return $@"<!DOCTYPE html>
+<html lang=""ru"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Игра отклонена</title>
+    <style>
+        * {{
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            background: #141C30;
+            color: #F8FAFE;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }}
+        
+        .email-container {{
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }}
+        
+        .email-header {{
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #43495C;
+        }}
+        
+        .email-logo {{
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            color: #D54646;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }}
+        
+        .email-title {{
+            font-size: 28px;
+            font-weight: 600;
+            color: #D54646;
+            margin-bottom: 10px;
+        }}
+        
+        .email-subtitle {{
+            font-size: 18px;
+            color: #666D80;
+        }}
+        
+        .email-content {{
+            background: #F8FAFE;
+            border-radius: 10px 70px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }}
+        
+        .email-section {{
+            margin-bottom: 30px;
+        }}
+        
+        .email-section:last-child {{
+            margin-bottom: 0;
+        }}
+        
+        .email-greeting {{
+            font-size: 16px;
+            line-height: 1.6;
+            color: #182032;
+            margin-bottom: 20px;
+        }}
+        
+        .email-rejection {{
+            background: #FFFFFF;
+            padding: 25px;
+            border-radius: 10px 50px;
+            margin: 25px 0;
+            border-left: 4px solid #D54646;
+        }}
+        
+        .email-rejection-title {{
+            font-size: 18px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 15px;
+        }}
+        
+        .email-reasons {{
+            background: #FFF5F5;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #FED7D7;
+        }}
+        
+        .email-reasons-title {{
+            font-size: 17px;
+            font-weight: 600;
+            color: #C53030;
+            margin-bottom: 15px;
+            text-align: center;
+        }}
+        
+        .email-reason-item {{
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 0;
+            color: #182032;
+            line-height: 1.5;
+            border-bottom: 1px solid #FED7D7;
+        }}
+        
+        .email-reason-item:last-child {{
+            border-bottom: none;
+        }}
+        
+        .email-reason-icon {{
+            color: #D54646;
+            font-size: 18px;
+            margin-right: 12px;
+            min-width: 20px;
+        }}
+        
+        .email-reason-text {{
+            flex: 1;
+            font-size: 15px;
+        }}
+        
+        .email-final {{
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #E2E8F0;
+        }}
+        
+        .email-final-title {{
+            font-size: 16px;
+            font-weight: 600;
+            color: #182032;
+            margin-bottom: 10px;
+        }}
+        
+        .email-note {{
+            background: #FFFFFF;
+            border-left: 4px solid #718096;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            color: #182032;
+        }}
+        
+        .email-footer {{
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #43495C;
+            color: #666D80;
+        }}
+        
+        .email-contact {{
+            margin: 20px 0;
+            padding: 15px;
+            background: #F8FAFE;
+            border-radius: 10px;
+        }}
+        
+        .email-support {{
+            font-size: 14px;
+            margin-top: 15px;
+        }}
+        
+        .email-signature {{
+            margin-top: 30px;
+            color: #666D80;
+        }}
+        
+        strong {{
+            font-weight: 600;
+        }}
+        
+        @media (max-width: 768px) {{
+            .email-container {{
+                padding: 20px 15px;
+            }}
+            
+            .email-content {{
+                padding: 30px 20px;
+                border-radius: 10px 50px;
+            }}
+            
+            .email-title {{
+                font-size: 24px;
+            }}
+        }}
+        
+        @media (max-width: 480px) {{
+            .email-content {{
+                padding: 20px 15px;
+            }}
+            
+            .email-rejection,
+            .email-reasons {{
+                padding: 20px;
+            }}
+            
+            .email-reason-item {{
+                padding: 10px 0;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class=""email-container"">
+        <div class=""email-header"">
+            <div class=""email-logo"">Рудзынг</div>
+            <h1 class=""email-title"">Игра отклонена</h1>
+            <p class=""email-subtitle"">Уведомление от команды модерации</p>
+        </div>
+
+        <div class=""email-content"">
+            <div class=""email-section"">
+                <p class=""email-greeting"">
+                    Уважаемый(ая) <strong>{devName}</strong>,
+                </p>
+                <p class=""email-greeting"">
+                    Спасибо за время и усилия, затраченные на создание игры <strong>«{gameName}»</strong> и ее отправку на нашу платформу.
+                </p>
+            </div>
+
+            <div class=""email-section"">
+                <div class=""email-rejection"">
+                    <div class=""email-rejection-title"">❌ Игра отклонена</div>
+                    <p class=""email-greeting"" style=""margin-bottom: 0;"">
+                        После тщательной проверки мы вынуждены сообщить, что игра была отклонена и не может быть опубликована на «Рудзынг».
+                    </p>
+                </div>
+            </div>
+
+            <div class=""email-section"">
+                <div class=""email-reasons"">
+                    <div class=""email-reasons-title"">Возможна одна из причин отклонения:</div>
+                    
+                    <div class=""email-reason-item"">
+                        <div class=""email-reason-icon"">♦️</div>
+                        <div class=""email-reason-text"">Игра содержит неприемлемый контент</div>
+                    </div>
+                    
+                    <div class=""email-reason-item"">
+                        <div class=""email-reason-icon"">♦️</div>
+                        <div class=""email-reason-text"">Техническое состояние игры не позволяет ей стабильно функционировать</div>
+                    </div>
+                    
+                    <div class=""email-reason-item"">
+                        <div class=""email-reason-icon"">♦️</div>
+                        <div class=""email-reason-text"">В игре не работает обязательный функционал, указанный в требованиях к играм для разработчиков (например невозможна интеграция API для отслеживание рейтинга игроков)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class=""email-section"">
+                <div class=""email-final"">
+                    <div class=""email-final-title"">Окончательное решение</div>
+                    <p class=""email-greeting"" style=""margin-bottom: 0;"">
+                        Данное решение является окончательным и обжалованию не подлежит. К сожалению, мы не можем допустить к публикации контент, который нарушает наши правила или предоставляет негативный опыт для пользователей.
+                    </p>
+                </div>
+
+                <div class=""email-note"">
+                    <p>
+                        Мы понимаем, что это может быть неприятной новостью, и благодарим вас за понимание.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class=""email-footer"">
+            <div class=""email-contact"">
+                <p><strong>С уважением,</strong></p>
+                <p>Команда модерации «Рудзынг»</p>
+            </div>
+            
+            <div class=""email-support"">
+                <p><strong>Контакты для связи:</strong></p>
+                <p>Email: rudzyng@yandex.ru</p>
+            </div>
+
+            <div class=""email-signature"">
+                <p>© 2025 Рудзынг. Северо-Осетинский государственный университет</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
         }
     }
 }

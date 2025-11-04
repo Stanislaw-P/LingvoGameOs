@@ -106,17 +106,17 @@ namespace LingvoGameOs.Controllers
                     return View(model);
                 }
                 var code = await userManager.GeneratePasswordResetTokenAsync(user);
+                
                 var callBackUrl = Url.Action("ResetPassword", "Account", new
                 {
                     userId = user.Id,
                     userEmail = email,
                     userCode = code
                 }, protocol: HttpContext.Request.Scheme);
+                
                 var result = await emailService.TrySendEmailAsync(email, "Сброс пароля", $"Для сброса пароля, перейдите <a href='{callBackUrl}'>по ссылке</a>");
                 if (result)
-                {
                     return View("EmailNotificationSuccess");
-                }
                 return View("EmailNotificationError");
             }
             return View(model);
@@ -124,7 +124,7 @@ namespace LingvoGameOs.Controllers
 
         public async Task<IActionResult> ResetPassword(string userCode, string userEmail)
         {
-            return View(new ResetPasswordViewModel { Code = userCode, UserName = userEmail});
+            return View(new ResetPasswordViewModel { Code = userCode, UserName = userEmail });
         }
 
         [HttpPost]

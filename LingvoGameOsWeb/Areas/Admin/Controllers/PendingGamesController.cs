@@ -22,8 +22,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly IPlatformsRepository _platformsRepository;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly ILogger<PendingGamesController> _logger;
+        readonly EmailService _emailService;
 
-        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger)
+        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger, EmailService emailService)
         {
             _userManager = userManager;
             _pendingGamesRepository = pendingGamesRepository;
@@ -33,6 +34,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _languageLevelsRepository = languageLevelsRepository;
             _gamesRepository = gamesRepository;
             _logger = logger;
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -60,14 +62,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     publishedGame.Id,
                     Folders.PendingGames,
                     Folders.Games);
-                
+
                 // Обновляем пути к файлам
                 publishedGame.CoverImagePath = _fileProvider.UpdateFilePath(
                     pendingGame.CoverImagePath!,
                     $"{Folders.PendingGames}/{pendingGame.Id}",
                     $"{Folders.Games}/{publishedGame.Id}");
 
-                if (publishedGame.GamePlatform.Name == "Desktop")
+                if (publishedGame?.GamePlatform?.Name == "Desktop")
                 {
                     publishedGame.GameFilePath = _fileProvider.UpdateFilePath(
                     pendingGame.GameFilePath!,
@@ -96,23 +98,25 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     logData.AdminUserAgent,
                     RequestTime = DateTimeOffset.UtcNow,
                     PendingGameId = pendingGame.Id,
-                    PendingGamePlatform = pendingGame.GamePlatform.Name,
+                    PendingGamePlatform = pendingGame?.GamePlatform?.Name,
                     NewGameId = publishedGame.Id,
                     ResponseStatusCode = 200
                 });
+
+                await _emailService.TrySendAboutPublicationAsync(publishedGame.Author.Name, publishedGame?.Author?.Email!, publishedGame?.Title!);
 
                 return Ok(new
                 {
                     success = true,
                     gameData = new
                     {
-                        id = publishedGame.Id,
-                        title = publishedGame.Title,
-                        authorName = $"{publishedGame.Author.Name} {publishedGame.Author.Surname}",
-                        publicationDate = publishedGame.PublicationDate.ToString("dd.MM.yyyy"),
-                        imagePath = publishedGame.CoverImagePath,
-                        gameUrl = publishedGame.GameFilePath,
-                        platform = publishedGame.GamePlatform.Name
+                        id = publishedGame?.Id,
+                        title = publishedGame?.Title,
+                        authorName = $"{publishedGame?.Author.Name} {publishedGame?.Author.Surname}",
+                        publicationDate = publishedGame?.PublicationDate.ToString("dd.MM.yyyy"),
+                        imagePath = publishedGame?.CoverImagePath,
+                        gameUrl = publishedGame?.GameFilePath,
+                        platform = publishedGame?.GamePlatform?.Name
                     }
                 });
             }
@@ -142,6 +146,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _fileProvider.DeleteDirectory(directoryPendingGamePath);
 
             await _pendingGamesRepository.RemoveAsync(pendingGameForDelete);
+            await _emailService.TrySendRefusalGameAsync(pendingGameForDelete?.Author?.Name ?? "Разработчик", pendingGameForDelete?.Author?.Email!, pendingGameForDelete?.Title!);
             return Ok();
         }
 
@@ -173,7 +178,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     return NotFound(new { error = $"Игра с id: {feedBackView.GameId} не найдена!" });
                 existingGame.LastMessage = feedBackView.Message;
 
-                //TODO: Тут нужно добавить отправку на email разработчика сообщения
+                if (!string.IsNullOrEmpty(existingGame?.Author?.Email))
+                    await _emailService.TrySendModerationRejectionAsync(existingGame?.Author?.Name ?? "Разработчик", existingGame?.Author.Email!, existingGame?.Title!, feedBackView.Message); ;
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
 
@@ -238,7 +244,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
 
             FileInfo? msiFileInfo = null;
-            if (existingGame.GamePlatform.Name == "Desktop")
+            if (existingGame?.GamePlatform?.Name == "Desktop")
             {
                 if (existingGame.GameFilePath != null)
                     msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
@@ -253,9 +259,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 CurrentCoverImagePath = existingGame.CoverImagePath,
                 CoverImageInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.CoverImagePath)),
                 ImagesFilesInfo = _fileProvider.GetImagesFilesInfo(existingGame.ImagesPaths),
-                SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
-                Author = existingGame.Author,
-                AuthorId = existingGame.Author.Id,
+                SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
+                Author = existingGame?.Author,
+                AuthorId = existingGame?.Author?.Id,
                 DispatchDate = existingGame.DispatchDate,
                 GameFilePath = existingGame.GameFilePath,
                 GameGitHubUrl = existingGame.GameGitHubUrl,

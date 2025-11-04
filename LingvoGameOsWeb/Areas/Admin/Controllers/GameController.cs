@@ -20,8 +20,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly IPlatformsRepository _platformsRepository;
+        readonly EmailService _emailService;
 
-        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository)
+        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository, EmailService emailService)
         {
             _gamesRepository = gamesRepository;
             _logger = logger;
@@ -30,6 +31,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _skillsLearningRepository = skillsLearningRepository;
             _userManager = userManager;
             _platformsRepository = platformsRepository;
+            _emailService = emailService;
         }
 
         public async Task<IActionResult> DeactivateAsync(int gameId)
@@ -55,6 +57,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _fileProvider.DeleteDirectory(directoryPendingGamePath);
 
             await _gamesRepository.RemoveAsync(gameForDelete);
+            await _emailService.TrySendRefusalGameAsync(gameForDelete.Author.Name, gameForDelete?.Author?.Email!, gameForDelete?.Title!);
             return Redirect("/Admin/Home/");
         }
 
