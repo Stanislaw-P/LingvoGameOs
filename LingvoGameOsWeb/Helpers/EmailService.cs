@@ -591,7 +591,7 @@ namespace LingvoGameOs.Helpers
 </body>
 </html>";
         }
-        
+
         private string BuildRefusalGameEmailHtml(string devName, string gameName)
         {
             return $@"<!DOCTYPE html>
@@ -601,83 +601,75 @@ namespace LingvoGameOs.Helpers
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <title>Игра отклонена</title>
     <style>
-        * {{
-            padding: 0;
-            margin: 0;
-            border: 0;
-            box-sizing: border-box;
-        }}
-        
+        /* Базовые стили, которые лучше поддерживаются */
         body {{
+            margin: 0;
+            padding: 20px 0;
             background: #141C30;
             color: #F8FAFE;
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            -webkit-text-size-adjust: 100%;
         }}
         
         .email-container {{
             max-width: 600px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
+        }}
+        
+        /* Табличная верстка для лучшей поддержки */
+        .email-table {{
+            width: 100%;
+            border-collapse: collapse;
         }}
         
         .email-header {{
             text-align: center;
-            margin-bottom: 40px;
             padding-bottom: 20px;
             border-bottom: 2px solid #43495C;
+            margin-bottom: 30px;
         }}
         
         .email-logo {{
             font-family: Arial, sans-serif;
             font-size: 32px;
             color: #D54646;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: bold;
         }}
         
         .email-title {{
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
             color: #D54646;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }}
         
         .email-subtitle {{
-            font-size: 18px;
+            font-size: 16px;
             color: #666D80;
         }}
         
         .email-content {{
             background: #F8FAFE;
-            border-radius: 10px 70px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }}
-        
-        .email-section {{
-            margin-bottom: 30px;
-        }}
-        
-        .email-section:last-child {{
-            margin-bottom: 0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
         }}
         
         .email-greeting {{
             font-size: 16px;
             line-height: 1.6;
             color: #182032;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }}
         
         .email-rejection {{
             background: #FFFFFF;
-            padding: 25px;
-            border-radius: 10px 50px;
-            margin: 25px 0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
             border-left: 4px solid #D54646;
         }}
         
@@ -685,29 +677,28 @@ namespace LingvoGameOs.Helpers
             font-size: 18px;
             font-weight: 600;
             color: #182032;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }}
         
         .email-reasons {{
             background: #FFF5F5;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
             border: 1px solid #FED7D7;
         }}
         
         .email-reasons-title {{
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             color: #C53030;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: center;
         }}
         
+        /* Упрощенная верстка для пунктов */
         .email-reason-item {{
-            display: flex;
-            align-items: flex-start;
-            padding: 12px 0;
+            padding: 10px 0;
             color: #182032;
             line-height: 1.5;
             border-bottom: 1px solid #FED7D7;
@@ -719,21 +710,15 @@ namespace LingvoGameOs.Helpers
         
         .email-reason-icon {{
             color: #D54646;
-            font-size: 18px;
-            margin-right: 12px;
-            min-width: 20px;
-        }}
-        
-        .email-reason-text {{
-            flex: 1;
-            font-size: 15px;
+            display: inline-block;
+            width: 20px;
         }}
         
         .email-final {{
             background: #FFFFFF;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
+            padding: 18px;
+            border-radius: 6px;
+            margin: 15px 0;
             border: 1px solid #E2E8F0;
         }}
         
@@ -741,73 +726,63 @@ namespace LingvoGameOs.Helpers
             font-size: 16px;
             font-weight: 600;
             color: #182032;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }}
         
         .email-note {{
             background: #FFFFFF;
             border-left: 4px solid #718096;
-            padding: 20px;
-            margin: 25px 0;
-            border-radius: 0 10px 10px 0;
+            padding: 18px;
+            margin: 20px 0;
             color: #182032;
         }}
         
         .email-footer {{
             text-align: center;
-            padding-top: 30px;
+            padding-top: 25px;
             border-top: 1px solid #43495C;
             color: #666D80;
         }}
         
         .email-contact {{
-            margin: 20px 0;
-            padding: 15px;
+            margin: 15px 0;
+            padding: 12px;
             background: #F8FAFE;
-            border-radius: 10px;
+            border-radius: 6px;
         }}
         
         .email-support {{
             font-size: 14px;
-            margin-top: 15px;
+            margin-top: 12px;
         }}
         
         .email-signature {{
-            margin-top: 30px;
+            margin-top: 20px;
             color: #666D80;
+            font-size: 12px;
         }}
         
-        strong {{
-            font-weight: 600;
-        }}
-        
-        @media (max-width: 768px) {{
+        /* Простые медиа-запросы для критичных изменений */
+        @media only screen and (max-width: 480px) {{
             .email-container {{
-                padding: 20px 15px;
+                padding: 10px !important;
             }}
             
             .email-content {{
-                padding: 30px 20px;
-                border-radius: 10px 50px;
+                padding: 15px !important;
             }}
             
             .email-title {{
-                font-size: 24px;
+                font-size: 20px !important;
             }}
-        }}
-        
-        @media (max-width: 480px) {{
-            .email-content {{
-                padding: 20px 15px;
+            
+            .email-logo {{
+                font-size: 28px !important;
             }}
             
             .email-rejection,
             .email-reasons {{
-                padding: 20px;
-            }}
-            
-            .email-reason-item {{
-                padding: 10px 0;
+                padding: 15px !important;
             }}
         }}
     </style>
@@ -821,58 +796,49 @@ namespace LingvoGameOs.Helpers
         </div>
 
         <div class=""email-content"">
-            <div class=""email-section"">
-                <p class=""email-greeting"">
-                    Уважаемый(ая) <strong>{devName}</strong>,
+            <p class=""email-greeting"">
+                Уважаемый(ая) <strong>{devName}</strong>,
+            </p>
+            
+            <p class=""email-greeting"">
+                Спасибо за время и усилия, затраченные на создание игры <strong>«{gameName}»</strong> и ее отправку на нашу платформу.
+            </p>
+
+            <div class=""email-rejection"">
+                <div class=""email-rejection-title"">❌ Игра отклонена</div>
+                <p class=""email-greeting"" style=""margin-bottom: 0;"">
+                    После тщательной проверки мы вынуждены сообщить, что игра была отклонена и не может быть опубликована на «Рудзынг».
                 </p>
-                <p class=""email-greeting"">
-                    Спасибо за время и усилия, затраченные на создание игры <strong>«{gameName}»</strong> и ее отправку на нашу платформу.
+            </div>
+
+            <div class=""email-reasons"">
+                <div class=""email-reasons-title"">Возможна одна из причин отклонения:</div>
+                
+                <div class=""email-reason-item"">
+                    <span class=""email-reason-icon"">♦️</span>
+                    Игра содержит неприемлемый контент
+                </div>
+                
+                <div class=""email-reason-item"">
+                    <span class=""email-reason-icon"">♦️</span>
+                    Техническое состояние игры не позволяет ей стабильно функционировать
+                </div>
+                
+                <div class=""email-reason-item"">
+                    <span class=""email-reason-icon"">♦️</span>
+                    В игре не работает обязательный функционал, указанный в требованиях к играм для разработчиков
+                </div>
+            </div>
+
+            <div class=""email-final"">
+                <div class=""email-final-title"">Окончательное решение</div>
+                <p class=""email-greeting"" style=""margin-bottom: 0;"">
+                    Данное решение является окончательным и обжалованию не подлежит. К сожалению, мы не можем допустить к публикации контент, который нарушает наши правила или предоставляет негативный опыт для пользователей.
                 </p>
             </div>
 
-            <div class=""email-section"">
-                <div class=""email-rejection"">
-                    <div class=""email-rejection-title"">❌ Игра отклонена</div>
-                    <p class=""email-greeting"" style=""margin-bottom: 0;"">
-                        После тщательной проверки мы вынуждены сообщить, что игра была отклонена и не может быть опубликована на «Рудзынг».
-                    </p>
-                </div>
-            </div>
-
-            <div class=""email-section"">
-                <div class=""email-reasons"">
-                    <div class=""email-reasons-title"">Возможна одна из причин отклонения:</div>
-                    
-                    <div class=""email-reason-item"">
-                        <div class=""email-reason-icon"">♦️</div>
-                        <div class=""email-reason-text"">Игра содержит неприемлемый контент</div>
-                    </div>
-                    
-                    <div class=""email-reason-item"">
-                        <div class=""email-reason-icon"">♦️</div>
-                        <div class=""email-reason-text"">Техническое состояние игры не позволяет ей стабильно функционировать</div>
-                    </div>
-                    
-                    <div class=""email-reason-item"">
-                        <div class=""email-reason-icon"">♦️</div>
-                        <div class=""email-reason-text"">В игре не работает обязательный функционал, указанный в требованиях к играм для разработчиков (например невозможна интеграция API для отслеживание рейтинга игроков)</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class=""email-section"">
-                <div class=""email-final"">
-                    <div class=""email-final-title"">Окончательное решение</div>
-                    <p class=""email-greeting"" style=""margin-bottom: 0;"">
-                        Данное решение является окончательным и обжалованию не подлежит. К сожалению, мы не можем допустить к публикации контент, который нарушает наши правила или предоставляет негативный опыт для пользователей.
-                    </p>
-                </div>
-
-                <div class=""email-note"">
-                    <p>
-                        Мы понимаем, что это может быть неприятной новостью, и благодарим вас за понимание.
-                    </p>
-                </div>
+            <div class=""email-note"">
+                <p>Мы понимаем, что это может быть неприятной новостью, и благодарим вас за понимание.</p>
             </div>
         </div>
 
