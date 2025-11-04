@@ -70,7 +70,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
 
             FileInfo? msiFileInfo = null;
-            if (existingGame.GamePlatform.Name == "Desktop")
+            if (existingGame?.GamePlatform?.Name == "Desktop")
             {
                 if (existingGame.GameFilePath != null)
                     msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
@@ -85,7 +85,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 CurrentCoverImagePath = existingGame.CoverImagePath,
                 CoverImageInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.CoverImagePath)),
                 ImagesFilesInfo = _fileProvider.GetImagesFilesInfo(existingGame.ImagesPaths),
-                SkillsLearning = existingGame.SkillsLearning.Select(x => x.Name).ToList(),
+                SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
                 AuthorId = existingGame.Author.Id,
                 GameFilePath = existingGame.GameFilePath,
@@ -118,7 +118,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 var existingGame = await _gamesRepository.TryGetByIdAsync(editGame.Id);
                 if (existingGame == null) return NotFound($"Игра с Id: {editGame.Id} не найдена :(");
 
-                List<string>? selectedSkills = editGame.SkillsLearning[0].Split(',').ToList();
+                List<string>? selectedSkills = editGame?.SkillsLearning?[0].Split(',').ToList();
                 List<SkillLearning> skills = await _skillsLearningRepository.GetExistingSkillsAsync(selectedSkills);
                 var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
                 var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(editGame.LanguageLevel);
