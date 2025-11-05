@@ -6,7 +6,7 @@ namespace LingvoGameOsWebApi.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UsersController : ControllerBase
+    public class UsersController : Controller
     {
         readonly UserManager<User> _userManager;
 
@@ -17,7 +17,7 @@ namespace LingvoGameOsWebApi.Controllers
 
 
         [HttpGet("{userId}/points")]
-        public async Task<ActionResult<int>> GetUserPoints(string userId)
+        public async Task<IActionResult> GetUserPoints(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -27,7 +27,7 @@ namespace LingvoGameOsWebApi.Controllers
         }
 
         [HttpPost("{userId}/points")]
-        public async Task<ActionResult> AddPoints(string userId, [FromBody] int amount)
+        public async Task<IActionResult> AddPoints(string userId, [FromBody] int amount)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
