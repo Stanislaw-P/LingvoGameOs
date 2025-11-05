@@ -8,7 +8,7 @@ namespace LingvoGameOsWebApi.Controllers
 {
     [ApiController]
     [Route("api/account")]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         readonly UserManager<User> _userManager;
         readonly SignInManager<User> _signInManager;
@@ -20,7 +20,7 @@ namespace LingvoGameOsWebApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> LoginAsync([FromBody] LoginRequest request)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
         {
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 return BadRequest("Email and password are required");
