@@ -10,20 +10,19 @@ namespace LingvoGameOs.Db.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "TotalPoints",
+            migrationBuilder.RenameColumn(
+                name: "TotalScore",
                 table: "AspNetUsers",
-                type: "integer",
-                nullable: false,
-                defaultValue: 0);
+                newName: "TotalPoints");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.RenameColumn(
                 name: "TotalPoints",
-                table: "AspNetUsers");
+                table: "AspNetUsers",
+                newName: "TotalScore");
         }
     }
 }
