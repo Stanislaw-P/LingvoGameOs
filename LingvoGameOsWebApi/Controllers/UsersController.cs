@@ -1,0 +1,45 @@
+﻿using LingvoGameOs.Db.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace LingvoGameOsWebApi.Controllers
+{
+    [ApiController]
+    [Route("api/users")]
+    public class UsersController : Controller
+    {
+        readonly UserManager<User> _userManager;
+
+        public UsersController(UserManager<User> userManager)
+        {
+            _userManager = userManager;
+        }
+
+
+        [HttpGet("{userId}/points")]
+        public async Task<IActionResult> GetUserPoints(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("Пользователя с таким id не существует");
+            int points = user.TotalPoints;
+            return Ok(points);
+        }
+
+        [HttpPost("{userId}/points")]
+        public async Task<IActionResult> AddPoints(string userId, [FromBody] int amount)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("Пользователя с таким id не существует");
+
+            if (amount <= 0)
+                return BadRequest("Количество баллов должно быть положительным");
+
+            user.TotalPoints += amount;
+            int newTotalPoints = user.TotalPoints;
+            await _userManager.UpdateAsync(user);
+            return Ok(new { UserId = userId, NewTotalPoints = newTotalPoints });
+        }
+    }
+}
