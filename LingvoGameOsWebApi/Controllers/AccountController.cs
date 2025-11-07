@@ -20,6 +20,7 @@ namespace LingvoGameOsWebApi.Controllers
         }
 
         [HttpPost("login")]
+        public async Task<ActionResult<AuthResponse>> LoginAsync([FromBody] LoginRequest request)
         {
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 return BadRequest("Email and password are required");
