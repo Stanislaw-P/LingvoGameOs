@@ -27,7 +27,7 @@ namespace LingvoGameOsWebApi.Controllers
         }
 
         [HttpPost("{userId}/points")]
-        public async Task<IActionResult> AddPoints(string userId, [FromBody] int amount)
+        public async Task<ActionResult> AddPoints(string userId, [FromBody] int amount)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
