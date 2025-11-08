@@ -1,4 +1,5 @@
-﻿using LingvoGameOs.Db;
+﻿using LingvoGameOs.Areas.Admin.Models;
+using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
@@ -36,13 +37,17 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
         public async Task<IActionResult> DeactivateAsync(int gameId)
         {
-            await _gamesRepository.Deactivate(gameId);
+            var existingGame = await _gamesRepository.TryGetByIdAsync(gameId);
+            await _gamesRepository.Deactivate(existingGame!);
+            await _emailService.TrySendAboutDeactivateGameAsync(existingGame?.Author.Name ?? "Разработчик", existingGame?.Author?.Email!, existingGame?.Title!);
             return Redirect("/Admin/Home/");
         }
 
         public async Task<IActionResult> ActivateAsync(int gameId)
         {
-            await _gamesRepository.Activate(gameId);
+            var existingGame = await _gamesRepository.TryGetByIdAsync(gameId);
+            await _gamesRepository.Activate(existingGame!);
+            await _emailService.TrySendAboutPublicationAsync(existingGame?.Author.Name ?? "Разработчик", existingGame?.Author?.Email!, existingGame?.Title!);
             return Redirect("/Admin/Home/");
         }
 
@@ -76,7 +81,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
-            return View(new EditGameViewModel
+            return View(new AdminEditGameViewModel
             {
                 Id = existingGame.Id,
                 Title = existingGame.Title,
@@ -102,7 +107,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAsync(EditGameViewModel editGame)
+        public async Task<IActionResult> EditAsync(AdminEditGameViewModel editGame)
         {
             var adminUserId = _userManager.GetUserId(User);
             var logData = new
@@ -133,7 +138,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
                 existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
                 existingGame.Port = editGame.Port;
-                if(editGame.GamePlatform != "Desktop")
+                if (editGame.GamePlatform != "Desktop")
                     existingGame.Title = editGame.Title.Trim();
 
                 // Если есть новое изображение - меняем
@@ -184,7 +189,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
         }
 
-        private void ProcessChangeGameFilePath(EditGameViewModel editGame, Game existingGame)
+        private void ProcessChangeGameFilePath(AdminEditGameViewModel editGame, Game existingGame)
         {
             if (editGame.GameFilePath != editGame.CurrentGameFilePath)
             {
@@ -192,7 +197,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             }
         }
 
-        private async Task ProcessChangeCoverImageAsync(EditGameViewModel editGame, Game existingGame)
+        private async Task ProcessChangeCoverImageAsync(AdminEditGameViewModel editGame, Game existingGame)
         {
             if (editGame.CoverImage != null)
             {
@@ -206,7 +211,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.CoverImagePath = editGame.CurrentCoverImagePath;
         }
 
-        private void ProcessDeletedImages(EditGameViewModel editGameViewModel, Game game)
+        private void ProcessDeletedImages(AdminEditGameViewModel editGameViewModel, Game game)
         {
             if (editGameViewModel.DeletedImages == null || !editGameViewModel.DeletedImages.Any())
                 return;

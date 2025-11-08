@@ -250,7 +250,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
-            return View(new EditGameViewModel
+            return View(new AdminEditGameViewModel
             {
                 Id = existingGame.Id,
                 Title = existingGame.Title,
@@ -276,7 +276,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DetailsAsync(EditGameViewModel editGame)
+        public async Task<IActionResult> DetailsAsync(AdminEditGameViewModel editGame)
         {
             if (!ModelState.IsValid)
             {

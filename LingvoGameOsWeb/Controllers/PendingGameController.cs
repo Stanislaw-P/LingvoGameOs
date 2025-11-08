@@ -1,6 +1,6 @@
-﻿using LingvoGameOs.Db;
+﻿using LingvoGameOs.Areas.Admin.Models;
+using LingvoGameOs.Db;
 using LingvoGameOs.Helpers;
-using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LingvoGameOs.Controllers
@@ -34,7 +34,7 @@ namespace LingvoGameOs.Controllers
                     msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingPendingGame.GameFilePath));
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
-            return View(new EditGameViewModel
+            return View(new AdminEditGameViewModel
             {
                 Id = existingPendingGame.Id,
                 Title = existingPendingGame.Title,
@@ -58,7 +58,7 @@ namespace LingvoGameOs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAsync(EditGameViewModel editGameView)
+        public async Task<IActionResult> EditAsync(AdminEditGameViewModel editGameView)
         {
             if (ModelState.IsValid)
             {

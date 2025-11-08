@@ -22,15 +22,19 @@ namespace LingvoGameOs.Models
         [MinLength(10, ErrorMessage = "Минимальная длина 10 символов")]
         public string Rules { get; set; } = null!;
 
+        [Required(ErrorMessage = "Уровень языка - обязательное поле")]
         public string LanguageLevel { get; set; } = null!;
 
+        [Required(ErrorMessage = "Выберите хотя бы один развиваемый навык")]
         public List<string>? SkillsLearning { get; set; }
 
         public string? CurrentCoverImagePath { get; set; }
+
         public IFormFile? CoverImage { get; set; }
         public FileInfo? CoverImageInfo { get; set; }
 
         public List<ImageFileInfo>? ImagesFilesInfo { get; set; }
+        
         public IFormFile[]? UploadedImages { get; set; }
         public List<string>? DeletedImages { get; set; }
 
@@ -38,11 +42,12 @@ namespace LingvoGameOs.Models
 
         public string? CurrentGameFilePath { get; set; }
         public string? GameFilePath { get; set; }
+
+        [Required(ErrorMessage = "Ссылка на GitHub - обязательное поле")]
         public string GameGitHubUrl { get; set; } = null!;
         public FileInfo? GameFileInfo { get; set; }
 
-        public string? GameFolderName { get; set; }
-        public int Port { get; set; }
+        [Required(ErrorMessage = "Выберите платформу")]
         public string GamePlatform { get; set; } = null!;
         public DateTimeOffset DispatchDate { get; set; }
         public DateTimeOffset PublicationDate { get; set; }
