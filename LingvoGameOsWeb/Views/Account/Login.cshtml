@@ -426,12 +426,14 @@
                 <span asp-validation-for="Password" class="login-validation"></span>
             </div>
             <button type="submit" asp-controller="Account" asp-action="Login" class="login-btn-main">Продолжить</button>
-            @* <button type="button" class="login-btn-vk">
+
+            <a asp-area="" asp-controller="Account" asp-action="LoginVK" asp-route-returnUrl="@Model.ReturnUrl" class="login-btn-vk">
                 <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
-            </button> *@
+            </a>
 
             <div style="color:red" class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
         </form>
+
         <div class="login-bottom-link">
             Ещё не зарегистрированы? <a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрироваться</a>
         </div>

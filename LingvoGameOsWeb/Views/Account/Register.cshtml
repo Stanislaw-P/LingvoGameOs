@@ -434,6 +434,30 @@
             padding: 11px 28px;
         }
     }
+
+    .login-btn-vk {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: #f8fafe;
+        color: #2c51ae;
+        border: 1.5px solid #e6ecfa;
+        border-radius: 73px;
+        padding: 13px 0;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 2px;
+        transition: border 0.2s, background 0.2s;
+        font-family: 'Axiforma', Arial, sans-serif;
+    }
+
+        .login-btn-vk:hover {
+            border: 1.5px solid #2c51ae;
+            background: #e6ecfa;
+        }
 </style>
 
 <div class="register-main-block">
@@ -472,6 +496,10 @@
                 </div>
             </div>
             <button type="submit" asp-controller="Account" asp-action="Register" class="register-btn-main">Зарегистрироваться</button>
+
+            <a asp-area="" asp-controller="Account" asp-action="LoginVK" asp-route-returnUrl="@Model.ReturnUrl" class="login-btn-vk">
+                <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
+            </a>
 
             <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
         </form>
