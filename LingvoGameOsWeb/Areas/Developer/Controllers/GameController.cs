@@ -129,6 +129,8 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 // Меняем путь к файлу игры, если он изменился
                 ProcessChangeGameFilePath(editGame, existingGame);
 
+                await ProcessNewGameFileAsync(editGame, existingGame);
+
                 // Деактивируем игру, дабы админ подтвердил изменения
                 existingGame.IsActive = false;
 
@@ -247,6 +249,34 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                     existingGame.Title = newGameFileName;
                     _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameFilePath);
                 }
+                else
+                    existingGame.Title = editGame.Title.Trim();
+            }
+        }
+
+        private async Task ProcessNewGameFileAsync(EditGameViewModel editGame, Game existingGame)
+        {
+            if (editGame.GamePlatform == "Desktop" && editGame.UploadedGameFile != null && editGame.UploadedGameFile.Length > 0)
+            {
+
+                // Если есть старый файл - удаляем его
+                if (!string.IsNullOrEmpty(editGame.CurrentGameFilePath))
+                {
+                    _fileProvider.DeleteFile(editGame.CurrentGameFilePath);
+                }
+
+                // Сохраняем новый файл игры
+                string? newGameFilePath = await _fileProvider.SaveGameFileAsync(
+                    editGame.UploadedGameFile,
+                    existingGame.Id,
+                    existingGame.Title,
+                    Folders.Games
+                );
+
+                // Обновляем путь к файлу в базе данных
+                existingGame.GameFilePath = newGameFilePath;
+                editGame.GameFilePath = newGameFilePath;
+                editGame.CurrentGameFilePath = newGameFilePath;
             }
         }
     }

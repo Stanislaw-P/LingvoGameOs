@@ -326,6 +326,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
                 existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
                 existingGame.Port = editGame.Port;
+                if (editGame.GamePlatform != "Desktop")
+                    existingGame.Title = editGame.Title.Trim(); // Если это Desktop то меняем название игры в методе ProcessRenameGameFile
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImageAsync(editGame, existingGame);
@@ -339,7 +341,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Удаляем файл игры
                 ProcessDeleteGameFile(editGame, existingGame);
 
-                // Меняем ия
+                // Меняем имя
                 ProcessRenameGameFile(editGame, existingGame);
 
                 // Меняем путь к файлу игры, если он изменился
@@ -460,8 +462,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 else
                     existingGame.Title = editGame.Title.Trim();
             }
-            else
-                existingGame.Title = editGame.Title.Trim();
         }
     }
 }

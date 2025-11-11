@@ -273,6 +273,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     existingGame.Title = newGameFileName;
                     _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameFilePath);
                 }
+                else
+                    existingGame.Title = editGame.Title.Trim();
             }
         }
     }
