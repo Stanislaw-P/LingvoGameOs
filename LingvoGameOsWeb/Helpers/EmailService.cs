@@ -67,7 +67,7 @@ namespace LingvoGameOs.Helpers
 
         public async Task<bool> TrySendRefusalGameAsync(string devName, string devEmail, string gameName)
         {
-            string subject = "Игра отклонена";
+            string subject = "Игра удалена";
             string htmlMessage = BuildRefusalGameEmailHtml(devName, gameName);
             return await TrySendEmailAsync(devEmail, subject, htmlMessage);
         }
