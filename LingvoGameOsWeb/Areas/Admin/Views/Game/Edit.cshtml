@@ -197,17 +197,18 @@
                             </div>
 
                             <div class="upload-form__group">
-                                <label class="upload-form__label">
-                                    Ссылка на репозиторий Git Hub игры <span class="required">*</span>
+                                <label for="game-file-url" class="upload-form__label">
+                                    Ссылка на репозиторий GitHub игры <span class="required">*</span>
                                 </label>
                                 <div class="upload-form__input-wrapper">
                                     <div class="input-field">
-                                        <input type="url" asp-for="GameGitHubUrl"
+                                        <input type="url" asp-for="GameGitHubUrl" id="game-file-url"
                                                class="input-field__input" placeholder="Введите URL на Git Hub">
                                     </div>
-                                    <span class="error-message"></span>
+                                    <span asp-validation-for="GameGitHubUrl" class="error-message"></span>
                                 </div>
                             </div>
+
 
                             <div class="upload-form__group">
                                 <label for="game-platform" class="upload-form__label">
@@ -243,34 +244,45 @@
 
                             @if (Model.GamePlatform == "Desktop")
                             {
-                                <div class="upload-form__group" id="game-file-upload-group">
+                                <div class="upload-form__group" id="game-file-upload-group" style="display: none;">
                                     <label class="upload-form__label">Файл игры <span class="required">*</span></label>
-                                    @if (Model.GameFilePath != null)
-                                    {
-                                        <div class="upload-form__input-wrapper">
-                                            <div class="upload-form__file-upload">
-                                                <div class="file-upload__previews" id="file-preview"
-                                                     data-existing-file="@Model.GameFilePath"
-                                                     data-file-name="@Model.GameFileInfo?.Name"
-                                                     data-file-size="@(Model.GameFileInfo?.Length / (1024 * 1024) ?? 0)">
+                                    <div class="upload-form__input-wrapper">
+                                        <div class="upload-form__file-upload">
+                                            <div class="file-upload" id="file-dropzone">
+                                                <div class="file-upload__dropzone">
+                                                    <div class="file-upload__text">
+                                                        <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                        <div class="file-upload__info">
+                                                            <p class="file-upload__info-text">
+                                                                Загрузите или перетащите игру сюда (MSI)
+                                                            </p>
+                                                            <p class="file-upload__size">Максимальный размер 2 ГБ</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="file" asp-for="UploadedGameFile" id="game-file-file"
+                                                       class="input-field__input" accept=".msi" hidden>
+                                            </div>
+                                            <div class="file-upload__previews" id="file-preview"
+                                                 data-existing-file="@Model.GameFilePath"
+                                                 data-file-name="@Model.GameFileInfo?.Name"
+                                                 data-file-size="@(Model.GameFileInfo != null ? Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0)) : 0)">
+                                                @if (Model.GameFilePath != null && Model.GameFileInfo != null)
+                                                {
                                                     <div class="file-upload__file">
-                                                        <a href="@Model.GameFilePath" download="@Model.GameFileInfo?.Name" class="file-upload__file-name">
-                                                            @Model.GameFileInfo?.Name
+                                                        <a href="@Model.GameFilePath" download="@Model.GameFileInfo.Name" class="file-upload__file-name">
+                                                            @Model.GameFileInfo.Name
                                                         </a>
                                                         <span class="file-upload__file-size">
-                                                            @(Model.GameFileInfo != null ? $"{Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0))} Мб" : "Размер неизвестен")
+                                                            @(Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0))) Мб
                                                         </span>
                                                         <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
                                                     </div>
-                                                </div>
+                                                }
                                             </div>
-                                            <span id="file-error" class="error-message"></span>
                                         </div>
-                                    }
-                                    else
-                                    {
-                                        <span class="file-upload__file-name">Файл игры отсутствует на сервере!</span>
-                                    }
+                                        <span id="file-error" class="error-message"></span>
+                                    </div>
                                 </div>
                                 <input type="hidden" asp-for="GameFilePath" />
                             }

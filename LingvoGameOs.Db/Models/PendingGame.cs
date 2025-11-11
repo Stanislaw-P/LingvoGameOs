@@ -13,7 +13,7 @@ namespace LingvoGameOs.Db.Models
         public string Title { get; set; } = null!;
         [MaxLength(201)]
         public string Description { get; set; } = null!;
-        public string Rules { get; set; }
+        public string Rules { get; set; } = null!;
         public DateTimeOffset DispatchDate { get; set; }
         public DateTimeOffset LastUpdateDate { get; set; }
         public User? Author { get; set; }

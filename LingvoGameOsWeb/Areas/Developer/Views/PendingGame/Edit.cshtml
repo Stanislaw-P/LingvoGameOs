@@ -1,0 +1,477 @@
+﻿@model EditGameViewModel
+
+@{
+    ViewData["Title"] = $"Детали игры: {Model.Title}";
+}
+
+<div class="wrapper">
+    <div id="header-placeholder"></div>
+    <main class="content">
+        <div class="content__container _container">
+            <section class="upload-hero" data-game-id="upload">
+                <div class="upload-hero__content">
+                    <h1 class="upload-hero__title">Редактирование игры на модерации</h1>
+                    <div class="upload-hero__form-container">
+                        <p class="upload-hero__info">
+                            Ознакомьтесь с нашими
+                            <a href="#" id="open-quality-modal" class="upload-hero__info--highlight">
+                                рекомендациями по обеспечению качества
+                            </a>
+                            перед публикацией вашего проекта.
+                        </p>
+                        <form method="post" class="upload-form" id="upload-game-form" data-action="/developer/pendinggame/edit" enctype="multipart/form-data">
+                            <div asp-validation-summary="All" class="error-message"></div>
+
+                            <div class="upload-form__group">
+                                <label class="upload-form__label">
+                                    Автор игры и почта для связи<span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="text" value="@Model?.Author?.Name @Model?.Author?.Surname - @Model?.Author?.Email" class="input-field__input"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label class="upload-form__label">
+                                    Дата отправки заявки <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="text" value="@Model?.DispatchDate.ToString("dd.MM.yyyy")" class="input-field__input"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-title" class="upload-form__label">
+                                    Название игры <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="text" asp-for="Title" id="game-title" class="input-field__input"
+                                               placeholder="Введите название игры">
+                                        <span asp-validation-for="Title" class="error-message"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-short-description" class="upload-form__label">
+                                    Краткое описание игры
+                                    (до 200 символов) <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field input-field--textarea">
+                                        <textarea asp-for="Description" id="game-short-description"
+                                                  class="input-field__textarea"
+                                                  placeholder="Кратко опишите сюжет или суть игры" maxlength="200"
+                                                  required></textarea>
+                                    </div>
+                                    <span asp-validation-for="Description" class="error-message"></span>
+
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-rules" class="upload-form__label">
+                                    Правила игры <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field input-field--textarea">
+                                        <textarea asp-for="Rules" id="game-rules" class="input-field__textarea"
+                                                  placeholder="Опишите правила игры" required></textarea>
+                                    </div>
+                                    <span asp-validation-for="Rules" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-skillsLearning" class="upload-form__label">
+                                    Развиваемые навыки <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper" data-tooltip="Выберите развиваемые навыки, соответствующие вашей игре">
+                                    <div class="custom-dropdown" id="skillsLearning-dropdown">
+                                        <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите развиваемые навыки">
+                                            <span class="custom-dropdown__placeholder">Выберите развиваемые навыки</span>
+                                            <img src="/icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
+                                        </div>
+                                        <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
+                                            <input type="text" class="custom-dropdown__search" placeholder="Поиск навыков..." aria-label="Поиск навыков">
+                                            <ul class="custom-dropdown__options">
+                                                <li class="custom-dropdown__option" data-value="select-all" role="option" aria-selected="false">Выбрать все</li>
+                                                @foreach (var skill in ViewBag.SkillsLearning)
+                                                {
+                                                    <li class="custom-dropdown__option" data-value="@skill" role="option" aria-selected="false">@skill</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="selected-skillsLearning-list" id="selected-skillsLearning-list">
+                                            @if (Model.SkillsLearning != null && Model.SkillsLearning.Any())
+                                            {
+                                                @foreach (var skillName in Model.SkillsLearning)
+                                                {
+                                                    <span class="selected-item" data-value="@skillName">
+                                                        @skillName
+                                                        <span class="selected-item__remove" role="button" aria-label="Удалить @skillName">×</span>
+                                                    </span>
+                                                }
+                                            }
+                                        </div>
+                                        <input asp-for="SkillsLearning" type="hidden" id="game-skillsLearning" value="@(Model.SkillsLearning != null ? string.Join(",", Model.SkillsLearning) : "")" required>
+                                    </div>
+                                    <span asp-validation-for="SkillsLearning" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label class="upload-form__label">Уровень <span class="required">*</span></label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="level-list">
+                                        <label class="level-item">
+                                            <span class="level-item__input">
+                                                <input type="radio" asp-for="LanguageLevel" value="Барашек, который пытается говорить"
+                                                       class="level-item__radio" required>
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Барашек, который пытается говорить» –
+                                                начинаешь издавать осмысленные звуки, но пока не всё понятно.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
+                                                <input type="radio" asp-for="LanguageLevel" value="Юный нарт"
+                                                       class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Юный нарт» – уже умеешь составлять
+                                                предложения и понимаешь базовые правила языка.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
+                                                <input type="radio" asp-for="LanguageLevel" value="Кавказский орёл"
+                                                       class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Кавказский орёл» – уверенно говоришь,
+                                                строишь сложные фразы и можешь поддержать разговор.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
+                                                <input type="radio" asp-for="LanguageLevel" value="Старейшина, который говорит тосты"
+                                                       class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Старейшина, который говорит тосты» –
+                                                свободно владеешь языком, понимаешь тонкости и культурные
+                                                нюансы.
+                                            </span>
+                                        </label>
+                                        <label class="level-item">
+                                            <span class="level-item__input">
+                                                <input type="radio" asp-for="LanguageLevel" value="Хранитель языка"
+                                                       class="level-item__radio">
+                                            </span>
+                                            <span class="level-item__text">
+                                                «Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <span asp-validation-for="SkillsLearning" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-file-url" class="upload-form__label">
+                                    Ссылка на репозиторий GitHub игры <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="url" asp-for="GameGitHubUrl" id="game-file-url"
+                                               class="input-field__input" placeholder="Введите URL на Git Hub">
+                                    </div>
+                                    <span asp-validation-for="GameGitHubUrl" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-platform" class="upload-form__label">
+                                    Платформа <span class="required">*</span>
+                                </label>
+                                <div class="upload-form__input-wrapper" data-tooltip="Выберите платформу для вашей игры">
+                                    <div class="custom-dropdown" id="platform-dropdown">
+                                        <input type="hidden" asp-for="GamePlatform" id="game-platform" required>
+                                        <div class="custom-dropdown__selected" tabindex="0" role="combobox" aria-expanded="false" aria-label="Выберите платформу">
+                                            <span class="custom-dropdown__placeholder">Выберите платформу</span>
+                                            <img src="/icon/chevron-down.svg" alt="Открыть список" class="custom-dropdown__icon">
+                                        </div>
+                                        <div class="custom-dropdown__menu" role="listbox" aria-hidden="true">
+                                            <ul class="custom-dropdown__options">
+                                                <li class="custom-dropdown__option" role="option" data-value="Web-Mobile" aria-selected="false">Web-Mobile</li>
+                                                <li class="custom-dropdown__option" role="option" data-value="Web-Desktop" aria-selected="false">Web-Desktop</li>
+                                                <li class="custom-dropdown__option" role="option" data-value="Desktop" aria-selected="false">Desktop</li>
+                                            </ul>
+                                        </div>
+                                        <div class="selected-platforms-list" id="selected-platforms-list">
+                                            @if (Model.GamePlatform != null)
+                                            {
+                                                <span class="selected-item" data-value="@Model.GamePlatform">
+                                                    @Model.GamePlatform
+                                                    <span class="selected-item__remove" role="button" aria-label="Удалить @Model.GamePlatform">×</span>
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="GamePlatform" class="error-message"></span>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group" id="game-file-upload-group" style="display: none;">
+                                <label class="upload-form__label">Файл игры <span class="required">*</span></label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="upload-form__file-upload">
+                                        <div class="file-upload" id="file-dropzone">
+                                            <div class="file-upload__dropzone">
+                                                <div class="file-upload__text">
+                                                    <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                    <div class="file-upload__info">
+                                                        <p class="file-upload__info-text">
+                                                            Загрузите или перетащите игру сюда (MSI)
+                                                        </p>
+                                                        <p class="file-upload__size">Максимальный размер 2 ГБ</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="file" asp-for="UploadedGameFile" id="game-file-file"
+                                                   class="input-field__input" accept=".msi" hidden>
+                                        </div>
+                                        <div class="file-upload__previews" id="file-preview"
+                                             data-existing-file="@Model.GameFilePath"
+                                             data-file-name="@Model.GameFileInfo?.Name"
+                                             data-file-size="@(Model.GameFileInfo != null ? Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0)) : 0)">
+                                            @if (Model.GameFilePath != null && Model.GameFileInfo != null)
+                                            {
+                                                <div class="file-upload__file">
+                                                    <a href="@Model.GameFilePath" download="@Model.GameFileInfo.Name" class="file-upload__file-name">
+                                                        @Model.GameFileInfo.Name
+                                                    </a>
+                                                    <span class="file-upload__file-size">
+                                                        @(Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0))) Мб
+                                                    </span>
+                                                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <span id="file-error" class="error-message"></span>
+                                </div>
+                            </div>
+                            <input type="hidden" asp-for="GameFilePath" />
+                            @* } *@
+
+                            @* @if (Model.GamePlatform == "Desktop")
+                            {
+                                <div class="upload-form__group" id="game-file-upload-group">
+                                    <label class="upload-form__label">Файл игры <span class="required">*</span></label>
+                                    @if (Model.GameFilePath != null)
+                                    {
+                                        <div class="upload-form__input-wrapper">
+                                            <div class="upload-form__file-upload">
+                                                <div class="file-upload__previews" id="file-preview"
+                                                     data-existing-file="@Model.GameFilePath"
+                                                     data-file-name="@Model.GameFileInfo?.Name"
+                                                     data-file-size="@(Model.GameFileInfo?.Length / (1024 * 1024) ?? 0)">
+                                                    <div class="file-upload__file">
+                                                        <a href="@Model.GameFilePath" download="@Model.GameFileInfo?.Name" class="file-upload__file-name">
+                                                            @Model.GameFileInfo?.Name
+                                                        </a>
+                                                        <span class="file-upload__file-size">
+                                                            @(Model.GameFileInfo != null ? $"{Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0))} Мб" : "Размер неизвестен")
+                                                        </span>
+                                                        <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span id="file-error" class="error-message"></span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="file-upload__file-name">Файл игры отсутствует на сервере!</span>
+                                    }
+                                </div>
+                                <input type="hidden" asp-for="GameFilePath" />
+                            } *@
+
+                            <div class="upload-form__group">
+                                <label for="game-cover-url" class="upload-form__label">
+                                    Обложка
+                                    игры  <span class="required">*</span>
+                                </label>
+                                <p class="upload-form__file-label">Прикрепите фото обложки игры  <span class="required">*</span></p>
+                                <div class="upload-form__file-upload">
+                                    <div class="file-upload" id="cover-dropzone">
+                                        <div class="file-upload__dropzone">
+                                            <div class="file-upload__text">
+                                                <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                <div class="file-upload__info">
+                                                    <p class="file-upload__info-text">
+                                                        Загрузите или перетащите файл
+                                                    </p>
+                                                    <p class="file-upload__size">Максимальный размер 30MB</p>
+                                                </div>
+                                            </div>
+                                            <input type="file" asp-for="CoverImage" id="cover-image-file"
+                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp" hidden>
+                                        </div>
+                                    </div>
+                                    <div class="file-upload__previews" id="cover-image-preview"
+                                         data-existing-image="@Model?.CurrentCoverImagePath"
+                                         data-image-name="@Model?.CoverImageInfo?.Name"
+                                         data-image-size="@(Model?.CoverImageInfo?.Length / 1024 ?? 0)">
+                                    </div>
+                                    <input type="hidden" asp-for="CurrentCoverImagePath" />
+                                </div>
+                                <span id="cover-error" class="error-message"></span>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-video" class="upload-form__label">
+                                    Ссылка на видео из VK
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field">
+                                        <input type="url" asp-for="VideoUrl" id="game-video" class="input-field__input"
+                                               placeholder="Вставьте URL адрес видео">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label for="game-video" class="upload-form__label">
+                                    Скриншоты игры  <span class="required">*</span>
+                                </label>
+                                <p class="upload-form__file-label">Прикрепите скриншоты игры (максимум 3)  <span class="required">*</span></p>
+                                <div class="upload-form__file-upload">
+                                    <label class="file-upload" id="screenshots-dropzone">
+                                        <div class="file-upload__dropzone">
+                                            <div class="file-upload__text">
+                                                <img src="/icon/cloud-download.svg" alt="" class="file-upload__icon">
+                                                <div class="file-upload__info">
+                                                    <p class="file-upload__info-text">
+                                                        Загрузите или перетащите файлы
+                                                    </p>
+                                                    <p class="file-upload__size">Максимальный размер 30MB</p>
+                                                </div>
+                                            </div>
+                                            <input type="file" asp-for="UploadedImages" id="game-screenshots-file"
+                                                   class="input-field__input" accept=".jpg,.jpeg,.png,.webp,image/jpg,image/jpeg,image/png,image/webp" multiple
+                                                   hidden>
+                                        </div>
+                                    </label>
+                                    <div class="file-upload__previews" id="screenshots-preview">
+                                        <!-- Существующие изображения как скрытые элементы -->
+                                        @if (Model?.ImagesFilesInfo != null)
+                                        {
+                                            @foreach (var imgInfo in Model.ImagesFilesInfo)
+                                            {
+                                                <div data-existing-image="@imgInfo.ImagePath"
+                                                     data-image-id="@imgInfo?.FileInfo?.Name"
+                                                     data-image-name="@imgInfo?.FileInfo?.Name"
+                                                     style="display: none;"></div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <span id="screenshots-error" class="error-message"></span>
+                            </div>
+
+                            <div class="upload-form__group">
+                                <label class="upload-form__label">
+                                    Первые замечания от администрации платформы
+                                </label>
+                                <div class="upload-form__input-wrapper">
+                                    <div class="input-field input-field--textarea">
+                                        <textarea asp-for="LastMessage" class="input-field__textarea" readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="AuthorId" />
+                            <input type="hidden" asp-for="DispatchDate" />
+                            <input type="hidden" asp-for="CurrentGameFilePath" value="@Model?.GameFilePath" />
+                            <input type="hidden" asp-for="LastMessage" />
+
+                            <button type="submit" asp-area="Developer" asp-controller="PendingGame" asp-action="Edit" class="upload-form__submit btn--success" aria-busy="false">
+                                <span class="upload-form__submit-text">Сохранить изменения</span>
+                            </button>
+                            <a asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@Model?.AuthorId" class="upload-form__submit">
+                                <span class="upload-form__submit-text">Отменить изменения</span>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <div class="quality-modal__overlay" id="qualityModalOverlay">
+                <div class="quality-modal">
+                    <button class="quality-modal__close" id="qualityModalClose" aria-label="Закрыть модальное окно">
+                        <img src="/icon/close.svg" alt="Закрыть" class="quality-modal__close-icon">
+                    </button>
+                    <h2 class="quality-modal__title">Рекомендации по обеспечению качества</h2>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Соответствие осетинской культуре</h3>
+                        <p class="quality-modal__text">
+                            Убедитесь, что контент игры уважает осетинские традиции.
+                            Используйте аутентичные слова, фразы и мотивы.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Образовательная ценность</h3>
+                        <p class="quality-modal__text">
+                            Игра должна способствовать изучению языка. Включите задания
+                            на словарный запас, грамматику или аудирование.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Качество метаданных</h3>
+                        <p class="quality-modal__text">
+                            Укажите точное название, описание и теги. Обложка должна быть
+                            привлекательной.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Техническая интеграция</h3>
+                        <p class="quality-modal__text">
+                            Используйте HTML5 для встраивания через iframe. Проверьте
+                            игру на отсутствие ошибок.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Доступность и интерактивность</h3>
+                        <p class="quality-modal__text">
+                            Обеспечьте адаптивность для всех устройств и мгновенную
+                            обратную связь.
+                        </p>
+                    </div>
+                    <div class="quality-modal__section">
+                        <h3 class="quality-modal__subtitle">Соответствие стандартам</h3>
+                        <p class="quality-modal__text">
+                            Проверьте игру на соответствие WCAG и безопасность контента.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <script type="module" src="/js/game-edit.js"></script>
+}

@@ -224,8 +224,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 return Ok(new
                 {
                     title = existingGame.Title,
-                    author = $"{existingGame.Author.Name} {existingGame.Author.Surname}",
-                    authorEmail = existingGame.Author.Email
+                    author = $"{existingGame?.Author?.Name} {existingGame?.Author?.Surname}",
+                    authorEmail = existingGame?.Author?.Email
                 });
             }
             catch (Exception ex)

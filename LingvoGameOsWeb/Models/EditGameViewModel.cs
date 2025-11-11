@@ -40,6 +40,8 @@ namespace LingvoGameOs.Models
 
         public string? VideoUrl { get; set; }
 
+        public IFormFile? UploadedGameFile { get; set; }
+
         public string? CurrentGameFilePath { get; set; }
         public string? GameFilePath { get; set; }
 

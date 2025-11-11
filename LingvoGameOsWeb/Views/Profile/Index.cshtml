@@ -145,8 +145,8 @@
                                             }
                                             @if (Model.IsMyProfile)
                                             {
-                                                <a href="#" class="user-added-games__button user-added-games__button--secondary">Аналитика</a>
-                                                <a asp-area="" asp-controller="Game" asp-action="PendingGameEdit" asp-route-gameId="@pendingGame.Id" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
+                                                <a href="#" class="user-added-games__button user-added-games__button--secondary">Обратная связь</a>
+                                                <a asp-area="Developer" asp-controller="PendingGame" asp-action="Edit" asp-route-pendingGameId="@pendingGame.Id" class="user-added-games__button user-added-games__button--icon" title="Редактировать">
                                                     <img src="/icon/edit.svg" alt="Редактировать" class="user-added-games__edit-icon">
                                                 </a>
                                             }
