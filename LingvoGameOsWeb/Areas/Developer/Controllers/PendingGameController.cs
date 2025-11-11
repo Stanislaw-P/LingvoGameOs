@@ -84,6 +84,14 @@ namespace LingvoGameOs.Areas.Developer.Controllers
                 if (authorGame != null)
                     editGame.Author = authorGame;
 
+                FileInfo? msiFileInfo = null;
+                if (editGame?.GamePlatform == "Desktop")
+                {
+                    if (editGame.GameFilePath != null)
+                        msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(editGame.GameFilePath));
+                }
+                editGame!.GameFileInfo = msiFileInfo;
+
                 return View(editGame);
             }
 
@@ -230,9 +238,10 @@ namespace LingvoGameOs.Areas.Developer.Controllers
             pendingGame.ImagesPaths.AddRange(newImagesPaths);
         }
 
+        // Удаляем файл игры если он был удален пользователем или если пользователь изменил платформу с десктоп на Веб
         private void ProcessDeleteGameFile(EditGameViewModel editGame, PendingGame existingGame)
         {
-            if (editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null)
+            if ((editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null) || (editGame.GamePlatform != "Desktop" && editGame.GameFilePath != null))
             {
                 if (editGame.CurrentGameFilePath != null)
                 {
