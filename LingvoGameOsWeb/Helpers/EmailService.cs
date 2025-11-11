@@ -806,7 +806,7 @@ namespace LingvoGameOs.Helpers
     <div class=""email-container"">
         <div class=""email-header"">
             <div class=""email-logo"">Рудзынг</div>
-            <h1 class=""email-title"">Игра отклонена</h1>
+            <h1 class=""email-title"">Игра удалена</h1>
             <p class=""email-subtitle"">Уведомление от команды модерации</p>
         </div>
 
