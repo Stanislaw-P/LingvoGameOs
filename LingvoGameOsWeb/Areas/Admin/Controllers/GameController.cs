@@ -250,7 +250,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
         private void ProcessDeleteGameFile(EditGameViewModel editGame, Game existingGame)
         {
-            if (editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null)
+            if ((editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null) || (editGame.GamePlatform != "Desktop" && editGame.GameFilePath != null))
             {
                 if (editGame.CurrentGameFilePath != null)
                 {
