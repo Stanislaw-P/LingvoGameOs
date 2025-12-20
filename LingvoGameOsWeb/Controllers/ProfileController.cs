@@ -73,6 +73,7 @@ namespace LingvoGameOs.Controllers
                     DevGames = devGamesViewModel,
                     DevPendingGames = user.DevPendingGames,
                     GamesHistory = gamesHistory,
+                    TotalPoints = user.TotalPoints
                 };
 
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
