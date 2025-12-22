@@ -44,7 +44,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie = new CookieBuilder { IsEssential = true };
 });
 
-// Register repository interfaces and implementations for dependency injection
 builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbRepository>();
 builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
 builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbRepository>();
@@ -52,13 +51,10 @@ builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>
 builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepository>();
 
-// ¬страивание зависимости дл€ работы с почтой
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddScoped<RatingService>();
-
-// Add support for unobtrusive AJAX functionality
 builder.Services.AddUnobtrusiveAjax();
 
 // Configure Serilog for application logging
