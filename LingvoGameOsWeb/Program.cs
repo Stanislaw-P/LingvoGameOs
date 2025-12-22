@@ -28,15 +28,12 @@ var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "De
 
 var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
-// Configure ASP.NET Core Identity with custom User and IdentityRole
 builder
     .Services.AddIdentity<User, IdentityRole>()
-    // Add Entity Framework store for Identity using our DatabaseContext
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders()
     .AddErrorDescriber<RussianIdentityErrorDescriber>();
 
-// Register DatabaseContext with SQLite provider
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
 // Configure application cookie settings
