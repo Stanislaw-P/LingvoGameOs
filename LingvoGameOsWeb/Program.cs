@@ -36,7 +36,6 @@ builder
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
-// Configure application cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromHours(8);
@@ -45,9 +44,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie = new CookieBuilder { IsEssential = true };
 });
 
-
 // Register repository interfaces and implementations for dependency injection
-builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 builder.Services.AddTransient<ILanguageLevelsRepository, LanguageLevelsDbRepository>();
 builder.Services.AddTransient<IPlatformsRepository, PlatformsDbRepository>();
 builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbRepository>();
