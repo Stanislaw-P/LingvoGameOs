@@ -62,6 +62,11 @@ builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepositor
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<EmailService>();
 
+// S3 Service for file storage
+builder.Services.AddScoped<S3Service>();
+
+builder.Services.AddScoped<FileProvider>();
+
 builder.Services.AddScoped<RatingService>();
 
 // Add support for unobtrusive AJAX functionality
