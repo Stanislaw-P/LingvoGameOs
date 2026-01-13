@@ -23,6 +23,7 @@ namespace LingvoGameOs.Controllers
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly ILogger<GameController> _logger;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
+        readonly S3FileProvider _s3FileProvider;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -35,7 +36,8 @@ namespace LingvoGameOs.Controllers
             ILogger<GameController> logger,
             IConfiguration configuration
 ,
-            IFavoriteGamesRepository favoriteGamesRepository)
+            IFavoriteGamesRepository favoriteGamesRepository,
+            S3FileProvider s3FileProvider)
         {
             _configuration = configuration;
 
@@ -48,6 +50,7 @@ namespace LingvoGameOs.Controllers
             _pendingGamesRepository = pendingGamesRepository;
             _logger = logger;
             _favoriteGamesRepository = favoriteGamesRepository;
+            _s3FileProvider = s3FileProvider;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
