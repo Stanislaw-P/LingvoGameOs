@@ -22,8 +22,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly IPlatformsRepository _platformsRepository;
         readonly EmailService _emailService;
+        readonly S3FileProvider _s3FileProvider;
 
-        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository, EmailService emailService)
+        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository, EmailService emailService, S3FileProvider s3FileProvider)
         {
             _gamesRepository = gamesRepository;
             _logger = logger;
@@ -33,6 +34,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _userManager = userManager;
             _platformsRepository = platformsRepository;
             _emailService = emailService;
+            _s3FileProvider = s3FileProvider;
         }
 
         public async Task<IActionResult> DeactivateAsync(int gameId)
