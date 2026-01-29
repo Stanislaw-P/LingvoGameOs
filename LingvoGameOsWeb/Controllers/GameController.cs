@@ -248,18 +248,18 @@ namespace LingvoGameOs.Controllers
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
                         // Теперь можно использовать ID для сохранения файлов в соотв. директорию
-                        string? gameUrl = await _fileProvider.SaveGameFileAsync(
+                        string? gameUrl = await _s3FileProvider.SaveGameFileAsync(
                             gameViewModel.UploadedGameFile,
                             pendingGame.Id,
                             pendingGame.Title,
                             Folders.PendingGames
                         );
-                        string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(
+                        string? coverImagePath = await _s3FileProvider.SaveGameImgFileAsync(
                             gameViewModel.CoverImage,
                             Folders.PendingGames,
                             pendingGame.Id
                         );
-                        List<string> imagesPaths = await _fileProvider.SaveImagesFilesAsync(
+                        List<string> imagesPaths = await _s3FileProvider.SaveImagesFilesAsync(
                             gameViewModel.UploadedImages,
                             Folders.PendingGames,
                             pendingGame.Id
@@ -321,12 +321,12 @@ namespace LingvoGameOs.Controllers
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
-                        string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(
+                        string? coverImagePath = await _s3FileProvider.SaveGameImgFileAsync(
                             gameViewModel.CoverImage,
                             Folders.PendingGames,
                             pendingGame.Id
                         );
-                        List<string> imagesPaths = await _fileProvider.SaveImagesFilesAsync(
+                        List<string> imagesPaths = await _s3FileProvider.SaveImagesFilesAsync(
                             gameViewModel.UploadedImages,
                             Folders.PendingGames,
                             pendingGame.Id
