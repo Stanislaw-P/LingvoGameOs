@@ -152,4 +152,8 @@ public class HomeController : Controller
         return View(filteredGames);
     }
 
+    public async Task<IActionResult> NewsForDevelopers()
+    {
+        return View();
+    }
 }

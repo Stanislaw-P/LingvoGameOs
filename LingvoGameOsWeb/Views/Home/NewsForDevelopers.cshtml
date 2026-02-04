@@ -1,0 +1,168 @@
+﻿@{
+    ViewData["Title"] = "Разработчикам";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/news.css" asp-append-version="true" />
+}
+
+@* @section Scripts { <script src="~/js/news.js" asp-append-version="true"></script> } *@
+
+
+<div class="news-page">
+    <!-- Заголовок будет вставлен сюда -->
+    <div id="header-placeholder"></div>
+
+    <div class="news-container">
+        <!-- Заголовок секции -->
+        <div class="news-header">
+            @* <div class="news-header__badge">
+                <img src="/icon/calendar.svg" alt="Новости" class="news-header__badge-icon">
+                <span>Актуально</span>
+            </div> *@
+            <h1 class="news-header__title">Информация для разработчиков</h1>
+        </div>
+
+       
+        <!-- Основной контент -->
+        <div class="news-main">
+            <!-- Основные новости -->
+            <div class="news-featured">
+                <!-- Новость -->
+                <article class="news-card" id="news1">
+                    @* <img src="/img/news/manukaync1.png" alt="Как разместить игру на портале?" class="news-card__image"> *@
+                    <div class="news-card__content">
+                        <div class="news-card__meta">
+                            <span class="news-card__date">26.01.2026</span>
+                            <span class="news-card__category">инструкция</span>
+                        </div>
+                        <h3 class="news-card__title">Как разместить игру на портале?</h3>
+                        <p class="news-card__excerpt">
+                            Приветствуем всех новых и текущих разработчиков на нашем портале! Если вы только присоединились или задумываетесь, с чего начать, — этот материал для вас.
+                        </p>
+                        <p class="news-card__excerpt">
+                            Мы подготовили для вас пошаговую инструкцию по загрузке игр на портал. В ней вы найдёте всё: от требований к контенту до процесса публикации.
+                            → <a href="https://docs.google.com/document/d/1KT8k0W5M4SA3GBIh0qqeS1IO6VukfwIfTBeig0ZHm8s/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Читать инструкцию по загрузке игр</a>
+                        </p>
+                        <p class="news-card__excerpt">
+
+                            Надеемся, эти материалы помогут вам легко начать работу. Желаем успехов и ждём ваши проекты на портале!
+                        </p>
+
+                        @* <p class="news-card__excerpt"> <a class=" link" href="https://www.piligrim-andy.narod.ru/">фото Манукянц Эдуарда</a> </p> *@
+                        <div class="news-card__author">
+                            <img src="/Avatars/admin-avatar-11.png" alt="Команда портала" class="news-card__author-avatar">
+                            <div class="news-card__author-info">
+                                <span class="news-card__author-name">Команда портала</span>
+                                <span class="news-card__author-role">Руководитель проекта</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" id="news2">
+                    @* <img src="/img/news/manukaync1.png" alt="Как настроить работу с API?" class="news-card__image"> *@
+                    <div class="news-card__content">
+                        <div class="news-card__meta">
+                            <span class="news-card__date">26.01.2026</span>
+                            <span class="news-card__category">инструкция</span>
+                        </div>
+                        <h3 class="news-card__title">Как настроить работу с API?</h3>
+                        <p class="news-card__excerpt">
+                            Чтобы помочь вам настроить синхронизацию данных или другие функции, изучите наше руководство по работе с API.
+                            → <a href="https://docs.google.com/document/d/16ErNAUmHVH3E_6TBPtSUjcw_wf-tyWOXJIzmsbE7r7M/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Ознакомиться с документацией API</a>
+                        </p>
+                        <p class="news-card__excerpt">
+
+                            Надеемся, эти материалы помогут вам легко начать работу. Желаем успехов и ждём ваши проекты на портале!
+                        </p>
+
+                        @* <p class="news-card__excerpt"> <a class=" link" href="https://www.piligrim-andy.narod.ru/">фото Манукянц Эдуарда</a> </p> *@
+                        <div class="news-card__author">
+                            <img src="/Avatars/admin-avatar-11.png" alt="Команда портала" class="news-card__author-avatar">
+                            <div class="news-card__author-info">
+                                <span class="news-card__author-name">Команда портала</span>
+                                <span class="news-card__author-role">Руководитель проекта</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Боковая панель -->
+            <div class="news-sidebar">
+                <!-- Популярные новости -->
+                <div class="news-sidebar__section">
+                    <h3 class="news-sidebar__title">Популярные новости</h3>
+                    <div class="news-sidebar__list">
+                        <div class="news-sidebar__item">
+                            <a href="#news1">
+                                @* <img src="/img/news/manukaync1_small.png" alt="Как разместить игру на портале?" class="news-sidebar__item-image"> *@
+                                <div class="news-sidebar__item-content">
+                                    <h4 class="news-sidebar__item-title">Как разместить игру на портале?</h4>
+                                    <span class="news-sidebar__item-date">26.01.2026</span>
+                                </div>
+                            </a>
+                            
+                        </div>
+                        <div class="news-sidebar__item">
+                            <a href="#news2">
+                                @* <img src="/img/news/manukaync1_small.png" alt="Как настроить работу с API?" class="news-sidebar__item-image"> *@
+                                <div class="news-sidebar__item-content">
+                                    <h4 class="news-sidebar__item-title">Как настроить работу с API?</h4>
+                                    <span class="news-sidebar__item-date">26.01.2026</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категории 
+                <div class="news-sidebar__section">
+                    <h3 class="news-sidebar__title">Категории</h3>
+                    <div class="news-categories">
+                        <span class="news-category active">Все</span>
+                        <span class="news-category">Новые игры</span>
+                        <span class="news-category">Обновления</span>
+                        <span class="news-category">События</span>
+                        <span class="news-category">Разработка</span>
+                        <span class="news-category">Обучение</span>
+                    </div>
+                </div>
+                -->
+                <!-- Статистика 
+                <div class="news-sidebar__section">
+                    <h3 class="news-sidebar__title">Статистика</h3>
+                    <div style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">
+                        <p>📊 <strong>1,247</strong> активных игроков</p>
+                        <p>🎮 <strong>15</strong> игр на платформе</p>
+                        <p>📚 <strong>8</strong> языков для изучения</p>
+                        <p>⭐ <strong>4.8</strong> средний рейтинг</p>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+
+        <!-- Пагинация 
+        <div class="news-pagination">
+            <button class="news-pagination__button" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+            </button>
+            <button class="news-pagination__button active">1</button>
+            <button class="news-pagination__button">2</button>
+            <button class="news-pagination__button">3</button>
+            <button class="news-pagination__button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+            </button>
+        </div>
+        -->
+    </div>
+    
+    <!-- Подвал будет вставлен сюда -->
+    <div id="footer-placeholder"></div>
+</div>
