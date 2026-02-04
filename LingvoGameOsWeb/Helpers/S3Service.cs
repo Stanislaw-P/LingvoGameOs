@@ -49,8 +49,8 @@ namespace LingvoGameOs.Helpers
         /// <summary>
         /// Получение ссылки на файл в S3 с истечением срока действия
         /// </summary>
-        /// <param name="key">Уникальное имя файла</param>
-        /// <param name="expirationMinutes">Время истечения ссылки</param>
+        /// <param name="key">Уникальное имя файла в хранилище</param>
+        /// <param name="expirationMinutes">Время жизни ссылки</param>
         /// <returns></returns>
         public string GetFileUrl(string key, int expirationMinutes = 60)
         {
