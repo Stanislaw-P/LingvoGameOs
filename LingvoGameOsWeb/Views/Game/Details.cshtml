@@ -46,16 +46,24 @@
             </button>
             <!-- Индикаторы (обновлены на полоски) -->
             <div class="game-hero__carousel-indicators">
-                <span class="game-hero__indicator active"></span>
-                <span class="game-hero__indicator"></span>
-                <span class="game-hero__indicator"></span>
-                <span class="game-hero__indicator"></span>
+                @for (int i = 0; i < Model?.ImagesPaths?.Count; i++)
+                {
+                    @if (i == 0)
+                    {
+                        <span class="game-hero__indicator active"></span>
+
+                    }
+                    else
+                    {
+                        <span class="game-hero__indicator"></span>
+                    }
+                }
             </div>
         </div>
         <div class="game-hero__info">
-            <h1 class="game-hero__title">@Model.Title</h1>
+            <h1 class="game-hero__title">@Model?.Title</h1>
             <div class="game-hero__actions">
-                @if (Model.GamePlatform.Name == "Desktop")
+                @if (Model?.GamePlatform?.Name == "Desktop")
                 {
                     <a role="button" href="@Model.GameFilePath" download class="game-hero__button profile__button download-btn">
                         <img src="/icon/play.svg" alt="Download" class="game-hero__play-icon"> Скачать
@@ -63,7 +71,7 @@
                 }
                 else
                 {
-                    <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model.Id" class="game-hero__button profile__button">
+                    <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model?.Id" class="game-hero__button profile__button">
                         <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Играть
                     </a>
                 }
