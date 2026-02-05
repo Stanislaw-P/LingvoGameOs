@@ -75,6 +75,18 @@ public class HomeController : Controller
         return PartialView("_GamesListPartial", games);
     }
 
+    public async Task<IActionResult> FilterGamesAsync(string? platform = null)
+    {
+        var games = await _gamesRepository.GetAllAsync();
+
+        if (!string.IsNullOrEmpty(platform))
+        {
+            games = games.Where(g => g?.GamePlatform?.Name == platform).ToList();
+        }
+
+        return PartialView("_GamesListPartial", games);
+    }
+
     public async Task<IActionResult> FullGamesList()
     {
         var games = await _gamesRepository.GetAllAsync();
