@@ -23,7 +23,10 @@ namespace LingvoGameOsWebApi.Controllers
             if (user == null)
                 return NotFound("Пользователя с таким id не существует");
             int points = user.TotalPoints;
-            return Ok(points);
+            return Ok(new
+            {
+                points
+            });
         }
 
         [HttpPost("{userId}/points")]
