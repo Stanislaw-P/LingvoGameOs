@@ -55,7 +55,7 @@
                         <li class="sidebar-menu__item sidebar-menu__item--user">
                             <div class="sidebar-menu__user-info">
                                 @* <img src="@await Component.InvokeAsync("Avatar")" alt="Аватар" class="sidebar-menu__avatar" /> *@
-                                <span class="sidebar-menu__username">@username</span>
+                                <span class="sidebar-menu__username">@await Component.InvokeAsync("UserFirstName")</span>
                             </div>
                         </li>
 
@@ -93,7 +93,7 @@
                         </div>
 
                         <div class="user-profile__user-info">
-                            <span class="user-profile__username">@username</span>
+                            <span class="user-profile__username">@await Component.InvokeAsync("UserFirstName")</span>
                         </div>
                         <div class="user-profile__dropdown">
                             <div class="user-profile__toggle">

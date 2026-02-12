@@ -8,15 +8,44 @@
 <link rel="stylesheet" href="/css/modal-windows.css" />
 
 <section class="games">
-    @*<div class="games__filter">
-        using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
-         {
-             HttpMethod = "get",
-             UpdateTargetId = "all-games",
-             LoadingElementId = "search-loading"
-         }))
+    @* <div class="games__filter-dropdowns">
+        <div class="games__dropdown" style="max-width: 210px;">
+            <button class="games__dropdown-toggle">
+                <span>Платформа</span>
+                <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+            </button>
+            <div class="games__dropdown-menu">
+                <ul class="games__dropdown-list">
+                    <li class="games__dropdown-item platform-filter" data-platform="">
+                        <span class="filter-checkbox"></span>
+                        Все платформы
+                    </li>
+                    <li class="games__dropdown-item platform-filter" data-platform="Web-Mobile">
+                        <span class="filter-checkbox"></span>
+                        Веб-мобильная
+                    </li>
+                    <li class="games__dropdown-item platform-filter" data-platform="Web-Desktop">
+                        <span class="filter-checkbox"></span>
+                        Веб-компьютерная
+                    </li>
+                    <li class="games__dropdown-item platform-filter" data-platform="Desktop">
+                        <span class="filter-checkbox"></span>
+                        Для скачивания
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> *@
+
+    <div class="games__filter">
+        @* @using (Html.AjaxBeginForm("Search", "Home", new AjaxOptions
         {
-             <div class="games__filter-search">
+            HttpMethod = "get",
+            UpdateTargetId = "all-games",
+            LoadingElementId = "search-loading"
+        }))
+        {
+            <div class="games__filter-search">
                 @if (ViewBag.GameName != null)
                 {
                     <input type="text" name="gameName" id="search-input" required value="@ViewBag.GameName" class="email-prompt-text-style games__search-input"
@@ -29,18 +58,44 @@
 
                 <button type="submit" class="games__search-button">Найти</button>
                 <button type="button" onclick="resetGamesList()" class="games__search-button">Сброс</button>
-            </div> 
+            </div>
         }
 
         <!-- Индикатор активных фильтров -->
-         <div id="active-filters" class="games__active-filters" style="display: none;">
+        <div id="active-filters" class="games__active-filters" style="display: none;">
             <span class="games__active-filters-label">Активные фильтры:</span>
             <div id="active-filters-list" class="games__active-filters-list"></div>
             <button type="button" onclick="clearAllFilters()" class="games__clear-filters-btn">Очистить все</button>
-        </div> 
+        </div> *@
 
-         <div class="games__filter-dropdowns">
-            <div class="games__dropdown">
+        <div class="games__filter-dropdowns">
+            <div class="games__dropdown" style="max-width: 240px;">
+                <button class="games__dropdown-toggle">
+                    <span>Платформа</span>
+                    <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
+                </button>
+                <div class="games__dropdown-menu">
+                    <ul class="games__dropdown-list">
+                        <li class="games__dropdown-item platform-filter" data-platform="">
+                            <span class="filter-checkbox"></span>
+                            Все платформы
+                        </li>
+                        <li class="games__dropdown-item platform-filter" data-platform="Web-Mobile">
+                            <span class="filter-checkbox"></span>
+                            Веб-мобильная
+                        </li>
+                        <li class="games__dropdown-item platform-filter" data-platform="Web-Desktop">
+                            <span class="filter-checkbox"></span>
+                            Веб-компьютерная
+                        </li>
+                        <li class="games__dropdown-item platform-filter" data-platform="Desktop">
+                            <span class="filter-checkbox"></span>
+                            Для скачивания
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            @* <div class="games__dropdown">
                 <button class="games__dropdown-toggle">
                     <span>Категории</span>
                     <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
@@ -99,9 +154,9 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-        </div> 
-    </div>*@
+            </div> *@
+        </div>
+    </div>
 
     @if (ViewBag.GameName != null)
     {
@@ -131,6 +186,7 @@
                 {
                     <div class="games__item"
                          data-rating="@game.AverageRaitingPlayers"
+                         data-platform="@game?.GamePlatform?.Name"
                          data-categories="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")"
                          data-keywords="@(game.SkillsLearning != null ? string.Join(",", game.SkillsLearning.Select(s => s.Name.ToLower())) : "")">
 
@@ -168,7 +224,7 @@
                             </span> *@
                             </div>
                             <div class="games__actions">
-                                @if (game.GamePlatform.Name == "Desktop")
+                                @if (game?.GamePlatform?.Name == "Desktop")
                                 {
                                     <a href="@game.GameFilePath" download role="button" class="games__button download-btn">Скачать</a>
                                 }
@@ -220,21 +276,244 @@
 <script src="/js/download-handler.js"></script>
 @section Scripts {
     <script>
+        // Глобальная переменная для хранения выбранной платформы
+        let selectedPlatform = '';
+
+        // Функция фильтрации по платформе
+        function filterByPlatform(platform) {
+            // Показываем индикатор загрузки
+            $('#search-loading').show();
+
+            // Обновляем выбранную платформу
+            selectedPlatform = platform;
+
+            // Отправляем AJAX запрос
+            $.ajax({
+                url: '@Url.Action("FilterGames", "Home")',
+                type: 'GET',
+                data: {
+                    platform: platform,
+                    // Можно добавить другие фильтры, если они есть
+                    rating: getSelectedRating(),
+                    category: getSelectedCategory(),
+                    keyword: getSelectedKeyword()
+                },
+                success: function(data) {
+                    $('#all-games').html(data);
+
+                    // Обновляем UI выбранной платформы
+                    updatePlatformUI(platform);
+
+                    // Обновляем активные фильтры
+                    updateActiveFilters();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Ошибка фильтрации:', error);
+                    showNotification('Ошибка при фильтрации игр', 'error');
+                },
+                complete: function() {
+                    $('#search-loading').hide();
+                }
+            });
+        }
+
+        // Функция обновления UI для выбранной платформы
+        function updatePlatformUI(selectedPlatform) {
+            // Убираем выделение со всех элементов платформы
+            document.querySelectorAll('.platform-filter').forEach(item => {
+                item.classList.remove('selected');
+                const checkbox = item.querySelector('.filter-checkbox');
+                if (checkbox) {
+                    checkbox.classList.remove('checked');
+                }
+            });
+
+            // Находим выбранный элемент и добавляем выделение
+            const selectedItem = document.querySelector(`.platform-filter[data-platform="${selectedPlatform}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+                const checkbox = selectedItem.querySelector('.filter-checkbox');
+                if (checkbox) {
+                    checkbox.classList.add('checked');
+                }
+
+                // Обновляем текст кнопки
+                updateDropdownButtonText(selectedItem);
+            }
+        }
+
+        // Функция обновления текста кнопки dropdown
+        function updateDropdownButtonText(selectedItem) {
+            const button = document.querySelector('.games__dropdown-toggle');
+            if (!button) return;
+
+            // Получаем чистый текст без лишних элементов
+            const platformText = selectedItem.textContent.trim();
+
+            // Очищаем содержимое кнопки
+            button.innerHTML = '';
+
+            if (selectedPlatform === '') {
+                button.innerHTML = '<span>Платформа</span><img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">';
+            } else {
+                const span = document.createElement('span');
+                span.textContent = platformText;
+
+                button.appendChild(span);
+
+                const chevron = document.createElement('img');
+                chevron.src = '/icon/chevron-down.svg';
+                chevron.alt = 'Chevron';
+                chevron.className = 'games__chevron';
+                button.appendChild(chevron);
+            }
+        }
+
+        // Функция обновления активных фильтров
+        function updateActiveFilters() {
+            const activeFiltersContainer = document.getElementById('active-filters');
+            const activeFiltersList = document.getElementById('active-filters-list');
+
+            if (!activeFiltersContainer || !activeFiltersList) return;
+
+            activeFiltersList.innerHTML = '';
+
+            // Маппинг русских названий
+            const platformNames = {
+                'Web-Mobile': 'Веб-мобильная',
+                'Web-Desktop': 'Веб-компьютерная',
+                'Desktop': 'Для скачивания'
+            };
+
+            // Добавляем фильтр платформы, если выбран
+            if (selectedPlatform) {
+                const filterElement = document.createElement('div');
+                filterElement.className = 'games__active-filter';
+                filterElement.dataset.filterType = 'platform';
+                filterElement.dataset.filterValue = selectedPlatform;
+
+                const displayValue = platformNames[selectedPlatform] || selectedPlatform;
+
+                filterElement.innerHTML = `
+                    <span class="games__active-filter-text">
+                        Платформа: ${displayValue}
+                    </span>
+                    <button class="games__active-filter-remove"
+                            onclick="clearPlatformFilter()">
+                        ×
+                    </button>
+                `;
+
+                activeFiltersList.appendChild(filterElement);
+            }
+
+            // Показываем/скрываем контейнер активных фильтров
+            const hasActiveFilters = selectedPlatform ||
+                                    getSelectedRating() ||
+                                    getSelectedCategory() ||
+                                    getSelectedKeyword();
+
+            activeFiltersContainer.style.display = hasActiveFilters ? 'block' : 'none';
+        }
+
+        // Функция сброса фильтра платформы
+        function clearPlatformFilter() {
+            selectedPlatform = '';
+            filterByPlatform('');
+            showNotification('Фильтр платформы сброшен', 'info');
+        }
+
+        // Функция сброса всех фильтров
+        function clearAllFilters() {
+            selectedPlatform = '';
+
+            // Сбрасываем другие фильтры
+            document.querySelectorAll('.games__dropdown-item.selected').forEach(item => {
+                if (!item.classList.contains('platform-filter')) {
+                    item.classList.remove('selected');
+                }
+            });
+
+            // Сбрасываем UI платформы
+            updatePlatformUI('');
+
+            // Вызываем фильтрацию без параметров
+            filterByPlatform('');
+
+            showNotification('Все фильтры очищены', 'info');
+        }
+
+        // Инициализация обработчиков при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Находим все элементы фильтра платформы
+            const platformItems = document.querySelectorAll('.platform-filter');
+
+            // Добавляем обработчик клика
+            platformItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const platform = this.dataset.platform;
+
+                    // Если кликнули на уже выбранную платформу - сбрасываем
+                    if (selectedPlatform === platform) {
+                        clearPlatformFilter();
+                    } else {
+                        filterByPlatform(platform);
+                    }
+
+                    // Закрываем dropdown после выбора
+                    const dropdownMenu = this.closest('.games__dropdown-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+            });
+
+            // Закрытие dropdown при клике вне его
+            document.addEventListener('click', function(event) {
+                const dropdowns = document.querySelectorAll('.games__dropdown');
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(event.target)) {
+                        const menu = dropdown.querySelector('.games__dropdown-menu');
+                        if (menu) {
+                            menu.classList.remove('show');
+                        }
+                    }
+                });
+            });
+
+            // Обработчик для кнопки открытия/закрытия dropdown
+            const dropdownToggle = document.querySelector('.games__dropdown-toggle');
+            if (dropdownToggle) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const menu = this.nextElementSibling;
+                    if (menu) {
+                        menu.classList.toggle('show');
+                    }
+                });
+            }
+        });
+
+        // Вспомогательные функции для других фильтров (если есть)
+        function getSelectedRating() {
+            const selected = document.querySelector('.games__dropdown-item.selected[data-filter="rating"]');
+            return selected ? selected.dataset.value : null;
+        }
+
+        function getSelectedCategory() {
+            const selected = document.querySelector('.games__dropdown-item.selected[data-filter="category"]');
+            return selected ? selected.dataset.value : null;
+        }
+
+        function getSelectedKeyword() {
+            const selected = document.querySelector('.games__dropdown-item.selected[data-filter="keyword"]');
+            return selected ? selected.dataset.value : null;
+        }
+
+        // Остальные функции
         function resetGamesList() {
             $('#search-input').val('');
             $('#all-games').load('@Url.Action("FullGamesList", "Home")');
-        }
-
-        function clearAllFilters() {
-            localStorage.removeItem('gameFilters');
-            document.querySelectorAll('.games__dropdown-item.selected').forEach(item => {
-                item.classList.remove('selected');
-            });
-            document.getElementById('active-filters').style.display = 'none';
-            document.querySelectorAll('.games__item').forEach(item => {
-                item.style.display = 'flex';
-            });
-            showNotification('Все фильтры очищены', 'info');
         }
 
         function showNotification(message, type) {

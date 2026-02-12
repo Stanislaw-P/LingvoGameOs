@@ -23,7 +23,7 @@
                     </span>
                 </div>
                 <div class="games__actions">
-                    @if (game.GamePlatform.Name == "Desktop")
+                    @if (game?.GamePlatform?.Name == "Desktop")
                     {
                         <a href="@game.GameFilePath" download role="button" class="games__button">Скачать</a>
                     }
@@ -37,7 +37,11 @@
         </div>
     }
 }
+else if (@ViewBag.GameName != null)
+{
+    <h4 class="game-hero__secondary">:( Игры с названием '@ViewBag.GameName' нет</h4>
+}
 else
 {
-    <h4 class="game-hero__secondary">:( Похоже что игр с названием  '@ViewBag.GameName' не существует</h4>
+    <h4 class="game-hero__secondary">:( Похоже таких игр покая не существует</h4>
 }
