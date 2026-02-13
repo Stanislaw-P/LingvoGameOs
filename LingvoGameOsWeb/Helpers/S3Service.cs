@@ -2,6 +2,7 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using LingvoGameOs.Db.Models;
 
 namespace LingvoGameOs.Helpers
 {
@@ -9,12 +10,12 @@ namespace LingvoGameOs.Helpers
     {
         readonly IAmazonS3 _s3Client;
         readonly string _bucketName;
+        readonly string _awsServiceUrl;
         
         public S3Service(IConfiguration configuration)
         {
             string awsAccessKey;
             string awsKey;
-            string awsServiceUrl;
             
             //if (configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
             //{
@@ -33,26 +34,38 @@ namespace LingvoGameOs.Helpers
 
             awsAccessKey = configuration["AWS_TIMEWEB_KEY_ID"] ?? "";
             awsKey = configuration["AWS_TIMEWEB_KEY"] ?? "";
-            awsServiceUrl = configuration["AWS_TIMEWEB_SERVICE_URL"] ?? "";
+            _awsServiceUrl = configuration["AWS_TIMEWEB_SERVICE_URL"] ?? "";
             _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
 
             AmazonS3Config s3Config = new AmazonS3Config
             {
-                ServiceURL = awsServiceUrl,
+                ServiceURL = _awsServiceUrl,
                 ForcePathStyle = true,
                 AuthenticationRegion = "ru-1"
             };
             _s3Client = new AmazonS3Client(awsAccessKey, awsKey, s3Config);
         }
 
+        /// <summary>
+        /// Возвращает публичную ссылку на объект или null
+        /// </summary>
+        /// <param name="key">Уникальное имя объекта в хранилище S3</param>
+        /// <returns></returns>
+        public string? GetPublicUrl(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return null;
+
+            string baseUrl = $"{_awsServiceUrl}/{_bucketName}";
+            return $"{baseUrl.TrimEnd('/')}/{key}";
+        }
 
         /// <summary>
         /// Получение ссылки на файл в S3 с истечением срока действия
         /// </summary>
-        /// <param name="key">Уникальное имя файла в хранилище</param>
+        /// <param name="key">Уникальное имя файла в хранилище S3</param>
         /// <param name="expirationMinutes">Время жизни ссылки</param>
         /// <returns></returns>
-        public string GetFileUrl(string key, int expirationMinutes = 60)
+        public string GetPreSignedFileUrl(string key, int expirationMinutes = 60)
         {
             var request = new GetPreSignedUrlRequest
             {
@@ -63,28 +76,57 @@ namespace LingvoGameOs.Helpers
             return _s3Client.GetPreSignedURL(request);
         }
 
-        public async Task<string> UploadFileAsync(IFormFile file, string key)
+        public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder)
         {
-            using var newStream = new MemoryStream();
-            await file.CopyToAsync(newStream);
-            newStream.Position = 0; // КРИТИЧНО для корректной загрузки
+            var extension = Path.GetExtension(file.FileName);
+            var uniqueName = $"{Guid.NewGuid()}{extension}";
+            var key = $"{folder}/{gameId}/{uniqueName}";
 
-            var uploadRequest = new TransferUtilityUploadRequest
+            using var stream = file.OpenReadStream();
+            var request = new PutObjectRequest
             {
-                InputStream = newStream,
-                Key = key.TrimStart('/'),
                 BucketName = _bucketName,
-                ContentType = file.ContentType
+                Key = key,
+                InputStream = stream,
+                ContentType = file.ContentType,
             };
 
-            var fileTransferUtility = new TransferUtility(_s3Client);
-            await fileTransferUtility.UploadAsync(uploadRequest);
+            await _s3Client.PutObjectAsync(request);
+
+            return key;
+        }
+
+        public async Task<string> UploadAvatarFileAsync(IFormFile file, string userId)
+        {
+            var extension = Path.GetExtension(file.FileName);
+            var uniqueName = $"{userId}{extension}";
+            var key = $"Avatars/{uniqueName}";
+
+            using var stream = file.OpenReadStream();
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                InputStream = stream,
+                ContentType = file.ContentType,
+            };
+
+            await _s3Client.PutObjectAsync(request);
+
             return key;
         }
 
         public async Task DeleteFileAsync(string key)
         {
-            await _s3Client.DeleteObjectAsync(_bucketName, key.TrimStart('/'));
+            if (string.IsNullOrEmpty(key)) return;
+
+            var request = new DeleteObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key
+            };
+
+            await _s3Client.DeleteObjectAsync(request);
         }
 
         public async Task DeleteDirectoryAsync(string prefix)
@@ -129,4 +171,6 @@ namespace LingvoGameOs.Helpers
             await DeleteFileAsync(sourceKey);
         }
     }
+
+    public record S3UploadResult(string Key, string PublicUrl);
 }
