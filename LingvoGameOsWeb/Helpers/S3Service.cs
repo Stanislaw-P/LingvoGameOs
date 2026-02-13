@@ -84,8 +84,6 @@ namespace LingvoGameOs.Helpers
             using var stream = file.OpenReadStream();
             var request = new PutObjectRequest
             {
-                InputStream = newStream,
-                Key = key.TrimStart('/'),
                 BucketName = _bucketName,
                 Key = key,
                 InputStream = stream,

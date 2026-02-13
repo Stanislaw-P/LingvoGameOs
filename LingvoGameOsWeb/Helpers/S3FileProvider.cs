@@ -30,7 +30,7 @@
             // Формируем ключ: folder/gameId/filename.ext
             var objectKey = $"{folder}/{gameId}/{fileName}";
 
-            await _s3Service.UploadFileAsync(file, objectKey);
+            //await _s3Service.UploadFileAsync(file, objectKey);
 
             return "/" + objectKey; // Возвращаем путь для БД
         }
@@ -43,7 +43,7 @@
             var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
             var objectKey = $"{folder}/{fileName}";
 
-            await _s3Service.UploadFileAsync(file, objectKey);
+            //await _s3Service.UploadFileAsync(file, objectKey);
 
             return "/" + objectKey;
         }
@@ -56,7 +56,7 @@
             string fileName = gameTitle + Path.GetExtension(uploadedFile.FileName);
             string objectKey = $"{folder}/{gameId}/{fileName}";
 
-            await _s3Service.UploadFileAsync(uploadedFile, objectKey);
+            //await _s3Service.UploadFileAsync(uploadedFile, objectKey);
 
             return "/" + objectKey;
         }
@@ -83,7 +83,7 @@
         public string GetFileUrl(string filePath)
         {
             if (string.IsNullOrEmpty(filePath)) return "";
-            return _s3Service.GetFileUrl(filePath.TrimStart('/'));
+            return _s3Service.GetPreSignedFileUrl(filePath.TrimStart('/'));
         }
     }
 }
