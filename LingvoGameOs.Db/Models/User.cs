@@ -7,7 +7,7 @@ namespace LingvoGameOs.Db.Models
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string? Description { get; set; }
-		public string? AvatarImgPath { get; set; }
+        public string AvatarImgPath { get; set; } = null!;
         public List<GameHistory>? GamesHistory { get; set; }
         public List<Game>? DevGames { get; set; }
         public List<PendingGame>? DevPendingGames { get; set; }

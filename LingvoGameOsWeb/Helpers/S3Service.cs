@@ -11,12 +11,12 @@ namespace LingvoGameOs.Helpers
         readonly IAmazonS3 _s3Client;
         readonly string _bucketName;
         readonly string _awsServiceUrl;
-        
+
         public S3Service(IConfiguration configuration)
         {
             string awsAccessKey;
             string awsKey;
-            
+
             //if (configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
             //{
             //    awsAccessKey = configuration["AWS_YANDEX_KEY_ID"] ?? "";
@@ -54,6 +54,9 @@ namespace LingvoGameOs.Helpers
         public string? GetPublicUrl(string key)
         {
             if (string.IsNullOrEmpty(key)) return null;
+
+            if (key.StartsWith('/'))
+                key = key.TrimStart('/');
 
             string baseUrl = $"{_awsServiceUrl}/{_bucketName}";
             return $"{baseUrl.TrimEnd('/')}/{key}";
@@ -96,11 +99,18 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
-        public async Task<string> UploadAvatarFileAsync(IFormFile file, string userId)
+        /// <summary>
+        /// Загрузить аватар пользователя в S3
+        /// </summary>
+        /// <param name="file">Файл аватарки</param>
+        /// <param name="userId">Id пользователя</param>
+        /// <param name="folder">Имя папки в которую нужно сохранить файл (Avatars)</param>
+        /// <returns>Уникальное имя файла в хранилище</returns>
+        public async Task<string> UploadAvatarFileAsync(IFormFile file, string userId, Folders folder)
         {
             var extension = Path.GetExtension(file.FileName);
             var uniqueName = $"{userId}{extension}";
-            var key = $"Avatars/{uniqueName}";
+            var key = $"{folder}/{uniqueName}";
 
             using var stream = file.OpenReadStream();
             var request = new PutObjectRequest
