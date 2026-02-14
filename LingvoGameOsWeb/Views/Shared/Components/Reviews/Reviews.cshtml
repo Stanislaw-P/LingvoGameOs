@@ -1,4 +1,4 @@
-﻿@model List<Review>
+﻿@model List<ReviewViewModel>
 
 <section class="game-reviews">
     <div class="game-reviews__header">
@@ -11,23 +11,23 @@
         }
     </div>
     <div class="game-reviews__container">
-        @foreach (var review in Model)
+        @foreach (var item in Model)
         {
-            @if (review.IsApproved)
+            @if (item.Review.IsApproved)
             {
                 <article class="game-reviews__card">
                     <div class="game-reviews__reviewer">
-                        <img src="@review.Author.AvatarImgPath" alt="Reviewer" class="game-reviews__avatar">
+                        <img src="@item.AuthorAvatarUrl" alt="Reviewer" class="game-reviews__avatar">
                         <div class="game-reviews__reviewer-details">
-                            <span class="game-reviews__reviewer-name">@review.Author.Name</span>
-                            <span class="game-reviews__reviewer-location">@review?.Game?.Title</span>
+                            <span class="game-reviews__reviewer-name">@item.Review.Author.Name</span>
+                            <span class="game-reviews__reviewer-location">@item?.Review.Game?.Title</span>
                         </div>
                         <div class="game-reviews__rating">
-                            <span class="game-reviews__rating-score">@review.Rating</span>
+                            <span class="game-reviews__rating-score">@item?.Review.Rating</span>
                             <img src="/icon/star-filled.svg" alt="Star" class="game-reviews__star">
                         </div>
                     </div>
-                    <p class="game-reviews__text">@review.Text</p>
+                    <p class="game-reviews__text">@item?.Review.Text</p>
                 </article>
             }
         }

@@ -41,7 +41,7 @@ namespace LingvoGameOs.Controllers
             {
                 string userId = Guid.NewGuid().ToString();
                 // Используем наш сервис для загрузки
-                var result = await _s3Service.UploadAvatarFileAsync(file, userId);
+                var result = await _s3Service.UploadAvatarFileAsync(file, userId, Folders.Avatars);
 
                 return Ok(new
                 {

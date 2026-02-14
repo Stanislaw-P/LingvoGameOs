@@ -1,4 +1,4 @@
-﻿@model List<Review>
+﻿@model List<ReviewViewModel>
 
 @{
     ViewData["Title"] = "Панель-отзывы";
@@ -81,38 +81,38 @@
         </div>
 
         <div class="admin-reviews__list">
-            @foreach (var review in Model)
+            @foreach (var item in Model)
             {
-                <article class="admin-review @(review.IsApproved ? "published" : "pending")" data-review-id="@review.Id">
+                <article class="admin-review @(item.Review.IsApproved ? "published" : "pending")" data-review-id="@item.Review.Id">
                     <div class="admin-review__header">
                         <div class="admin-review__user-info">
-                            <img src="@review.Author.AvatarImgPath" alt="Avatar" class="admin-review__avatar">
+                            <img src="@item.AuthorAvatarUrl" alt="Avatar" class="admin-review__avatar">
                             <div class="admin-review__user-details">
-                                <span class="admin-review__name">@review.Author.Name</span>
-                                <span class="admin-review__game">@review.Game?.Title</span>
+                                <span class="admin-review__name">@item.Review.Author.Name</span>
+                                <span class="admin-review__game">@item.Review.Game?.Title</span>
                             </div>
                         </div>
 
                         <!-- Оценка справа от всей информации пользователя и игры -->
                         <div class="admin-review__rating">
-                            <span class="admin-review__rating-score">@review.Rating</span>
+                            <span class="admin-review__rating-score">@item.Review.Rating</span>
                             <img src="/icon/star-filled.svg" alt="Star" class="admin-review__star">
                         </div>
                     </div>
 
                     <div class="admin-review__content">
-                        <p class="admin-review__text">@review.Text</p>
+                        <p class="admin-review__text">@item.Review.Text</p>
                         <div class="admin-review__date">
-                            @review.PublicationDate.ToString("dd.MM.yyyy")
+                            @item.Review.PublicationDate.ToString("dd.MM.yyyy")
                         </div>
                     </div>
 
                     <div class="admin-review__footer">
-                        <span class="review-status @(review.IsApproved ? "status-published" : "status-pending")">
-                            @(review.IsApproved ? "Опубликовано" : "На модерации")
+                        <span class="review-status @(item.Review.IsApproved ? "status-published" : "status-pending")">
+                            @(item.Review.IsApproved ? "Опубликовано" : "На модерации")
                         </span>
                         <div class="admin-review__actions">
-                            @if (!review.IsApproved)
+                            @if (!item.Review.IsApproved)
                             {
                                 <button type="button" class="btn btn--success">
                                     Опубликовать

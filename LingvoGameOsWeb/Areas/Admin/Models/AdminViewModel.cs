@@ -10,7 +10,7 @@ namespace LingvoGameOs.Areas.Admin.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string? Description { get; set; }
-        public string? AvatarImgPath { get; set; }
+        public string AvatarImgUrl { get; set; } = null!;
         public List<Game>? ExistingDevGames { get; set; }
         public List<PendingGame>? PendingGames { get; set; }
         public List<Game>? InactiveGames { get; set; }

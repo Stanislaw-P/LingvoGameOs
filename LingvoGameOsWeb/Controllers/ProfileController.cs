@@ -16,8 +16,9 @@ namespace LingvoGameOs.Controllers
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly FileProvider fileProvider;
+        readonly S3Service _s3Service;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository, S3Service s3Service)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -25,6 +26,7 @@ namespace LingvoGameOs.Controllers
             _pendingGamesRepository = pendingGamesRepository;
             this.fileProvider = new FileProvider(webHostEnvironment);
             _favoriteGamesRepository = favoriteGamesRepository;
+            _s3Service = s3Service;
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
@@ -34,7 +36,7 @@ namespace LingvoGameOs.Controllers
             {
                 var devGames = await gamesRepository.TryGetUserDevGamesAsync(user);
                 var devGamesViewModel = new List<GameViewModel>();
-                
+
                 foreach (var game in devGames)
                 {
                     var gameViewModel = new GameViewModel
@@ -69,7 +71,7 @@ namespace LingvoGameOs.Controllers
                     Surname = user.Surname,
                     UserName = user.UserName,
                     Description = user.Description,
-                    AvatarImgPath = user.AvatarImgPath,
+                    AvatarImgPath = _s3Service.GetPublicUrl(user.AvatarImgPath),
                     DevGames = devGamesViewModel,
                     DevPendingGames = user.DevPendingGames,
                     GamesHistory = gamesHistory,
@@ -95,7 +97,15 @@ namespace LingvoGameOs.Controllers
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
                 if (userId == UserProfileOwner?.Id)
                 {
-                    return View(new EditUserViewModel() { Id = user.Id, UserName = user.UserName, Name = user.Name, Surname = user.Surname, Description = user.Description, AvatarImgPath = user.AvatarImgPath });
+                    return View(new EditUserViewModel()
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Description = user.Description,
+                        AvatarImgPath = _s3Service.GetPublicUrl(user.AvatarImgPath!)
+                    });
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -111,15 +121,16 @@ namespace LingvoGameOs.Controllers
             }
             if (ModelState.IsValid)
             {
-                if (user.UserName != settings.UserName)
+                string modelUserName = settings.UserName.Trim();
+                if (user.UserName != modelUserName)
                 {
-                    var newEmailUser = await userManager.FindByEmailAsync(settings.UserName);
+                    var newEmailUser = await userManager.FindByEmailAsync(modelUserName);
                     if (newEmailUser == null)
                     {
-                        var token = await userManager.GenerateChangeEmailTokenAsync(user, settings.UserName);
-                        var result = await userManager.ChangeEmailAsync(user, settings.UserName, token);
-                        user.UserName = settings.UserName;
-                        user.NormalizedUserName = userManager.NormalizeName(settings.UserName);
+                        var token = await userManager.GenerateChangeEmailTokenAsync(user, modelUserName);
+                        var result = await userManager.ChangeEmailAsync(user, modelUserName, token);
+                        user.UserName = modelUserName;
+                        user.NormalizedUserName = userManager.NormalizeName(modelUserName);
                         user.EmailConfirmed = false;
                     }
                     else
@@ -129,24 +140,26 @@ namespace LingvoGameOs.Controllers
                 }
                 if (user.Name != settings.Name)
                 {
-                    user.Name = settings.Name;
+                    user.Name = settings.Name.Trim();
                 }
                 if (user.Surname != settings.Surname)
                 {
-                    user.Surname = settings.Surname;
+                    user.Surname = settings.Surname.Trim();
                 }
                 if (user.Description != settings.Description)
                 {
-                    user.Description = settings.Description;
+                    user.Description = settings?.Description?.Trim();
                 }
-                if (settings.UploadedFile != null)
+                if (settings?.UploadedFile != null)
                 {
                     if (settings.UploadedFile.ContentType.Split("/")[0] == "image")
                     {
-                        user.AvatarImgPath = await fileProvider.SaveProfileImgFileAsync(settings.UploadedFile, Folders.Avatars);
-                        if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png")
+                        string oldAvatarPath = user.AvatarImgPath;
+                        user.AvatarImgPath = await _s3Service.UploadAvatarFileAsync(settings.UploadedFile, user.Id, Folders.Avatars);
+                        
+                        if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png" && oldAvatarPath != user.AvatarImgPath)
                         {
-                            fileProvider.DeleteFile(settings.AvatarImgPath);
+                            await _s3Service.DeleteFileAsync(oldAvatarPath);
                         }
                         settings.AvatarImgPath = user.AvatarImgPath;
                     }
@@ -160,7 +173,7 @@ namespace LingvoGameOs.Controllers
             }
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Profile", new {userId = user.Id});
+                return RedirectToAction("Index", "Profile", new { userId = user.Id });
             }
             return View(settings);
         }
