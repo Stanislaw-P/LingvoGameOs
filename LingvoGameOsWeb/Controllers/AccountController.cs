@@ -111,13 +111,13 @@ namespace LingvoGameOs.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
-            if (register.UserName == register.Password)
+            if (register.UserName.Trim() == register.Password.Trim())
             {
                 ModelState.AddModelError("Login == Password", "Логин и пароль не должны совпадать");
             }
             if (ModelState.IsValid)
             {
-                User user = new User() { Email = register.UserName, UserName = register.UserName, Name = register.Name, Surname = register.Surname, AvatarImgPath = "/img/avatar100.png" };
+                User user = new User() { Email = register.UserName.Trim(), UserName = register.UserName.Trim(), Name = register.Name.Trim(), Surname = register.Surname.Trim(), AvatarImgPath = "/img/avatar100.png" };
                 var result = await userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
@@ -144,7 +144,7 @@ namespace LingvoGameOs.Controllers
 
         public async Task<IActionResult> ForgotPassword()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User?.Identity?.IsAuthenticated == true)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -156,7 +156,7 @@ namespace LingvoGameOs.Controllers
         {
             if (ModelState.IsValid)
             {
-                var email = model.UserName;
+                var email = model.UserName.Trim();
                 var user = await userManager.FindByEmailAsync(email);
                 if (user == null)
                 {

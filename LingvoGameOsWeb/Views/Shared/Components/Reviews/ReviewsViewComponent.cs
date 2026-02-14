@@ -1,5 +1,7 @@
 ﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Helpers;
+using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -11,11 +13,13 @@ namespace LingvoGameOs.Views.Shared.Components.Reviews
     {
         readonly IReviewsRepository _reviewsRepository;
         readonly IMemoryCache _memoryCache;
+        readonly S3Service _s3Service;
 
-        public ReviewsViewComponent(IReviewsRepository reviewsRepository, IMemoryCache memoryCache)
+        public ReviewsViewComponent(IReviewsRepository reviewsRepository, IMemoryCache memoryCache, S3Service s3Service)
         {
             _reviewsRepository = reviewsRepository;
             _memoryCache = memoryCache;
+            _s3Service = s3Service;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(bool isDetailsPage, int gameId)
@@ -27,7 +31,13 @@ namespace LingvoGameOs.Views.Shared.Components.Reviews
             }
             ViewBag.IsDetailsPage = isDetailsPage;
             ViewBag.GameId = gameId;
-            return View("Reviews", allReviews);
+
+            var reviewsVm = allReviews?.Select(r => new ReviewViewModel
+            {
+                Review = r,
+                AuthorAvatarUrl = _s3Service.GetPublicUrl(r.Author?.AvatarImgPath!)
+            }).ToList();
+            return View("Reviews", reviewsVm);
         }
     }
 }

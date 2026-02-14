@@ -24,6 +24,7 @@ namespace LingvoGameOs.Controllers
         readonly ILogger<GameController> _logger;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly S3FileProvider _s3FileProvider;
+        readonly S3Service _s3Service;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -37,7 +38,8 @@ namespace LingvoGameOs.Controllers
             IConfiguration configuration
 ,
             IFavoriteGamesRepository favoriteGamesRepository,
-            S3FileProvider s3FileProvider)
+            S3FileProvider s3FileProvider,
+            S3Service s3Service)
         {
             _configuration = configuration;
 
@@ -51,6 +53,7 @@ namespace LingvoGameOs.Controllers
             _logger = logger;
             _favoriteGamesRepository = favoriteGamesRepository;
             _s3FileProvider = s3FileProvider;
+            _s3Service = s3Service;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -79,6 +82,8 @@ namespace LingvoGameOs.Controllers
                 AverageRaitingPlayers = existingGame.AverageRaitingPlayers,
                 IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", existingGame.Id)
             };
+
+            gameViewModel.Author.AvatarImgPath = _s3Service.GetPublicUrl(gameViewModel?.Author?.AvatarImgPath);
 
             return View(gameViewModel);
         }

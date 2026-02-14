@@ -18,12 +18,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly UserManager<User> _userManager;
         readonly IGamesRepository _gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
+        readonly S3Service _s3Service;
 
-        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository)
+        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, S3Service s3Service)
         {
             _userManager = userManager;
             _gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
+            _s3Service = s3Service;
         }
 
         public async Task<IActionResult> Index()
@@ -44,7 +46,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Surname = adminUser.Surname,
                 UserName = adminUser.UserName!,
                 Description = adminUser.Description,
-                AvatarImgPath = adminUser.AvatarImgPath,
+                AvatarImgUrl = _s3Service.GetPreSignedFileUrl(adminUser.AvatarImgPath),
                 ExistingDevGames = existingGames,
                 PendingGames = pendingGames,
                 InactiveGames = inactiveGames,
