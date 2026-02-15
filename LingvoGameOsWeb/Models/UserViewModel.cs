@@ -20,7 +20,7 @@ namespace LingvoGameOs.Models
         public string? AvatarImgPath { get; set; }
         public List<Game>? GamesHistory { get; set; }
         public List<GameViewModel>? DevGames { get; set; }
-        public List<PendingGame>? DevPendingGames { get; set; }
+        public List<PendingGameViewModel>? DevPendingGames { get; set; }
         public List<Game>? FavoriteGames { get; set; }
         public bool IsMyProfile { get; set; }
         public int TotalPoints { get; set; }

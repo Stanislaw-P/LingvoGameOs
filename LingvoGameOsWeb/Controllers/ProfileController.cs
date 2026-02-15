@@ -15,16 +15,14 @@ namespace LingvoGameOs.Controllers
         readonly IGamesRepository gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
-        readonly FileProvider fileProvider;
         readonly S3Service _s3Service;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment webHostEnvironment, IFavoriteGamesRepository favoriteGamesRepository, S3Service s3Service)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IFavoriteGamesRepository favoriteGamesRepository, S3Service s3Service)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
-            this.fileProvider = new FileProvider(webHostEnvironment);
             _favoriteGamesRepository = favoriteGamesRepository;
             _s3Service = s3Service;
         }
@@ -41,6 +39,7 @@ namespace LingvoGameOs.Controllers
                 {
                     var gameViewModel = new GameViewModel
                     {
+                        // TODO: Думаю можно упростить данный код, так как большинство полей не используется в отображении!
                         Id = game.Id,
                         Title = game.Title,
                         Author = game.Author,
@@ -60,8 +59,24 @@ namespace LingvoGameOs.Controllers
                     };
                     devGamesViewModel.Add(gameViewModel);
                 }
+
                 var pendingGames = await _pendingGamesRepository.TryGetUserDevGamesAsync(user);
-                user.DevPendingGames = pendingGames;
+                var devPendingGamesViewModel = new List<PendingGameViewModel>();
+
+                foreach (var pendingGame in pendingGames)
+                {
+                    var pendingGameViewModel = new PendingGameViewModel
+                    {
+                        Id = pendingGame.Id,
+                        Title = pendingGame.Title,
+                        Author = pendingGame.Author,
+                        CoverImagePath = _s3Service.GetPublicUrl(pendingGame.CoverImagePath),
+                        GameFilePath = _s3Service.GetPublicUrl(pendingGame.GameFilePath!),
+                        GamePlatform = pendingGame.GamePlatform
+                    };
+                    devPendingGamesViewModel.Add(pendingGameViewModel);
+                }
+
                 var gamesHistory = await gamesRepository.TryGetUserGameHistoryAsync(user);
 
                 var userViewModel = new UserViewModel()
@@ -69,11 +84,11 @@ namespace LingvoGameOs.Controllers
                     Id = user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
-                    UserName = user.UserName,
+                    UserName = user.UserName ?? "Пользователь",
                     Description = user.Description,
                     AvatarImgPath = _s3Service.GetPublicUrl(user.AvatarImgPath),
                     DevGames = devGamesViewModel,
-                    DevPendingGames = user.DevPendingGames,
+                    DevPendingGames = devPendingGamesViewModel,
                     GamesHistory = gamesHistory,
                     TotalPoints = user.TotalPoints
                 };
@@ -156,7 +171,7 @@ namespace LingvoGameOs.Controllers
                     {
                         string oldAvatarPath = user.AvatarImgPath;
                         user.AvatarImgPath = await _s3Service.UploadAvatarFileAsync(settings.UploadedFile, user.Id, Folders.Avatars);
-                        
+
                         if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png" && oldAvatarPath != user.AvatarImgPath)
                         {
                             await _s3Service.DeleteFileAsync(oldAvatarPath);
