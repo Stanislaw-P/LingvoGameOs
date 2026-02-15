@@ -95,6 +95,26 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
+        public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
+        {
+            var extension = Path.GetExtension(file.FileName);
+            var uniqueName = $"{uniqueFileName}{extension}";
+            var key = $"{folder}/{gameId}/{uniqueName}";
+
+            using var stream = file.OpenReadStream();
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                InputStream = stream,
+                ContentType = file.ContentType,
+            };
+
+            await _s3Client.PutObjectAsync(request);
+
+            return key;
+        }
+
         /// <summary>
         /// Загрузить несколько файлов игры
         /// </summary>
