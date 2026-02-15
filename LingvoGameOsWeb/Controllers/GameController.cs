@@ -253,30 +253,29 @@ namespace LingvoGameOs.Controllers
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
                         // Теперь можно использовать ID для сохранения файлов в соотв. директорию
-                        string? gameUrl = await _s3FileProvider.SaveGameFileAsync(
-                            gameViewModel.UploadedGameFile,
-                            pendingGame.Id,
-                            pendingGame.Title,
-                            Folders.PendingGames
-                        );
-                        string? coverImagePath = await _s3FileProvider.SaveGameImgFileAsync(
+                        string gameFileUrl = await _s3Service.UploadGameFileAsync
+                            (gameViewModel.UploadedGameFile,
+                             pendingGame.Id,
+                             Folders.PendingGames,
+                             gameViewModel.Title);
+
+                        string coverImagePath = await _s3Service.UploadGameFileAsync(
                             gameViewModel.CoverImage,
-                            Folders.PendingGames,
-                            pendingGame.Id
-                        );
-                        List<string> imagesPaths = await _s3FileProvider.SaveImagesFilesAsync(
-                            gameViewModel.UploadedImages,
-                            Folders.PendingGames,
-                            pendingGame.Id
-                        );
+                            pendingGame.Id,
+                            Folders.PendingGames);
+
+                        List<string> imagesUrls = await _s3Service.UploadGameFilesAsync(
+                            gameViewModel.UploadedImages, 
+                            pendingGame.Id,
+                            Folders.PendingGames);
 
                         pendingGame.CoverImagePath = coverImagePath ?? "/img/default-img.jpg";
-                        pendingGame.ImagesPaths = imagesPaths;
+                        pendingGame.ImagesPaths = imagesUrls;
 
                         // Если нужно обновить URL игры после сохранения файла
-                        if (!string.IsNullOrEmpty(gameUrl))
+                        if (!string.IsNullOrEmpty(gameFileUrl))
                         {
-                            await _pendingGamesRepository.ChangeGameUrlAsync(gameUrl, pendingGame);
+                            await _pendingGamesRepository.ChangeGameUrlAsync(gameFileUrl, pendingGame);
                         }
 
                         // смена роли игрока на разработчика
@@ -326,20 +325,19 @@ namespace LingvoGameOs.Controllers
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
-                        string? coverImagePath = await _s3FileProvider.SaveGameImgFileAsync(
+                        string coverImagePath = await _s3Service.UploadGameFileAsync(
                             gameViewModel.CoverImage,
-                            Folders.PendingGames,
-                            pendingGame.Id
-                        );
-                        List<string> imagesPaths = await _s3FileProvider.SaveImagesFilesAsync(
+                            pendingGame.Id,
+                            Folders.PendingGames);
+
+                        List<string> imagesUrls = await _s3Service.UploadGameFilesAsync(
                             gameViewModel.UploadedImages,
-                            Folders.PendingGames,
-                            pendingGame.Id
-                        );
+                            pendingGame.Id,
+                            Folders.PendingGames);
 
                         await _pendingGamesRepository.ChangeImagesAsync(
                             coverImagePath ?? "/img/default-img.jpg",
-                            imagesPaths,
+                            imagesUrls,
                             pendingGame
                         );
 

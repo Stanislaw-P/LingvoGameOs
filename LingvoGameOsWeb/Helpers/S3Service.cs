@@ -3,6 +3,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Models;
 
 namespace LingvoGameOs.Helpers
 {
@@ -99,12 +100,51 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
+        public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
+        {
+            var extension = Path.GetExtension(file.FileName);
+            var uniqueName = $"{uniqueFileName}{extension}";
+            var key = $"{folder}/{gameId}/{uniqueName}";
+
+            using var stream = file.OpenReadStream();
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                InputStream = stream,
+                ContentType = file.ContentType,
+            };
+
+            await _s3Client.PutObjectAsync(request);
+
+            return key;
+        }
+
+        /// <summary>
+        /// Загрузить несколько файлов игры
+        /// </summary>
+        /// <param name="files">Файлы для загрузки</param>
+        /// <param name="gameId">Id игры</param>
+        /// <param name="folder">Папка, в которую нужно загрузить файл</param>
+        /// <returns></returns>
+        public async Task<List<string>> UploadGameFilesAsync(IFormFile[] files, int gameId, Folders folder)
+        {
+            // 1. Создаем коллекцию задач (пока без await внутри Select)
+            var uploadTasks = files
+                            .Select(img => UploadGameFileAsync(img, gameId, folder));
+
+            // 2. Дожидаемся завершения всех задач и получаем массив строк
+            string[] uploadedPathsArray = await Task.WhenAll(uploadTasks);
+
+            return uploadedPathsArray.ToList();
+        }
+
         /// <summary>
         /// Загрузить аватар пользователя в S3
         /// </summary>
         /// <param name="file">Файл аватарки</param>
         /// <param name="userId">Id пользователя</param>
-        /// <param name="folder">Имя папки в которую нужно сохранить файл (Avatars)</param>
+        /// <param name="folder">Папка, в которую нужно загрузить файл (Avatars)</param>
         /// <returns>Уникальное имя файла в хранилище</returns>
         public async Task<string> UploadAvatarFileAsync(IFormFile file, string userId, Folders folder)
         {
