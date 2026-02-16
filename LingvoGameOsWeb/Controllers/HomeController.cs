@@ -63,6 +63,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Search(string gameName)
     {
+        var currentUser = await _userManager.GetUserAsync(User);
+
         var games = await _gamesRepository.GetAllAsync();
 
         if (gameName != null)
@@ -71,11 +73,39 @@ public class HomeController : Controller
             ViewBag.GameName = gameName;
         }
 
-        return PartialView("_GamesListPartial", games);
+        var gamesViewModel = new List<GameViewModel>();
+
+        foreach (var game in games)
+        {
+            gamesViewModel.Add(new GameViewModel
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Author = game.Author,
+                CoverImagePath = game.CoverImagePath,
+                Description = game.Description,
+                GameFolderName = game.GameFolderName,
+                GameFilePath = game.GameFilePath,
+                GamePlatform = game.GamePlatform,
+                ImagesPaths = game.ImagesPaths,
+                VideoUrl = game.VideoUrl,
+                LanguageLevel = game.LanguageLevel,
+                PublicationDate = game.PublicationDate,
+                SkillsLearning = game.SkillsLearning,
+                AverageRaitingPlayers = game.AverageRaitingPlayers,
+                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                IsFavorite = currentUser != null &&
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id),
+                IsActive = game.IsActive
+            });
+        }
+
+        return PartialView("_GamesListPartial", gamesViewModel);
     }
 
     public async Task<IActionResult> FilterGamesAsync(string? platform = null)
     {
+        var currentUser = await _userManager.GetUserAsync(User);
         var games = await _gamesRepository.GetAllAsync();
 
         if (!string.IsNullOrEmpty(platform))
@@ -83,13 +113,69 @@ public class HomeController : Controller
             games = games.Where(g => g?.GamePlatform?.Name == platform).ToList();
         }
 
-        return PartialView("_GamesListPartial", games);
+        var gamesViewModel = new List<GameViewModel>();
+
+        foreach (var game in games)
+        {
+            gamesViewModel.Add(new GameViewModel
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Author = game.Author,
+                CoverImagePath = game.CoverImagePath,
+                Description = game.Description,
+                GameFolderName = game.GameFolderName,
+                GameFilePath = game.GameFilePath,
+                GamePlatform = game.GamePlatform,
+                ImagesPaths = game.ImagesPaths,
+                VideoUrl = game.VideoUrl,
+                LanguageLevel = game.LanguageLevel,
+                PublicationDate = game.PublicationDate,
+                SkillsLearning = game.SkillsLearning,
+                AverageRaitingPlayers = game.AverageRaitingPlayers,
+                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                IsFavorite = currentUser != null &&
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id),
+                IsActive = game.IsActive
+            });
+        }
+
+        return PartialView("_GamesListPartial", gamesViewModel);
     }
 
     public async Task<IActionResult> FullGamesList()
     {
         var games = await _gamesRepository.GetAllAsync();
-        return PartialView("_GamesListPartial", games);
+        var currentUser = await _userManager.GetUserAsync(User);
+
+        var gamesViewModel = new List<GameViewModel>();
+
+        foreach (var game in games)
+        {
+            gamesViewModel.Add(new GameViewModel
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Author = game.Author,
+                CoverImagePath = game.CoverImagePath,
+                Description = game.Description,
+                GameFolderName = game.GameFolderName,
+                GameFilePath = game.GameFilePath,
+                GamePlatform = game.GamePlatform,
+                ImagesPaths = game.ImagesPaths,
+                VideoUrl = game.VideoUrl,
+                LanguageLevel = game.LanguageLevel,
+                PublicationDate = game.PublicationDate,
+                SkillsLearning = game.SkillsLearning,
+                AverageRaitingPlayers = game.AverageRaitingPlayers,
+                FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                IsFavorite = currentUser != null &&
+                           await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser.Id, game.Id),
+                IsActive = game.IsActive
+            });
+        }
+
+        return PartialView("_GamesListPartial", gamesViewModel);
     }
 
     public IActionResult News()
