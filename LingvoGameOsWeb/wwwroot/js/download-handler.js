@@ -1,79 +1,63 @@
-﻿// Функция для показа модального окна скачивания
-function confirmDownload(event) {
+﻿// Функция показа модального окна
+function showDownloadModal(modal) {
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+    document.body.style.overflow = 'hidden';
+}
+
+// Функция скрытия модального окна
+function hideDownloadModal(modal) {
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+    document.body.style.overflow = '';
+}
+
+// Глобальный обработчик кликов
+document.addEventListener('click', function (event) {
+    // Ищем, был ли клик по кнопке скачивания (или элементам внутри неё)
+    const downloadBtn = event.target.closest('a.download-btn[download]');
+
+    if (!downloadBtn) return;
+
+    // Останавливаем стандартное скачивание
     event.preventDefault();
     event.stopPropagation();
 
-    const downloadUrl = event.currentTarget.getAttribute('href');
+    const downloadUrl = downloadBtn.getAttribute('href');
     const modal = document.getElementById('downloadModal');
+
+    if (!modal) return;
+
     const confirmBtn = modal.querySelector('.download-modal__confirm');
     const cancelBtn = modal.querySelector('.download-modal__cancel');
     const closeBtn = modal.querySelector('.download-modal__close');
 
-    // Устанавливаем URL для скачивания в кнопку подтверждения
+    // Привязываем URL к кнопке подтверждения
     confirmBtn.onclick = function () {
         window.location.href = downloadUrl;
-        hideDownloadModal();
+        hideDownloadModal(modal);
     };
 
-    // Показываем модальное окно
-    showDownloadModal();
+    // Настраиваем закрытие
+    cancelBtn.onclick = () => hideDownloadModal(modal);
+    closeBtn.onclick = () => hideDownloadModal(modal);
 
-    // Функции показа/скрытия модального окна
-    function showDownloadModal() {
-        modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.classList.add('active');
-        }, 10);
-        document.body.style.overflow = 'hidden';
-    }
-
-    function hideDownloadModal() {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-        document.body.style.overflow = '';
-    }
-
-    // Обработчики событий для закрытия модального окна
-    cancelBtn.onclick = hideDownloadModal;
-    closeBtn.onclick = hideDownloadModal;
-
-    // Закрытие по клику на фон
     modal.onclick = function (e) {
-        if (e.target === modal) {
-            hideDownloadModal();
-        }
+        if (e.target === modal) hideDownloadModal(modal);
     };
 
-    // Закрытие по ESC
-    function handleEscape(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            hideDownloadModal();
-        }
+    // Показываем окно
+    showDownloadModal(modal);
+});
+
+// Закрытие по ESC (один раз на весь документ)
+document.addEventListener('keydown', function (e) {
+    const modal = document.getElementById('downloadModal');
+    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+        hideDownloadModal(modal);
     }
-
-    document.addEventListener('keydown', handleEscape);
-
-    // Убираем обработчик после закрытия
-    modal._escapeHandler = handleEscape;
-
-    return false;
-}
-
-// Инициализация после загрузки DOM
-document.addEventListener('DOMContentLoaded', function () {
-    // Находим все ссылки скачивания по классу
-    const downloadLinks = document.querySelectorAll('a.download-btn[download]');
-    downloadLinks.forEach((link, index) => {
-        link.addEventListener('click', confirmDownload);
-    });
-
-    // Альтернативный селектор - если класс не работает
-    //const alternativeLinks = document.querySelectorAll('a[download].games__button');
-
-    //alternativeLinks.forEach((link, index) => {
-    //    console.log(`Setting up alternative handler for link ${index}:`, link);
-    //    link.addEventListener('click', confirmDownload);
-    //});
 });
