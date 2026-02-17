@@ -2,9 +2,13 @@
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Microsoft.Win32;
+using System.Security.Claims;
 
 namespace LingvoGameOs.Controllers
 {
@@ -19,6 +23,60 @@ namespace LingvoGameOs.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailService = emailService;
+        }
+
+        public IActionResult LoginVK(string? returnUrl)
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("VKCallback", new { returnUrl = returnUrl })
+            };
+
+            return Challenge(properties, "VK ID");
+        }
+
+        public async Task<IActionResult> VKCallback(string? returnUrl)
+        {
+            var authenticateResult = await HttpContext.AuthenticateAsync("VK ID");
+            if (!authenticateResult.Succeeded)
+            {
+                // Обработка ошибки аутентификации
+                return RedirectToAction("Login", new { returnUrl = returnUrl });
+            }
+
+            // Получаем данные пользователя
+            var claims = authenticateResult.Principal.Claims;
+            var vkId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+            var surname = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+            var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            // Выводим в консоль
+            //Console.WriteLine($"VK User Info:");
+            //Console.WriteLine($"VK Id: {vkId}");
+            //Console.WriteLine($"First Name: {name}");
+            //Console.WriteLine($"Last Name: {surname}");
+            //Console.WriteLine($"Email: {email}");
+
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                user = new User()
+                {
+                    Email = email,
+                    UserName = email,
+                    Name = name,
+                    Surname = surname,
+                    AvatarImgPath = "/img/avatar100.png"
+                };
+                var password = $"_Vk{vkId}{Guid.NewGuid()}";
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, Constants.PlayerRoleName);
+                }
+            }
+            await signInManager.SignInAsync(user, false);
+            return Redirect(returnUrl ?? "/Home");
         }
 
         public IActionResult Login(string? returnUrl)
