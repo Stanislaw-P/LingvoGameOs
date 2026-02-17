@@ -13,7 +13,7 @@ namespace LingvoGameOs.Db
 		Task<List<Game>> TryGetUserDevGamesAsync(User user);
 		Task ChangeGameUrl(string newGameUrl, Game game);
 		Task UpdateAsync(Game updatedGame);
-        Task Deactivate(int gameId);
-        Task Activate(int gameId);
+        Task Deactivate(Game game);
+        Task Activate(Game game);
     }
 }
