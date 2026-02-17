@@ -18,7 +18,7 @@ namespace LingvoGameOs.Models
         public string Surname { get; set; }
         public string? Description { get; set; }
         public string? AvatarImgPath { get; set; }
-        public List<Game>? GamesHistory { get; set; }
+        public List<GameViewModel>? GamesHistory { get; set; }
         public List<GameViewModel>? DevGames { get; set; }
         public List<PendingGameViewModel>? DevPendingGames { get; set; }
         public List<Game>? FavoriteGames { get; set; }
