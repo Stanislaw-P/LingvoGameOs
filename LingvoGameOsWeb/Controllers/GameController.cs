@@ -68,13 +68,12 @@ namespace LingvoGameOs.Controllers
                 Id = existingGame.Id,
                 Title = existingGame.Title,
                 Author = existingGame.Author,
-                CoverImagePath = existingGame.CoverImagePath,
+                CoverImagePath = _s3Service.GetPublicUrl(existingGame.CoverImagePath),
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                GameFolderName = existingGame.GameFolderName,
-                GameFilePath = existingGame.GameFilePath,
+                GameFilePath = _s3Service.GetPublicUrl(existingGame.GameFilePath!),
                 GamePlatform = existingGame.GamePlatform,
-                ImagesPaths = existingGame.ImagesPaths,
+                ImagesPaths = existingGame.ImagesPaths?.Select(_s3Service.GetPublicUrl).ToList()!,
                 VideoUrl = existingGame.VideoUrl,
                 LanguageLevel = existingGame.LanguageLevel,
                 PublicationDate = existingGame.PublicationDate,
@@ -83,7 +82,7 @@ namespace LingvoGameOs.Controllers
                 IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", existingGame.Id)
             };
 
-            gameViewModel.Author.AvatarImgPath = _s3Service.GetPublicUrl(gameViewModel?.Author?.AvatarImgPath);
+            gameViewModel.Author.AvatarImgPath = _s3Service.GetPublicUrl(gameViewModel?.Author?.AvatarImgPath!)!;
 
             return View(gameViewModel);
         }
