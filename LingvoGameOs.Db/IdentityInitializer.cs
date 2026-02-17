@@ -30,11 +30,11 @@ namespace LingvoGameOs.Db
 
                 var adminUser = new User
                 {
-                    Email = "admin@gmail.com",
-                    UserName = "admin@gmail.com",
+                    Email = "rudzyng@yandex.ru",
+                    UserName = "rudzyng@yandex.ru",
                     AvatarImgPath = "/Avatars/admin-avatar-11.png",
-                    Name = "Админ",
-                    Surname = "Админов",
+                    Name = "Администрация",
+                    Surname = "Рудзынг",
                     Description = "Администрация сайта",
                 };
 
@@ -182,12 +182,12 @@ namespace LingvoGameOs.Db
                     LanguageLevelId = languageLevelIntermediate.Id,
                     GamePlatformId = platform3.Id,
                     AverageRaitingPlayers = 4.2,
-                    CoverImagePath = "/img/games/gameplay-animal.png",
+                    CoverImagePath = "Games/1/gameplay-animal.png",
                     ImagesPaths = new List<string>
                     {
-                        "/img/games/gameplay-animal.png",
-                        "/img/games/gameplay-animal-1.jpg",
-                        "/img/games/gameplay-animal-2.jpg",
+                        "Games/1/gameplay-animal.png",
+                        "Games/1/gameplay-animal-1.jpg",
+                        "Games/1/games/gameplay-animal-2.jpg",
                     },
                     // GameURL = "http://158.160.104.26:5001",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType3 },
@@ -211,11 +211,11 @@ namespace LingvoGameOs.Db
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     AverageRaitingPlayers = 5,
-                    CoverImagePath = "/img/games/93a62f0945389b9_920x0.jpg",
+                    CoverImagePath = "Games/2/93a62f0945389b9_920x0.jpg",
                     ImagesPaths = new List<string>
                     {
-                        "/img/games/93a62f0945389b9_920x0.jpg",
-                        "/img/games/cross-1.jpg",
+                        "Games/2/93a62f0945389b9_920x0.jpg",
+                        "Games/2/cross-1.jpg",
                     },
                     // GameURL = "http://158.160.104.26:5002",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
@@ -238,12 +238,12 @@ namespace LingvoGameOs.Db
                     LanguageLevelId = languageLevelBeginning.Id,
                     GamePlatformId = platform3.Id,
                     AverageRaitingPlayers = 0,
-                    CoverImagePath = "/img/games/puzzle-1.jpg",
+                    CoverImagePath = "Games/3/puzzle-1.jpg",
                     ImagesPaths = new List<string>
                     {
-                        "/img/games/puzzle-1.jpg",
-                        "/img/games/puzzle-2.png",
-                        "/img/games/puzzle-3.jpg",
+                        "Games/3/puzzle-1.jpg",
+                        "Games/3/puzzle-2.png",
+                        "Games/3/puzzle-3.jpg",
                     },
                     // GameURL = "http://158.160.104.26:5003",
                     SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
@@ -265,16 +265,16 @@ namespace LingvoGameOs.Db
                     LanguageLevelId = languageLevelAdvanced.Id,
                     GamePlatformId = platform2.Id,
                     AverageRaitingPlayers = 4.0,
-                    CoverImagePath = "/Games/4/train-cover.png",
+                    CoverImagePath = "Games/4/train-cover.png",
                     ImagesPaths = new List<string>
                     {
-                        "/Games/4/train scrin-1.jpg",
-                        "/Games/4/train scrin-2.jpg",
-                        "/Games/4/train scrin-3.jpg",
+                        "Games/4/train scrin-1.jpg",
+                        "Games/4/train scrin-2.jpg",
+                        "Games/4/train scrin-3.jpg",
                     },
                     SkillsLearning = new List<SkillLearning> { gameType4, gameType5 },
                     NumberDownloads = 4,
-                    GameFilePath = "/Games/4/Поезд.msi",
+                    GameFilePath = "Games/4/Поезд.msi",
                     VideoUrl =
                         "https://vk.com/away.php?to=https%3A%2F%2Frutube.ru%2Fplay%2Fembed%2Fa0e3032961efb0ca214a35ef3ed9caea&utf=1",
                     GameGitHubUrl = ""
