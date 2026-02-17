@@ -5,6 +5,7 @@ using LingvoGameOs.Db;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Helpers;
 
 
 namespace LingvoGameOs.Controllers;
@@ -15,13 +16,15 @@ public class HomeController : Controller
     readonly IFavoriteGamesRepository _favoriteGamesRepository;
     readonly UserManager<User> _userManager;
     readonly ISkillsLearningRepository _skillsLearningRepository;
+    readonly S3Service _s3Service;
 
-    public HomeController(IGamesRepository gamesRepository, IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository)
+    public HomeController(IGamesRepository gamesRepository, IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, S3Service s3Service)
     {
         _gamesRepository = gamesRepository;
         _favoriteGamesRepository = favoriteGamesRepository;
         _userManager = userManager;
         _skillsLearningRepository = skillsLearningRepository;
+        _s3Service = s3Service;
     }
 
     public async Task<IActionResult> Index()
@@ -37,14 +40,10 @@ public class HomeController : Controller
             {
                 Id = game.Id,
                 Title = game.Title,
-                Author = game.Author,
-                CoverImagePath = game.CoverImagePath,
-                Description = game.Description,
+                CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
                 GameFolderName = game.GameFolderName,
-                GameFilePath = game.GameFilePath,
+                GameFilePath = _s3Service.GetPublicUrl(game.GameFilePath!),
                 GamePlatform = game.GamePlatform,
-                ImagesPaths = game.ImagesPaths,
-                VideoUrl = game.VideoUrl,
                 LanguageLevel = game.LanguageLevel,
                 PublicationDate = game.PublicationDate,
                 SkillsLearning = game.SkillsLearning,
@@ -93,7 +92,7 @@ public class HomeController : Controller
         return PartialView("_GamesListPartial", games);
     }
 
-    public async Task<IActionResult> News()
+    public IActionResult News()
     {
         return View();
     }
@@ -111,14 +110,9 @@ public class HomeController : Controller
             {
                 Id = game.Id,
                 Title = game.Title,
-                Author = game.Author,
-                CoverImagePath = game.CoverImagePath,
-                Description = game.Description,
-                GameFolderName = game.GameFolderName,
-                GameFilePath = game.GameFilePath,
+                CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
+                GameFilePath = _s3Service.GetPublicUrl(game.GameFilePath!),
                 GamePlatform = game.GamePlatform,
-                ImagesPaths = game.ImagesPaths,
-                VideoUrl = game.VideoUrl,
                 LanguageLevel = game.LanguageLevel,
                 PublicationDate = game.PublicationDate,
                 SkillsLearning = game.SkillsLearning,
@@ -139,7 +133,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Categories()
     {
         var games = await _gamesRepository.GetAllAsync();
-        
+
         var skillsLearning = await _skillsLearningRepository.GetAllAsync();
         ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
 
@@ -157,10 +151,10 @@ public class HomeController : Controller
         ).ToList();
 
         ViewBag.Category = category;
-        
+
         var skillsLearning = await _skillsLearningRepository.GetAllAsync();
         ViewBag.SkillsLearning = skillsLearning.Select(sk => sk.Name).ToList();
-        
+
         return View(filteredGames);
     }
 
