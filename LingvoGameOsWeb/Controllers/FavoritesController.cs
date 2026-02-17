@@ -1,5 +1,6 @@
 ﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,13 +16,15 @@ namespace LingvoGameOs.Controllers
         readonly UserManager<User> _userManager;
         readonly IGamesRepository _gamesRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
+        readonly S3Service _s3Service;
 
-        public FavoritesController(IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, IGamesRepository gamesRepository, ISkillsLearningRepository skillsLearningRepository)
+        public FavoritesController(IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, IGamesRepository gamesRepository, ISkillsLearningRepository skillsLearningRepository, S3Service s3Service)
         {
             _favoriteGamesRepository = favoriteGamesRepository;
             _userManager = userManager;
             _gamesRepository = gamesRepository;
             _skillsLearningRepository = skillsLearningRepository;
+            _s3Service = s3Service;
         }
 
         public async Task<IActionResult> Index()
@@ -34,7 +37,7 @@ namespace LingvoGameOs.Controllers
 
             // Получаем все избранные игры пользователя
             var favoritesGamesUser = await _favoriteGamesRepository.GetUserFavoritesAsync(currentUser.Id);
-            
+
             var gamesViewModel = new List<GameViewModel>();
 
             foreach (var game in favoritesGamesUser)
@@ -44,13 +47,9 @@ namespace LingvoGameOs.Controllers
                     Id = game.Id,
                     Title = game.Title,
                     Author = game.Author,
-                    CoverImagePath = game.CoverImagePath,
-                    Description = game.Description,
-                    GameFolderName = game.GameFolderName,
-                    GameFilePath = game.GameFilePath,
-                    GamePlatform = game.GamePlatform,
-                    ImagesPaths = game.ImagesPaths,
-                    VideoUrl = game.VideoUrl,
+                    CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
+                    GameFilePath = _s3Service.GetPublicUrl(game.GameFilePath!),
+                    GamePlatform = game.GamePlatform,       
                     LanguageLevel = game.LanguageLevel,
                     PublicationDate = game.PublicationDate,
                     SkillsLearning = game.SkillsLearning,
@@ -74,7 +73,7 @@ namespace LingvoGameOs.Controllers
                     success = false,
                     message = $"Игра с id: {gameId} не найдена."
                 });
-            
+
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
                 return Unauthorized(new
@@ -82,9 +81,9 @@ namespace LingvoGameOs.Controllers
                     success = false,
                     message = "Необходимо войти в аккаунт."
                 });
-            
+
             bool result = await _favoriteGamesRepository.AddAsync(currentUser.Id, gameId);
-            if(result)
+            if (result)
                 return Ok();
             return BadRequest("Не удалось сохранить игру. Попробуйте позже или обновите страницу.");
         }
