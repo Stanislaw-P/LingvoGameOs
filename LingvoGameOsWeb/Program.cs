@@ -31,18 +31,6 @@ var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "De
 
 var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
-builder.Services.AddAuthentication()
-    .AddVkId(options =>
-    {
-        options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
-        options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
-        options.CallbackPath = "/signin-vkid"; // URL для callback
-        options.Scope.Add("email"); // Запрашиваем email
-        options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
-        options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-        options.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-        options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-    });
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
 builder
@@ -98,6 +86,20 @@ builder.Host.UseSerilog(
 // Add in-memory caching service
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<ReviewCache>();
+
+
+builder.Services.AddAuthentication()
+    .AddVkId(options =>
+    {
+        options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
+        options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
+        options.CallbackPath = "/signin-vkid"; // URL для callback
+        options.Scope.Add("email"); // Запрашиваем email
+        options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+        options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+        options.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+        options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+    });
 
 var app = builder.Build();
 
