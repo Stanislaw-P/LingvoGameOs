@@ -10,7 +10,7 @@ namespace LingvoGameOs.Models
         [MinLength(4, ErrorMessage = "Минимальная длина названия 4 символа")]
         public string Title { get; set; } = null!;
 
-        [Required(ErrorMessage = "Описание -обязательное поле")]
+        [Required(ErrorMessage = "Описание - обязательное поле")]
         [MaxLength(200, ErrorMessage = "Максимальная длина описания 200 символов")]
         [MinLength(10, ErrorMessage = "Минимальная длина описания 10 символов")]
         public string Description { get; set; } = null!;

@@ -11,8 +11,14 @@ export function initializeGameEdit() {
     setupDropdowns();
     setupCoverUpload();
     setupScreenshotsUpload();
-    setupGameFileUpload();
     setupModal();
+
+
+    // Инициализируем загрузку Desktop файлов, если изначально выбрана платформа Desktop
+    const platformInput = document.querySelector('#game-platform');
+    if (platformInput && platformInput.value === 'Desktop') {
+        setupDesktopFileUpload();
+    }
 }
 
 // Функционал выпадающих списков
@@ -202,6 +208,7 @@ function setupPlatformDropdown() {
         });
     });
 
+
     // Обработчик удаления выбранной платформы
     selectedPlatformsList.addEventListener('click', (e) => {
         const removeButton = e.target.closest('.selected-item__remove');
@@ -253,49 +260,222 @@ function setupPlatformDropdown() {
     }
 
     function updatePlatformSpecificFields() {
-        const fileUrlGroup = document.getElementById('game-file-url-group');
         const fileUploadGroup = document.getElementById('game-file-upload-group');
 
-        if (fileUrlGroup && fileUploadGroup) {
+        if (fileUploadGroup) {
             const platform = selectedPlatforms.length > 0 ? selectedPlatforms[0] : '';
 
             if (platform === 'Desktop') {
-                fileUrlGroup.style.display = 'none';
                 fileUploadGroup.style.display = 'block';
-            } else if (platform === 'Web-Mobile' || platform === 'Web-Desktop') {
-                fileUrlGroup.style.display = 'block';
-                fileUploadGroup.style.display = 'none';
+                setupDesktopFileUpload();
             } else {
-                fileUrlGroup.style.display = 'none';
                 fileUploadGroup.style.display = 'none';
             }
         }
     }
+
+    // Вызываем при инициализации, чтобы установить правильное состояние
+    updatePlatformSpecificFields();
 }
 
-// Вспомогательные функции для dropdown
-function toggleDropdown(selected, menu) {
-    const isActive = selected.classList.contains('active');
-    selected.classList.toggle('active', !isActive);
-    menu.classList.toggle('active', !isActive);
-    selected.setAttribute('aria-expanded', !isActive);
-    menu.setAttribute('aria-hidden', isActive);
-}
+// Для Desktop файлов игры - идентичная логика как с обложкой
+function setupDesktopFileUpload() {
+    const fileInput = document.getElementById('game-file-file');
+    const previewContainer = document.getElementById('file-preview');
+    const dropzone = document.querySelector('#file-dropzone .file-upload__dropzone');
+    const gameFilePathInput = document.querySelector('input[name="GameFilePath"]'); // Добавляем ссылку на скрытое поле
 
-function closeDropdown(selected, menu) {
-    selected.classList.remove('active');
-    menu.classList.remove('active');
-    selected.setAttribute('aria-expanded', 'false');
-    menu.setAttribute('aria-hidden', 'true');
-}
+    if (!fileInput || !previewContainer) {
+        console.log('Desktop file upload elements not found');
+        return;
+    }
 
-function filterDropdownItems(searchInput, options) {
-    if (!searchInput) return;
-    const query = searchInput.value.toLowerCase();
-    options.forEach(option => {
-        const text = option.textContent.toLowerCase();
-        option.style.display = text.includes(query) || option.dataset.value === 'select-all' ? '' : 'none';
+    // Проверяем, не была ли уже инициализирована функция
+    if (fileInput.hasAttribute('data-initialized')) {
+        console.log('Desktop file upload already initialized');
+        return;
+    }
+
+    // Помечаем как инициализированную
+    fileInput.setAttribute('data-initialized', 'true');
+
+    console.log('Initializing desktop file upload...');
+
+    let currentFile = null;
+
+    // Если у модели уже есть файл и превью пустое, показываем его
+    const existingFilePath = previewContainer.getAttribute('data-existing-file') || '';
+    const existingFileName = previewContainer.getAttribute('data-file-name') || '';
+    const existingFileSize = previewContainer.getAttribute('data-file-size') || '';
+
+    // ВАЖНО: Инициализируем обработчики для уже существующего файла
+    if (existingFilePath && existingFileName) {
+        // Если файл уже отображается в HTML (серверная разметка), инициализируем для него обработчики
+        const existingFileElement = previewContainer.querySelector('.file-upload__file');
+        if (existingFileElement) {
+            initializeExistingFileHandlers(existingFileElement, existingFileName, existingFileSize, existingFilePath);
+        } else {
+            // Если файл не отображается, создаем превью
+            showFilePreview(existingFileName, `${existingFileSize} Мб`, true);
+        }
+    }
+
+    // Обработка выбора файла через input
+    fileInput.addEventListener('change', function (e) {
+        if (e.target.files.length > 0) {
+            handleFileSelect(e.target.files[0]);
+        }
     });
+
+    // Обработка drag and drop
+    if (dropzone) {
+        dropzone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropzone.classList.add('file-upload__dropzone--dragover');
+        });
+
+        dropzone.addEventListener('dragleave', function () {
+            dropzone.classList.remove('file-upload__dropzone--dragover');
+        });
+
+        dropzone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropzone.classList.remove('file-upload__dropzone--dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFileSelect(e.dataTransfer.files[0]);
+            }
+        });
+
+        // Клик по dropzone открывает диалог выбора файла
+        dropzone.addEventListener('click', function () {
+            fileInput.click();
+        });
+    }
+
+    function handleFileSelect(file) {
+        if (!file) return;
+
+        // Проверяем расширение файла
+        if (!file.name.toLowerCase().endsWith('.msi')) {
+            showNotification('Разрешены только файлы с расширением .msi', 'error');
+            return;
+        }
+
+        // Проверяем размер файла (2GB)
+        if (file.size > 2 * 1024 * 1024 * 1024) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            showNotification(`Файл слишком большой (${fileSizeMB} MB). Максимальный размер: 2 ГБ`, 'error');
+            return;
+        }
+
+        const fileSizeMB = Math.round(file.size / (1024 * 1024));
+        showFilePreview(file.name, `${fileSizeMB} Мб`, false);
+        currentFile = file;
+
+        // При загрузке нового файла сбрасываем флаг удаления
+        removeHiddenInput('DeleteGameFile');
+    }
+
+    function showFilePreview(fileName, fileSize, isExisting) {
+        const previewContainer = document.getElementById('file-preview');
+        const fileInput = document.getElementById('game-file-file');
+
+        if (!previewContainer) return;
+
+        previewContainer.innerHTML = `
+        <div class="file-upload__file">
+            <span class="file-upload__file-name">${fileName}</span>
+            <span class="file-upload__file-size">${fileSize}</span>
+            <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
+        </div>
+    `;
+
+        // Если это существующий файл, добавляем ссылку для скачивания
+        if (isExisting) {
+            const fileLink = previewContainer.querySelector('.file-upload__file-name');
+            const existingFilePath = previewContainer.getAttribute('data-existing-file');
+            if (existingFilePath) {
+                fileLink.innerHTML = `<a href="${existingFilePath}" download="${fileName}" style="color: inherit; text-decoration: none;">${fileName}</a>`;
+            }
+        }
+
+        // Добавляем обработчик для кнопки удаления
+        const deleteButton = previewContainer.querySelector('.file-upload__file-trash');
+        deleteButton.addEventListener('click', function (e) {
+            e.stopPropagation();
+            handleFileDelete(isExisting);
+        });
+    }
+
+    // Функция для инициализации обработчиков существующего файла
+    function initializeExistingFileHandlers(fileElement, fileName, fileSize, filePath) {
+        const deleteButton = fileElement.querySelector('.file-upload__file-trash');
+        if (deleteButton) {
+            deleteButton.addEventListener('click', function (e) {
+                e.stopPropagation();
+                handleFileDelete(true);
+            });
+        }
+    }
+
+    // Общая функция обработки удаления файла
+    function handleFileDelete(isExisting) {
+        const previewContainer = document.getElementById('file-preview');
+        const fileInput = document.getElementById('game-file-file');
+
+        if (isExisting) {
+            // Для существующего файла - добавляем скрытое поле для удаления
+            addHiddenInput('DeleteGameFile', 'true');
+
+            // ВАЖНО: Обнуляем GameFilePath чтобы серверная логика сработала
+            if (gameFilePathInput) {
+                gameFilePathInput.value = '';
+            }
+
+            showNotification('Файл игры будет удален после сохранения изменений', 'info');
+        } else {
+            // Для нового файла - просто очищаем
+            showNotification('Новый файл удален', 'info');
+        }
+
+        // Очищаем preview и input
+        previewContainer.innerHTML = '';
+        if (fileInput) {
+            fileInput.value = '';
+        }
+
+        // Если был существующий файл, показываем сообщение
+        if (isExisting) {
+            previewContainer.innerHTML = `
+                <div class="file-upload__file">
+                    <span class="file-upload__file-name">Файл игры будет удален</span>
+                    <span class="file-upload__file-size">Вы можете загрузить новый файл</span>
+                </div>
+            `;
+        }
+
+        currentFile = null;
+    }
+
+    function addHiddenInput(name, value) {
+        // Удаляем старый input если есть
+        removeHiddenInput(name);
+
+        // Добавляем новый hidden input
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        document.querySelector('form').appendChild(input);
+    }
+
+    function removeHiddenInput(name) {
+        // Удаляем старый input если есть
+        const existingInput = document.querySelector(`input[name="${name}"]`);
+        if (existingInput) {
+            existingInput.remove();
+        }
+    }
 }
 
 // Для обложки игры
@@ -575,80 +755,64 @@ function setupScreenshotsUpload() {
     }
 }
 
+// Вспомогательные функции для dropdown
+function toggleDropdown(selected, menu) {
+    const isActive = selected.classList.contains('active');
+    selected.classList.toggle('active', !isActive);
+    menu.classList.toggle('active', !isActive);
+    selected.setAttribute('aria-expanded', !isActive);
+    menu.setAttribute('aria-hidden', isActive);
+}
 
-// Для файла игры - версия с data-атрибутами
-// Для файла игры - ПРОСТАЯ И НАДЕЖНАЯ ВЕРСИЯ
-function setupGameFileUpload() {
-    const fileInput = document.getElementById('game-cover-file');
-    const previewContainer = document.getElementById('file-preview');
-    const gameUrlHiddenInput = document.querySelector('input[name="GameURL"]');
+function closeDropdown(selected, menu) {
+    selected.classList.remove('active');
+    menu.classList.remove('active');
+    selected.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+}
 
-    console.log('Initializing game file upload...');
-
-    if (!previewContainer) return;
-
-    // Универсальная функция удаления
-    const deleteGameFile = () => {
-        console.log('Deleting game file...');
-
-        // 1. Очищаем скрытое поле
-        if (gameUrlHiddenInput) {
-            gameUrlHiddenInput.value = '';
-        }
-
-        // 2. Очищаем file input
-        if (fileInput) {
-            fileInput.value = '';
-        }
-
-        // 3. Показываем сообщение об удалении
-        previewContainer.innerHTML = `
-            <div class="file-upload__file">
-                <span class="file-upload__file-name">Файл игры удален</span>
-                <span class="file-upload__file-size">Вы можете загрузить новый файл</span>
-            </div>
-        `;
-
-        console.log('Game file deleted successfully');
-    };
-
-    // Обработчик для ВСЕХ кнопок удаления в контейнере
-    previewContainer.addEventListener('click', (e) => {
-        if (e.target.closest('.file-upload__file-trash')) {
-            e.preventDefault();
-            e.stopPropagation();
-            deleteGameFile();
-        }
+function filterDropdownItems(searchInput, options) {
+    if (!searchInput) return;
+    const query = searchInput.value.toLowerCase();
+    options.forEach(option => {
+        const text = option.textContent.toLowerCase();
+        option.style.display = text.includes(query) || option.dataset.value === 'select-all' ? '' : 'none';
     });
+}
 
-    // Обработка нового файла
-    if (fileInput) {
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const fileInfo = {
-                name: file.name,
-                size: Math.round(file.size / (1024 * 1024))
-            };
-
-            previewContainer.innerHTML = `
-                <div class="file-upload__file">
-                    <span class="file-upload__file-name">${fileInfo.name}</span>
-                    <span class="file-upload__file-size">${fileInfo.size} Мб</span>
-                    <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
-                </div>
-            `;
-
-            console.log('New game file selected:', fileInfo.name);
-        });
+// Вспомогательная функция для показа уведомлений
+function showNotification(message, type) {
+    // Создаем или находим контейнер для уведомлений
+    let notificationContainer = document.getElementById('notification-container');
+    if (!notificationContainer) {
+        notificationContainer = document.createElement('div');
+        notificationContainer.id = 'notification-container';
+        notificationContainer.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        `;
+        document.body.appendChild(notificationContainer);
     }
 
-    // Проверяем, есть ли уже файл при загрузке
-    const existingFileElement = previewContainer.querySelector('.file-upload__file');
-    if (existingFileElement && existingFileElement.querySelector('.file-upload__file-trash')) {
-        console.log('Existing game file found, delete functionality ready');
-    }
+    const notification = document.createElement('div');
+    notification.className = `notification notification--${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        color: white;
+        background-color: ${type === 'error' ? '#dc3545' : '#28a745'};
+    `;
+
+    notificationContainer.appendChild(notification);
+
+    // Автоматическое скрытие через 5 секунд
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
 }
 
 // Модальное окно

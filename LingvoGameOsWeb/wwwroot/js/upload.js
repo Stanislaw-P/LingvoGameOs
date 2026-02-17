@@ -18,9 +18,6 @@ function initializeUploadForm() {
     const fileDropzone = document.querySelector('#file-dropzone');
     const coverFileInput = document.querySelector('#game-cover-file');
     const gameFileInput = document.querySelector('#game-file-file');
-    const modalOverlay = document.querySelector('#qualityModalOverlay');
-    const modalCloseButton = document.querySelector('#qualityModalClose');
-    const openModalLink = document.querySelector('#open-quality-modal');
     const platformDropdown = document.querySelector('#platform-dropdown');
     const platformSelected = platformDropdown.querySelector('.custom-dropdown__selected');
     const platformMenu = platformDropdown.querySelector('.custom-dropdown__menu');
@@ -299,57 +296,6 @@ function initializeUploadForm() {
         null, // No MIME type check for .msi
         ALLOWED_GAME_EXTENSIONS
     );
-
-    // Modal functionality
-    function openModal() {
-        lastFocusedElement = document.activeElement;
-        modalOverlay.classList.add('quality-modal__overlay--visible');
-        modalCloseButton.focus();
-        trapFocus(modalOverlay);
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        modalOverlay.classList.remove('quality-modal__overlay--visible');
-        if (lastFocusedElement) lastFocusedElement.focus();
-        document.body.style.overflow = '';
-    }
-
-    function trapFocus(modal) {
-        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        modal.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                if (e.shiftKey && document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement.focus();
-                } else if (!e.shiftKey && document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement.focus();
-                }
-            }
-        });
-    }
-
-    openModalLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal();
-    });
-
-    modalCloseButton.addEventListener('click', closeModal);
-
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) closeModal();
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalOverlay.classList.contains('quality-modal__overlay--visible')) {
-            closeModal();
-        }
-    });
-
 
     function resetForm() {
         form.reset();

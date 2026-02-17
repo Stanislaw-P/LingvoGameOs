@@ -1,0 +1,6 @@
+@LingvoGameOsWebApi_HostAddress = http://localhost:5147
+
+GET {{LingvoGameOsWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

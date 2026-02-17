@@ -224,8 +224,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 return Ok(new
                 {
                     title = existingGame.Title,
-                    author = $"{existingGame.Author.Name} {existingGame.Author.Surname}",
-                    authorEmail = existingGame.Author.Email
+                    author = $"{existingGame?.Author?.Name} {existingGame?.Author?.Surname}",
+                    authorEmail = existingGame?.Author?.Email
                 });
             }
             catch (Exception ex)
@@ -250,7 +250,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
-            return View(new EditGameViewModel
+            return View(new AdminEditGameViewModel
             {
                 Id = existingGame.Id,
                 Title = existingGame.Title,
@@ -276,7 +276,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DetailsAsync(EditGameViewModel editGame)
+        public async Task<IActionResult> DetailsAsync(AdminEditGameViewModel editGame)
         {
             if (!ModelState.IsValid)
             {
@@ -326,6 +326,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
                 existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
                 existingGame.Port = editGame.Port;
+                if (editGame.GamePlatform != "Desktop")
+                    existingGame.Title = editGame.Title.Trim(); // Если это Desktop то меняем название игры в методе ProcessRenameGameFile
 
                 // Если есть новое изображение - меняем
                 await ProcessChangeCoverImageAsync(editGame, existingGame);
@@ -339,7 +341,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Удаляем файл игры
                 ProcessDeleteGameFile(editGame, existingGame);
 
-                // Меняем ия
+                // Меняем имя
                 ProcessRenameGameFile(editGame, existingGame);
 
                 // Меняем путь к файлу игры, если он изменился
@@ -460,8 +462,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 else
                     existingGame.Title = editGame.Title.Trim();
             }
-            else
-                existingGame.Title = editGame.Title.Trim();
         }
     }
 }
