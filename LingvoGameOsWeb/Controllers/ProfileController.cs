@@ -78,6 +78,18 @@ namespace LingvoGameOs.Controllers
                 }
 
                 var gamesHistory = await gamesRepository.TryGetUserGameHistoryAsync(user);
+                var gamesHistoryViewModel = new List<GameViewModel>();
+                foreach (var game in gamesHistory)
+                {
+                    var gameHistory = new GameViewModel
+                    {
+                        Id = game.Id,
+                        Title = game.Title,
+                        Description = game.Description,
+                        CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath)
+                    };
+                    gamesHistoryViewModel.Add(gameHistory);
+                }
 
                 var userViewModel = new UserViewModel()
                 {
@@ -89,7 +101,7 @@ namespace LingvoGameOs.Controllers
                     AvatarImgPath = _s3Service.GetPublicUrl(user.AvatarImgPath),
                     DevGames = devGamesViewModel,
                     DevPendingGames = devPendingGamesViewModel,
-                    GamesHistory = gamesHistory,
+                    GamesHistory = gamesHistoryViewModel,
                     TotalPoints = user.TotalPoints
                 };
 
