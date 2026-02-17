@@ -54,6 +54,7 @@ namespace LingvoGameOs.Controllers
                         SkillsLearning = game.SkillsLearning,
                         AverageRaitingPlayers = game.AverageRaitingPlayers,
                         FavoritesCount = await _favoriteGamesRepository.GetGameFavoritesCountAsync(game.Id),
+                        IsActive = game.IsActive,
                     };
                     devGamesViewModel.Add(gameViewModel);
                 }
@@ -72,6 +73,7 @@ namespace LingvoGameOs.Controllers
                     DevGames = devGamesViewModel,
                     DevPendingGames = user.DevPendingGames,
                     GamesHistory = gamesHistory,
+                    TotalPoints = user.TotalPoints
                 };
 
                 User? UserProfileOwner = await userManager.GetUserAsync(User);
