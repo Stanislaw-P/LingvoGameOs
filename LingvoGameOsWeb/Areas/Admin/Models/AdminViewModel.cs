@@ -1,4 +1,5 @@
 ﻿using LingvoGameOs.Db.Models;
+using LingvoGameOs.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace LingvoGameOs.Areas.Admin.Models
@@ -11,9 +12,9 @@ namespace LingvoGameOs.Areas.Admin.Models
         public string Surname { get; set; }
         public string? Description { get; set; }
         public string AvatarImgUrl { get; set; } = null!;
-        public List<Game>? ExistingDevGames { get; set; }
-        public List<PendingGame>? PendingGames { get; set; }
-        public List<Game>? InactiveGames { get; set; }
+        public List<GameViewModel>? ExistingDevGames { get; set; }
+        public List<PendingGameViewModel>? PendingGames { get; set; }
+        public List<GameViewModel>? InactiveGames { get; set; }
         public int NumberDevelopers { get; set; }
     }
 }

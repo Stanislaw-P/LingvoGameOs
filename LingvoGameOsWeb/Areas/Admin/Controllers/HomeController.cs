@@ -35,8 +35,43 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 return NotFound();
 
             var existingGames = await _gamesRepository.GetAllAsync();
-            var inactiveGames = existingGames.Where(game => !game.IsActive).ToList();
+            var gamesViewModel = new List<GameViewModel>();
+
+            foreach (var game in existingGames)
+            {
+                gamesViewModel.Add(new GameViewModel
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                    CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
+                    GameFilePath = _s3Service.GetPublicUrl(game.GameFilePath!),
+                    GamePlatform = game.GamePlatform,
+                    LanguageLevel = game.LanguageLevel,
+                    PublicationDate = game.PublicationDate,
+                    SkillsLearning = game.SkillsLearning,
+                    AverageRaitingPlayers = game.AverageRaitingPlayers,
+                    IsActive = game.IsActive,
+                });
+            }
+
+            var inactiveGamesViewModel = gamesViewModel.Where(game => !game.IsActive).ToList();
+            
             var pendingGames = await _pendingGamesRepository.GetAllAsync();
+            var pendingGamesViewModel = new List<PendingGameViewModel>();
+
+            foreach (var pendingGame in pendingGames)
+            {
+                pendingGamesViewModel.Add(new PendingGameViewModel
+                {
+                    Id = pendingGame.Id,
+                    Title = pendingGame.Title,
+                    CoverImagePath = _s3Service.GetPublicUrl(pendingGame.CoverImagePath),
+                    GameFilePath = _s3Service.GetPublicUrl(pendingGame.GameFilePath!),
+                    GamePlatform = pendingGame.GamePlatform,
+                    LanguageLevel = pendingGame.LanguageLevel,
+                    SkillsLearning = pendingGame.SkillsLearning,
+                });
+            }
             var devUsers = await _userManager.GetUsersInRoleAsync(Constants.DevRoleName);
             var numberDevUser = devUsers.Count;
             var adminUserViewModel = new AdminViewModel
@@ -47,9 +82,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 UserName = adminUser.UserName!,
                 Description = adminUser.Description,
                 AvatarImgUrl = _s3Service.GetPreSignedFileUrl(adminUser.AvatarImgPath),
-                ExistingDevGames = existingGames,
-                PendingGames = pendingGames,
-                InactiveGames = inactiveGames,
+                ExistingDevGames = gamesViewModel,
+                PendingGames = pendingGamesViewModel,
+                InactiveGames = inactiveGamesViewModel,
                 NumberDevelopers = numberDevUser
             };
 
