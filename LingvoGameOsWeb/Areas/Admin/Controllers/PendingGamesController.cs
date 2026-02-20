@@ -23,8 +23,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly ILogger<PendingGamesController> _logger;
         readonly EmailService _emailService;
+        readonly S3Service _s3Service;
 
-        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger, EmailService emailService)
+        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger, EmailService emailService, S3Service s3Service)
         {
             _userManager = userManager;
             _pendingGamesRepository = pendingGamesRepository;
@@ -35,6 +36,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _gamesRepository = gamesRepository;
             _logger = logger;
             _emailService = emailService;
+            _s3Service = s3Service;
         }
 
         [HttpPost]
@@ -243,35 +245,35 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
 
-            FileInfo? msiFileInfo = null;
+            FileMetadata? msiFileMetadata = null;
             if (existingGame?.GamePlatform?.Name == "Desktop")
             {
                 if (existingGame.GameFilePath != null)
-                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
+                    msiFileMetadata = await _s3Service.GetFileMetadataAsync(existingGame.GameFilePath);
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new AdminEditGameViewModel
             {
-                Id = existingGame.Id,
+                Id = existingGame!.Id,
                 Title = existingGame.Title,
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                CurrentCoverImagePath = existingGame.CoverImagePath,
-                CoverImageInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.CoverImagePath)),
-                ImagesFilesInfo = _fileProvider.GetImagesFilesInfo(existingGame.ImagesPaths),
+                CurrentCoverImagePath = _s3Service.GetPublicUrl(existingGame.CoverImagePath),
+                CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath),
+                ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths!),
                 SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
                 Author = existingGame?.Author,
-                AuthorId = existingGame?.Author?.Id,
+                AuthorId = existingGame?.Author?.Id!,
                 DispatchDate = existingGame.DispatchDate,
-                GameFilePath = existingGame.GameFilePath,
+                GameFilePath = _s3Service.GetPublicUrl(existingGame.GameFilePath!),
                 GameGitHubUrl = existingGame.GameGitHubUrl,
                 GameFolderName = existingGame.GameFolderName,
-                GameFileInfo = msiFileInfo,
-                GamePlatform = existingGame.GamePlatform.Name,
-                LanguageLevel = existingGame.LanguageLevel.Name,
-                VideoUrl = existingGame.VideoUrl,
-                LastMessage = existingGame.LastMessage,
-                Port = existingGame.Port
+                GameFileMetadata = msiFileMetadata,
+                GamePlatform = existingGame?.GamePlatform?.Name!,
+                LanguageLevel = existingGame?.LanguageLevel?.Name!,
+                VideoUrl = existingGame?.VideoUrl,
+                LastMessage = existingGame?.LastMessage,
+                Port = existingGame!.Port
             });
         }
 

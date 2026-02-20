@@ -110,16 +110,16 @@ namespace LingvoGameOs.Helpers
             }
         }
 
-        public List<ImageFileInfo> GetImagesFilesInfo(List<string> filesPaths)
-        {
-            return filesPaths
-                .Select(filePath => new ImageFileInfo
-                {
-                    ImagePath = filePath,
-                    FileInfo = new FileInfo(Path.Combine(_appEnvironment.WebRootPath + "/" + filePath))
-                })
-                .ToList();
-        }
+        //public List<FileMetadata> GetImagesFilesInfo(List<string> filesPaths)
+        //{
+        //    return filesPaths
+        //        .Select(filePath => new FileInfo
+        //        {
+        //            FileUrl = filePath,
+        //            //FileInfo = new FileInfo(Path.Combine(_appEnvironment.WebRootPath + "/" + filePath))
+        //        })
+        //        .ToList();
+        //}
 
         public string GetGameDirectoryPath(int gameId, Folders folder)
         {
