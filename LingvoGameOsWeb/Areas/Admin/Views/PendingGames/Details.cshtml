@@ -253,16 +253,16 @@
                                             </div>
                                             <div class="file-upload__previews" id="file-preview"
                                                  data-existing-file="@Model.GameFilePath"
-                                                 data-file-name="@Model.GameFileInfo?.Name"
-                                                 data-file-size="@(Model.GameFileInfo != null ? Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0)) : 0)">
-                                                @if (Model.GameFilePath != null && Model.GameFileInfo != null)
+                                                 data-file-name="@Model.GameFileMetadata?.Key"
+                                                 data-file-size="@(Model.GameFileMetadata != null ? Math.Round(Model.GameFileMetadata.Size / (1024.0 * 1024.0)) : 0)">
+                                                @if (Model.GameFilePath != null && Model.GameFileMetadata != null)
                                                 {
                                                     <div class="file-upload__file">
-                                                        <a href="@Model.GameFilePath" download="@Model.GameFileInfo.Name" class="file-upload__file-name">
-                                                            @Model.GameFileInfo.Name
+                                                        <a href="@Model.GameFilePath" download="@Model.GameFileMetadata.Key class="file-upload__file-name">
+                                                            @Model.GameFileMetadata.Key
                                                         </a>
                                                         <span class="file-upload__file-size">
-                                                            @(Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0))) Мб
+                                                            @(Math.Round(Model.GameFileMetadata.Size / (1024.0 * 1024.0))) Мб
                                                         </span>
                                                         <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
                                                     </div>
@@ -327,8 +327,8 @@
                                     </div>
                                     <div class="file-upload__previews" id="cover-image-preview"
                                          data-existing-image="@Model?.CurrentCoverImagePath"
-                                         data-image-name="@Model?.CoverImageInfo?.Name"
-                                         data-image-size="@(Model?.CoverImageInfo?.Length / 1024 ?? 0)">
+                                         data-image-name="@Model?.CoverImageMetadata?.Key"
+                                         data-image-size="@(Model?.CoverImageMetadata?.Size / 1024 ?? 0)">
                                     </div>
                                     <input type="hidden" asp-for="CurrentCoverImagePath" />
                                 </div>
@@ -371,13 +371,13 @@
                                     </label>
                                     <div class="file-upload__previews" id="screenshots-preview">
                                         <!-- Существующие изображения как скрытые элементы -->
-                                        @if (Model?.ImagesFilesInfo != null)
+                                        @if (Model?.ImagesFilesMetadata != null)
                                         {
-                                            @foreach (var imgInfo in Model.ImagesFilesInfo)
+                                            @foreach (var imgInfo in Model.ImagesFilesMetadata)
                                             {
-                                                <div data-existing-image="@imgInfo.ImagePath"
-                                                     data-image-id="@imgInfo?.FileInfo?.Name"
-                                                     data-image-name="@imgInfo?.FileInfo?.Name"
+                                                <div data-existing-image="@imgInfo.FileUrl"
+                                                     data-image-id="@imgInfo?.Key"
+                                                     data-image-name="@imgInfo?.Key"
                                                      style="display: none;"></div>
                                             }
                                         }

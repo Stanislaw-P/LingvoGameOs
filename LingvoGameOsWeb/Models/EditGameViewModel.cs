@@ -31,9 +31,9 @@ namespace LingvoGameOs.Models
         public string? CurrentCoverImagePath { get; set; }
 
         public IFormFile? CoverImage { get; set; }
-        public FileInfo? CoverImageInfo { get; set; }
+        public FileMetadata? CoverImageMetadata { get; set; }
 
-        public List<ImageFileInfo>? ImagesFilesInfo { get; set; }
+        public List<FileMetadata>? ImagesFilesMetadata { get; set; }
         
         public IFormFile[]? UploadedImages { get; set; }
         public List<string>? DeletedImages { get; set; }
@@ -47,7 +47,7 @@ namespace LingvoGameOs.Models
 
         [Required(ErrorMessage = "Ссылка на GitHub - обязательное поле")]
         public string GameGitHubUrl { get; set; } = null!;
-        public FileInfo? GameFileInfo { get; set; }
+        public FileMetadata? GameFileMetadata { get; set; }
 
         [Required(ErrorMessage = "Выберите платформу")]
         public string GamePlatform { get; set; } = null!;

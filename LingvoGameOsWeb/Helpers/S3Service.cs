@@ -2,8 +2,12 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using LingvoGameOs.Areas.Admin.Models;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Sprache;
+using System.Threading.Tasks;
 
 namespace LingvoGameOs.Helpers
 {
@@ -219,6 +223,53 @@ namespace LingvoGameOs.Helpers
         {
             await CopyFileAsync(sourceKey, destinationKey);
             await DeleteFileAsync(sourceKey);
+        }
+
+        public async Task<List<FileMetadata>> GetFilesMetadataAsync(List<string> filesKeys)
+        {
+            var result = new List<FileMetadata>();
+
+            foreach (var key in filesKeys)
+            {
+                try
+                {
+                    var metadata = await _s3Client.GetObjectMetadataAsync(_bucketName, key);
+
+                    result.Add(new FileMetadata
+                    {
+                        Key = key,
+                        FileUrl = GetPublicUrl(key),
+                        Size = metadata.ContentLength,
+                    });
+                }
+                catch (AmazonS3Exception ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    // Если файла нет в S3, просто пропускаем его или логируем
+                    continue;
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<FileMetadata> GetFileMetadataAsync(string key)
+        {
+            try
+            {
+                var metadata = await _s3Client.GetObjectMetadataAsync(_bucketName, key);
+
+                return new FileMetadata
+                {
+                    Key= key,
+                    FileUrl = GetPublicUrl(key),
+                    Size = metadata.ContentLength
+                };
+            }
+            catch (AmazonS3Exception ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                // Если файла нет в S3
+                return new FileMetadata();
+            }
         }
     }
 

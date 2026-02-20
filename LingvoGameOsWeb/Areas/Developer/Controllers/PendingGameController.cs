@@ -21,8 +21,9 @@ namespace LingvoGameOs.Areas.Developer.Controllers
         readonly IPlatformsRepository _platformsRepository;
         readonly ILogger<PendingGameController> _logger;
         readonly UserManager<User> _userManager;
+        readonly S3Service _s3Service;
 
-        public PendingGameController(IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment appEnvironment, EmailService emailService, ISkillsLearningRepository skillsLearningRepository, ILanguageLevelsRepository languageLevelsRepository, IPlatformsRepository platformsRepository, ILogger<PendingGameController> logger, UserManager<User> userManager)
+        public PendingGameController(IPendingGamesRepository pendingGamesRepository, IWebHostEnvironment appEnvironment, EmailService emailService, ISkillsLearningRepository skillsLearningRepository, ILanguageLevelsRepository languageLevelsRepository, IPlatformsRepository platformsRepository, ILogger<PendingGameController> logger, UserManager<User> userManager, S3Service s3Service)
         {
             _pendingGamesRepository = pendingGamesRepository;
             _fileProvider = new FileProvider(appEnvironment);
@@ -32,6 +33,7 @@ namespace LingvoGameOs.Areas.Developer.Controllers
             _platformsRepository = platformsRepository;
             _logger = logger;
             _userManager = userManager;
+            _s3Service = s3Service;
         }
 
         public async Task<IActionResult> EditAsync(int pendingGameId)
@@ -42,11 +44,11 @@ namespace LingvoGameOs.Areas.Developer.Controllers
 
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
 
-            FileInfo? msiFileInfo = null;
+            FileMetadata? msiFileMetadata = null;
             if (existingGame?.GamePlatform?.Name == "Desktop")
             {
                 if (existingGame.GameFilePath != null)
-                    msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.GameFilePath));
+                    msiFileMetadata = await _s3Service.GetFileMetadataAsync(existingGame.GameFilePath);
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new EditGameViewModel
@@ -56,15 +58,15 @@ namespace LingvoGameOs.Areas.Developer.Controllers
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
                 CurrentCoverImagePath = existingGame.CoverImagePath,
-                CoverImageInfo = new FileInfo(_fileProvider.GetFileFullPath(existingGame.CoverImagePath!)),
-                ImagesFilesInfo = _fileProvider.GetImagesFilesInfo(existingGame.ImagesPaths!),
+                CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath!),
+                ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths!),
                 SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
                 Author = existingGame?.Author,
                 AuthorId = existingGame?.Author?.Id!,
                 DispatchDate = existingGame.DispatchDate,
-                GameFilePath = existingGame.GameFilePath,
+                GameFilePath = _s3Service.GetPublicUrl(existingGame.GameFilePath!),
                 GameGitHubUrl = existingGame.GameGitHubUrl,
-                GameFileInfo = msiFileInfo,
+                GameFileMetadata = msiFileMetadata,
                 GamePlatform = existingGame?.GamePlatform?.Name!,
                 LanguageLevel = existingGame?.LanguageLevel?.Name!,
                 VideoUrl = existingGame?.VideoUrl,
@@ -84,13 +86,13 @@ namespace LingvoGameOs.Areas.Developer.Controllers
                 if (authorGame != null)
                     editGame.Author = authorGame;
 
-                FileInfo? msiFileInfo = null;
+                FileMetadata? msiFileMetadata = null;
                 if (editGame?.GamePlatform == "Desktop")
                 {
                     if (editGame.GameFilePath != null)
-                        msiFileInfo = new FileInfo(_fileProvider.GetFileFullPath(editGame.GameFilePath));
+                        msiFileMetadata = await _s3Service.GetFileMetadataAsync(editGame.GameFilePath);
                 }
-                editGame!.GameFileInfo = msiFileInfo;
+                editGame!.GameFileMetadata = msiFileMetadata;
 
                 return View(editGame);
             }
