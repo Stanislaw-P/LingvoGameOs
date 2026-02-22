@@ -18,7 +18,7 @@ namespace LingvoGameOs.Models
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = "Правила - обязательное поле")]
-        [MaxLength(550, ErrorMessage = "Максимальная длина 550 символов")]
+        [MaxLength(800, ErrorMessage = "Максимальная длина 800 символов")]
         [MinLength(10, ErrorMessage = "Минимальная длина 10 символов")]
         public string Rules { get; set; } = null!;
 

@@ -43,13 +43,9 @@ namespace LingvoGameOs.Controllers
                         Id = game.Id,
                         Title = game.Title,
                         Author = game.Author,
-                        CoverImagePath = game.CoverImagePath,
-                        Description = game.Description,
-                        GameFolderName = game.GameFolderName,
-                        GameFilePath = game.GameFilePath,
+                        CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!),
+                        GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                         GamePlatform = game.GamePlatform,
-                        ImagesPaths = game.ImagesPaths,
-                        VideoUrl = game.VideoUrl,
                         LanguageLevel = game.LanguageLevel,
                         PublicationDate = game.PublicationDate,
                         SkillsLearning = game.SkillsLearning,
@@ -70,8 +66,8 @@ namespace LingvoGameOs.Controllers
                         Id = pendingGame.Id,
                         Title = pendingGame.Title,
                         Author = pendingGame.Author,
-                        CoverImagePath = _s3Service.GetPublicUrl(pendingGame.CoverImagePath),
-                        GameFilePath = _s3Service.GetPublicUrl(pendingGame.GameFilePath!),
+                        CoverImagePath = _s3Service.GetPublicUrl(pendingGame.CoverImagePath!),
+                        GameFilePath = _s3Service.GetDownloadUrl(pendingGame.GameFilePath!, pendingGame.Title, ".msi"),
                         GamePlatform = pendingGame.GamePlatform
                     };
                     devPendingGamesViewModel.Add(pendingGameViewModel);
@@ -86,7 +82,7 @@ namespace LingvoGameOs.Controllers
                         Id = game.Id,
                         Title = game.Title,
                         Description = game.Description,
-                        CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath)
+                        CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!)
                     };
                     gamesHistoryViewModel.Add(gameHistory);
                 }
