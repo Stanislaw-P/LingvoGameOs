@@ -142,7 +142,7 @@ namespace LingvoGameOs.Helpers
             string replace = newBase.TrimStart('/');
 
             return path.Replace(search, replace, StringComparison.OrdinalIgnoreCase);
-        }
+                }
 
         /// <summary>
         /// Получить мета-данные списка файлов

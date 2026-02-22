@@ -64,7 +64,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<string>("CoverImagePath")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -211,7 +210,6 @@ namespace LingvoGameOs.Db.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CoverImagePath")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
