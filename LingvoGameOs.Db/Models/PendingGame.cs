@@ -21,7 +21,7 @@ namespace LingvoGameOs.Db.Models
         public LanguageLevel? LanguageLevel { get; set; }
         public int LanguageLevelId { get; set; }
         public List<SkillLearning>? SkillsLearning { get; set; }
-        public string CoverImagePath { get; set; } = null!;
+        public string? CoverImagePath { get; set; } = null!;
         public List<string>? ImagesPaths { get; set; }
         public string? VideoUrl { get; set; }
         public string? GameFilePath { get; set; }

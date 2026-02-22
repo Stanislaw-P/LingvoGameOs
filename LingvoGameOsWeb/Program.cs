@@ -69,8 +69,8 @@ builder.Services.AddTransient<EmailService>();
 // S3 Service for file storage
 builder.Services.AddScoped<S3Service>();
 
-builder.Services.AddScoped<S3FileProvider>();
 builder.Services.AddScoped<FileProvider>();
+builder.Services.AddScoped<GameFileProcessor>();
 
 builder.Services.AddScoped<RatingService>();
 
