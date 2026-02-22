@@ -104,25 +104,25 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
-        public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
-        {
-            var extension = Path.GetExtension(file.FileName);
-            var uniqueName = $"{uniqueFileName}{extension}";
-            var key = $"{folder}/{gameId}/{uniqueName}";
+        //public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
+        //{
+        //    var extension = Path.GetExtension(file.FileName);
+        //    var uniqueName = $"{uniqueFileName}{extension}";
+        //    var key = $"{folder}/{gameId}/{uniqueName}";
 
-            using var stream = file.OpenReadStream();
-            var request = new PutObjectRequest
-            {
-                BucketName = _bucketName,
-                Key = key,
-                InputStream = stream,
-                ContentType = file.ContentType,
-            };
+        //    using var stream = file.OpenReadStream();
+        //    var request = new PutObjectRequest
+        //    {
+        //        BucketName = _bucketName,
+        //        Key = key,
+        //        InputStream = stream,
+        //        ContentType = file.ContentType,
+        //    };
 
-            await _s3Client.PutObjectAsync(request);
+        //    await _s3Client.PutObjectAsync(request);
 
-            return key;
-        }
+        //    return key;
+        //}
 
         /// <summary>
         /// Загрузить несколько файлов игры
@@ -181,6 +181,29 @@ namespace LingvoGameOs.Helpers
             };
 
             await _s3Client.DeleteObjectAsync(request);
+        }
+
+        public async Task DeleteFilesAsync(List<string> keys)
+        {
+            if (!keys.Any() || keys == null) return;
+
+            var request = new DeleteObjectsRequest
+            {
+                BucketName = _bucketName,
+                Objects = keys
+                    .Where(key => !string.IsNullOrEmpty(key))
+                    .Select(key => new KeyVersion { Key = key.TrimStart('/') })
+                    .ToList()
+            };
+
+            try
+            {
+                await _s3Client.DeleteObjectsAsync(request);
+            }
+            catch (DeleteObjectsException ex)
+            {
+                throw new Exception($"Ошибка при массовом удалении из S3: {ex.Message}");
+            }
         }
 
         public async Task DeleteDirectoryAsync(string prefix)
@@ -260,7 +283,7 @@ namespace LingvoGameOs.Helpers
 
                 return new FileMetadata
                 {
-                    Key= key,
+                    Key = key,
                     FileUrl = GetPublicUrl(key),
                     Size = metadata.ContentLength
                 };
@@ -270,6 +293,25 @@ namespace LingvoGameOs.Helpers
                 // Если файла нет в S3
                 return new FileMetadata();
             }
+        }
+
+        public string GetDownloadUrl(string key, string displayTitle, string extension)
+        {
+            // Очищаем заголовок от лишних пробелов и кавычек
+            string safeFileName = $"{displayTitle.Trim()}{extension}";
+
+            var request = new GetPreSignedUrlRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                ResponseHeaderOverrides = new ResponseHeaderOverrides
+                {
+                    ContentDisposition = $"attachment; filename=\"{safeFileName}\""
+                }
+            };
+
+            return _s3Client.GetPreSignedURL(request);
         }
     }
 

@@ -23,7 +23,6 @@ namespace LingvoGameOs.Controllers
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly ILogger<GameController> _logger;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
-        readonly S3FileProvider _s3FileProvider;
         readonly S3Service _s3Service;
 
         public GameController(
@@ -38,7 +37,6 @@ namespace LingvoGameOs.Controllers
             IConfiguration configuration
 ,
             IFavoriteGamesRepository favoriteGamesRepository,
-            S3FileProvider s3FileProvider,
             S3Service s3Service)
         {
             _configuration = configuration;
@@ -52,7 +50,6 @@ namespace LingvoGameOs.Controllers
             _pendingGamesRepository = pendingGamesRepository;
             _logger = logger;
             _favoriteGamesRepository = favoriteGamesRepository;
-            _s3FileProvider = s3FileProvider;
             _s3Service = s3Service;
         }
 
@@ -255,8 +252,7 @@ namespace LingvoGameOs.Controllers
                         string gameFileUrl = await _s3Service.UploadGameFileAsync
                             (gameViewModel.UploadedGameFile,
                              pendingGame.Id,
-                             Folders.PendingGames,
-                             gameViewModel.Title);
+                             Folders.PendingGames);
 
                         string coverImagePath = await _s3Service.UploadGameFileAsync(
                             gameViewModel.CoverImage,
