@@ -217,7 +217,7 @@ namespace LingvoGameOs.Helpers
                     ContinuationToken = continuationToken
             };
 
-            var listResponse = await _s3Client.ListObjectsV2Async(listRequest);
+                var listResponse = await _s3Client.ListObjectsV2Async(listRequest);
 
                 if (listResponse.S3Objects != null && listResponse.S3Objects.Any())
             {

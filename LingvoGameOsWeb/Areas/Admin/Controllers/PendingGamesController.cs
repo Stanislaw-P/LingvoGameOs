@@ -316,6 +316,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.Port = editGame.Port;
 
 
+
                 // Если есть новое изображение - меняем
                 await _gameFileProcessor.ProcessChangeCoverImageAsync(editGame, existingGame, Folders.PendingGames);
 
