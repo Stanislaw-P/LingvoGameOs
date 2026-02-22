@@ -65,10 +65,10 @@ namespace LingvoGameOs.Controllers
                 Id = existingGame.Id,
                 Title = existingGame.Title,
                 Author = existingGame.Author,
-                CoverImagePath = _s3Service.GetPublicUrl(existingGame.CoverImagePath),
+                CoverImagePath = _s3Service.GetPublicUrl(existingGame.CoverImagePath!),
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                GameFilePath = _s3Service.GetPublicUrl(existingGame.GameFilePath!),
+                GameFilePath = _s3Service.GetDownloadUrl(existingGame.GameFilePath!, existingGame.Title, ".msi"),
                 GamePlatform = existingGame.GamePlatform,
                 ImagesPaths = existingGame.ImagesPaths?.Select(_s3Service.GetPublicUrl).ToList()!,
                 VideoUrl = existingGame.VideoUrl,
@@ -79,8 +79,7 @@ namespace LingvoGameOs.Controllers
                 IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", existingGame.Id)
             };
 
-            gameViewModel.Author.AvatarImgPath = _s3Service.GetPublicUrl(gameViewModel?.Author?.AvatarImgPath!)!;
-
+            ViewBag.AuthorAvatarFullUrl = _s3Service.GetPublicUrl(existingGame.Author.AvatarImgPath);
             return View(gameViewModel);
         }
 
@@ -314,7 +313,6 @@ namespace LingvoGameOs.Controllers
                             GamePlatform = platform!,
                             SkillsLearning = skills,
                             LanguageLevel = languageLvl!,
-                            GameFilePath = gameViewModel.GameGitHubUrl!,
                             VideoUrl = gameViewModel.VideoUrl,
                             GameGitHubUrl = gameViewModel.GameGitHubUrl
                         };

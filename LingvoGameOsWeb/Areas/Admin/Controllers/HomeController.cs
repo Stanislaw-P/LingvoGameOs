@@ -70,6 +70,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     GamePlatform = pendingGame.GamePlatform,
                     LanguageLevel = pendingGame.LanguageLevel,
                     SkillsLearning = pendingGame.SkillsLearning,
+                    DispatchDate = pendingGame.DispatchDate
                 });
             }
             var devUsers = await _userManager.GetUsersInRoleAsync(Constants.DevRoleName);

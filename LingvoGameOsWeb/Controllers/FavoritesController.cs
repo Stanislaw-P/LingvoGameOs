@@ -48,7 +48,7 @@ namespace LingvoGameOs.Controllers
                     Title = game.Title,
                     Author = game.Author,
                     CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
-                    GameFilePath = _s3Service.GetPublicUrl(game.GameFilePath!),
+                    GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                     GamePlatform = game.GamePlatform,       
                     LanguageLevel = game.LanguageLevel,
                     PublicationDate = game.PublicationDate,

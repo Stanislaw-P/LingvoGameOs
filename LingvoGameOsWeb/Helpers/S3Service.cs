@@ -206,25 +206,45 @@ namespace LingvoGameOs.Helpers
             }
         }
 
+        /// <summary>
+        /// Удаляет все объекты с указанным префиксом (имитация удаления папки)
+        /// </summary>
+        /// <param name="prefix">Путь к папке, например "PendingGames/10"</param>
         public async Task DeleteDirectoryAsync(string prefix)
         {
-            var listRequest = new ListObjectsV2Request
-            {
-                BucketName = _bucketName,
-                Prefix = prefix.TrimStart('/')
-            };
+            if (string.IsNullOrEmpty(prefix)) return;
 
-            var listResponse = await _s3Client.ListObjectsV2Async(listRequest);
+            // Нормализуем префикс, чтобы не удалить лишнего (например, Games/1 и Games/10)
+            string normalizedPrefix = prefix.TrimStart('/').TrimEnd('/') + "/";
+            string? continuationToken = null;
 
-            if (listResponse.S3Objects.Any())
+            do
             {
-                var deleteRequest = new DeleteObjectsRequest
+                var listRequest = new ListObjectsV2Request
                 {
                     BucketName = _bucketName,
-                    Objects = listResponse.S3Objects.Select(o => new KeyVersion { Key = o.Key }).ToList()
+                    Prefix = normalizedPrefix,
+                    ContinuationToken = continuationToken
                 };
-                await _s3Client.DeleteObjectsAsync(deleteRequest);
-            }
+
+                var listResponse = await _s3Client.ListObjectsV2Async(listRequest);
+
+                if (listResponse.S3Objects != null && listResponse.S3Objects.Any())
+                {
+                    var deleteRequest = new DeleteObjectsRequest
+                    {
+                        BucketName = _bucketName,
+                        Objects = listResponse.S3Objects
+                            .Select(o => new KeyVersion { Key = o.Key })
+                            .ToList()
+                    };
+
+                    await _s3Client.DeleteObjectsAsync(deleteRequest);
+                }
+
+                continuationToken = listResponse.NextContinuationToken;
+
+            } while (continuationToken != null);
         }
 
         // Копирование одного файла

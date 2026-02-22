@@ -62,11 +62,26 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             if (gameForDelete == null)
                 return NotFound();
 
-            string directoryPendingGamePath = _fileProvider.GetGameDirectoryPath(gameId, Folders.Games);
-            _fileProvider.DeleteDirectory(directoryPendingGamePath);
+            // 1. Формируем префикс (путь) к "папке" игры в S3
+            // Используем константу папки Games и ID игры
+            string s3FolderPrefix = $"{Folders.Games}/{gameId}";
 
+            // 2. Удаляем все файлы игры из S3
+            // Используем наш исправленный метод, который удаляет всё содержимое по префиксу
+            await _s3Service.DeleteDirectoryAsync(s3FolderPrefix);
+
+            // 3. Удаляем запись из БД
             await _gamesRepository.RemoveAsync(gameForDelete);
-            await _emailService.TrySendRefusalGameAsync(gameForDelete.Author.Name, gameForDelete?.Author?.Email!, gameForDelete?.Title!);
+
+            // 4. Отправляем уведомление 
+            if (gameForDelete.Author != null)
+            {
+                await _emailService.TrySendRefusalGameAsync(
+                    gameForDelete.Author.Name,
+                    gameForDelete.Author.Email ?? "",
+                    gameForDelete.Title ?? "Без названия");
+            }
+
             return Redirect("/Admin/Home/");
         }
 
@@ -92,7 +107,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
                 CurrentCoverImagePath = existingGame.CoverImagePath,
-                CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath),
+                CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath!),
                 ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths!),
                 SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
                 Author = existingGame?.Author,

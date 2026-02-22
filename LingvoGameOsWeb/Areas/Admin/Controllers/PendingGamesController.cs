@@ -24,8 +24,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly ILogger<PendingGamesController> _logger;
         readonly EmailService _emailService;
         readonly S3Service _s3Service;
+        readonly GameFileProcessor _gameFileProcessor;
 
-        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger, EmailService emailService, S3Service s3Service)
+        public PendingGamesController(UserManager<User> userManager, IPendingGamesRepository pendingGamesRepository, ISkillsLearningRepository skillsLearningRepository, IWebHostEnvironment appEnvironment, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IGamesRepository gamesRepository, ILogger<PendingGamesController> logger, EmailService emailService, S3Service s3Service, GameFileProcessor gameFileProcessor)
         {
             _userManager = userManager;
             _pendingGamesRepository = pendingGamesRepository;
@@ -37,6 +38,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             _logger = logger;
             _emailService = emailService;
             _s3Service = s3Service;
+            _gameFileProcessor = gameFileProcessor;
         }
 
         [HttpPost]
@@ -58,38 +60,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             try
             {
                 var publishedGame = await _pendingGamesRepository.PublishAsync(pendingGame);
-                // Переносим файлы
-                _fileProvider.MoveGameFiles(
-                    pendingGame.Id,
-                    publishedGame.Id,
-                    Folders.PendingGames,
-                    Folders.Games);
 
-                // Обновляем пути к файлам
-                publishedGame.CoverImagePath = _fileProvider.UpdateFilePath(
-                    pendingGame.CoverImagePath!,
-                    $"{Folders.PendingGames}/{pendingGame.Id}",
-                    $"{Folders.Games}/{publishedGame.Id}");
-
-                if (publishedGame?.GamePlatform?.Name == "Desktop")
-                {
-                    publishedGame.GameFilePath = _fileProvider.UpdateFilePath(
-                    pendingGame.GameFilePath!,
-                    $"{Folders.PendingGames}/{pendingGame.Id}",
-                    $"{Folders.Games}/{publishedGame.Id}");
-                }
-
-                publishedGame.ImagesPaths = new List<string>();
-                // Переносим скриншоты
-                foreach (var imgPath in pendingGame.ImagesPaths!)
-                {
-                    var newImgPath = _fileProvider.UpdateFilePath(
-                        imgPath,
-                        $"{Folders.PendingGames}/{pendingGame.Id}",
-                        $"{Folders.Games}/{publishedGame.Id}");
-
-                    publishedGame.ImagesPaths.Add(newImgPath);
-                }
+                await _gameFileProcessor.PublishGameFilesAsync(pendingGame, publishedGame);
 
                 await _gamesRepository.UpdateAsync(publishedGame);
 
@@ -116,7 +88,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                         title = publishedGame?.Title,
                         authorName = $"{publishedGame?.Author.Name} {publishedGame?.Author.Surname}",
                         publicationDate = publishedGame?.PublicationDate.ToString("dd.MM.yyyy"),
-                        imagePath = publishedGame?.CoverImagePath,
+                        imagePath = _s3Service.GetPublicUrl(publishedGame?.CoverImagePath!),
                         gameUrl = publishedGame?.GameFilePath,
                         platform = publishedGame?.GamePlatform?.Name
                     }
@@ -139,16 +111,29 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(int gameId)
         {
+            // 1. Получаем объект черновика из репозитория
             var pendingGameForDelete = await _pendingGamesRepository.TryGetByIdAsync(gameId);
 
             if (pendingGameForDelete == null)
                 return NotFound();
 
-            string directoryPendingGamePath = _fileProvider.GetGameDirectoryPath(gameId, Folders.PendingGames);
-            _fileProvider.DeleteDirectory(directoryPendingGamePath);
+            // 2. Удаляем все файлы, связанные с этим черновиком, из S3
+            // Формируем путь вида: "PendingGames/123"
+            string s3FolderPrefix = $"{Folders.PendingGames}/{gameId}";
+            await _s3Service.DeleteDirectoryAsync(s3FolderPrefix);
 
+            // 3. Удаляем запись из базы данных
             await _pendingGamesRepository.RemoveAsync(pendingGameForDelete);
-            await _emailService.TrySendRefusalGameAsync(pendingGameForDelete?.Author?.Name ?? "Разработчик", pendingGameForDelete?.Author?.Email!, pendingGameForDelete?.Title!);
+
+            // 4. Отправляем уведомление автору об отказе/удалении
+            if (pendingGameForDelete.Author != null)
+            {
+                await _emailService.TrySendRefusalGameAsync(
+                    pendingGameForDelete.Author.Name ?? "Разработчик",
+                    pendingGameForDelete.Author.Email ?? "",
+                    pendingGameForDelete.Title ?? "Без названия");
+            }
+
             return Ok();
         }
 
@@ -258,7 +243,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Title = existingGame.Title,
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                CurrentCoverImagePath = _s3Service.GetPublicUrl(existingGame.CoverImagePath),
+                CurrentCoverImagePath = existingGame.CoverImagePath,
                 CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath),
                 ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths!),
                 SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
@@ -318,6 +303,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
                 var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(editGame.LanguageLevel);
 
+                existingGame.Title = editGame.Title.Trim();
                 existingGame.Description = editGame.Description;
                 existingGame.Rules = editGame.Rules;
                 existingGame.SkillsLearning = skills;
@@ -328,26 +314,19 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
                 existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
                 existingGame.Port = editGame.Port;
-                if (editGame.GamePlatform != "Desktop")
-                    existingGame.Title = editGame.Title.Trim(); // Если это Desktop то меняем название игры в методе ProcessRenameGameFile
+
 
                 // Если есть новое изображение - меняем
-                await ProcessChangeCoverImageAsync(editGame, existingGame);
+                await _gameFileProcessor.ProcessChangeCoverImageAsync(editGame, existingGame, Folders.PendingGames);
 
                 // Процесс удаления картинок
-                ProcessDeletedImages(editGame, existingGame);
+                await _gameFileProcessor.ProcessDeletedImagesAsync(editGame, existingGame);
 
                 // Обрабатываем новые картинки
-                await ProcessNewImagesAsync(editGame, existingGame);
+                await _gameFileProcessor.ProcessNewImagesAsync(editGame, existingGame, Folders.PendingGames);
 
                 // Удаляем файл игры
-                ProcessDeleteGameFile(editGame, existingGame);
-
-                // Меняем имя
-                ProcessRenameGameFile(editGame, existingGame);
-
-                // Меняем путь к файлу игры, если он изменился
-                ProcessChangeGameFilePath(editGame, existingGame);
+                await _gameFileProcessor.ProcessDeleteGameFileAsync(editGame, existingGame);
 
                 await _pendingGamesRepository.UpdateAsync(existingGame);
 
@@ -375,94 +354,6 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
-            }
-        }
-
-        private void ProcessChangeGameFilePath(EditGameViewModel editGame, PendingGame existingGame)
-        {
-            if (editGame.GameFilePath != editGame.CurrentGameFilePath)
-            {
-                existingGame.GameFilePath = editGame.GameFilePath;
-            }
-        }
-
-        private async Task ProcessChangeCoverImageAsync(EditGameViewModel editGame, PendingGame existingGame)
-        {
-            if (editGame.CoverImage != null)
-            {
-                string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(editGame.CoverImage, Folders.PendingGames, existingGame.Id);
-                existingGame.CoverImagePath = coverImagePath;
-
-                // Удаляем прошлую обложку
-                _fileProvider.DeleteFile(editGame.CurrentCoverImagePath!);
-            }
-            else
-                existingGame.CoverImagePath = editGame.CurrentCoverImagePath;
-        }
-
-        private void ProcessDeletedImages(EditGameViewModel editGameViewModel, PendingGame pendingGame)
-        {
-            if (editGameViewModel.DeletedImages == null || !editGameViewModel.DeletedImages.Any())
-                return;
-
-            // Удаляем файлы из системы
-            _fileProvider.DeleteImages(editGameViewModel.DeletedImages, Folders.PendingGames, pendingGame.Id);
-
-            //Удаляем пути из БД
-            if (pendingGame.ImagesPaths != null)
-            {
-                var deletedImagesPaths = new List<string>();
-                foreach (var deletedImg in editGameViewModel.DeletedImages)
-                {
-                    var deletedImagePath = _fileProvider.GetGameFileShortPath(deletedImg, Folders.PendingGames, pendingGame.Id);
-                    deletedImagesPaths.Add(deletedImagePath);
-                }
-                pendingGame.ImagesPaths = pendingGame.ImagesPaths
-                    .Where(imgPath => !deletedImagesPaths.Contains(imgPath))
-                    .ToList();
-            }
-        }
-
-        private async Task ProcessNewImagesAsync(EditGameViewModel editGameViewModel, PendingGame pendingGame)
-        {
-            if (editGameViewModel.UploadedImages == null || !editGameViewModel.UploadedImages.Any(f => f.Length > 0))
-                return;
-
-            List<string> newImagesPaths = await _fileProvider.SaveImagesFilesAsync(
-                editGameViewModel.UploadedImages.Where(f => f.Length > 0).ToArray(),
-                Folders.PendingGames, editGameViewModel.Id);
-
-            if (pendingGame.ImagesPaths == null)
-                pendingGame.ImagesPaths = new List<string>();
-            pendingGame.ImagesPaths.AddRange(newImagesPaths);
-        }
-
-        private void ProcessDeleteGameFile(EditGameViewModel editGame, PendingGame existingGame)
-        {
-            if (editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null)
-            {
-                if (editGame.CurrentGameFilePath != null)
-                {
-                    existingGame.GameFilePath = null;
-                    _fileProvider.DeleteFile(editGame.CurrentGameFilePath);
-                }
-            }
-        }
-
-        private void ProcessRenameGameFile(EditGameViewModel editGame, PendingGame existingGame)
-        {
-            if (editGame.GamePlatform == "Desktop")
-            {
-                if (editGame.Title != existingGame.Title && existingGame.GameFilePath != null)
-                {
-                    string newGameFileName = editGame.Title.Trim();
-                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameFilePath!, newGameFileName + ".msi");
-                    editGame.GameFilePath = newGameFilePath;
-                    existingGame.Title = newGameFileName;
-                    _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameFilePath);
-                }
-                else
-                    existingGame.Title = editGame.Title.Trim();
             }
         }
     }
