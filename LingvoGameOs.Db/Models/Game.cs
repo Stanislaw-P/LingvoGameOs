@@ -1,12 +1,12 @@
 ﻿using System.Security.AccessControl;
 using System;
-using LingvoGameOs.Db.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using LingvoGameOs.Db.Helpers;
 
 namespace LingvoGameOs.Db.Models
 {
-	public class Game
+	public class Game : IGameBase
 	{
 		public int Id { get; set; }
 		public string Title { get; set; } = null!;
