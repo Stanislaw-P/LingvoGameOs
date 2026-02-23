@@ -50,7 +50,7 @@ namespace LingvoGameOs.Helpers
             }
         }
 
-        public async Task ProcessNewImagesAsync(EditGameViewModel editGameViewModel, IGameBase game, Folders folder)
+        public async Task ProcessUploadNewImagesAsync(EditGameViewModel editGameViewModel, IGameBase game, Folders folder)
         {
             if (editGameViewModel.UploadedImages == null || !editGameViewModel.UploadedImages.Any(f => f.Length > 0))
                 return;
@@ -83,6 +83,9 @@ namespace LingvoGameOs.Helpers
             {
                 string newGameFilePath = await _s3Service.UploadGameFileAsync(editGame.UploadedGameFile, existingGame.Id, folder);
                 existingGame.GameFilePath = newGameFilePath;
+
+                if (newGameFilePath != editGame.CurrentGameFilePath)
+                    await _s3Service.DeleteFileAsync(editGame.CurrentGameFilePath!);
             }
         }
 
