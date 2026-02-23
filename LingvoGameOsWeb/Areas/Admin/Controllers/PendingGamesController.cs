@@ -328,6 +328,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Удаляем файл игры
                 await _gameFileProcessor.ProcessDeleteGameFileAsync(editGame, existingGame);
 
+                // Загружаем новый файл Desktop игры, если он есть
+                await _gameFileProcessor.ProcessUploadGameFileAsync(editGame, existingGame, Folders.PendingGames);
+
                 await _pendingGamesRepository.UpdateAsync(existingGame);
 
                 _logger.LogInformation("Изменение данных игры на модерации {@PendingGameEditData}", new

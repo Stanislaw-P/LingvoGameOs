@@ -172,6 +172,9 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 // Удаляем файл игры, если игра стала не Desktop или админ удалил файл для Desktop игры
                 await _gameFileProcessor.ProcessDeleteGameFileAsync(editGame, existingGame);
 
+                // Загружаем новый файл Desktop игры, если он есть
+                await _gameFileProcessor.ProcessUploadGameFileAsync(editGame, existingGame, Folders.Games);
+
                 await _gamesRepository.UpdateAsync(existingGame);
 
                 _logger.LogInformation("Именение данных игры {@GameEditData}", new

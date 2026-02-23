@@ -94,7 +94,7 @@
                         <div class="admin-game-card__content">
                             <h3 class="admin-game-card__title">@game.Title</h3>
                             <p class="admin-game-card__developer">@game.Author?.Name @game.Author?.Surname</p>
-                            <p class="admin-game-card__date">@game.PublicationDate.ToString("dd.MM.yyyy")</p>
+                            <p class="admin-game-card__date">Дата публикации: @game.PublicationDate.ToString("dd.MM.yyyy")</p>
                         </div>
                         <div class="admin-game-card__actions">
                             @if (game.GamePlatform?.Name == "Desktop")
@@ -148,7 +148,7 @@
                         <div class="admin-game-card__content">
                             <h3 class="admin-game-card__title">@pendingGame.Title</h3>
                             <p class="admin-game-card__developer">@pendingGame.Author?.Name @pendingGame.Author?.Surname</p>
-                            <p class="admin-game-card__date">@pendingGame.DispatchDate.ToString("dd.MM.yyyy")</p>
+                            <p class="admin-game-card__date">Дата отправки: @pendingGame.DispatchDate.ToString("dd.MM.yyyy")</p>
                         </div>
                         <div class="admin-game-card__actions">
                             <a asp-area="Admin" asp-controller="PendingGames" asp-action="Details" asp-route-gameId="@pendingGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
