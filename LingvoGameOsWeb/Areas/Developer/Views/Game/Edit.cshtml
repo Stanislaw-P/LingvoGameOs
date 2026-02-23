@@ -182,7 +182,7 @@
                                             </span>
                                         </label>
                                     </div>
-                                    <span asp-validation-for="SkillsLearning" class="error-message"></span>
+                                    <span asp-validation-for="LanguageLevel" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -251,13 +251,13 @@
                                                    class="input-field__input" accept=".msi" hidden>
                                         </div>
                                         <div class="file-upload__previews" id="file-preview"
-                                             data-existing-file="@Model.GameFilePath"
-                                             data-file-name="@Model.GameFileMetadata?.Key"
-                                             data-file-size="@(Model.GameFileMetadata != null ? Math.Round(Model.GameFileMetadata.Size / (1024.0 * 1024.0)) : 0)">
-                                            @if (Model.GameFilePath != null && Model.GameFileMetadata != null)
+                                             data-existing-file="@Model?.GameFilePath"
+                                             data-file-name="@Model?.GameFileMetadata?.Key"
+                                             data-file-size="@(Model?.GameFileMetadata != null ? Math.Round(Model.GameFileMetadata.Size / (1024.0 * 1024.0)) : 0)">
+                                            @if (Model?.GameFilePath != null && Model.GameFileMetadata != null)
                                             {
                                                 <div class="file-upload__file">
-                                                    <a href="@Model.GameFilePath" download="@Model.GameFileMetadata.Key" class="file-upload__file-name">
+                                                    <a href="@Model.GameFileMetadata.FileUrl" download="@Model.GameFileMetadata.Key" class="file-upload__file-name">
                                                         @Model.GameFileMetadata.Key
                                                     </a>
                                                     <span class="file-upload__file-size">
@@ -297,7 +297,7 @@
                                         </div>
                                     </div>
                                     <div class="file-upload__previews" id="cover-image-preview"
-                                         data-existing-image="@Model?.CurrentCoverImagePath"
+                                         data-existing-image="@Model?.CoverImageMetadata?.FileUrl"
                                          data-image-name="@Model?.CoverImageMetadata?.Key"
                                          data-image-size="@(Model?.CoverImageMetadata?.Size / 1024 ?? 0)">
                                     </div>

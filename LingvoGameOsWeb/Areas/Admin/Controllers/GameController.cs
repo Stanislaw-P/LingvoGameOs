@@ -167,7 +167,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 await _gameFileProcessor.ProcessDeletedImagesAsync(editGame, existingGame);
                 
                 // Обрабатываем новые картинки
-                await _gameFileProcessor.ProcessNewImagesAsync(editGame, existingGame, Folders.Games);
+                await _gameFileProcessor.ProcessUploadNewImagesAsync(editGame, existingGame, Folders.Games);
 
                 // Удаляем файл игры, если игра стала не Desktop или админ удалил файл для Desktop игры
                 await _gameFileProcessor.ProcessDeleteGameFileAsync(editGame, existingGame);

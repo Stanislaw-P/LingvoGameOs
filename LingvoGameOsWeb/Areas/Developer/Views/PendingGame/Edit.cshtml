@@ -110,7 +110,7 @@
                                             </ul>
                                         </div>
                                         <div class="selected-skillsLearning-list" id="selected-skillsLearning-list">
-                                            @if (Model.SkillsLearning != null && Model.SkillsLearning.Any())
+                                            @if (Model?.SkillsLearning != null && Model.SkillsLearning.Any())
                                             {
                                                 @foreach (var skillName in Model.SkillsLearning)
                                                 {
@@ -182,7 +182,7 @@
                                             </span>
                                         </label>
                                     </div>
-                                    <span asp-validation-for="SkillsLearning" class="error-message"></span>
+                                    <span asp-validation-for="LanguageLevel" class="error-message"></span>
                                 </div>
                             </div>
 
@@ -257,7 +257,7 @@
                                             @if (Model.GameFilePath != null && Model.GameFileMetadata != null)
                                             {
                                                 <div class="file-upload__file">
-                                                    <a href="@Model.GameFilePath" download="@Model.GameFileMetadata.Key" class="file-upload__file-name">
+                                                    <a href="@Model.GameFileMetadata.FileUrl" download="@Model.GameFileMetadata.Key" class="file-upload__file-name">
                                                         @Model.GameFileMetadata.Key
                                                     </a>
                                                     <span class="file-upload__file-size">
@@ -272,41 +272,6 @@
                                 </div>
                             </div>
                             <input type="hidden" asp-for="GameFilePath" />
-                            @* } *@
-
-                            @* @if (Model.GamePlatform == "Desktop")
-                            {
-                                <div class="upload-form__group" id="game-file-upload-group">
-                                    <label class="upload-form__label">Файл игры <span class="required">*</span></label>
-                                    @if (Model.GameFilePath != null)
-                                    {
-                                        <div class="upload-form__input-wrapper">
-                                            <div class="upload-form__file-upload">
-                                                <div class="file-upload__previews" id="file-preview"
-                                                     data-existing-file="@Model.GameFilePath"
-                                                     data-file-name="@Model.GameFileInfo?.Name"
-                                                     data-file-size="@(Model.GameFileInfo?.Length / (1024 * 1024) ?? 0)">
-                                                    <div class="file-upload__file">
-                                                        <a href="@Model.GameFilePath" download="@Model.GameFileInfo?.Name" class="file-upload__file-name">
-                                                            @Model.GameFileInfo?.Name
-                                                        </a>
-                                                        <span class="file-upload__file-size">
-                                                            @(Model.GameFileInfo != null ? $"{Math.Round(Model.GameFileInfo.Length / (1024.0 * 1024.0))} Мб" : "Размер неизвестен")
-                                                        </span>
-                                                        <img src="/icon/trash.svg" alt="Удалить файл" class="file-upload__file-trash" role="button">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span id="file-error" class="error-message"></span>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <span class="file-upload__file-name">Файл игры отсутствует на сервере!</span>
-                                    }
-                                </div>
-                                <input type="hidden" asp-for="GameFilePath" />
-                            } *@
 
                             <div class="upload-form__group">
                                 <label for="game-cover-url" class="upload-form__label">
@@ -331,7 +296,7 @@
                                         </div>
                                     </div>
                                     <div class="file-upload__previews" id="cover-image-preview"
-                                         data-existing-image="@Model?.CurrentCoverImagePath"
+                                         data-existing-image="@Model?.CoverImageMetadata?.FileUrl"
                                          data-image-name="@Model?.CoverImageMetadata?.Key"
                                          data-image-size="@(Model?.CoverImageMetadata?.Size / 1024 ?? 0)">
                                     </div>

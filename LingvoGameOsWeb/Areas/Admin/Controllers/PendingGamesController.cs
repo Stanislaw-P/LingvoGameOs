@@ -323,7 +323,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 await _gameFileProcessor.ProcessDeletedImagesAsync(editGame, existingGame);
 
                 // Обрабатываем новые картинки
-                await _gameFileProcessor.ProcessNewImagesAsync(editGame, existingGame, Folders.PendingGames);
+                await _gameFileProcessor.ProcessUploadNewImagesAsync(editGame, existingGame, Folders.PendingGames);
 
                 // Удаляем файл игры
                 await _gameFileProcessor.ProcessDeleteGameFileAsync(editGame, existingGame);
