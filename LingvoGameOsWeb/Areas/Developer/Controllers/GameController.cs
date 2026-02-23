@@ -22,8 +22,9 @@ namespace LingvoGameOs.Areas.Developers.Controllers
         readonly FileProvider _fileProvider;
         readonly EmailService _emailService;
         readonly S3Service _s3Service;
+        readonly GameFileProcessor _gameFileProcessor;
 
-        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ILogger<GameController> logger, ISkillsLearningRepository skillsLearningRepository, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IWebHostEnvironment webHostEnvironment, EmailService emailService, S3Service s3Service)
+        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ILogger<GameController> logger, ISkillsLearningRepository skillsLearningRepository, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IWebHostEnvironment webHostEnvironment, EmailService emailService, S3Service s3Service, GameFileProcessor gameFileProcessor)
         {
             _gamesRepository = gamesRepository;
             _userManager = userManager;
@@ -34,6 +35,7 @@ namespace LingvoGameOs.Areas.Developers.Controllers
             _fileProvider = new FileProvider(webHostEnvironment);
             _emailService = emailService;
             _s3Service = s3Service;
+            _gameFileProcessor = gameFileProcessor;
         }
 
         public async Task<IActionResult> EditAsync(int gameId)
@@ -64,7 +66,7 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 Author = existingGame.Author,
                 AuthorId = existingGame.Author.Id,
                 GameGitHubUrl = existingGame.GameGitHubUrl,
-                GameFilePath = _s3Service.GetPublicUrl(existingGame.GameFilePath!),
+                GameFilePath = existingGame.GameFilePath,
                 GameFileMetadata = msiFileMetadata,
                 GamePlatform = existingGame?.GamePlatform?.Name!,
                 LanguageLevel = existingGame?.LanguageLevel?.Name!,
@@ -90,8 +92,41 @@ namespace LingvoGameOs.Areas.Developers.Controllers
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
 
+            if (editGame?.SkillsLearning?[0] == null)
+                ModelState.AddModelError("SkillsLearning", "Выберите хотя бы один развиваемый навык");
+
             if (!ModelState.IsValid)
+            {
+                var existingGame = await _gamesRepository.TryGetByIdAsync(editGame.Id);
+
+                if (existingGame != null)
+                {
+                    // Обложка
+                    editGame.CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath!);
+
+                    // Скриншоты
+                    if (existingGame.ImagesPaths != null && existingGame.ImagesPaths.Any())
+                    {
+                        editGame.ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths);
+                    }
+
+                    // Файл игры (если Desktop)
+                    if (editGame.GamePlatform == "Desktop" && !string.IsNullOrEmpty(existingGame.GameFilePath))
+                    {
+                        editGame.GameFileMetadata = await _s3Service.GetFileMetadataAsync(existingGame.GameFilePath);
+                        editGame.GameFilePath = existingGame.GameFilePath;
+                    }
+
+                    // Автор (для отображения в поле "Автор игры")
+                    editGame.Author = existingGame.Author;
+                }
+
+                // 2. Снова заполняем список скиллов для Dropdown
+                var allSkills = await _skillsLearningRepository.GetAllAsync();
+                ViewBag.SkillsLearning = allSkills.Select(sl => sl.Name);
+
                 return View(editGame);
+            }
 
             try
             {
@@ -103,6 +138,7 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 var platform = await _platformsRepository.GetExistingPlatformAsync(editGame.GamePlatform);
                 var languageLvl = await _languageLevelsRepository.GetExistingLanguageLevelAsync(editGame.LanguageLevel);
 
+                existingGame.Title = editGame.Title.Trim();
                 existingGame.Description = editGame.Description.Trim();
                 existingGame.Rules = editGame.Rules.Trim();
                 existingGame.SkillsLearning = skills;
@@ -111,28 +147,21 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 existingGame.VideoUrl = editGame.VideoUrl;
                 existingGame.LastUpdateDate = DateTimeOffset.UtcNow;
                 existingGame.GameGitHubUrl = editGame.GameGitHubUrl;
-                if (editGame.GamePlatform != "Desktop")
-                    existingGame.Title = editGame.Title.Trim();
 
                 // Если есть новое изображение - меняем
-                await ProcessChangeCoverImageAsync(editGame, existingGame);
+                await _gameFileProcessor.ProcessChangeCoverImageAsync(editGame, existingGame, Folders.Games);
 
                 // Процесс удаления картинок
-                ProcessDeletedImages(editGame, existingGame);
+                await _gameFileProcessor.ProcessDeletedImagesAsync(editGame, existingGame);
 
                 // Обрабатываем новые картинки
-                await ProcessNewImagesAsync(editGame, existingGame);
+                await _gameFileProcessor.ProcessUploadNewImagesAsync(editGame, existingGame, Folders.Games);
 
                 // Удаляем файл игры
-                ProcessDeleteGameFile(editGame, existingGame);
+                await _gameFileProcessor.ProcessDeleteGameFileAsync(editGame, existingGame);
 
-                // Меняем имя файла Desktop игры
-                ProcessRenameGameFile(editGame, existingGame);
-
-                // Меняем путь к файлу игры, если он изменился
-                ProcessChangeGameFilePath(editGame, existingGame);
-
-                await ProcessNewGameFileAsync(editGame, existingGame);
+                // Загружаем новый файл Desktop игры, если он есть
+                await _gameFileProcessor.ProcessUploadGameFileAsync(editGame, existingGame, Folders.Games);
 
                 // Деактивируем игру, дабы админ подтвердил изменения
                 existingGame.IsActive = false;
@@ -165,121 +194,6 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                     ResponseStatusCode = 500
                 });
                 return BadRequest(ex.Message);
-            }
-        }
-
-        private void ProcessChangeGameFilePath(EditGameViewModel editGame, Game existingGame)
-        {
-            if (editGame.GameFilePath != editGame.CurrentGameFilePath)
-            {
-                existingGame.GameFilePath = editGame.GameFilePath;
-            }
-        }
-
-        private async Task ProcessChangeCoverImageAsync(EditGameViewModel editGame, Game existingGame)
-        {
-            if (editGame.CoverImage != null)
-            {
-                string? coverImagePath = await _fileProvider.SaveGameImgFileAsync(editGame.CoverImage, Folders.Games, existingGame.Id);
-                existingGame.CoverImagePath = coverImagePath;
-
-                // Удаляем прошлую обложку
-                _fileProvider.DeleteFile(editGame.CurrentCoverImagePath!);
-            }
-            else
-                existingGame.CoverImagePath = editGame.CurrentCoverImagePath;
-        }
-
-        private void ProcessDeletedImages(EditGameViewModel editGameViewModel, Game game)
-        {
-            if (editGameViewModel.DeletedImages == null || !editGameViewModel.DeletedImages.Any())
-                return;
-
-            // Удаляем файлы из системы
-            _fileProvider.DeleteImages(editGameViewModel.DeletedImages, Folders.Games, game.Id);
-
-            //Удаляем пути из БД
-            if (game.ImagesPaths != null)
-            {
-                var deletedImagesPaths = new List<string>();
-                foreach (var deletedImg in editGameViewModel.DeletedImages)
-                {
-                    var deletedImagePath = _fileProvider.GetGameFileShortPath(deletedImg, Folders.Games, game.Id);
-                    deletedImagesPaths.Add(deletedImagePath);
-                }
-                game.ImagesPaths = game.ImagesPaths
-                    .Where(imgPath => !deletedImagesPaths.Contains(imgPath))
-                    .ToList();
-            }
-        }
-
-        private async Task ProcessNewImagesAsync(EditGameViewModel editGameViewModel, Game game)
-        {
-            if (editGameViewModel.UploadedImages == null || !editGameViewModel.UploadedImages.Any(f => f.Length > 0))
-                return;
-
-            List<string> newImagesPaths = await _fileProvider.SaveImagesFilesAsync(
-                editGameViewModel.UploadedImages.Where(f => f.Length > 0).ToArray(),
-                Folders.Games, editGameViewModel.Id);
-
-            if (game.ImagesPaths == null)
-                game.ImagesPaths = new List<string>();
-            game.ImagesPaths.AddRange(newImagesPaths);
-        }
-
-        private void ProcessDeleteGameFile(EditGameViewModel editGame, Game existingGame)
-        {
-            if ((editGame.GamePlatform == "Desktop" && editGame.GameFilePath == null) || (editGame.GamePlatform != "Desktop" && editGame.GameFilePath != null))
-            {
-                if (editGame.CurrentGameFilePath != null)
-                {
-                    existingGame.GameFilePath = null;
-                    _fileProvider.DeleteFile(editGame.CurrentGameFilePath);
-                }
-            }
-        }
-
-        private void ProcessRenameGameFile(EditGameViewModel editGame, Game existingGame)
-        {
-            if (editGame.GamePlatform == "Desktop")
-            {
-                if (editGame.Title != existingGame.Title && existingGame.GameFilePath != null)
-                {
-                    string newGameFileName = editGame.Title.Trim();
-                    // TODO: Необходимо будет изменить код если появятся Unity игры
-                    string newGameFilePath = _fileProvider.UpdateFileName(editGame.CurrentGameFilePath!, newGameFileName + ".msi");
-                    editGame.GameFilePath = newGameFilePath;
-                    existingGame.Title = newGameFileName;
-                    _fileProvider.MoveGameFile(existingGame.GameFilePath, editGame.GameFilePath);
-                }
-                else
-                    existingGame.Title = editGame.Title.Trim();
-            }
-        }
-
-        private async Task ProcessNewGameFileAsync(EditGameViewModel editGame, Game existingGame)
-        {
-            if (editGame.GamePlatform == "Desktop" && editGame.UploadedGameFile != null && editGame.UploadedGameFile.Length > 0)
-            {
-
-                // Если есть старый файл - удаляем его
-                if (!string.IsNullOrEmpty(editGame.CurrentGameFilePath))
-                {
-                    _fileProvider.DeleteFile(editGame.CurrentGameFilePath);
-                }
-
-                // Сохраняем новый файл игры
-                string? newGameFilePath = await _fileProvider.SaveGameFileAsync(
-                    editGame.UploadedGameFile,
-                    existingGame.Id,
-                    existingGame.Title,
-                    Folders.Games
-                );
-
-                // Обновляем путь к файлу в базе данных
-                existingGame.GameFilePath = newGameFilePath;
-                editGame.GameFilePath = newGameFilePath;
-                editGame.CurrentGameFilePath = newGameFilePath;
             }
         }
     }
