@@ -77,6 +77,15 @@ namespace LingvoGameOs.Helpers
             }
         }
 
+        public async Task ProcessUploadGameFileAsync(EditGameViewModel editGame, IGameBase existingGame, Folders folder)
+        {
+            if (editGame.GamePlatform == "Desktop" && editGame.UploadedGameFile != null)
+            {
+                string newGameFilePath = await _s3Service.UploadGameFileAsync(editGame.UploadedGameFile, existingGame.Id, folder);
+                existingGame.GameFilePath = newGameFilePath;
+            }
+        }
+
         public async Task PublishGameFilesAsync(PendingGame pendingGame, Game publishedGame)
         {
             string sourceFolder = $"{Folders.PendingGames}/{pendingGame.Id}";
