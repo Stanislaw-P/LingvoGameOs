@@ -37,10 +37,10 @@ namespace LingvoGameOs.Helpers
             //    _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
             //}
 
-            awsAccessKey = configuration["AWS_TIMEWEB_KEY_ID"] ?? "";
-            awsKey = configuration["AWS_TIMEWEB_KEY"] ?? "";
-            _awsServiceUrl = configuration["AWS_TIMEWEB_SERVICE_URL"] ?? "";
-            _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
+            awsAccessKey = configuration["AWS_YANDEX_KEY_ID"] ?? "";
+            awsKey = configuration["AWS_YANDEX_KEY"] ?? "";
+            _awsServiceUrl = configuration["AWS_YANDEX_SERVICE_URL"] ?? "";
+            _bucketName = configuration["AWS_YANDEX_BUCKET_NAME"] ?? "";
 
             AmazonS3Config s3Config = new AmazonS3Config
             {
@@ -104,6 +104,26 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
+        public async Task<string> TEMPUploadGameFileAsync(IFormFile file, int gameId, Folders folder, string fileName)
+        {
+            var extension = Path.GetExtension(file.FileName);
+            var uniqueName = $"{fileName}";
+            var key = $"{folder}/{gameId}/{uniqueName}";
+
+            using var stream = file.OpenReadStream();
+            var request = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = key,
+                InputStream = stream,
+                ContentType = file.ContentType,
+            };
+
+            await _s3Client.PutObjectAsync(request);
+
+            return key;
+        }
+
         //public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
         //{
         //    var extension = Path.GetExtension(file.FileName);
@@ -135,7 +155,7 @@ namespace LingvoGameOs.Helpers
         {
             // 1. Создаем коллекцию задач (пока без await внутри Select)
             var uploadTasks = files
-                            .Select(img => UploadGameFileAsync(img, gameId, folder));
+                            .Select(img => TEMPUploadGameFileAsync(img, gameId, folder, img.FileName));
 
             // 2. Дожидаемся завершения всех задач и получаем массив строк
             string[] uploadedPathsArray = await Task.WhenAll(uploadTasks);

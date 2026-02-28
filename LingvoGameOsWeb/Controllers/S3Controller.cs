@@ -34,14 +34,34 @@ namespace LingvoGameOs.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> UploadImage(IFormFile file)
+        //{
+        //    try
+        //    {
+        //        string userId = Guid.NewGuid().ToString();
+        //        // Используем наш сервис для загрузки
+        //        var result = await _s3Service.UploadAvatarFileAsync(file, userId, Folders.Avatars);
+
+        //        return Ok(new
+        //        {
+        //            Message = "Файл успешно загружен",
+        //            Key = result
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Ошибка при загрузке: {ex.Message}");
+        //    }
+        //}
+
         [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile file)
+        public async Task<IActionResult> UploadImage(IFormFile[] files)
         {
             try
             {
-                string userId = Guid.NewGuid().ToString();
                 // Используем наш сервис для загрузки
-                var result = await _s3Service.UploadAvatarFileAsync(file, userId, Folders.Avatars);
+                var result = await _s3Service.UploadGameFilesAsync(files, 4, Folders.Games);
 
                 return Ok(new
                 {
