@@ -182,7 +182,7 @@ namespace LingvoGameOs.Db
                     LanguageLevelId = languageLevelIntermediate.Id,
                     GamePlatformId = platform3.Id,
                     AverageRaitingPlayers = 4.2,
-                    CoverImagePath = "/img/games/gameplay-animal.png",
+                    CoverImagePath = "/img/games/barashek.png",
                     ImagesPaths = new List<string>
                     {
                         "/img/games/gameplay-animal.png",
