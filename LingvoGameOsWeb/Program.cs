@@ -88,6 +88,14 @@ builder.Services.AddAuthentication()
         options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
         options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
         options.CallbackPath = "/signin-vkid"; // URL для callback
+        // test
+        options.Events.OnRedirectToAuthorizationEndpoint = context =>
+        {
+            // Заменяем http на https в URL редиректа
+            context.RedirectUri = context.RedirectUri.Replace("http://", "https://");
+            context.Response.Redirect(context.RedirectUri);
+            return Task.CompletedTask;
+        };
         options.Scope.Add("email"); // Запрашиваем email
         options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
         options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
