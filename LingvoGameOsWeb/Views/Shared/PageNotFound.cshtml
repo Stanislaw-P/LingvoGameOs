@@ -1,0 +1,229 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Страница не найдена | LingvoGameOs</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+
+        body {
+            display: block;
+            margin: 0px;
+        }
+
+        /* Специальные стили для 404 страницы, использующие ваши переменные */
+        .error-page {
+            min-height: 100vh;
+            background: #141c30;
+            font-family: "Axiforma", sans-serif;
+            color: var(--text-light);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-dark);
+            border-radius: 10px 70px;
+            padding: 60px 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .error-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            }
+
+
+            .error-image img {
+                max-width: 500px;
+                width: 100%;
+                height: auto;
+                filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            }
+
+        .error-code {
+            font: 700 120px "Arkhip", sans-serif;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1;
+            text-shadow: 4px 4px 0 var(--accent-2);
+            opacity: 0.8;
+        }
+
+        .error-title {
+            font: 600 48px "Axiforma", sans-serif;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-message {
+            font: 400 18px "Axiforma", sans-serif;
+            color: #F8FAFE;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 35px;
+            border-radius: 28px;
+            text-decoration: none;
+            font: 600 16px "Axiforma", sans-serif;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+
+        .btn-secondary {
+            background: rgba(63, 105, 210, 0.1);
+            color: #F8FAFE;
+            border: 2px solid var(--accent-2);
+        }
+
+            .btn-secondary:hover {
+                background: var(--accent-2);
+                color: #F8FAFE;
+                transform: translateY(-2px);
+            }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+            transition: transform 0.3s ease;
+        }
+
+        .btn-secondary .btn-icon {
+            filter: none;
+        }
+
+        .btn-secondary:hover .btn-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .btn:hover .btn-icon {
+            transform: translateX(4px);
+        }
+
+
+        /* Анимация */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Адаптивность */
+        @@media (max-width: 768px) {
+
+            .error-code {
+                font-size: 80px;
+            }
+
+            .error-title {
+                font-size: 32px;
+            }
+
+            .error-message {
+                font-size: 16px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+                .search-form button {
+                    width: 100%;
+                }
+
+            .error-image img {
+                max-width: 500px;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .error-code {
+                font-size: 60px;
+            }
+
+            .error-title {
+                font-size: 24px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-container">
+            <div class="error-image">
+                <img src="~/img/404.png" alt="Страница не найдена" />
+            </div>
+
+            <p class="error-message">
+                Упс, что-то пошло не так!<br />
+                Гъæй дæ гъа!<br />
+                Мæттæ бабæй!
+            </p>
+
+            <div class="error-actions">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
+                    На главную
+                </a>
+                <a href="@Url.Action("Games", "Home")" class="btn btn-secondary">
+                    Все игры
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
