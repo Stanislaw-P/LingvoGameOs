@@ -1,13 +1,16 @@
-using System;
+using AspNet.Security.OAuth.VkId;
 using AspNetCore.Unobtrusive.Ajax;
 using DotNetEnv;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System;
+using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +30,7 @@ var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "De
     : Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_TimeWeb");
 
 var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
+
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
 builder
@@ -76,6 +80,20 @@ builder.Host.UseSerilog(
 // Add in-memory caching service
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<ReviewCache>();
+
+
+builder.Services.AddAuthentication()
+    .AddVkId(options =>
+    {
+        options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
+        options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
+        options.CallbackPath = "/signin-vkid"; // URL для callback
+        options.Scope.Add("email"); // Запрашиваем email
+        options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+        options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+        options.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+        options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+    });
 
 var app = builder.Build();
 

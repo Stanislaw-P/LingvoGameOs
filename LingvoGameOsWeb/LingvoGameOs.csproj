@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.VkId" Version="8.3.0" />
     <PackageReference Include="AspNetCore.Unobtrusive.Ajax" Version="3.2.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="MailKit" Version="4.13.0" />
