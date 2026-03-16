@@ -18,8 +18,7 @@
             display: block;
             margin: 0px;
         }
-
-        /* Специальные стили для 404 страницы, использующие ваши переменные */
+        
         .error-page {
             min-height: 100vh;
             background: #141c30;
@@ -57,13 +56,19 @@
             }
 
 
-            .error-image img {
-                max-width: 500px;
-                width: 100%;
-                height: auto;
-                filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-            }
+        .error-image {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
 
+            .error-image img {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 500px;
+                filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+                object-fit: contain;
+            }
         .error-code {
             font: 700 120px "Arkhip", sans-serif;
             color: var(--text-light);
@@ -181,9 +186,13 @@
                     width: 100%;
                 }
 
-            .error-image img {
-                max-width: 500px;
+            .error-image {
+                max-width: 400px;
             }
+
+                .error-image img {
+                    min-height: 300px;
+                }
         }
 
         @@media (max-width: 480px) {
@@ -200,13 +209,45 @@
                 justify-content: center;
             }
         }
+
+        @@media (max-width: 576px) {
+            .error-image
+            {
+                max-width: 350px;
+            }
+
+            .error-image img {
+                min-height: 300px;
+            }
+
+        }
+
+        @@media (max-width: 375px) {
+            .error-image {
+                max-width: 280px;
+            }
+
+                .error-image img {
+                    min-height: 230px;
+                }
+        }
+        @@media (max-width: 320px) {
+            .error-image {
+                max-width: 240px;
+            }
+    
+            .error-image img {
+                min-height: 200px;
+            }
+}
+
     </style>
 </head>
 <body>
     <div class="error-page">
         <div class="error-container">
             <div class="error-image">
-                <img src="~/img/404.png" alt="Страница не найдена" />
+                <img src="~/img/svg/404.svg" alt="Страница не найдена" />
             </div>
 
             <p class="error-message">
