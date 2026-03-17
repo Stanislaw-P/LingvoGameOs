@@ -158,6 +158,13 @@ function initializeUploadForm() {
             const value = option.dataset.value;
             const text = option.textContent.trim();
             addItem(value, text, selectedSkillsLearning, skillsLearningOptions, selectedskillsLearningList, skillsLearningInput, skillsLearningSelected.querySelector('.custom-dropdown__placeholder'), false, skillsLearningSelected, skillsLearningMenu);
+
+            // Закрываем список после выбора
+            skillsLearningSelected.classList.remove('active');
+            skillsLearningMenu.classList.remove('active');
+            skillsLearningSelected.setAttribute('aria-expanded', 'false');
+            skillsLearningMenu.setAttribute('aria-hidden', 'true');
+
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -218,6 +225,12 @@ function initializeUploadForm() {
             const value = option.dataset.value;
             const text = option.textContent.trim();
             addItem(value, text, selectedPlatforms, platformOptions, selectedPlatformsList, platformInput, platformSelected.querySelector('.custom-dropdown__placeholder'), true);
+
+            platformSelected.classList.remove('active');
+            platformMenu.classList.remove('active');
+            platformSelected.setAttribute('aria-expanded', 'false');
+            platformMenu.setAttribute('aria-hidden', 'true');
+
         });
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
