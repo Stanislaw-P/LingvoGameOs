@@ -90,7 +90,7 @@ namespace LingvoGameOs.Controllers
             if (ModelState.IsValid)
             {
                 // проблема: всегда запоминает, даже если не нажать галочку
-                var result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, false);
+                var result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, true, false);
                 if (result.Succeeded)
                 {
                     return Redirect(login.ReturnUrl ?? "/Home");
