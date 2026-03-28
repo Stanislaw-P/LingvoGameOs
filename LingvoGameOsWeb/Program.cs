@@ -6,12 +6,9 @@ using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using System;
 using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +22,8 @@ builder.Services.AddControllersWithViews();
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
 var dbName = Environment.GetEnvironmentVariable("POSTGRES_DB");
-var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
+var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ||
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Test"
     ? Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_YANDEX")
     : Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_TimeWeb");
 
@@ -66,10 +64,16 @@ builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepositor
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<EmailService>();
 
-// S3 Service for file storage
-builder.Services.AddScoped<S3Service>();
+// S3 or local storage Service for file
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    builder.Services.AddScoped<IFileStorage, LocalFileProvider>();
+}
+else
+{
+    builder.Services.AddScoped<IFileStorage, S3Service>();
+}
 
-builder.Services.AddScoped<FileProvider>();
 builder.Services.AddScoped<GameFileProcessor>();
 
 builder.Services.AddScoped<RatingService>();

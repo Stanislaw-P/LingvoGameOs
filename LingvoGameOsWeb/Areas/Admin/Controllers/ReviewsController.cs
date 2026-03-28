@@ -16,14 +16,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly IReviewsRepository _reviewsRepository;
         readonly UserManager<User> _userManager;
         readonly RatingService _ratingService;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
-        public ReviewsController(IReviewsRepository reviewsRepository, UserManager<User> userManager, RatingService ratingService, S3Service s3Service)
+        public ReviewsController(IReviewsRepository reviewsRepository, UserManager<User> userManager, RatingService ratingService, IFileStorage fileStorage)
         {
             _reviewsRepository = reviewsRepository;
             _userManager = userManager;
             _ratingService = ratingService;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IActionResult> Index()
@@ -43,7 +43,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             var reviewsVm = reviews?.Select(r => new ReviewViewModel
             {
                 Review = r,
-                AuthorAvatarUrl = _s3Service.GetPublicUrl(r.Author?.AvatarImgPath!)
+                AuthorAvatarUrl = _fileStorage.GetPublicUrl(r.Author?.AvatarImgPath!)
             }).ToList();
 
             return View(reviewsVm);

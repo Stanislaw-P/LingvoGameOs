@@ -18,14 +18,14 @@ namespace LingvoGameOs.Areas.Admin.Controllers
         readonly UserManager<User> _userManager;
         readonly IGamesRepository _gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
-        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, S3Service s3Service)
+        public HomeController(UserManager<User> userManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IFileStorage fileStorage)
         {
             _userManager = userManager;
             _gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IActionResult> Index()
@@ -43,8 +43,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 {
                     Id = game.Id,
                     Title = game.Title,
-                    CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
-                    GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                    CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath),
+                    GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                     GamePlatform = game.GamePlatform,
                     LanguageLevel = game.LanguageLevel,
                     PublicationDate = game.PublicationDate,
@@ -65,8 +65,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 {
                     Id = pendingGame.Id,
                     Title = pendingGame.Title,
-                    CoverImagePath = _s3Service.GetPublicUrl(pendingGame.CoverImagePath!),
-                    GameFilePath = _s3Service.GetDownloadUrl(pendingGame.GameFilePath!, pendingGame.Title, ".msi"),
+                    CoverImagePath = _fileStorage.GetPublicUrl(pendingGame.CoverImagePath!),
+                    GameFilePath = _fileStorage.GetDownloadUrl(pendingGame.GameFilePath!, pendingGame.Title, ".msi"),
                     GamePlatform = pendingGame.GamePlatform,
                     LanguageLevel = pendingGame.LanguageLevel,
                     SkillsLearning = pendingGame.SkillsLearning,
@@ -82,7 +82,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Surname = adminUser.Surname,
                 UserName = adminUser.UserName!,
                 Description = adminUser.Description,
-                AvatarImgUrl = _s3Service.GetPreSignedFileUrl(adminUser.AvatarImgPath),
+                AvatarImgUrl = _fileStorage.GetPublicUrl(adminUser.AvatarImgPath) ?? "/Avatars/AvaNone.jpg",
                 ExistingDevGames = gamesViewModel,
                 PendingGames = pendingGamesViewModel,
                 InactiveGames = inactiveGamesViewModel,

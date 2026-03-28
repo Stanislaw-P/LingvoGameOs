@@ -3,13 +3,133 @@ using LingvoGameOs.Db.Models;
 
 namespace LingvoGameOs.Helpers
 {
-    public class FileProvider
+    public class LocalFileProvider : IFileStorage
     {
         readonly IWebHostEnvironment _appEnvironment;
 
-        public FileProvider(IWebHostEnvironment appEnvironment)
+        public LocalFileProvider(IWebHostEnvironment appEnvironment)
         {
             _appEnvironment = appEnvironment;
+        }
+
+        // Вспомогательный метод для получения полного физического пути
+        private string GetPhysicalPath(string relativePath)
+            => Path.Combine(_appEnvironment.WebRootPath, relativePath.TrimStart('/'));
+
+        public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder)
+        {
+            if (file == null) return string.Empty;
+
+            // Создаем путь: /Folders/GameId/Guid.ext
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var relativePath = Path.Combine(folder.ToString(), gameId.ToString(), fileName).Replace("\\", "/");
+            var fullPath = GetPhysicalPath(relativePath);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+
+            using (var fileStream = new FileStream(fullPath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return "/" + relativePath;
+        }
+
+        public async Task<string> UploadAvatarFileAsync(IFormFile file, Folders folder)
+        {
+            if (file == null) return string.Empty;
+
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var relativePath = Path.Combine(folder.ToString(), fileName).Replace("\\", "/");
+            var fullPath = GetPhysicalPath(relativePath);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+
+            using (var fileStream = new FileStream(fullPath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return "/" + relativePath;
+        }
+
+        public async Task<List<string>> UploadGameFilesAsync(IFormFile[] files, int gameId, Folders folder)
+        {
+            var paths = new List<string>();
+            foreach (var file in files)
+            {
+                var path = await UploadGameFileAsync(file, gameId, folder);
+                if (!string.IsNullOrEmpty(path)) paths.Add(path);
+            }
+            return paths;
+        }
+
+        public string? GetPublicUrl(string key)
+        {
+            // Для локального хранилища ключ и есть публичный URL (относительно корня сайта)
+            if (string.IsNullOrEmpty(key)) return null;
+            return key.StartsWith("/") ? key : "/" + key;
+        }
+
+        public string GetDownloadUrl(string key, string displayTitle, string extension)
+        {
+            // Локально мы просто отдаем тот же URL, браузер обработает скачивание 
+            // (или можно добавить логику отдачи через контроллер, но обычно хватает прямой ссылки)
+            return GetPublicUrl(key) ?? string.Empty;
+        }
+
+        public async Task DeleteFileAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return;
+            var fullPath = GetPhysicalPath(key);
+            if (File.Exists(fullPath))
+            {
+                await Task.Run(() => File.Delete(fullPath));
+            }
+        }
+
+        public async Task DeleteDirectoryAsync(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix)) return;
+            var fullPath = GetPhysicalPath(prefix);
+            if (Directory.Exists(fullPath))
+            {
+                await Task.Run(() => Directory.Delete(fullPath, true));
+            }
+        }
+
+        public async Task MoveFileAsync(string sourceKey, string destinationKey)
+        {
+            var sourcePath = GetPhysicalPath(sourceKey);
+            var destPath = GetPhysicalPath(destinationKey);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(destPath)!);
+
+            await Task.Run(() =>
+            {
+                if (File.Exists(sourcePath))
+                {
+                    File.Move(sourcePath, destPath, overwrite: true);
+                }
+            });
+        }
+
+        public async Task<FileMetadata> GetFileMetadataAsync(string key)
+        {
+            var fullPath = GetPhysicalPath(key);
+            if (File.Exists(fullPath))
+            {
+                var fileInfo = new FileInfo(fullPath);
+                return new FileMetadata
+                {
+                    Key = key,
+                    FileUrl = GetPublicUrl(key),
+                    Size = fileInfo.Length
+                };
+            }
+            return new FileMetadata();
         }
 
         public async Task<List<string>> SaveImagesFilesAsync(IFormFile[] files, Folders folder, int gameId)
@@ -61,7 +181,7 @@ namespace LingvoGameOs.Helpers
             {
                 await file.CopyToAsync(fileStream);
             }
-            return Path.Combine("/", folder +  "/" + fileName);
+            return Path.Combine("/", folder + "/" + fileName);
         }
 
         // Для файлов игр
@@ -207,7 +327,7 @@ namespace LingvoGameOs.Helpers
 
         public void DeleteDirectory(string path)
         {
-            if(Directory.Exists(path))
+            if (Directory.Exists(path))
                 Directory.Delete(path, true);
         }
 
