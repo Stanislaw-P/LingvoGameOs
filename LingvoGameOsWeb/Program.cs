@@ -153,11 +153,5 @@ app.UseRouting();
 // Добавьте ЭТУ строку - она будет перенаправлять все ошибки 404 на ваш контроллер
 app.UseStatusCodePagesWithReExecute("/error/{0}");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
 
 app.Run();
