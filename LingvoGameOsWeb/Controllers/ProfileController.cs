@@ -15,16 +15,18 @@ namespace LingvoGameOs.Controllers
         readonly IGamesRepository gamesRepository;
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
+        readonly ILogger<ProfileController> _logger;
 
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IFavoriteGamesRepository favoriteGamesRepository, S3Service s3Service)
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, IGamesRepository gamesRepository, IPendingGamesRepository pendingGamesRepository, IFavoriteGamesRepository favoriteGamesRepository, IFileStorage fileStorage, ILogger<ProfileController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.gamesRepository = gamesRepository;
             _pendingGamesRepository = pendingGamesRepository;
             _favoriteGamesRepository = favoriteGamesRepository;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
+            _logger = logger;
         }
 
         public async Task<IActionResult> IndexAsync(string userId)
@@ -43,8 +45,8 @@ namespace LingvoGameOs.Controllers
                         Id = game.Id,
                         Title = game.Title,
                         Author = game.Author,
-                        CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!),
-                        GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                        CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath!),
+                        GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                         GamePlatform = game.GamePlatform,
                         LanguageLevel = game.LanguageLevel,
                         PublicationDate = game.PublicationDate,
@@ -66,8 +68,8 @@ namespace LingvoGameOs.Controllers
                         Id = pendingGame.Id,
                         Title = pendingGame.Title,
                         Author = pendingGame.Author,
-                        CoverImagePath = _s3Service.GetPublicUrl(pendingGame.CoverImagePath!),
-                        GameFilePath = _s3Service.GetDownloadUrl(pendingGame.GameFilePath!, pendingGame.Title, ".msi"),
+                        CoverImagePath = _fileStorage.GetPublicUrl(pendingGame.CoverImagePath!),
+                        GameFilePath = _fileStorage.GetDownloadUrl(pendingGame.GameFilePath!, pendingGame.Title, ".msi"),
                         GamePlatform = pendingGame.GamePlatform
                     };
                     devPendingGamesViewModel.Add(pendingGameViewModel);
@@ -82,7 +84,7 @@ namespace LingvoGameOs.Controllers
                         Id = game.Id,
                         Title = game.Title,
                         Description = game.Description,
-                        CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!)
+                        CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath!)
                     };
                     gamesHistoryViewModel.Add(gameHistory);
                 }
@@ -94,7 +96,7 @@ namespace LingvoGameOs.Controllers
                     Surname = user.Surname,
                     UserName = user.UserName ?? "Пользователь",
                     Description = user.Description,
-                    AvatarImgPath = _s3Service.GetPublicUrl(user.AvatarImgPath),
+                    AvatarImgPath = _fileStorage.GetPublicUrl(user.AvatarImgPath),
                     DevGames = devGamesViewModel,
                     DevPendingGames = devPendingGamesViewModel,
                     GamesHistory = gamesHistoryViewModel,
@@ -127,7 +129,7 @@ namespace LingvoGameOs.Controllers
                         Name = user.Name,
                         Surname = user.Surname,
                         Description = user.Description,
-                        AvatarImgPath = _s3Service.GetPublicUrl(user.AvatarImgPath!)
+                        AvatarImgPath = _fileStorage.GetPublicUrl(user.AvatarImgPath!)
                     });
                 }
             }
@@ -177,14 +179,27 @@ namespace LingvoGameOs.Controllers
                 {
                     if (settings.UploadedFile.ContentType.Split("/")[0] == "image")
                     {
-                        string oldAvatarPath = user.AvatarImgPath;
-                        user.AvatarImgPath = await _s3Service.UploadAvatarFileAsync(settings.UploadedFile, user.Id, Folders.Avatars);
-
-                        if (settings.AvatarImgPath != null && settings.AvatarImgPath != "/img/avatar100.png" && oldAvatarPath != user.AvatarImgPath)
+                        try
                         {
-                            await _s3Service.DeleteFileAsync(oldAvatarPath);
+                            string oldAvatarPath = user.AvatarImgPath;
+                            user.AvatarImgPath = await _fileStorage.UploadAvatarFileAsync(settings.UploadedFile, Folders.Avatars);
+
+                            if (settings.AvatarImgPath != null && !settings.AvatarImgPath.EndsWith("Avatars/avatar100.png") && oldAvatarPath != user.AvatarImgPath)
+                            {
+                                await _fileStorage.DeleteFileAsync(oldAvatarPath);
+                            }
+                            settings.AvatarImgPath = user.AvatarImgPath;
                         }
-                        settings.AvatarImgPath = user.AvatarImgPath;
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Ошибка изменения аватарки {@AvatarEditData}", new
+                            {
+                                user.Id,
+                                RequestTime = DateTimeOffset.UtcNow,
+                                ResponseStatusCode = 500
+                            });
+                            return View(settings);
+                        }
                     }
                     else
                     {

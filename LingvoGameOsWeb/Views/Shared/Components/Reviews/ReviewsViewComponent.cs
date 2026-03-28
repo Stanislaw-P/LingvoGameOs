@@ -13,13 +13,13 @@ namespace LingvoGameOs.Views.Shared.Components.Reviews
     {
         readonly IReviewsRepository _reviewsRepository;
         readonly IMemoryCache _memoryCache;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
-        public ReviewsViewComponent(IReviewsRepository reviewsRepository, IMemoryCache memoryCache, S3Service s3Service)
+        public ReviewsViewComponent(IReviewsRepository reviewsRepository, IMemoryCache memoryCache, IFileStorage fileStorage)
         {
             _reviewsRepository = reviewsRepository;
             _memoryCache = memoryCache;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(bool isDetailsPage, int gameId)
@@ -35,7 +35,7 @@ namespace LingvoGameOs.Views.Shared.Components.Reviews
             var reviewsVm = allReviews?.Select(r => new ReviewViewModel
             {
                 Review = r,
-                AuthorAvatarUrl = _s3Service.GetPublicUrl(r.Author?.AvatarImgPath!)
+                AuthorAvatarUrl = _fileStorage.GetPublicUrl(r.Author?.AvatarImgPath!)
             }).ToList();
             return View("Reviews", reviewsVm);
         }

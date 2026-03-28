@@ -16,15 +16,15 @@ namespace LingvoGameOs.Controllers
         readonly UserManager<User> _userManager;
         readonly IGamesRepository _gamesRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
-        public FavoritesController(IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, IGamesRepository gamesRepository, ISkillsLearningRepository skillsLearningRepository, S3Service s3Service)
+        public FavoritesController(IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, IGamesRepository gamesRepository, ISkillsLearningRepository skillsLearningRepository,  IFileStorage fileStorage)
         {
             _favoriteGamesRepository = favoriteGamesRepository;
             _userManager = userManager;
             _gamesRepository = gamesRepository;
             _skillsLearningRepository = skillsLearningRepository;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IActionResult> Index()
@@ -47,8 +47,8 @@ namespace LingvoGameOs.Controllers
                     Id = game.Id,
                     Title = game.Title,
                     Author = game.Author,
-                    CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
-                    GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                    CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath),
+                    GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                     GamePlatform = game.GamePlatform,       
                     LanguageLevel = game.LanguageLevel,
                     PublicationDate = game.PublicationDate,

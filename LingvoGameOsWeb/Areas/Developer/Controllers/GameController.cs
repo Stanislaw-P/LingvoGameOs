@@ -19,12 +19,12 @@ namespace LingvoGameOs.Areas.Developers.Controllers
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly IPlatformsRepository _platformsRepository;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
-        readonly FileProvider _fileProvider;
+        readonly LocalFileProvider _fileProvider;
         readonly EmailService _emailService;
-        readonly S3Service _s3Service;
         readonly GameFileProcessor _gameFileProcessor;
+        readonly IFileStorage _fileStorage;
 
-        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ILogger<GameController> logger, ISkillsLearningRepository skillsLearningRepository, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IWebHostEnvironment webHostEnvironment, EmailService emailService, S3Service s3Service, GameFileProcessor gameFileProcessor)
+        public GameController(IGamesRepository gamesRepository, UserManager<User> userManager, ILogger<GameController> logger, ISkillsLearningRepository skillsLearningRepository, IPlatformsRepository platformsRepository, ILanguageLevelsRepository languageLevelsRepository, IWebHostEnvironment webHostEnvironment, EmailService emailService, GameFileProcessor gameFileProcessor, IFileStorage fileStorage)
         {
             _gamesRepository = gamesRepository;
             _userManager = userManager;
@@ -32,10 +32,10 @@ namespace LingvoGameOs.Areas.Developers.Controllers
             _skillsLearningRepository = skillsLearningRepository;
             _platformsRepository = platformsRepository;
             _languageLevelsRepository = languageLevelsRepository;
-            _fileProvider = new FileProvider(webHostEnvironment);
+            _fileProvider = new LocalFileProvider(webHostEnvironment);
             _emailService = emailService;
-            _s3Service = s3Service;
             _gameFileProcessor = gameFileProcessor;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IActionResult> EditAsync(int gameId)
@@ -50,7 +50,7 @@ namespace LingvoGameOs.Areas.Developers.Controllers
             if (existingGame?.GamePlatform?.Name == "Desktop")
             {
                 if (existingGame.GameFilePath != null)
-                    msiFileMetadata = await _s3Service.GetFileMetadataAsync(existingGame.GameFilePath);
+                    msiFileMetadata = await _fileStorage.GetFileMetadataAsync(existingGame.GameFilePath);
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new EditGameViewModel
@@ -60,8 +60,8 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
                 CurrentCoverImagePath = existingGame.CoverImagePath,
-                CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath),
-                ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths!),
+                CoverImageMetadata = await _fileStorage.GetFileMetadataAsync(existingGame.CoverImagePath),
+                ImagesFilesMetadata = await _gameFileProcessor.GetMetadataListAsync(existingGame.ImagesPaths!),
                 SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
                 Author = existingGame.Author,
                 AuthorId = existingGame.Author.Id,
@@ -102,18 +102,18 @@ namespace LingvoGameOs.Areas.Developers.Controllers
                 if (existingGame != null)
                 {
                     // Обложка
-                    editGame.CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath!);
+                    editGame.CoverImageMetadata = await _fileStorage.GetFileMetadataAsync(existingGame.CoverImagePath!);
 
                     // Скриншоты
                     if (existingGame.ImagesPaths != null && existingGame.ImagesPaths.Any())
                     {
-                        editGame.ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths);
+                        editGame.ImagesFilesMetadata = await _gameFileProcessor.GetMetadataListAsync(existingGame.ImagesPaths);
                     }
 
                     // Файл игры (если Desktop)
                     if (editGame.GamePlatform == "Desktop" && !string.IsNullOrEmpty(existingGame.GameFilePath))
                     {
-                        editGame.GameFileMetadata = await _s3Service.GetFileMetadataAsync(existingGame.GameFilePath);
+                        editGame.GameFileMetadata = await _fileStorage.GetFileMetadataAsync(existingGame.GameFilePath);
                         editGame.GameFilePath = existingGame.GameFilePath;
                     }
 
