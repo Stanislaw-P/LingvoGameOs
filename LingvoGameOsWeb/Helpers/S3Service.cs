@@ -95,46 +95,6 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
-        public async Task<string> TEMPUploadGameFileAsync(IFormFile file, int gameId, Folders folder, string fileName)
-        {
-            var extension = Path.GetExtension(file.FileName);
-            var uniqueName = $"{fileName}";
-            var key = $"{folder}/{gameId}/{uniqueName}";
-
-            using var stream = file.OpenReadStream();
-            var request = new PutObjectRequest
-            {
-                BucketName = _bucketName,
-                Key = key,
-                InputStream = stream,
-                ContentType = file.ContentType,
-            };
-
-            await _s3Client.PutObjectAsync(request);
-
-            return key;
-        }
-
-        //public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
-        //{
-        //    var extension = Path.GetExtension(file.FileName);
-        //    var uniqueName = $"{uniqueFileName}{extension}";
-        //    var key = $"{folder}/{gameId}/{uniqueName}";
-
-        //    using var stream = file.OpenReadStream();
-        //    var request = new PutObjectRequest
-        //    {
-        //        BucketName = _bucketName,
-        //        Key = key,
-        //        InputStream = stream,
-        //        ContentType = file.ContentType,
-        //    };
-
-        //    await _s3Client.PutObjectAsync(request);
-
-        //    return key;
-        //}
-
         /// <summary>
         /// Загрузить несколько файлов игры
         /// </summary>
@@ -146,7 +106,7 @@ namespace LingvoGameOs.Helpers
         {
             // 1. Создаем коллекцию задач (пока без await внутри Select)
             var uploadTasks = files
-                            .Select(img => TEMPUploadGameFileAsync(img, gameId, folder, img.FileName));
+                            .Select(img => UploadGameFileAsync(img, gameId, folder));
 
             // 2. Дожидаемся завершения всех задач и получаем массив строк
             string[] uploadedPathsArray = await Task.WhenAll(uploadTasks);
