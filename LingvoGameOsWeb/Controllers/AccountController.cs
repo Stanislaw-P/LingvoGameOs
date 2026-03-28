@@ -66,7 +66,7 @@ namespace LingvoGameOs.Controllers
                     UserName = email,
                     Name = name,
                     Surname = surname,
-                    AvatarImgPath = "/img/avatar100.png"
+                    AvatarImgPath = "Avatars/avatar100.png"
                 };
                 var password = $"_Vk{vkId}{Guid.NewGuid()}";
                 var result = await userManager.CreateAsync(user, password);
@@ -117,7 +117,7 @@ namespace LingvoGameOs.Controllers
             }
             if (ModelState.IsValid)
             {
-                User user = new User() { Email = register.UserName.Trim(), UserName = register.UserName.Trim(), Name = register.Name.Trim(), Surname = register.Surname.Trim(), AvatarImgPath = "/img/avatar100.png" };
+                User user = new User() { Email = register.UserName.Trim(), UserName = register.UserName.Trim(), Name = register.Name.Trim(), Surname = register.Surname.Trim(), AvatarImgPath = "Avatars/avatar100.png" };
                 var result = await userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {

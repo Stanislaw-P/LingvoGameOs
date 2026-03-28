@@ -9,24 +9,24 @@ namespace LingvoGameOs.Helpers
 {
     public class GameFileProcessor
     {
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
-        public GameFileProcessor(S3Service s3Service)
+        public GameFileProcessor(IFileStorage fileStorage)
         {
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task ProcessChangeCoverImageAsync(EditGameViewModel editGame, IGameBase existingGame, Folders folder)
         {
             if (editGame.CoverImage != null)
             {
-                string? newCoverImagePath = await _s3Service.UploadGameFileAsync(editGame.CoverImage, existingGame.Id, folder);
+                string? newCoverImagePath = await _fileStorage.UploadGameFileAsync(editGame.CoverImage, existingGame.Id, folder);
                 string? oldCoverImagePath = editGame.CurrentCoverImagePath;
 
                 existingGame.CoverImagePath = newCoverImagePath;
 
                 if (newCoverImagePath != oldCoverImagePath)
-                    await _s3Service.DeleteFileAsync(oldCoverImagePath!);
+                    await _fileStorage.DeleteFileAsync(oldCoverImagePath!);
             }
             else
                 existingGame.CoverImagePath = editGame.CurrentCoverImagePath!;
@@ -38,7 +38,10 @@ namespace LingvoGameOs.Helpers
                 return;
 
             // Удаляем файлы из хранилища
-            await _s3Service.DeleteFilesAsync(editGameViewModel.DeletedImages);
+            foreach (var key in editGameViewModel.DeletedImages)
+            {
+                await _fileStorage.DeleteFileAsync(key);
+            }
 
             // Оставляем у модели игры в БД только не удаленные картинки
             if (game.ImagesPaths != null)
@@ -55,7 +58,7 @@ namespace LingvoGameOs.Helpers
             if (editGameViewModel.UploadedImages == null || !editGameViewModel.UploadedImages.Any(f => f.Length > 0))
                 return;
 
-            List<string> newImagesKeys = await _s3Service.UploadGameFilesAsync(
+            List<string> newImagesKeys = await _fileStorage.UploadGameFilesAsync(
                 editGameViewModel.UploadedImages.Where(f => f.Length > 0).ToArray(),
                 editGameViewModel.Id,
                 folder);
@@ -72,7 +75,7 @@ namespace LingvoGameOs.Helpers
                 if (editGame.CurrentGameFilePath != null)
                 {
                     existingGame.GameFilePath = null;
-                    await _s3Service.DeleteFileAsync(editGame.CurrentGameFilePath);
+                    await _fileStorage.DeleteFileAsync(editGame.CurrentGameFilePath);
                 }
             }
         }
@@ -81,11 +84,11 @@ namespace LingvoGameOs.Helpers
         {
             if (editGame.GamePlatform == "Desktop" && editGame.UploadedGameFile != null)
             {
-                string newGameFilePath = await _s3Service.UploadGameFileAsync(editGame.UploadedGameFile, existingGame.Id, folder);
+                string newGameFilePath = await _fileStorage.UploadGameFileAsync(editGame.UploadedGameFile, existingGame.Id, folder);
                 existingGame.GameFilePath = newGameFilePath;
 
                 if (newGameFilePath != editGame.CurrentGameFilePath)
-                    await _s3Service.DeleteFileAsync(editGame.CurrentGameFilePath!);
+                    await _fileStorage.DeleteFileAsync(editGame.CurrentGameFilePath!);
             }
         }
 
@@ -98,7 +101,7 @@ namespace LingvoGameOs.Helpers
             if (!string.IsNullOrEmpty(pendingGame.CoverImagePath))
             {
                 string newPath = UpdateS3Path(pendingGame.CoverImagePath, sourceFolder, destFolder);
-                await _s3Service.MoveFileAsync(pendingGame.CoverImagePath, newPath);
+                await _fileStorage.MoveFileAsync(pendingGame.CoverImagePath, newPath);
                 publishedGame.CoverImagePath = newPath;
             }
 
@@ -106,7 +109,7 @@ namespace LingvoGameOs.Helpers
             if (publishedGame?.GamePlatform?.Name == "Desktop" && !string.IsNullOrEmpty(pendingGame.GameFilePath))
             {
                 string newPath = UpdateS3Path(pendingGame.GameFilePath, sourceFolder, destFolder);
-                await _s3Service.MoveFileAsync(pendingGame.GameFilePath, newPath);
+                await _fileStorage.MoveFileAsync(pendingGame.GameFilePath, newPath);
                 publishedGame.GameFilePath = newPath;
             }
 
@@ -117,13 +120,13 @@ namespace LingvoGameOs.Helpers
                 foreach (var oldPath in pendingGame.ImagesPaths)
                 {
                     string newPath = UpdateS3Path(oldPath, sourceFolder, destFolder);
-                    await _s3Service.MoveFileAsync(oldPath, newPath);
+                    await _fileStorage.MoveFileAsync(oldPath, newPath);
                     publishedGame?.ImagesPaths?.Add(newPath);
                 }
             }
 
             // 4. Очистка (на случай если в папке остались какие-то неучтенные файлы)
-            await _s3Service.DeleteDirectoryAsync(sourceFolder);
+            await _fileStorage.DeleteDirectoryAsync(sourceFolder);
         }
 
         /// <summary>
@@ -139,6 +142,22 @@ namespace LingvoGameOs.Helpers
             string replace = newBase.TrimStart('/');
 
             return path.Replace(search, replace, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Получить мета-данные списка файлов
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public async Task<List<FileMetadata>> GetMetadataListAsync(List<string> keys)
+        {
+            var result = new List<FileMetadata>();
+            if (keys == null) return result;
+            foreach (var key in keys)
+            {
+                result.Add(await _fileStorage.GetFileMetadataAsync(key));
+            }
+            return result;
         }
     }
 }

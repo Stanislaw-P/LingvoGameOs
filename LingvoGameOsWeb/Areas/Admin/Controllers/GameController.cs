@@ -16,27 +16,27 @@ namespace LingvoGameOs.Areas.Admin.Controllers
     {
         readonly IGamesRepository _gamesRepository;
         readonly ILogger<GameController> _logger;
-        readonly FileProvider _fileProvider;
+        readonly LocalFileProvider _fileProvider;
         readonly UserManager<User> _userManager;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly IPlatformsRepository _platformsRepository;
         readonly EmailService _emailService;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
         readonly GameFileProcessor _gameFileProcessor;
 
-        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository, EmailService emailService, S3Service s3Service, GameFileProcessor gameFileProcessor)
+        public GameController(IGamesRepository gamesRepository, ILogger<GameController> logger, IWebHostEnvironment webHostEnvironment, ILanguageLevelsRepository languageLevelsRepository, ISkillsLearningRepository skillsLearningRepository, UserManager<User> userManager, IPlatformsRepository platformsRepository, EmailService emailService, GameFileProcessor gameFileProcessor, IFileStorage fileStorage)
         {
             _gamesRepository = gamesRepository;
             _logger = logger;
-            _fileProvider = new FileProvider(webHostEnvironment);
+            _fileProvider = new LocalFileProvider(webHostEnvironment);
             _languageLevelsRepository = languageLevelsRepository;
             _skillsLearningRepository = skillsLearningRepository;
             _userManager = userManager;
             _platformsRepository = platformsRepository;
             _emailService = emailService;
-            _s3Service = s3Service;
             _gameFileProcessor = gameFileProcessor;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IActionResult> DeactivateAsync(int gameId)
@@ -68,7 +68,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
             // 2. Удаляем все файлы игры из S3
             // Используем наш исправленный метод, который удаляет всё содержимое по префиксу
-            await _s3Service.DeleteDirectoryAsync(s3FolderPrefix);
+            await _fileStorage.DeleteDirectoryAsync(s3FolderPrefix);
 
             // 3. Удаляем запись из БД
             await _gamesRepository.RemoveAsync(gameForDelete);
@@ -97,7 +97,7 @@ namespace LingvoGameOs.Areas.Admin.Controllers
             if (existingGame?.GamePlatform?.Name == "Desktop")
             {
                 if (existingGame.GameFilePath != null)
-                    msiFileMetadata = await _s3Service.GetFileMetadataAsync(existingGame.GameFilePath);
+                    msiFileMetadata = await _fileStorage.GetFileMetadataAsync(existingGame.GameFilePath);
             }
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View(new AdminEditGameViewModel
@@ -107,8 +107,8 @@ namespace LingvoGameOs.Areas.Admin.Controllers
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
                 CurrentCoverImagePath = existingGame.CoverImagePath,
-                CoverImageMetadata = await _s3Service.GetFileMetadataAsync(existingGame.CoverImagePath!),
-                ImagesFilesMetadata = await _s3Service.GetFilesMetadataAsync(existingGame.ImagesPaths!),
+                CoverImageMetadata = await _fileStorage.GetFileMetadataAsync(existingGame.CoverImagePath!),
+                ImagesFilesMetadata = await _gameFileProcessor.GetMetadataListAsync(existingGame.ImagesPaths!),
                 SkillsLearning = existingGame?.SkillsLearning?.Select(x => x.Name).ToList(),
                 Author = existingGame?.Author,
                 AuthorId = existingGame?.Author.Id!,
@@ -162,10 +162,10 @@ namespace LingvoGameOs.Areas.Admin.Controllers
 
                 // Если есть новое изображение - меняем
                 await _gameFileProcessor.ProcessChangeCoverImageAsync(editGame, existingGame, Folders.Games);
-                
+
                 // Процесс удаления картинок
                 await _gameFileProcessor.ProcessDeletedImagesAsync(editGame, existingGame);
-                
+
                 // Обрабатываем новые картинки
                 await _gameFileProcessor.ProcessUploadNewImagesAsync(editGame, existingGame, Folders.Games);
 

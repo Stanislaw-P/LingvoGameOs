@@ -1,46 +1,36 @@
 ﻿using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Amazon.S3.Transfer;
 using LingvoGameOs.Areas.Admin.Models;
-using LingvoGameOs.Db.Models;
-using LingvoGameOs.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sprache;
-using System.Threading.Tasks;
 
 namespace LingvoGameOs.Helpers
 {
-    public class S3Service
+    public class S3Service : IFileStorage
     {
         readonly IAmazonS3 _s3Client;
-        readonly string _bucketName;
-        readonly string _awsServiceUrl;
+        readonly string? _bucketName = null;
+        readonly string? _awsServiceUrl = null;
 
         public S3Service(IConfiguration configuration)
         {
-            string awsAccessKey;
-            string awsKey;
+            string? awsAccessKey = null;
+            string? awsKey = null;
 
-            //if (configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
-            //{
-            //    awsAccessKey = configuration["AWS_YANDEX_KEY_ID"] ?? "";
-            //    awsKey = configuration["AWS_YANDEX_KEY"] ?? "";
-            //    awsServiceUrl = configuration["AWS_YANDEX_SERVICE_URL"] ?? "";
-            //    _bucketName = configuration["AWS_YANDEX_BUCKET_NAME"] ?? "";
-            //}
-            //else
-            //{
-            //    awsAccessKey = configuration["AWS_TIMEWEB_KEY_ID"] ?? "";
-            //    awsKey = configuration["AWS_TIMEWEB_KEY"] ?? "";
-            //    awsServiceUrl = configuration["AWS_TIMEWEB_SERVICE_URL"] ?? "";
-            //    _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
-            //}
-
-            awsAccessKey = configuration["AWS_YANDEX_KEY_ID"] ?? "";
-            awsKey = configuration["AWS_YANDEX_KEY"] ?? "";
-            _awsServiceUrl = configuration["AWS_YANDEX_SERVICE_URL"] ?? "";
-            _bucketName = configuration["AWS_YANDEX_BUCKET_NAME"] ?? "";
+            if (configuration["ASPNETCORE_ENVIRONMENT"] == "Test")
+            {
+                awsAccessKey = configuration["AWS_YANDEX_KEY_ID"] ?? "";
+                awsKey = configuration["AWS_YANDEX_KEY"] ?? "";
+                _awsServiceUrl = configuration["AWS_YANDEX_SERVICE_URL"] ?? "";
+                _bucketName = configuration["AWS_YANDEX_BUCKET_NAME"] ?? "";
+            }
+            else if (configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
+            {
+                awsAccessKey = configuration["AWS_TIMEWEB_KEY_ID"] ?? "";
+                awsKey = configuration["AWS_TIMEWEB_KEY"] ?? "";
+                _awsServiceUrl = configuration["AWS_TIMEWEB_SERVICE_URL"] ?? "";
+                _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
+            }
 
             AmazonS3Config s3Config = new AmazonS3Config
             {
@@ -48,6 +38,7 @@ namespace LingvoGameOs.Helpers
                 ForcePathStyle = true,
                 AuthenticationRegion = "ru-1"
             };
+
             _s3Client = new AmazonS3Client(awsAccessKey, awsKey, s3Config);
         }
 
@@ -104,46 +95,6 @@ namespace LingvoGameOs.Helpers
             return key;
         }
 
-        public async Task<string> TEMPUploadGameFileAsync(IFormFile file, int gameId, Folders folder, string fileName)
-        {
-            var extension = Path.GetExtension(file.FileName);
-            var uniqueName = $"{fileName}";
-            var key = $"{folder}/{gameId}/{uniqueName}";
-
-            using var stream = file.OpenReadStream();
-            var request = new PutObjectRequest
-            {
-                BucketName = _bucketName,
-                Key = key,
-                InputStream = stream,
-                ContentType = file.ContentType,
-            };
-
-            await _s3Client.PutObjectAsync(request);
-
-            return key;
-        }
-
-        //public async Task<string> UploadGameFileAsync(IFormFile file, int gameId, Folders folder, string uniqueFileName)
-        //{
-        //    var extension = Path.GetExtension(file.FileName);
-        //    var uniqueName = $"{uniqueFileName}{extension}";
-        //    var key = $"{folder}/{gameId}/{uniqueName}";
-
-        //    using var stream = file.OpenReadStream();
-        //    var request = new PutObjectRequest
-        //    {
-        //        BucketName = _bucketName,
-        //        Key = key,
-        //        InputStream = stream,
-        //        ContentType = file.ContentType,
-        //    };
-
-        //    await _s3Client.PutObjectAsync(request);
-
-        //    return key;
-        //}
-
         /// <summary>
         /// Загрузить несколько файлов игры
         /// </summary>
@@ -155,7 +106,7 @@ namespace LingvoGameOs.Helpers
         {
             // 1. Создаем коллекцию задач (пока без await внутри Select)
             var uploadTasks = files
-                            .Select(img => TEMPUploadGameFileAsync(img, gameId, folder, img.FileName));
+                            .Select(img => UploadGameFileAsync(img, gameId, folder));
 
             // 2. Дожидаемся завершения всех задач и получаем массив строк
             string[] uploadedPathsArray = await Task.WhenAll(uploadTasks);
@@ -167,13 +118,12 @@ namespace LingvoGameOs.Helpers
         /// Загрузить аватар пользователя в S3
         /// </summary>
         /// <param name="file">Файл аватарки</param>
-        /// <param name="userId">Id пользователя</param>
         /// <param name="folder">Папка, в которую нужно загрузить файл (Avatars)</param>
         /// <returns>Уникальное имя файла в хранилище</returns>
-        public async Task<string> UploadAvatarFileAsync(IFormFile file, string userId, Folders folder)
+        public async Task<string> UploadAvatarFileAsync(IFormFile file, Folders folder)
         {
             var extension = Path.GetExtension(file.FileName);
-            var uniqueName = $"{userId}{extension}";
+            var uniqueName = $"{Guid.NewGuid()}{extension}";
             var key = $"{folder}/{uniqueName}";
 
             using var stream = file.OpenReadStream();

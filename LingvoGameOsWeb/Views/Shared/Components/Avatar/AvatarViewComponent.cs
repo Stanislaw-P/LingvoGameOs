@@ -9,12 +9,12 @@ namespace LingvoGameOs.Views.Shared.Components.Avatar
     public class AvatarViewComponent : ViewComponent
     {
         readonly UserManager<User> _usersManager;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
-        public AvatarViewComponent(UserManager<User> userManager, S3Service s3Service)
+        public AvatarViewComponent(UserManager<User> userManager, IFileStorage fileStorage)
         {
             _usersManager = userManager;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -22,7 +22,7 @@ namespace LingvoGameOs.Views.Shared.Components.Avatar
             var currentUser = await _usersManager.GetUserAsync(HttpContext.User);
             if (currentUser != null)
             {
-                ViewBag.AvatarImgPath = _s3Service.GetPublicUrl(currentUser.AvatarImgPath);
+                ViewBag.AvatarImgPath = _fileStorage.GetPublicUrl(currentUser.AvatarImgPath);
                 ViewBag.Name = currentUser.Name;
                 return View("Avatar");
             }

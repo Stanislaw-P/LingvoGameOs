@@ -597,7 +597,8 @@ function setupScreenshotsUpload() {
             type: 'existing',
             id: imgElement.getAttribute('data-image-id'),
             name: imgElement.getAttribute('data-image-name'),
-            path: imgElement.getAttribute('data-existing-image')
+            path: imgElement.getAttribute('data-existing-image'),
+            size: imgElement.getAttribute('data-image-size')
         };
         originalImages.push(imageData.id);
         currentImages.push(imageData);
@@ -652,6 +653,7 @@ function setupScreenshotsUpload() {
             previewElement.innerHTML = `
                 <div class="file-upload__file">
                     <span class="file-upload__file-name">${img.name}</span>
+                    <span class="file-upload__file-size">${img.size} Кб</span>
                     <img src="/icon/trash.svg" class="file-upload__file-trash"
                          alt="Удалить" title="Удалить">
                 </div>

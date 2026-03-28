@@ -19,11 +19,11 @@ namespace LingvoGameOs.Controllers
         readonly ISkillsLearningRepository _skillsLearningRepository;
         readonly IPlatformsRepository _platformsRepository;
         readonly ILanguageLevelsRepository _languageLevelsRepository;
-        readonly FileProvider _fileProvider;
+        readonly LocalFileProvider _fileProvider;
         readonly IPendingGamesRepository _pendingGamesRepository;
         readonly ILogger<GameController> _logger;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
-        readonly S3Service _s3Service;
+        readonly IFileStorage _fileStorage;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -34,23 +34,22 @@ namespace LingvoGameOs.Controllers
             ILanguageLevelsRepository languageLevelsRepository,
             IPendingGamesRepository pendingGamesRepository,
             ILogger<GameController> logger,
-            IConfiguration configuration
-,
+            IConfiguration configuration,
             IFavoriteGamesRepository favoriteGamesRepository,
-            S3Service s3Service)
+            IFileStorage fileStorage)
         {
             _configuration = configuration;
 
             _gamesRepository = gamesRepository;
             _userManager = userManager;
             _skillsLearningRepository = skillsLearningRepository;
-            _fileProvider = new FileProvider(appEnvironment);
+            _fileProvider = new LocalFileProvider(appEnvironment);
             _platformsRepository = platformsRepository;
             _languageLevelsRepository = languageLevelsRepository;
             _pendingGamesRepository = pendingGamesRepository;
             _logger = logger;
             _favoriteGamesRepository = favoriteGamesRepository;
-            _s3Service = s3Service;
+            _fileStorage = fileStorage;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -65,12 +64,12 @@ namespace LingvoGameOs.Controllers
                 Id = existingGame.Id,
                 Title = existingGame.Title,
                 Author = existingGame.Author,
-                CoverImagePath = _s3Service.GetPublicUrl(existingGame.CoverImagePath!),
+                CoverImagePath = _fileStorage.GetPublicUrl(existingGame.CoverImagePath!),
                 Description = existingGame.Description,
                 Rules = existingGame.Rules,
-                GameFilePath = _s3Service.GetDownloadUrl(existingGame.GameFilePath!, existingGame.Title, ".msi"),
+                GameFilePath = _fileStorage.GetDownloadUrl(existingGame.GameFilePath!, existingGame.Title, ".msi"),
                 GamePlatform = existingGame.GamePlatform,
-                ImagesPaths = existingGame.ImagesPaths?.Select(_s3Service.GetPublicUrl).ToList()!,
+                ImagesPaths = existingGame.ImagesPaths?.Select(_fileStorage.GetPublicUrl).ToList()!,
                 VideoUrl = existingGame.VideoUrl,
                 LanguageLevel = existingGame.LanguageLevel,
                 PublicationDate = existingGame.PublicationDate,
@@ -79,7 +78,7 @@ namespace LingvoGameOs.Controllers
                 IsFavorite = await _favoriteGamesRepository.IsGameInFavoritesAsync(currentUser?.Id ?? "", existingGame.Id)
             };
 
-            ViewBag.AuthorAvatarFullUrl = _s3Service.GetPublicUrl(existingGame.Author.AvatarImgPath);
+            ViewBag.AuthorAvatarFullUrl = _fileStorage.GetPublicUrl(existingGame.Author.AvatarImgPath);
             return View(gameViewModel);
         }
 
@@ -248,17 +247,17 @@ namespace LingvoGameOs.Controllers
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
                         // Теперь можно использовать ID для сохранения файлов в соотв. директорию
-                        string gameFileUrl = await _s3Service.UploadGameFileAsync
+                        string gameFileUrl = await _fileStorage.UploadGameFileAsync
                             (gameViewModel.UploadedGameFile,
                              pendingGame.Id,
                              Folders.PendingGames);
 
-                        string coverImagePath = await _s3Service.UploadGameFileAsync(
+                        string coverImagePath = await _fileStorage.UploadGameFileAsync(
                             gameViewModel.CoverImage,
                             pendingGame.Id,
                             Folders.PendingGames);
 
-                        List<string> imagesUrls = await _s3Service.UploadGameFilesAsync(
+                        List<string> imagesUrls = await _fileStorage.UploadGameFilesAsync(
                             gameViewModel.UploadedImages, 
                             pendingGame.Id,
                             Folders.PendingGames);
@@ -318,12 +317,12 @@ namespace LingvoGameOs.Controllers
                         };
                         await _pendingGamesRepository.AddAsync(pendingGame);
 
-                        string coverImagePath = await _s3Service.UploadGameFileAsync(
+                        string coverImagePath = await _fileStorage.UploadGameFileAsync(
                             gameViewModel.CoverImage,
                             pendingGame.Id,
                             Folders.PendingGames);
 
-                        List<string> imagesUrls = await _s3Service.UploadGameFilesAsync(
+                        List<string> imagesUrls = await _fileStorage.UploadGameFilesAsync(
                             gameViewModel.UploadedImages,
                             pendingGame.Id,
                             Folders.PendingGames);

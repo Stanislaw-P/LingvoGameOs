@@ -16,15 +16,15 @@ public class HomeController : Controller
     readonly IFavoriteGamesRepository _favoriteGamesRepository;
     readonly UserManager<User> _userManager;
     readonly ISkillsLearningRepository _skillsLearningRepository;
-    readonly S3Service _s3Service;
+    readonly IFileStorage _fileStorage;
 
-    public HomeController(IGamesRepository gamesRepository, IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, S3Service s3Service)
+    public HomeController(IGamesRepository gamesRepository, IFavoriteGamesRepository favoriteGamesRepository, UserManager<User> userManager, ISkillsLearningRepository skillsLearningRepository, IFileStorage fileStorage)
     {
         _gamesRepository = gamesRepository;
         _favoriteGamesRepository = favoriteGamesRepository;
         _userManager = userManager;
         _skillsLearningRepository = skillsLearningRepository;
-        _s3Service = s3Service;
+        _fileStorage = fileStorage;
     }
 
     public async Task<IActionResult> Index()
@@ -40,9 +40,9 @@ public class HomeController : Controller
             {
                 Id = game.Id,
                 Title = game.Title,
-                CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!),
+                CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath!),
                 GameFolderName = game.GameFolderName,
-                GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                 GamePlatform = game.GamePlatform,
                 LanguageLevel = game.LanguageLevel,
                 PublicationDate = game.PublicationDate,
@@ -82,8 +82,8 @@ public class HomeController : Controller
                 Id = game.Id,
                 Title = game.Title,
                 Author = game.Author,
-                CoverImagePath = _s3Service.GetPublicUrl( game.CoverImagePath),
-                GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath),
+                GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                 GamePlatform = game.GamePlatform,
                 ImagesPaths = game.ImagesPaths,
                 LanguageLevel = game.LanguageLevel,
@@ -119,8 +119,8 @@ public class HomeController : Controller
                 Id = game.Id,
                 Title = game.Title,
                 Author = game.Author,
-                CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath),
-                GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath),
+                GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                 GamePlatform = game.GamePlatform,
                 LanguageLevel = game.LanguageLevel,
                 PublicationDate = game.PublicationDate,
@@ -150,8 +150,8 @@ public class HomeController : Controller
                 Id = game.Id,
                 Title = game.Title,
                 Author = game.Author,
-                CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!),
-                GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath!),
+                GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                 GamePlatform = game.GamePlatform,
                 LanguageLevel = game.LanguageLevel,
                 PublicationDate = game.PublicationDate,
@@ -185,8 +185,8 @@ public class HomeController : Controller
             {
                 Id = game.Id,
                 Title = game.Title,
-                CoverImagePath = _s3Service.GetPublicUrl(game.CoverImagePath!),
-                GameFilePath = _s3Service.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
+                CoverImagePath = _fileStorage.GetPublicUrl(game.CoverImagePath!),
+                GameFilePath = _fileStorage.GetDownloadUrl(game.GameFilePath!, game.Title, ".msi"),
                 GamePlatform = game.GamePlatform,
                 LanguageLevel = game.LanguageLevel,
                 PublicationDate = game.PublicationDate,
