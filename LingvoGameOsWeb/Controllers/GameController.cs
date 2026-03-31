@@ -95,7 +95,7 @@ namespace LingvoGameOs.Controllers
                 existingGame.GameFolderName = "temp";
 
             string gameFolder =
-                _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
+                _configuration["ASPNETCORE_ENVIRONMENT"] == "Development" || _configuration["ASPNETCORE_ENVIRONMENT"] == "Test"
                     ? Constants.YandexCloudGameFolderPath
                     : Constants.TimeWebCloudGameFolderPath;
 
