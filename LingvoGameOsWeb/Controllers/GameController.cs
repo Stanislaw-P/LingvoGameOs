@@ -147,7 +147,7 @@ namespace LingvoGameOs.Controllers
                 Process.Start(runningProcess);
 
                 string? URL =
-                    _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
+                    _configuration["ASPNETCORE_ENVIRONMENT"] == "Development" || _configuration["ASPNETCORE_ENVIRONMENT"] == "Test"
                         ? _configuration["DEVELOPMENT_URL"]
                         : _configuration["PRODUCTION_URL"];
 
