@@ -1,16 +1,19 @@
-using AspNet.Security.OAuth.VkId;
+п»їusing AspNet.Security.OAuth.VkId;
 using AspNetCore.Unobtrusive.Ajax;
 using DotNetEnv;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System;
 using System.Security.Claims;
+using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,7 +65,7 @@ builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>
 builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepository>();
 
-// Встраивание зависимости для работы с почтой
+// Р’СЃС‚СЂР°РёРІР°РЅРёРµ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РїРѕС‡С‚РѕР№
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<EmailService>();
 
@@ -93,14 +96,30 @@ builder.Host.UseSerilog(
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<ReviewCache>();
 
+// в†ђв†ђв†ђ Р­РўРћ РћР‘РЇР—РђРўР•Р›Р¬РќРћ Р”Рћ UseAuthentication()
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto |
+        ForwardedHeaders.XForwardedHost;
+
+    // Р’Р°Р¶РЅРѕ РґР»СЏ РЅРѕРІС‹С… РІРµСЂСЃРёР№ .NET 8.0.17+ Рё РІС‹С€Рµ (security hardening)
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+
+    // Nginx СЂР°Р±РѕС‚Р°РµС‚ Р»РѕРєР°Р»СЊРЅРѕ в†’ СЂР°Р·СЂРµС€Р°РµРј loopback
+    options.KnownNetworks.Add(new IPNetwork(IPAddress.Loopback, 8));     // 127.0.0.0/8
+    options.KnownNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
+});
 
 builder.Services.AddAuthentication()
     .AddVkId(options =>
     {
         options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
         options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
-        options.CallbackPath = "/signin-vkid"; // URL для callback
-        options.Scope.Add("email"); // Запрашиваем email
+        options.CallbackPath = "/signin-vkid"; // URL РґР»СЏ callback
+        options.Scope.Add("email"); // Р—Р°РїСЂР°С€РёРІР°РµРј email
         options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
         options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
         options.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
@@ -108,6 +127,11 @@ builder.Services.AddAuthentication()
     });
 
 var app = builder.Build();
+
+// test
+app.UseForwardedHeaders();
+app.UseHttpsRedirection();
+app.UseHsts();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -162,7 +186,7 @@ app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Inde
 
 app.UseRouting();
 
-// Добавьте ЭТУ строку - она будет перенаправлять все ошибки 404 на ваш контроллер
+// Р”РѕР±Р°РІСЊС‚Рµ Р­РўРЈ СЃС‚СЂРѕРєСѓ - РѕРЅР° Р±СѓРґРµС‚ РїРµСЂРµРЅР°РїСЂР°РІР»СЏС‚СЊ РІСЃРµ РѕС€РёР±РєРё 404 РЅР° РІР°С€ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
 app.UseStatusCodePagesWithReExecute("/error/{0}");
 
 
