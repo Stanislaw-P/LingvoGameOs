@@ -144,6 +144,8 @@ namespace LingvoGameOs.Helpers
         {
             if (string.IsNullOrEmpty(key)) return;
 
+            key = key.TrimStart('/');
+
             var request = new DeleteObjectRequest
             {
                 BucketName = _bucketName,
