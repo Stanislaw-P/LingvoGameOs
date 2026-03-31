@@ -14,6 +14,7 @@ namespace LingvoGameOs.Db
         public DbSet<PendingGame> PendingGames { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<FavoriteGame> FavoriteGames { get; set; }
+        public DbSet<ApiKey> ApiKeys { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -73,6 +74,26 @@ namespace LingvoGameOs.Db
                         .ToTable("PendingGameSkillLearning")
                         .HasKey(t => new { t.PendingGameId, t.SkillLearningId }) // Составной первичный ключ
                 );
+
+            modelBuilder.Entity<ApiKey>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.KeyHash).IsUnique();
+                entity.HasIndex(e => new { e.UserId, e.IsActive });
+
+                entity.Property(e => e.KeyHash)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.HasOne(e => e.User)
+                    .WithMany()
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }
