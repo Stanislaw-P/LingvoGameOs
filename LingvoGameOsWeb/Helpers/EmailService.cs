@@ -14,6 +14,10 @@ namespace LingvoGameOs.Helpers
         public EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger)
         {
             this.mailSettings = mailSettings.Value;
+            if (this.mailSettings.Password == null)
+            {
+                this.mailSettings.Password = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
+            }
             _logger = logger;
         }
 
