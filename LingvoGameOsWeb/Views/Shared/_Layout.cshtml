@@ -11,6 +11,20 @@
     <link rel="icon" href="~/img/logo/logo_2.1.svg" type="image/x-icon" />
     @await RenderSectionAsync("Styles", required: false)
     @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106990010', 'ym');
+
+        ym(106990010, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/106990010" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
 <body>
     @if (ViewContext.RouteData.Values["Action"]?.ToString() == "Start")
@@ -32,7 +46,7 @@
     @await Html.PartialAsync("Footer", false)
     @* Удаляем ссылку на jQuery и Bootstrap JS, если они больше не нужны *@
     @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
-    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
     @Html.RenderUnobtrusiveAjaxScript()
