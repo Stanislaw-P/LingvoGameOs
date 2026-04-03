@@ -1,6 +1,7 @@
 using DotNetEnv;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOsWebApi.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,15 @@ builder
 // Register DatabaseContext with SQLite provider
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
+builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+    options.DefaultChallengeScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+})
+    .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(
+        ApiKeyAuthenticationOptions.DefaultScheme,
+        options => { });
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -50,6 +60,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

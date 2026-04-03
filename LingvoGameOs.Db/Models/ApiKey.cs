@@ -13,7 +13,6 @@ namespace LingvoGameOs.Db.Models
         public string KeyHash { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset? ExpiresAt { get; set; } // null = бессрочный
         public DateTimeOffset? LastUsedAt { get; set; }
         public bool IsActive { get; set; } = true;
 
