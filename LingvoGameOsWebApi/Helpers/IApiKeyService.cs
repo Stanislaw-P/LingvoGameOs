@@ -4,7 +4,7 @@ namespace LingvoGameOsWebApi.Helpers
 {
     public interface IApiKeyService
     {
-        Task<ApiKey> CreateApiKeyAsync(string userId, string name, int? expirationDays = null, Dictionary<string, string>? permissions = null);
+        Task<ApiKey> CreateApiKeyAsync(string userId, string name, int? expirationDays = null);
         Task<bool> DeleteApiKeyAsync(Guid apiKeyId, string userId);
         Task<ApiKey?> GetApiKeyByKeyAsync(string apiKey);
         Task<User?> GetUserByApiKeyAsync(string apiKey);

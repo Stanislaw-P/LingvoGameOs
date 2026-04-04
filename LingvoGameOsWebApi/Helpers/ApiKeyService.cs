@@ -20,8 +20,7 @@ namespace LingvoGameOsWebApi.Helpers
         public async Task<ApiKey> CreateApiKeyAsync(
           string userId,
           string name,
-          int? expirationDays = null,
-          Dictionary<string, string>? permissions = null)
+          int? expirationDays = null)
         {
             // Генерируем уникальный API ключ
             var (apiKeyString, keyHash) = GenerateApiKeyWithHash();
