@@ -21,7 +21,7 @@ namespace LingvoGameOsWebApi.Controllers
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFound("Пользователя с таким id не существует");
+                return NotFound("There is no user with this ID.");
             int points = user.TotalPoints;
             return Ok(new
             {
@@ -34,10 +34,10 @@ namespace LingvoGameOsWebApi.Controllers
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFound("Пользователя с таким id не существует");
+                return NotFound("There is no user with this ID.");
 
             if (request.Amount <= 0)
-                return BadRequest("Количество баллов должно быть положительным");
+                return BadRequest("Количество баллов должно быть положительным.");
 
             user.TotalPoints += request.Amount;
             int newTotalPoints = user.TotalPoints;
