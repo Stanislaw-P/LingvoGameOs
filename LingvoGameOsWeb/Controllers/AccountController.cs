@@ -89,7 +89,7 @@ namespace LingvoGameOs.Controllers
         {
             if (ModelState.IsValid)
             {
-                // проблема: всегда запоминает, даже если не нажать галочку
+                // проблема: всегда запоминает
                 var result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, true, false);
                 if (result.Succeeded)
                 {
