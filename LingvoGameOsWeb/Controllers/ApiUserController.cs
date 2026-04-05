@@ -7,17 +7,17 @@ namespace LingvoGameOs.Controllers
     [ApiController]
     public class ApiUserController : ControllerBase
     {
-        [HttpGet("current-user-id")]
-        public IActionResult GetCurrentUserId()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //[HttpGet("current-user-id")]
+        //public IActionResult GetCurrentUserId()
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { error = "User not authenticated" });
-            }
+        //    if (string.IsNullOrEmpty(userId))
+        //    {
+        //        return Unauthorized(new { error = "User not authenticated" });
+        //    }
 
-            return Ok(new { userId });
-        }
+        //    return Ok(new { userId });
+        //}
     }
 }

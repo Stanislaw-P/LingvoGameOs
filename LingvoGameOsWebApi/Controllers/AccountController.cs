@@ -1,13 +1,13 @@
-﻿using LingvoGameOs.Db;
-using LingvoGameOs.Db.Models;
+﻿using LingvoGameOs.Db.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LingvoGameOsWebApi.Controllers
 {
     [ApiController]
     [Route("api/account")]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         readonly UserManager<User> _userManager;

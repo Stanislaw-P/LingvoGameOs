@@ -31,10 +31,12 @@ namespace LingvoGameOs.Areas.Developer.Controllers
 
             var apiKeys = await _apiKeyService.GetUserApiKeysAsync(user.Id);
             var activeKey = apiKeys.FirstOrDefault(k => k.IsActive);
+            bool hasApiKey = activeKey != null;
 
             var model = new ApiKeyManagementViewModel
             {
-                HasApiKey = activeKey != null,
+                HasApiKey = hasApiKey,
+                ApiKeyId = hasApiKey ? activeKey!.Id : Guid.Empty,
                 ApiKeyCreatedAt = activeKey?.CreatedAt,
                 ApiKeyLastUsed = activeKey?.LastUsedAt,
                 IsApiKeyActive = activeKey?.IsActive ?? false

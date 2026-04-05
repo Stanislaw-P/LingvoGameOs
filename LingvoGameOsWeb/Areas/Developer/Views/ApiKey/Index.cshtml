@@ -43,6 +43,22 @@
                         </div>
 
                         <div class="api-key__details-list">
+                            @if (Model.ApiKeyId != Guid.Empty)
+                            {
+                                <div class="api-key__detail">
+                                    <span class="api-key__detail-label">ID ключа:</span>
+                                    <span class="api-key__detail-value api-key__detail-value--id">
+                                        <code>@Model.ApiKeyId</code>
+                                        <button class="api-key__copy-id-btn" onclick="copyToClipboard('@Model.ApiKeyId')" title="Копировать ID">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </div>
+                            }
+
                             @if (Model.ApiKeyCreatedAt.HasValue)
                             {
                                 <div class="api-key__detail">
@@ -114,7 +130,7 @@
             </div>
         </div>
 
-        <!-- Остальные секции (документация, лимиты) -->
+        <!-- Секция с документацией API -->
         <div class="developer-page__section">
             <div class="developer-page__section-title">
                 <i class="fas fa-book" style="margin-right: 12px;"></i>
@@ -123,11 +139,93 @@
 
             <div class="developer-page__description">
                 Используйте ваш API ключ для доступа к нашему API. Ключ необходимо передавать в заголовке <code class="api-key__code-inline">X-API-Key</code>.
+                Базовый URL: <code class="api-key__code-inline">https://рудзынг.рф</code>
             </div>
 
-            <!-- Пример запроса -->
+            <!-- Эндпоинты API -->
+            <div class="developer-page__instructions-toggle" id="endpointsToggle">
+                <span>Эндпоинты API</span>
+                <svg class="developer-page__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </div>
+            <div class="developer-page__instructions-content" id="endpointsContent" style="display: none;">
+                <!-- GET /api/ping -->
+                <div class="api-key__endpoint">
+                    <div class="api-key__endpoint-method method-get">GET</div>
+                    <div class="api-key__endpoint-path">/api/ping</div>
+                    <div class="api-key__endpoint-desc">Проверка доступности API</div>
+                </div>
+                
+                <!-- POST /api/account/login -->
+                <div class="api-key__endpoint">
+                    <div class="api-key__endpoint-method method-post">POST</div>
+                    <div class="api-key__endpoint-path">/api/account/login</div>
+                    <div class="api-key__endpoint-desc">Получение userId игрока для входа в игру</div>
+                </div>
+                <div class="api-key__endpoint-details">
+                    <div class="api-key__endpoint-request">
+                        <strong>Тело запроса (данные игрока):</strong>
+                        <pre class="api-key__code-block-small"><code>{
+    "email": "player@example.com",
+    "password": "player_password"
+}</code></pre>
+                    </div>
+                    <div class="api-key__endpoint-response">
+                        <strong>Ответ:</strong>
+                        <pre class="api-key__code-block-small"><code>{
+    "userId": "идентификатор-игрока"
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- GET /api/games/my -->
+                <div class="api-key__endpoint">
+                    <div class="api-key__endpoint-method method-get">GET</div>
+                    <div class="api-key__endpoint-path">/api/games/my</div>
+                    <div class="api-key__endpoint-desc">Получить список игр разработчика</div>
+                </div>
+
+                <!-- GET /api/users/{userId}/points -->
+                <div class="api-key__endpoint">
+                    <div class="api-key__endpoint-method method-get">GET</div>
+                    <div class="api-key__endpoint-path">/api/users/{userId}/points</div>
+                    <div class="api-key__endpoint-desc">Получить количество баллов игрока</div>
+                </div>
+                <div class="api-key__endpoint-details">
+                    <div class="api-key__endpoint-request">
+                        <strong>Параметры пути:</strong>
+                        <pre class="api-key__code-block-small"><code>userId - идентификатор игрока (полученный при входе)</code></pre>
+                    </div>
+                    <div class="api-key__endpoint-response">
+                        <strong>Ответ:</strong>
+                        <pre class="api-key__code-block-small"><code>// Возвращается число - количество баллов игрока
+1250</code></pre>
+                    </div>
+                </div>
+
+                <!-- POST /api/users/{userId}/games/{gameId}/points -->
+                <div class="api-key__endpoint">
+                    <div class="api-key__endpoint-method method-post">POST</div>
+                    <div class="api-key__endpoint-path">/api/users/{userId}/games/{gameId}/points</div>
+                    <div class="api-key__endpoint-desc">Добавить баллы игроку за игру</div>
+                </div>
+                <div class="api-key__endpoint-details">
+                    <div class="api-key__endpoint-request">
+                        <strong>Параметры пути:</strong>
+                        <pre class="api-key__code-block-small"><code>userId - идентификатор игрока
+gameId - идентификатор игры разработчика</code></pre>
+                        <strong>Тело запроса:</strong>
+                        <pre class="api-key__code-block-small"><code>{
+    "amount": 100
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Примеры запросов -->
             <div class="developer-page__instructions-toggle" id="requestToggle">
-                <span>Пример запроса</span>
+                <span>Примеры запросов</span>
                 <svg class="developer-page__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9" />
                 </svg>
@@ -135,58 +233,171 @@
             <div class="developer-page__instructions-content" id="requestContent" style="display: none;">
                 <div class="developer-page__instructions-step">
                     <h4>curl</h4>
-                    <pre class="api-key__code-block"><code>curl -X GET "https://api.yourdomain.com/api/games" \
+                    <pre class="api-key__code-block"><code># Проверка доступности API
+curl -X GET "https://рудзынг.рф/api/ping" \
+  -H "X-API-Key: YOUR_API_KEY_HERE"
+
+# Получение userId игрока для входа в игру
+curl -X POST "https://рудзынг.рф/api/account/login" \
   -H "X-API-Key: YOUR_API_KEY_HERE" \
-  -H "Content-Type: application/json"</code></pre>
+  -H "Content-Type: application/json" \
+  -d '{"email":"player@example.com","password":"player_password"}'
+
+# Получение списка игр разработчика
+curl -X GET "https://рудзынг.рф/api/games/my" \
+  -H "X-API-Key: YOUR_API_KEY_HERE"
+
+# Получение баллов игрока
+curl -X GET "https://рудзынг.рф/api/users/{userId}/points" \
+  -H "X-API-Key: YOUR_API_KEY_HERE"
+
+# Добавление баллов игроку за игру
+curl -X POST "https://рудзынг.рф/api/users/{userId}/games/{gameId}/points" \
+  -H "X-API-Key: YOUR_API_KEY_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{"amount":100}'</code></pre>
+                </div>
+
+                <div class="developer-page__instructions-step">
+                    <h4>Python</h4>
+                    <pre class="api-key__code-block"><code>import requests
+
+API_KEY = "YOUR_API_KEY_HERE"
+BASE_URL = "https://рудзынг.рф"
+
+headers = {
+    "X-API-Key": API_KEY,
+    "Content-Type": "application/json"
+}
+
+# Проверка доступности API
+response = requests.get(f"{BASE_URL}/api/ping", headers=headers)
+print(f"API Status: {response.status_code}")
+
+# Получение userId игрока для входа в игру
+auth_data = {
+    "email": "player@example.com",
+    "password": "player_password"
+}
+response = requests.post(
+    f"{BASE_URL}/api/account/login",
+    headers=headers,
+    json=auth_data
+)
+if response.status_code == 200:
+    user_id = response.json().get("userId")
+    print(f"Player ID: {user_id}")
+
+# Получение списка игр разработчика
+response = requests.get(f"{BASE_URL}/api/games/my", headers=headers)
+if response.status_code == 200:
+    games = response.json()
+    print(f"Your games: {games}")
+
+# Получение баллов игрока
+user_id = "player-id-from-login"
+response = requests.get(
+    f"{BASE_URL}/api/users/{user_id}/points",
+    headers=headers
+)
+if response.status_code == 200:
+    points = response.json()
+    print(f"Player points: {points}")
+
+# Добавление баллов игроку за игру
+game_id = 1
+points_data = {"amount": 100}
+response = requests.post(
+    f"{BASE_URL}/api/users/{user_id}/games/{game_id}/points",
+    headers=headers,
+    json=points_data
+)
+if response.status_code == 200:
+    print("Points added successfully!")</code></pre>
                 </div>
 
                 <div class="developer-page__instructions-step">
                     <h4>C#</h4>
                     <pre class="api-key__code-block"><code>using var client = new HttpClient();
 client.DefaultRequestHeaders.Add("X-API-Key", "YOUR_API_KEY_HERE");
-var response = await client.GetAsync("https://api.yourdomain.com/api/games");
-var content = await response.Content.ReadAsStringAsync();</code></pre>
+
+// Проверка доступности API
+var response = await client.GetAsync("https://рудзынг.рф/api/ping");
+
+// Получение userId игрока для входа в игру
+var loginData = new { email = "player@example.com", password = "player_password" };
+var json = JsonSerializer.Serialize(loginData);
+var content = new StringContent(json, Encoding.UTF8, "application/json");
+var response = await client.PostAsync("https://рудзынг.рф/api/account/login", content);
+
+// Получение списка игр разработчика
+var response = await client.GetAsync("https://рудзынг.рф/api/games/my");
+
+// Получение баллов игрока
+var response = await client.GetAsync("https://рудзынг.рф/api/users/{userId}/points");
+
+// Добавление баллов игроку за игру
+var pointsData = new { amount = 100 };
+var json = JsonSerializer.Serialize(pointsData);
+var content = new StringContent(json, Encoding.UTF8, "application/json");
+var response = await client.PostAsync("https://рудзынг.рф/api/users/{userId}/games/{gameId}/points", content);</code></pre>
                 </div>
 
                 <div class="developer-page__instructions-step">
                     <h4>JavaScript</h4>
-                    <pre class="api-key__code-block"><code>fetch('https://api.yourdomain.com/api/games', {
-    headers: {
-        'X-API-Key': 'YOUR_API_KEY_HERE'
-    }
+                    <pre class="api-key__code-block"><code>const API_KEY = "YOUR_API_KEY_HERE";
+const BASE_URL = "https://рудзынг.рф";
+
+// Проверка доступности API
+fetch(`${BASE_URL}/api/ping`, {
+    headers: { "X-API-Key": API_KEY }
 })
 .then(response => response.json())
-.then(data => console.log(data));</code></pre>
-                </div>
-            </div>
+.then(data => console.log(data));
 
-            <!-- Доступные эндпоинты -->
-            <div class="developer-page__instructions-toggle" id="endpointsToggle">
-                <span>Доступные эндпоинты</span>
-                <svg class="developer-page__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9" />
-                </svg>
-            </div>
-            <div class="developer-page__instructions-content" id="endpointsContent" style="display: none;">
-                <div class="api-key__endpoint">
-                    <div class="api-key__endpoint-method method-get">GET</div>
-                    <div class="api-key__endpoint-path">/api/games</div>
-                    <div class="api-key__endpoint-desc">Получить список всех игр</div>
-                </div>
-                <div class="api-key__endpoint">
-                    <div class="api-key__endpoint-method method-get">GET</div>
-                    <div class="api-key__endpoint-path">/api/games/{id}</div>
-                    <div class="api-key__endpoint-desc">Получить информацию об игре</div>
-                </div>
-                <div class="api-key__endpoint">
-                    <div class="api-key__endpoint-method method-get">GET</div>
-                    <div class="api-key__endpoint-path">/api/profile</div>
-                    <div class="api-key__endpoint-desc">Получить информацию о профиле</div>
-                </div>
-                <div class="api-key__endpoint">
-                    <div class="api-key__endpoint-method method-post">POST</div>
-                    <div class="api-key__endpoint-path">/api/games/upload</div>
-                    <div class="api-key__endpoint-desc">Загрузить новую игру</div>
+// Получение userId игрока для входа в игру
+fetch(`${BASE_URL}/api/account/login`, {
+    method: "POST",
+    headers: {
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        email: "player@example.com",
+        password: "player_password"
+    })
+})
+.then(response => response.json())
+.then(data => console.log("Player ID:", data.userId));
+
+// Получение списка игр разработчика
+fetch(`${BASE_URL}/api/games/my`, {
+    headers: { "X-API-Key": API_KEY }
+})
+.then(response => response.json())
+.then(data => console.log("Your games:", data));
+
+// Получение баллов игрока
+const userId = "player-id-from-login";
+fetch(`${BASE_URL}/api/users/${userId}/points`, {
+    headers: { "X-API-Key": API_KEY }
+})
+.then(response => response.json())
+.then(points => console.log("Player points:", points));
+
+// Добавление баллов игроку за игру
+const gameId = 1;
+fetch(`${BASE_URL}/api/users/${userId}/games/${gameId}/points`, {
+    method: "POST",
+    headers: {
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ amount: 100 })
+})
+.then(response => {
+    if (response.ok) console.log("Points added successfully!");
+});</code></pre>
                 </div>
             </div>
         </div>
@@ -211,6 +422,7 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
 </div>
 
 <style>
+    /* Все стили остаются без изменений */
     .api-key__empty-state {
         display: flex;
         flex-direction: column;
@@ -274,7 +486,6 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         color: var(--error-color);
     }
 
-    /* Горизонтальное расположение полей */
     .api-key__details-list {
         display: flex;
         flex-direction: column;
@@ -303,6 +514,43 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         color: var(--text-primary);
         font-weight: 500;
         font-size: 14px;
+    }
+
+    .api-key__detail-value--id {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .api-key__detail-value--id code {
+        background: var(--bg-light);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+
+    .api-key__copy-id-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+    }
+
+    .api-key__copy-id-btn:hover {
+        background: var(--border-light);
+    }
+
+    .api-key__copy-id-btn svg {
+        stroke: var(--text-muted);
+    }
+
+    .api-key__copy-id-btn:hover svg {
+        stroke: var(--accent-2);
     }
 
     .api-key__actions {
@@ -500,6 +748,17 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         color: #00ff88;
     }
 
+    .api-key__code-block-small {
+        background: #1a1a2e;
+        color: #00ff88;
+        padding: 12px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: monospace;
+        font-size: 12px;
+        margin: 8px 0;
+    }
+
     .api-key__endpoint {
         display: flex;
         align-items: center;
@@ -510,6 +769,26 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
 
     .api-key__endpoint:last-child {
         border-bottom: none;
+    }
+
+    .api-key__endpoint-details {
+        margin-left: 76px;
+        margin-bottom: 16px;
+        padding: 12px;
+        background: var(--bg-light);
+        border-radius: 10px;
+    }
+
+    .api-key__endpoint-request,
+    .api-key__endpoint-response {
+        margin-bottom: 12px;
+    }
+
+    .api-key__endpoint-request strong,
+    .api-key__endpoint-response strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-primary);
     }
 
     .api-key__endpoint-method {
@@ -582,6 +861,10 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
             width: 100%;
             margin-left: 76px;
         }
+
+        .api-key__endpoint-details {
+            margin-left: 0;
+        }
         
         .api-key__detail {
             flex-direction: column;
@@ -600,7 +883,23 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
 
     const getToken = () => document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
 
-    // Функция обновления UI после создания ключа
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event?.target?.closest('.api-key__copy-id-btn');
+            if (btn) {
+                const originalTitle = btn.getAttribute('title');
+                btn.setAttribute('title', 'Скопировано!');
+                setTimeout(() => {
+                    btn.setAttribute('title', originalTitle);
+                }, 1500);
+            } else {
+                alert('ID ключа скопирован');
+            }
+        }).catch(() => {
+            alert('Не удалось скопировать ID');
+        });
+    }
+
     function updateUIAfterCreate(apiKeyData) {
         const container = document.getElementById('apiKeyContent');
         const now = new Date().toLocaleString('ru-RU');
@@ -611,6 +910,18 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
                     ● Активен
                 </div>
                 <div class="api-key__details-list">
+                    <div class="api-key__detail">
+                        <span class="api-key__detail-label">ID ключа:</span>
+                        <span class="api-key__detail-value api-key__detail-value--id">
+                            <code>${apiKeyData.apiKeyId || ''}</code>
+                            <button class="api-key__copy-id-btn" onclick="copyToClipboard('${apiKeyData.apiKeyId || ''}')" title="Копировать ID">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                                </svg>
+                            </button>
+                        </span>
+                    </div>
                     <div class="api-key__detail">
                         <span class="api-key__detail-label">Создан:</span>
                         <span class="api-key__detail-value">${now}</span>
@@ -639,7 +950,6 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         attachEventHandlers();
     }
 
-    // Функция обновления UI после отзыва ключа
     function updateUIAfterRevoke() {
         const container = document.getElementById('apiKeyContent');
 
@@ -661,14 +971,12 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         attachEventHandlers();
     }
 
-    // Функция привязки обработчиков событий
     function attachEventHandlers() {
         document.getElementById('generateApiKeyBtn')?.addEventListener('click', generateApiKey);
         document.getElementById('regenerateApiKeyBtn')?.addEventListener('click', regenerateApiKey);
         document.getElementById('revokeApiKeyBtn')?.addEventListener('click', revokeApiKey);
     }
 
-    // Генерация API ключа
     async function generateApiKey() {
         try {
             const response = await fetch('/Developer/ApiKey/Generate', {
@@ -695,7 +1003,6 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         }
     }
 
-    // Регенерация API ключа
     async function regenerateApiKey() {
         if (confirm('Внимание! При генерации нового ключа старый ключ перестанет работать. Продолжить?')) {
             try {
@@ -713,11 +1020,7 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
                     currentApiKey = data.apiKey;
                     document.getElementById('apiKeyValue').textContent = currentApiKey;
                     openApiKeyModal();
-                    
-                    const dateElement = document.querySelector('.api-key__detail-value');
-                    if (dateElement) {
-                        dateElement.textContent = new Date().toLocaleString('ru-RU');
-                    }
+                    updateUIAfterCreate(data);
                 } else {
                     alert(data.error || 'Ошибка при регенерации ключа');
                 }
@@ -728,7 +1031,6 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         }
     }
 
-    // Отзыв API ключа
     async function revokeApiKey() {
         if (confirm('Внимание! После отзыва ключа он перестанет работать. Продолжить?')) {
             try {
@@ -774,7 +1076,6 @@ var content = await response.Content.ReadAsStringAsync();</code></pre>
         });
     }
 
-    // Toggle для документации
     const requestToggle = document.getElementById('requestToggle');
     const requestContent = document.getElementById('requestContent');
     const endpointsToggle = document.getElementById('endpointsToggle');

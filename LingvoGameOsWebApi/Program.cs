@@ -15,6 +15,7 @@ builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient();
 
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -51,6 +52,8 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IGamesRepository, GamesDbRepository>();
 
 var app = builder.Build();
 

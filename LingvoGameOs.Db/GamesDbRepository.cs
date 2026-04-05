@@ -97,6 +97,13 @@ namespace LingvoGameOs.Db
                 .ToListAsync();
         }
 
+        public async Task<List<Game>> TryGetUserDevGamesAsync(string userId)
+        {
+            return await databaseContext.Games.Where(g => g.Author.Id == userId)
+                .Include(g => g.GamePlatform)
+                .ToListAsync();
+        }
+
         public async Task ChangeGameUrl(string newGameUrl, Game game)
         {
             game.GameFilePath = newGameUrl;

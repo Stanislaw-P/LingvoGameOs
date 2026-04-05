@@ -11,6 +11,7 @@ namespace LingvoGameOs.Db
 		Task AddPlayerToGameHistoryAsync(Game game, User player);
 		Task<List<Game>> TryGetUserGameHistoryAsync(User user);
 		Task<List<Game>> TryGetUserDevGamesAsync(User user);
+		Task<List<Game>> TryGetUserDevGamesAsync(string userId);
 		Task ChangeGameUrl(string newGameUrl, Game game);
 		Task UpdateAsync(Game updatedGame);
         Task Deactivate(Game game);
