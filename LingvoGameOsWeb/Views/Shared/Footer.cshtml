@@ -9,34 +9,16 @@
                 <p class="footer__description">
                     Открой окно в мир родного языка
                 </p>
-            </div>
 
-            @* <!-- Навигационные ссылки -->
-            <div class="footer__navigation">
-                <div class="footer__nav-section">
-                    <h3 class="footer__section-title">Игры</h3>
-                    <ul class="footer__nav-list">
-                        @* <li><a asp-controller="Home" asp-action="Categories" class="footer__nav-link">Категории</a></li> 
-                        <li><a asp-controller="Home" asp-action="News" class="footer__nav-link">Новинки</a></li>
-                        <li><a asp-controller="Home" asp-action="Games" class="footer__nav-link">Популярные</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer__nav-section">
-                    <h3 class="footer__section-title">Поддержка</h3>
-                    <ul class="footer__nav-list">
-                         <li><a asp-controller="Home" asp-action="Index" class="footer__nav-link">FAQ</a></li> 
-                        <li><a asp-controller="Home" asp-action="Index" class="footer__nav-link">Отзывы</a></li>
-                         <li><a asp-controller="Home" asp-action="Index" class="footer__nav-link">Контакты</a></li> 
-                    </ul>
-                </div>
-            </div> *@
+                <!-- БЛОК СО СТАТИСТИКОЙ -->
+                @await Component.InvokeAsync("FooterStatistics")
+            </div>
 
             <!-- Команда разработчиков -->
             <div class="footer__team">
                 <h3 class="footer__section-title">Наша команда</h3>
                 <div class="footer__team-grid">
-                    <!-- Сенсей -->
+                    <!-- сенсей и остальные участники команды (без изменений) -->
                     <div class="footer__team-member footer__team-member--sensei">
                         <div class="footer__member-info">
                             <span class="footer__member-role">Руководитель проекта</span>
@@ -45,8 +27,7 @@
                             </a>
                         </div>
                     </div>
-                    
-                    <!-- Дизайнер -->
+
                     <div class="footer__team-member">
                         <div class="footer__member-info">
                             <span class="footer__member-role">Дизайн и фронтенд</span>
@@ -55,8 +36,7 @@
                             </a>
                         </div>
                     </div>
-                    
-                    <!-- Разработчики -->
+
                     <div class="footer__team-member">
                         <div class="footer__member-info">
                             <span class="footer__member-role">Разработчик</span>
@@ -65,7 +45,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="footer__team-member">
                         <div class="footer__member-info">
                             <span class="footer__member-role">Разработчик</span>
@@ -74,7 +54,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="footer__team-member">
                         <div class="footer__member-info">
                             <span class="footer__member-role">Разработчик</span>
@@ -83,7 +63,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="footer__team-member">
                         <div class="footer__member-info">
                             <span class="footer__member-role">Разработчик</span>
@@ -95,7 +75,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Нижняя часть футера -->
         <div class="footer__bottom">
             <div class="footer__copyright">

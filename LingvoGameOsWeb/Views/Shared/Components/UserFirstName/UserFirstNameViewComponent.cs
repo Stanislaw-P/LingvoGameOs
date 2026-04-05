@@ -6,7 +6,6 @@ namespace LingvoGameOs.Views.Shared.Components.UserFirstName
 {
     public class UserFirstNameViewComponent : ViewComponent
     {
-
         readonly UserManager<User> _usersManager;
 
         public UserFirstNameViewComponent(UserManager<User> userManager)
