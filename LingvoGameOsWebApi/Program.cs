@@ -20,10 +20,10 @@ builder.Services.AddHttpClient();
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
 var dbName = Environment.GetEnvironmentVariable("POSTGRES_DB");
-var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
+var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ||
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Test"
     ? Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_YANDEX")
     : Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_TimeWeb");
-
 var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
