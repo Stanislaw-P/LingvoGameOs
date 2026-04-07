@@ -46,10 +46,18 @@ namespace LingvoGameOs.Controllers
 
             // Получаем данные пользователя
             var claims = authenticateResult.Principal.Claims;
+
+            // проверка, что к аккаунту вк привязана почта
+            var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("VkEMailNotFound");
+            }
+
             var vkId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
             var surname = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
-            var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
             // Выводим в консоль
             //Console.WriteLine($"VK User Info:");
             //Console.WriteLine($"VK Id: {vkId}");
@@ -82,6 +90,12 @@ namespace LingvoGameOs.Controllers
         public IActionResult Login(string? returnUrl)
         {
             return View(new LoginViewModel() { ReturnUrl = returnUrl });
+        }
+
+        [HttpGet]
+        public IActionResult VkEmailNotFound()
+        {
+            return View();
         }
 
         [HttpPost]
