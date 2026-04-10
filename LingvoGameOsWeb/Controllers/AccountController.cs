@@ -51,19 +51,21 @@ namespace LingvoGameOs.Controllers
             var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             if (string.IsNullOrEmpty(email))
             {
-                return RedirectToAction("VkEMailNotFound");
+                return RedirectToAction("VkEmailNotFound");
             }
 
             var vkId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
             var surname = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+            var photo = claims.FirstOrDefault(c => c.Type == "photo")?.Value;
 
             // Выводим в консоль
-            //Console.WriteLine($"VK User Info:");
-            //Console.WriteLine($"VK Id: {vkId}");
-            //Console.WriteLine($"First Name: {name}");
-            //Console.WriteLine($"Last Name: {surname}");
-            //Console.WriteLine($"Email: {email}");
+            Console.WriteLine($"VK User Info:");
+            Console.WriteLine($"VK Id: {vkId}");
+            Console.WriteLine($"First Name: {name}");
+            Console.WriteLine($"Last Name: {surname}");
+            Console.WriteLine($"Email: {email}");
+            Console.WriteLine($"Avatar: {photo}");
 
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
@@ -83,6 +85,14 @@ namespace LingvoGameOs.Controllers
                     await userManager.AddToRoleAsync(user, Constants.PlayerRoleName);
                 }
             }
+
+            // меняем аватарку, если она есть в вк
+            if (!string.IsNullOrEmpty(photo))
+            {
+                user.AvatarImgPath = photo;
+                await userManager.UpdateAsync(user);
+            }
+
             await signInManager.SignInAsync(user, false);
             return Redirect(returnUrl ?? "/Home");
         }

@@ -54,6 +54,9 @@ namespace LingvoGameOs.Helpers
             if (key.StartsWith('/'))
                 key = key.TrimStart('/');
 
+            // решение для автарок с вк
+            if (key.StartsWith("https://sun9-33.userapi.com")) return key;
+
             string baseUrl = $"{_awsServiceUrl}/{_bucketName}";
             return $"{baseUrl.TrimEnd('/')}/{key}";
         }
