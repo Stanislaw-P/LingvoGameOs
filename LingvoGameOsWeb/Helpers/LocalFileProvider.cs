@@ -70,6 +70,10 @@ namespace LingvoGameOs.Helpers
         {
             // Для локального хранилища ключ и есть публичный URL (относительно корня сайта)
             if (string.IsNullOrEmpty(key)) return null;
+
+            // решение для автарок с вк
+            if (key.StartsWith("https://sun9-33.userapi.com")) return key;
+
             return key.StartsWith("/") ? key : "/" + key;
         }
 
