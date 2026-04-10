@@ -72,7 +72,7 @@ namespace LingvoGameOs.Helpers
             if (string.IsNullOrEmpty(key)) return null;
 
             // решение для автарок с вк
-            if (key.StartsWith("https://sun9-33.userapi.com")) return key;
+            if (key.StartsWith("https://sun")) return key;
 
             return key.StartsWith("/") ? key : "/" + key;
         }
