@@ -60,12 +60,12 @@ namespace LingvoGameOs.Controllers
             var photo = claims.FirstOrDefault(c => c.Type == "photo")?.Value;
 
             // Выводим в консоль
-            Console.WriteLine($"VK User Info:");
-            Console.WriteLine($"VK Id: {vkId}");
-            Console.WriteLine($"First Name: {name}");
-            Console.WriteLine($"Last Name: {surname}");
-            Console.WriteLine($"Email: {email}");
-            Console.WriteLine($"Avatar: {photo}");
+            //Console.WriteLine($"VK User Info:");
+            //Console.WriteLine($"VK Id: {vkId}");
+            //Console.WriteLine($"First Name: {name}");
+            //Console.WriteLine($"Last Name: {surname}");
+            //Console.WriteLine($"Email: {email}");
+            //Console.WriteLine($"Avatar: {photo}");
 
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
