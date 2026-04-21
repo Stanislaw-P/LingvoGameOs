@@ -136,6 +136,7 @@ public class HomeController : Controller
         return PartialView("_GamesListPartial", gamesViewModel);
     }
 
+
     public async Task<IActionResult> FullGamesList()
     {
         var games = await _gamesRepository.GetAllAsync();

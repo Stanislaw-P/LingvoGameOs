@@ -126,6 +126,7 @@ builder.Services.AddAuthentication()
         options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
         options.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
         options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        options.ClaimActions.MapJsonKey("photo", "avatar");
     });
 
 var app = builder.Build();
