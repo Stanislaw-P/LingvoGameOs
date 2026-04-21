@@ -142,22 +142,6 @@ namespace LingvoGameOs.Helpers
             string replace = newBase.TrimStart('/');
 
             return path.Replace(search, replace, StringComparison.OrdinalIgnoreCase);
-                }
-
-        /// <summary>
-        /// Получить мета-данные списка файлов
-        /// </summary>
-        /// <param name="keys"></param>
-        /// <returns></returns>
-        public async Task<List<FileMetadata>> GetMetadataListAsync(List<string> keys)
-        {
-            var result = new List<FileMetadata>();
-            if (keys == null) return result;
-            foreach (var key in keys)
-            {
-                result.Add(await _fileStorage.GetFileMetadataAsync(key));
-            }
-            return result;
         }
 
         /// <summary>

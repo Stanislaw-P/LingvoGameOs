@@ -11,12 +11,12 @@ namespace LingvoGameOs.Helpers
         readonly IAmazonS3 _s3Client;
         readonly string? _bucketName = null;
         readonly string? _awsServiceUrl = null;
-        
+
         public S3Service(IConfiguration configuration)
         {
             string? awsAccessKey = null;
             string? awsKey = null;
-            
+
             if (configuration["ASPNETCORE_ENVIRONMENT"] == "Test")
             {
                 awsAccessKey = configuration["AWS_YANDEX_KEY_ID"] ?? "";
@@ -26,10 +26,10 @@ namespace LingvoGameOs.Helpers
             }
             else if (configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
             {
-            awsAccessKey = configuration["AWS_TIMEWEB_KEY_ID"] ?? "";
-            awsKey = configuration["AWS_TIMEWEB_KEY"] ?? "";
+                awsAccessKey = configuration["AWS_TIMEWEB_KEY_ID"] ?? "";
+                awsKey = configuration["AWS_TIMEWEB_KEY"] ?? "";
                 _awsServiceUrl = configuration["AWS_TIMEWEB_SERVICE_URL"] ?? "";
-            _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
+                _bucketName = configuration["AWS_TIMEWEB_BUCKET_NAME"] ?? "";
             }
 
             AmazonS3Config s3Config = new AmazonS3Config
@@ -195,27 +195,27 @@ namespace LingvoGameOs.Helpers
 
             do
             {
-            var listRequest = new ListObjectsV2Request
-            {
-                BucketName = _bucketName,
+                var listRequest = new ListObjectsV2Request
+                {
+                    BucketName = _bucketName,
                     Prefix = normalizedPrefix,
                     ContinuationToken = continuationToken
-            };
+                };
 
                 var listResponse = await _s3Client.ListObjectsV2Async(listRequest);
 
                 if (listResponse.S3Objects != null && listResponse.S3Objects.Any())
-            {
-                var deleteRequest = new DeleteObjectsRequest
                 {
-                    BucketName = _bucketName,
+                    var deleteRequest = new DeleteObjectsRequest
+                    {
+                        BucketName = _bucketName,
                         Objects = listResponse.S3Objects
                             .Select(o => new KeyVersion { Key = o.Key })
                             .ToList()
-                };
+                    };
 
-                await _s3Client.DeleteObjectsAsync(deleteRequest);
-            }
+                    await _s3Client.DeleteObjectsAsync(deleteRequest);
+                }
 
                 continuationToken = listResponse.NextContinuationToken;
 
@@ -288,25 +288,6 @@ namespace LingvoGameOs.Helpers
                 // Если файла нет в S3
                 return new FileMetadata();
             }
-        }
-
-        public string GetDownloadUrl(string key, string displayTitle, string extension)
-        {
-            // Очищаем заголовок от лишних пробелов и кавычек
-            string safeFileName = $"{displayTitle.Trim()}{extension}";
-
-            var request = new GetPreSignedUrlRequest
-            {
-                BucketName = _bucketName,
-                Key = key,
-                Expires = DateTime.UtcNow.AddMinutes(60),
-                ResponseHeaderOverrides = new ResponseHeaderOverrides
-                {
-                    ContentDisposition = $"attachment; filename=\"{safeFileName}\""
-                }
-            };
-
-            return _s3Client.GetPreSignedURL(request);
         }
 
         public string GetDownloadUrl(string key, string displayTitle, string extension)
