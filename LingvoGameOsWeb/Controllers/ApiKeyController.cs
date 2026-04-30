@@ -1,15 +1,14 @@
-﻿using LingvoGameOs.Areas.Developer.Models;
-using LingvoGameOs.Db;
+﻿using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Db.Services;
+using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LingvoGameOs.Areas.Developer.Controllers
+namespace LingvoGameOs.Controllers
 {
-    [Area("Developer")]
-    [Authorize(Roles = Constants.DevRoleName)]
+    [Authorize]
     public class ApiKeyController : Controller
     {
         readonly IApiKeyService _apiKeyService;

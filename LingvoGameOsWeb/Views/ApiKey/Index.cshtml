@@ -979,7 +979,7 @@ fetch(`${BASE_URL}/api/users/${userId}/games/${gameId}/points`, {
 
     async function generateApiKey() {
         try {
-            const response = await fetch('/Developer/ApiKey/Generate', {
+            const response = await fetch('/ApiKey/Generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1006,7 +1006,7 @@ fetch(`${BASE_URL}/api/users/${userId}/games/${gameId}/points`, {
     async function regenerateApiKey() {
         if (confirm('Внимание! При генерации нового ключа старый ключ перестанет работать. Продолжить?')) {
             try {
-                const response = await fetch('/Developer/ApiKey/Regenerate', {
+                const response = await fetch('/ApiKey/Regenerate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1034,7 +1034,7 @@ fetch(`${BASE_URL}/api/users/${userId}/games/${gameId}/points`, {
     async function revokeApiKey() {
         if (confirm('Внимание! После отзыва ключа он перестанет работать. Продолжить?')) {
             try {
-                const response = await fetch('/Developer/ApiKey/Revoke', {
+                const response = await fetch('/ApiKey/Revoke', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

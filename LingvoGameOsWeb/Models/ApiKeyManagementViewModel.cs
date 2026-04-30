@@ -1,4 +1,4 @@
-﻿namespace LingvoGameOs.Areas.Developer.Models
+﻿namespace LingvoGameOs.Models
 {
     public class ApiKeyManagementViewModel
     {
