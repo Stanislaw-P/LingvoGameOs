@@ -64,8 +64,8 @@ namespace LingvoGameOsWebApi.Controllers
                 if (game == null)
                     return NotFound("There is no game with this ID.");
 
-                if (game.AuthorId != User.FindFirstValue(ClaimTypes.NameIdentifier))
-                    return BadRequest($"You are not the author of the game with ID: {gameId}");
+                //if (game.AuthorId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+                //   return BadRequest($"You are not the author of the game with ID: {gameId}");
 
                 user.TotalPoints += request.Amount;
                 int newTotalPoints = user.TotalPoints;
