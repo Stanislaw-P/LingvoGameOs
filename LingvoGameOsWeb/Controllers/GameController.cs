@@ -193,6 +193,17 @@ namespace LingvoGameOs.Controllers
         [Authorize]
         public async Task<IActionResult> UploadAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (await _userManager.IsEmailConfirmedAsync(user) == false)
+            {
+                return RedirectToAction("ConfirmEmail", "Account");
+            }
+
             var skillLearnings = await _skillsLearningRepository.GetAllAsync();
             ViewBag.SkillsLearning = skillLearnings.Select(sl => sl.Name);
             return View();
