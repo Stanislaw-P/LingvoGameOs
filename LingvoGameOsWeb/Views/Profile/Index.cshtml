@@ -45,7 +45,7 @@
                         @if (!Model.IsEmailConfirmed)
                         {
                             <p>Ваша почта не подтверждена</p>
-                            <a href="">Подтвердить</a>
+                            <a asp-controller="Account" asp-action="ConfirmEmail">Подтвердить</a>
                         }
                     <a type="button" class="profile__button" asp-controller="Profile" asp-action="Settings" asp-route-userId="@Model.Id">
                         Изменить профиль
