@@ -28,6 +28,14 @@ namespace LingvoGameOsWebApi.Controllers
                     return Unauthorized();
 
                 var devGames = await _gamesRepository.TryGetUserDevGamesAsync(devUserId);
+                
+                // Добавляем всем разрабам в список тестовую игру, если это яндекс
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Test")
+                {
+                    var testGame = await _gamesRepository.TryGetByIdAsync(8);
+                    devGames.Add(testGame!);
+                }
+
                 var response = devGames.Select(g => new
                 {
                     gameTitle = g.Title,

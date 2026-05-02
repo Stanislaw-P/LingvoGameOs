@@ -66,7 +66,7 @@ namespace LingvoGameOsWebApi.Controllers
 
                 if (game.AuthorId != User.FindFirstValue(ClaimTypes.NameIdentifier))
                 {
-                    if (game.Id != 8 && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Test")
+                    if (game.Id != 8 || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Test")
                     {
                         return BadRequest($"You are not the author of the game with ID: {gameId}");
                     }
