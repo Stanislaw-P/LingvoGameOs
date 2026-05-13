@@ -137,7 +137,7 @@ namespace LingvoGameOs.Controllers
                         Secure = true,    // Требуется при SameSite=None
                         SameSite = SameSiteMode.None, // Разрешить кросс-сайт запросы
                         Expires = DateTime.UtcNow.AddDays(1),
-                        Domain = "localhost", // Без порта! Только домен
+                        Domain = "158.160.104.26", // Без порта! Только домен
                         Path = "/"
                     };
 
