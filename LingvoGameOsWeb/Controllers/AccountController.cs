@@ -134,10 +134,10 @@ namespace LingvoGameOs.Controllers
                     var cookieOptions = new CookieOptions
                     {
                         HttpOnly = false, // Важно: true если только API читает, false если JS тоже нужен
-                        Secure = true,    // Требуется при SameSite=None
-                        SameSite = SameSiteMode.None, // Разрешить кросс-сайт запросы
+                        Secure = false,    // Требуется при SameSite=None
+                        SameSite = SameSiteMode.Lax, // Разрешить кросс-сайт запросы
                         Expires = DateTime.UtcNow.AddDays(1),
-                        Domain = "158.160.104.26", // Без порта! Только домен
+                        //Domain = "158.160.104.26", // Без порта! Только домен
                         Path = "/"
                     };
 
