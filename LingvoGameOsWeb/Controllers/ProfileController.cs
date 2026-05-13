@@ -100,7 +100,8 @@ namespace LingvoGameOs.Controllers
                     DevGames = devGamesViewModel,
                     DevPendingGames = devPendingGamesViewModel,
                     GamesHistory = gamesHistoryViewModel,
-                    TotalPoints = user.TotalPoints
+                    TotalPoints = user.TotalPoints,
+                    IsEmailConfirmed = user.EmailConfirmed
                 };
 
                 User? UserProfileOwner = await userManager.GetUserAsync(User);

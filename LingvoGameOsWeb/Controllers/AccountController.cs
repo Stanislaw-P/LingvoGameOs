@@ -3,12 +3,16 @@ using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Microsoft.Win32;
 using System.Security.Claims;
+using System.Text;
 
 namespace LingvoGameOs.Controllers
 {
@@ -60,12 +64,12 @@ namespace LingvoGameOs.Controllers
             var photo = claims.FirstOrDefault(c => c.Type == "photo")?.Value;
 
             // Выводим в консоль
-            Console.WriteLine($"VK User Info:");
-            Console.WriteLine($"VK Id: {vkId}");
-            Console.WriteLine($"First Name: {name}");
-            Console.WriteLine($"Last Name: {surname}");
-            Console.WriteLine($"Email: {email}");
-            Console.WriteLine($"Avatar: {photo}");
+            //Console.WriteLine($"VK User Info:");
+            //Console.WriteLine($"VK Id: {vkId}");
+            //Console.WriteLine($"First Name: {name}");
+            //Console.WriteLine($"Last Name: {surname}");
+            //Console.WriteLine($"Email: {email}");
+            //Console.WriteLine($"Avatar: {photo}");
 
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
@@ -84,6 +88,13 @@ namespace LingvoGameOs.Controllers
                 {
                     await userManager.AddToRoleAsync(user, Constants.PlayerRoleName);
                 }
+            }
+
+            // меняем аватарку, если она есть в вк
+            if (!string.IsNullOrEmpty(photo))
+            {
+                user.AvatarImgPath = photo;
+                await userManager.UpdateAsync(user);
             }
 
             // меняем аватарку, если она есть в вк
@@ -233,6 +244,72 @@ namespace LingvoGameOs.Controllers
                 }
             }
             return View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult ConfirmEmail()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ConfirmEmailPost()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound("Пользователь не найден");
+            }
+
+            if (await userManager.IsEmailConfirmedAsync(user))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = Url.Action(
+            action: "VerifyEmail",
+            controller: "Account",
+            values: new { userId = user.Id, code = code },
+            protocol: Request.Scheme);
+
+            var result = await emailService.TrySendEmailAsync(user.UserName, "Подтверждение почты", $"Для подтверждения, перейдите <a href='{callbackUrl}'>по ссылке</a>");
+            if (result)
+            {
+                return View("ConfirmEmailSent");
+            }
+            return View("ConfirmEmailError");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VerifyEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Не удалось загрузить пользователя с ID '{userId}'.");
+            }
+
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+
+            var result = await userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmailSuccess");
+            }
+
+            return View("ConfirmEmailError");
         }
     }
 }

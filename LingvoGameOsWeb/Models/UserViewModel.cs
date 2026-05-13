@@ -23,6 +23,7 @@ namespace LingvoGameOs.Models
         public List<PendingGameViewModel>? DevPendingGames { get; set; }
         public List<Game>? FavoriteGames { get; set; }
         public bool IsMyProfile { get; set; }
+        public bool IsEmailConfirmed { get; set; }
         public int TotalPoints { get; set; }
     }
 }
