@@ -9,7 +9,7 @@ namespace LingvoGameOsWebApi.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    [Authorize]
+    //[Authorize]
     public class UsersController : ControllerBase
     {
         readonly UserManager<User> _userManager;
@@ -89,6 +89,18 @@ namespace LingvoGameOsWebApi.Controllers
                 return StatusCode(500, "An error occurred while processing your request.");
             }
 
+        }
+
+        [HttpGet("id")]
+        public ActionResult GetUserId()
+        {
+            var userId = Request.Cookies["UserId"];
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "User not authenticated" });
+            }
+
+            return Ok(new { userId = userId });
         }
 
         //[HttpGet("current-user-id")]

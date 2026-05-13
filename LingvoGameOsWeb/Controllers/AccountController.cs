@@ -128,6 +128,22 @@ namespace LingvoGameOs.Controllers
                 var result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, true, false);
                 if (result.Succeeded)
                 {
+                    var user = await userManager.FindByEmailAsync(login.UserName);
+
+                    // Устанавливаем куки с ID пользователя
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = false, // Важно: true если только API читает, false если JS тоже нужен
+                        Secure = true,    // Требуется при SameSite=None
+                        SameSite = SameSiteMode.None, // Разрешить кросс-сайт запросы
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        Domain = "localhost", // Без порта! Только домен
+                        Path = "/"
+                    };
+
+                    Response.Cookies.Append("UserId", user.Id, cookieOptions);
+                    Response.Cookies.Append("UserName", user.UserName, cookieOptions);
+
                     return Redirect(login.ReturnUrl ?? "/Home");
                 }
                 else
