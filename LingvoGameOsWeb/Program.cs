@@ -22,7 +22,18 @@ Env.Load();
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization();
+
+builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "ru", "en", "os" };
+    options.SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+});
 
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -139,6 +150,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
+app.UseRequestLocalization();
 
 // Serve static files with caching headers
 app.UseStaticFiles(
