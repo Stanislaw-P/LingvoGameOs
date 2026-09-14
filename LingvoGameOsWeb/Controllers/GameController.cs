@@ -5,6 +5,7 @@ using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
+using LingvoGameOs.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,8 @@ namespace LingvoGameOs.Controllers
         readonly ILogger<GameController> _logger;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly IFileStorage _fileStorage;
+        readonly GameSessionService _sessionService;
+        readonly IGameSessionRepository _sessionRepository;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -36,7 +39,9 @@ namespace LingvoGameOs.Controllers
             ILogger<GameController> logger,
             IConfiguration configuration,
             IFavoriteGamesRepository favoriteGamesRepository,
-            IFileStorage fileStorage)
+            IFileStorage fileStorage,
+            GameSessionService sessionService,
+            IGameSessionRepository sessionRepository)
         {
             _configuration = configuration;
 
@@ -50,6 +55,8 @@ namespace LingvoGameOs.Controllers
             _logger = logger;
             _favoriteGamesRepository = favoriteGamesRepository;
             _fileStorage = fileStorage;
+            _sessionService = sessionService;
+            _sessionRepository = sessionRepository;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -100,10 +107,12 @@ namespace LingvoGameOs.Controllers
                     : Constants.TimeWebCloudGameFolderPath;
 
             string runningScript = Path.Combine(gameFolder, existingGame.GameFolderName, "run.sh");
+
             var currentUser = await _userManager.GetUserAsync(User);
             // Добавление игры в историю пользователя
             if (currentUser != null)
                 await _gamesRepository.AddPlayerToGameHistoryAsync(existingGame, currentUser);
+
             var logData = new
             {
                 GameId = idGame,
@@ -113,24 +122,24 @@ namespace LingvoGameOs.Controllers
                 RequestTime = DateTimeOffset.UtcNow,
             };
 
-            if (!System.IO.File.Exists(runningScript))
+            if (!system.io.file.exists(runningscript))
             {
-                _logger.LogError(
-                    "Ошибка запуска игры. Отсутсвует скрипт запуска игры {@GameStartData}",
+                _logger.logerror(
+                    "ошибка запуска игры. отсутсвует скрипт запуска игры {@gamestartdata}",
                     new
                     {
-                        logData.GameId,
-                        logData.UserId,
-                        logData.UserIP,
-                        logData.UserAgent,
-                        logData.RequestTime,
-                        GameRunningScript = runningScript,
-                        ResponseStatusCode = 500,
+                        logdata.gameid,
+                        logdata.userid,
+                        logdata.userip,
+                        logdata.useragent,
+                        logdata.requesttime,
+                        gamerunningscript = runningscript,
+                        responsestatuscode = 500,
                     }
                 );
 
-                ViewBag.GameUrl = null;
-                return View();
+                viewbag.gameurl = null;
+                return view();
             }
 
             var runningProcess = new ProcessStartInfo
@@ -146,13 +155,27 @@ namespace LingvoGameOs.Controllers
             {
                 Process.Start(runningProcess);
 
+                if (currentUser != null)
+                {
+                    var existingSession = await _sessionRepository.TryGetAsync(currentUser.Id, existingGame.Id);
+
+                    if (existingSession == null)
+                    {
+                        var gameSession = await _sessionService.CreateGameSessionAsync(currentUser.Id, existingGame.Id);
+                        ViewBag.GameSessionId = gameSession.Id;
+                    }
+                    else
+                    {
+                        ViewBag.GameSessionId = existingSession.Id;
+                    }
+                }
+
                 string? URL =
                     _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
                         ? _configuration["DEVELOPMENT_URL"]
                         : _configuration["PRODUCTION_URL"];
 
                 ViewBag.GameUrl = $"{URL}:{existingGame.Port}";
-
 
 
                 _logger.LogInformation(
@@ -269,7 +292,7 @@ namespace LingvoGameOs.Controllers
                             Folders.PendingGames);
 
                         List<string> imagesUrls = await _fileStorage.UploadGameFilesAsync(
-                            gameViewModel.UploadedImages, 
+                            gameViewModel.UploadedImages,
                             pendingGame.Id,
                             Folders.PendingGames);
 

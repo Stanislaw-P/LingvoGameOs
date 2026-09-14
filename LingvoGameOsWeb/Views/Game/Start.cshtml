@@ -14,7 +14,7 @@
     else
     {
         <div class="game-container">
-            <iframe src="@ViewBag.GameUrl"
+            <iframe src="@(ViewBag.GameUrl)/start?session=@(ViewBag.GameSessionId)"
                     frameborder="0"
                     allowfullscreen
                     class="game-iframe">

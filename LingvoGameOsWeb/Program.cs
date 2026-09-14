@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
+using LingvoGameOs.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,10 +65,13 @@ builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbReposit
 builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>();
 builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepository>();
+builder.Services.AddTransient<IGameSessionRepository, GameSessionRepository>();
 
 // Встраивание зависимости для работы с почтой
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<EmailService>();
+
+builder.Services.AddScoped<GameSessionService>();
 
 // S3 or local storage Service for file
 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
