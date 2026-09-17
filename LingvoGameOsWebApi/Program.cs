@@ -32,7 +32,7 @@ builder
 
 // Register DatabaseContext with SQLite provider
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
-
+builder.Services.AddScoped<IGameSessionRepository, GameSessionRepository>();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

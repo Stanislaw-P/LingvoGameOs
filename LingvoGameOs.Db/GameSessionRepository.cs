@@ -30,7 +30,9 @@ namespace LingvoGameOs.Db
 
         public async Task<GameSession?> TryGetByIdAsync(int id)
         {
-            return await _context.GameSessions.FirstOrDefaultAsync(gs => gs.Id == id);
+            return await _context.GameSessions
+                .Include(gs => gs.User)
+                .FirstOrDefaultAsync(gs => gs.Id == id);
         }
     }
 }

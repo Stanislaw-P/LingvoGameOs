@@ -122,24 +122,24 @@ namespace LingvoGameOs.Controllers
                 RequestTime = DateTimeOffset.UtcNow,
             };
 
-            if (!system.io.file.exists(runningscript))
+            if (!System.IO.File.Exists(runningScript))
             {
-                _logger.logerror(
+                _logger.LogError(
                     "ошибка запуска игры. отсутсвует скрипт запуска игры {@gamestartdata}",
                     new
                     {
-                        logdata.gameid,
-                        logdata.userid,
-                        logdata.userip,
-                        logdata.useragent,
-                        logdata.requesttime,
-                        gamerunningscript = runningscript,
+                        logData.GameId,
+                        logData.UserId,
+                        logData.UserIP,
+                        logData.UserAgent,
+                        logData.RequestTime,
+                        gamerunningscript = runningScript,
                         responsestatuscode = 500,
                     }
                 );
 
-                viewbag.gameurl = null;
-                return view();
+                ViewBag.gameurl = null;
+                return View();
             }
 
             var runningProcess = new ProcessStartInfo

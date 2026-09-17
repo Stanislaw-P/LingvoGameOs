@@ -12,6 +12,8 @@ namespace LingvoGameOs.Db.Models
         public string UserId { get; set; }
         public int GameId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
-        public bool Used { get; set; } 
+        public bool Used { get; set; }
+
+        public User User { get; set; } = null!;
     }
 }
