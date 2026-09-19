@@ -29,7 +29,7 @@ builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] { "ru", "en", "os" };
+    var supportedCultures = new[] { "ru", "os", "de", "en" };
     options.SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);

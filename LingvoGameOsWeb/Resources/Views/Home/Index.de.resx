@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="culture_immersion_gameplay_text" xml:space="preserve">
-    <value>os1</value>
+    <value>de1</value>
   </data>
   <data name="games_skill_level_and_learning_text" xml:space="preserve">
-    <value>os2</value>
+    <value>de2</value>
   </data>
   <data name="join_btn" xml:space="preserve">
-    <value>os3</value>
+    <value>de3</value>
   </data>
   <data name="news_link" xml:space="preserve">
-    <value>os4</value>
+    <value>de4</value>
   </data>
   <data name="ossetian_closer_than_you_think" xml:space="preserve">
-    <value>os5</value>
+    <value>de5</value>
   </data>
   <data name="platform_games_age_desc" xml:space="preserve">
-    <value>os6</value>
+    <value>de6</value>
   </data>
   <data name="start_playing_btn" xml:space="preserve">
-    <value>os7</value>
+    <value>de7</value>
   </data>
   <data name="title" xml:space="preserve">
-    <value>os8</value>
+    <value>de8</value>
   </data>
 </root>

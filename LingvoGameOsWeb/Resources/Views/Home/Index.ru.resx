@@ -117,28 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="platform_games_age_desc" xml:space="preserve">
-    <value>На нашей платформе ты найдешь игры для любого возраста</value>
-  </data>
-  <data name="ossetian_closer_than_you_think" xml:space="preserve">
-    <value>ОСЕТИНСКИЙ ЯЗЫК БЛИЖЕ, ЧЕМ ТЫ ДУМАЕШЬ</value>
+  <data name="culture_immersion_gameplay_text" xml:space="preserve">
+    <value>и погружайся в культуру Осетии – все в игровой форме!</value>
   </data>
   <data name="games_skill_level_and_learning_text" xml:space="preserve">
     <value>и уровня подготовки. Учи слова, грамматику, слушай осетинскую речь</value>
   </data>
-  <data name="culture_immersion_gameplay_text" xml:space="preserve">
-    <value>и погружайся в культуру Осетии – все в игровой форме!</value>
-  </data>
-  <data name="title" xml:space="preserve">
-    <value>Главная</value>
-  </data>
-  <data name="start_playing_btn" xml:space="preserve">
-    <value>Начать играть</value>
+  <data name="join_btn" xml:space="preserve">
+    <value>Присоединиться</value>
   </data>
   <data name="news_link" xml:space="preserve">
     <value>Новости</value>
   </data>
-  <data name="join_btn" xml:space="preserve">
-    <value>Присоединиться</value>
+  <data name="ossetian_closer_than_you_think" xml:space="preserve">
+    <value>ОСЕТИНСКИЙ ЯЗЫК БЛИЖЕ, ЧЕМ ТЫ ДУМАЕШЬ</value>
+  </data>
+  <data name="platform_games_age_desc" xml:space="preserve">
+    <value>На нашей платформе ты найдешь игры для любого возраста</value>
+  </data>
+  <data name="start_playing_btn" xml:space="preserve">
+    <value>Начать играть</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>Главная</value>
   </data>
 </root>
