@@ -17,6 +17,19 @@ using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization();
+
+builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "ru", "os", "en" };
+    options.SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+});
+
 // Load environment variables from .env file
 Env.Load();
 builder.Configuration.AddEnvironmentVariables();
@@ -128,6 +141,8 @@ builder.Services.AddAuthentication()
     });
 
 var app = builder.Build();
+
+app.UseRequestLocalization();
 
 // test
 app.UseForwardedHeaders();

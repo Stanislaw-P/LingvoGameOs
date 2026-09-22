@@ -237,4 +237,9 @@ public class HomeController : Controller
     {
         return View();
     }
+
+    public async Task<IActionResult> Localca()
+    {
+        return View();
+    }
 }
