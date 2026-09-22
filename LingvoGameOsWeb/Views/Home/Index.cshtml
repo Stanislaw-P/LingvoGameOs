@@ -1,7 +1,7 @@
 ﻿@model List<GameViewModel>
 
 @{
-    ViewData["Title"] = "Главная";
+    ViewData["Title"] = @SharedLocalizer["main_title"];
 }
 
 <link rel="stylesheet" href="/css/homepage.css" />
@@ -11,21 +11,21 @@
 <!-- Hero Section - Full Height Background -->
 <section class="homepage-hero">
     <div class="homepage-hero__content">
-        <h1 class="homepage-hero__title">ОСЕТИНСКИЙ ЯЗЫК БЛИЖЕ, ЧЕМ ТЫ ДУМАЕШЬ</h1>
+        <h1 class="homepage-hero__title">@SharedLocalizer["ossetian_closer_than_you_think"]</h1>
         <p class="homepage-hero__description">
-            На нашей платформе ты найдешь игры для любого возраста </br> и уровня подготовки. Учи слова, грамматику, слушай осетинскую речь</br> и погружайся в культуру Осетии – все в игровой форме!
+            @SharedLocalizer["platform_games_age_desc"] </br> @SharedLocalizer["games_skill_level_and_learning_text"]
         </p>
         <div class="homepage-hero__actions">
-            <a href="Home/Games" class="homepage-hero__button homepage-hero__button--primary">
-                Начать играть
+            <a href="Home/Games" class="homepage-hero__button homepage-hero__button--primary" data-tooltip="@SecondLocalizer["start_playing_btn"]">
+                @SharedLocalizer["start_playing_btn"]
             </a>
             @if (User?.Identity?.IsAuthenticated == true)
             {
-                <a href="/Home/News" class="homepage-hero__button homepage-hero__button--secondary">Новости</a>
+                <a href="/Home/News" class="homepage-hero__button homepage-hero__button--secondary" data-tooltip="@SecondLocalizer["news_link"]">@SharedLocalizer["news_link"]</a>
             }
             else
             {
-                <a href="/Account/Register" class="homepage-hero__button homepage-hero__button--secondary">Присоединиться</a>
+                <a href="/Account/Register" class="homepage-hero__button homepage-hero__button--secondary" data-tooltip="@SecondLocalizer["join_btn"]">@SharedLocalizer["join_btn"]</a>
             }
         </div>
     </div>

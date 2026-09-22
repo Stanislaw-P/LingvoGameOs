@@ -15,10 +15,10 @@
         </div>
         <nav class="header__menu menu">
             <ul class="menu__list">
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games">Все игры</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers">Разработчикам</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index" data-tooltip="@SecondLocalizer["main_title"]">@SharedLocalizer["main_title"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games" data-tooltip="@SecondLocalizer["all_games"]">@SharedLocalizer["all_games"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News" data-tooltip="@SecondLocalizer["news_link"]">@SharedLocalizer["news_link"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers" data-tooltip="@SecondLocalizer["for_developers"]">@SharedLocalizer["for_developers"]</a></li>
 
                 <li>
                     <details class="lang-menu">
@@ -35,15 +35,15 @@
                             <div class="lang-col">
                                 <div class="lang-col-title">Основной</div>
                                 <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="ru">Русский</a>
-                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="os">Осетинский</a>
-                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="en">Английский</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="os">Ирон</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="en">English</a>
                             </div>
 
                             <div class="lang-col">
                                 <div class="lang-col-title">Доп.</div>
                                 <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="ru">Русский</a>
-                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="os">Осетинский</a>
-                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="en">Английский</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="os">Ирон</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="en">English</a>
                             </div>
                         </div>
                     </details>

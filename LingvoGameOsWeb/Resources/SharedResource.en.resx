@@ -117,10 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="all_games" xml:space="preserve">
+    <value>All games</value>
+  </data>
+  <data name="for_developers" xml:space="preserve">
+    <value>For developers</value>
+  </data>
+  <data name="games_skill_level_and_learning_text" xml:space="preserve">
+    <value>Learn words, grammar, listen to Ossetian speech and dive into the culture of Ossetia - all through gameplay!</value>
+  </data>
   <data name="hello" xml:space="preserve">
     <value>Hellllllo</value>
   </data>
+  <data name="join_btn" xml:space="preserve">
+    <value>Join</value>
+  </data>
   <data name="lang_service_info" xml:space="preserve">
     <value>EN</value>
+  </data>
+  <data name="main_title" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="news_link" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="ossetian_closer_than_you_think" xml:space="preserve">
+    <value>THE OSSETIAN LANGUAGE IS CLOSER THAN YOU THINK</value>
+  </data>
+  <data name="platform_games_age_desc" xml:space="preserve">
+    <value>On our platform you will find games for any age and skill level.</value>
+  </data>
+  <data name="start_playing_btn" xml:space="preserve">
+    <value>Start playing</value>
   </data>
 </root>

@@ -412,3 +412,56 @@
         background: #f3f3f3;
         outline: none;
     }
+
+[data-tooltip] {
+    position: relative;
+}
+
+    [data-tooltip]::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%) translateY(-4px);
+        background: #2d2d2d;
+        color: #fff;
+        font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        padding: .45rem .75rem;
+        border-radius: 6px;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .12s ease, transform .12s ease;
+        z-index: 2000;
+    }
+
+    [data-tooltip]::before {
+        content: "";
+        position: absolute;
+        top: calc(100% + 2px);
+        left: 50%;
+        transform: translateX(-50%) translateY(-4px);
+        border: 6px solid transparent;
+        border-bottom-color: #2d2d2d;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .12s ease, transform .12s ease;
+        z-index: 2000;
+    }
+
+    [data-tooltip]:hover::after,
+    [data-tooltip]:hover::before,
+    [data-tooltip]:focus-visible::after,
+    [data-tooltip]:focus-visible::before {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+/* отключаем на тач-устройствах */
+@media (hover: none) {
+    [data-tooltip]::after,
+    [data-tooltip]::before {
+        display: none;
+    }
+}
