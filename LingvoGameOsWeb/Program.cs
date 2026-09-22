@@ -30,6 +30,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     .AddSupportedUICultures(supportedCultures);
 });
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<SecondLocalizer>();
+
 // Load environment variables from .env file
 Env.Load();
 builder.Configuration.AddEnvironmentVariables();

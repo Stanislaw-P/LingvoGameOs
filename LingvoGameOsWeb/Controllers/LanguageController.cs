@@ -13,8 +13,23 @@ namespace LingvoGameOs.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
 
-            string returnUrl = Request.Headers.Referer.ToString();
-            return Redirect(returnUrl);
+            var returnUrl = Request.Headers.Referer.ToString();
+            return Redirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
+        }
+
+    public IActionResult Second(string culture)
+        {
+            Response.Cookies.Append(
+                "SecondLanguage",
+                culture,
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.UtcNow.AddYears(1),
+                    IsEssential = true
+                }
+            );
+            var returnUrl = Request.Headers.Referer.ToString();
+            return Redirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
         }
     }
 }
