@@ -120,4 +120,7 @@
   <data name="hello" xml:space="preserve">
     <value>Привет</value>
   </data>
+  <data name="lang_service_info" xml:space="preserve">
+    <value>РУ</value>
+  </data>
 </root>

@@ -278,4 +278,137 @@
 
 }
 
-/* #endregion */
+/* =========================================================
+   Обёртка языка — containing block для выпадашки
+   ========================================================= */
+.lang-menu {
+    position: relative;
+    display: inline-block;
+    font: 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+    /* <details> не должен создавать свой positioned-контекст */
+    .lang-menu > summary {
+        position: static;
+    }
+
+/* =========================================================
+   Триггер
+   ========================================================= */
+.lang-trigger {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .35rem .65rem;
+    background: #2F6BD8;
+    border: 1px solid #2F6BD8;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    color: #fff;
+}
+
+    .lang-trigger::-webkit-details-marker {
+        display: none;
+    }
+
+    .lang-trigger:hover {
+        background: #285fc0;
+        border-color: #285fc0;
+    }
+
+.lang-menu[open] .lang-trigger {
+    background: #285fc0;
+    border-color: #285fc0;
+    box-shadow: 0 0 0 3px rgba(47, 107, 216, .25);
+}
+
+.lang-pair {
+    display: inline-flex;
+    gap: .25rem;
+}
+
+.lang-sep {
+    color: rgba(255, 255, 255, .5);
+}
+
+.lang-secondary {
+    color: rgba(255, 255, 255, .75);
+}
+
+.lang-caret {
+    font-size: .7em;
+    color: rgba(255, 255, 255, .85);
+    transition: transform .15s ease;
+}
+
+.lang-menu[open] .lang-caret {
+    transform: rotate(180deg);
+}
+
+/* =========================================================
+   Выпадающее меню
+   Ключевые свойства против вылезания:
+     - right: 0      → правый край меню = правый край триггера
+     - max-width     → не шире вьюпорта (минус отступы)
+     - box-sizing    → max-width считается вместе с padding/border
+     - transform     → дополнительный сдвиг влево, если триггер
+                       стоит почти у края и меню всё же упирается
+   ========================================================= */
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .25rem 1rem;
+    padding: .6rem .75rem;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .10);
+    min-width: 220px;
+    max-width: calc(100vw - 1rem);
+    /* не вылезает по горизонтали */
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+/* =========================================================
+   Колонки
+   ========================================================= */
+.lang-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.lang-col-title {
+    font-size: .75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .15rem .25rem .4rem;
+    border-bottom: 1px solid #eee;
+    margin-bottom: .35rem;
+}
+
+/* =========================================================
+   Пункт меню
+   ========================================================= */
+.lang-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .3rem .4rem;
+    border-radius: 5px;
+    color: #222;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+    .lang-item:hover,
+    .lang-item:focus {
+        background: #f3f3f3;
+        outline: none;
+    }

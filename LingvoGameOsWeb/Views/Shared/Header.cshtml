@@ -19,12 +19,35 @@
                 <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games">Все игры</a></li>
                 <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
                 <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers">Разработчикам</a></li>
-                <li><a class="menu__link" asp-controller="Language" asp-action="Index" asp-route-culture="ru">Русский</a></li>
-                <li><a class="menu__link" asp-controller="Language" asp-action="Index" asp-route-culture="os">Осетинский</a></li>
-                <li><a class="menu__link" asp-controller="Language" asp-action="Index" asp-route-culture="en">English</a></li>
-                <li><a class="menu__link" asp-controller="Language" asp-action="Second" asp-route-culture="ru">RU</a></li>
-                <li><a class="menu__link" asp-controller="Language" asp-action="Second" asp-route-culture="os">OS</a></li>
-                <li><a class="menu__link" asp-controller="Language" asp-action="Second" asp-route-culture="en">EN</a></li>
+
+                <li>
+                    <details class="lang-menu">
+                        <summary class="lang-trigger">
+                            <span class="lang-pair">
+                                <span class="lang-primary">@SharedLocalizer["lang_service_info"]</span>
+                                <span class="lang-sep">|</span>
+                                <span class="lang-secondary">@SecondLocalizer["lang_service_info"]</span>
+                            </span>
+                            <span class="lang-caret" aria-hidden="true">▾</span>
+                        </summary>
+
+                        <div class="lang-dropdown">
+                            <div class="lang-col">
+                                <div class="lang-col-title">Основной</div>
+                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="ru">Русский</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="os">Осетинский</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Index" asp-route-culture="en">Английский</a>
+                            </div>
+
+                            <div class="lang-col">
+                                <div class="lang-col-title">Доп.</div>
+                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="ru">Русский</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="os">Осетинский</a>
+                                <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="en">Английский</a>
+                            </div>
+                        </div>
+                    </details>
+                </li>
             </ul>
         </nav>
         <!-- Боковое меню -->
