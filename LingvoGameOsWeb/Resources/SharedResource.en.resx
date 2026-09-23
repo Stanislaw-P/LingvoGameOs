@@ -1,64 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,37 +58,802 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="all_games" xml:space="preserve">
-    <value>All games</value>
-  </data>
-  <data name="for_developers" xml:space="preserve">
-    <value>For developers</value>
-  </data>
-  <data name="games_skill_level_and_learning_text" xml:space="preserve">
-    <value>Learn words, grammar, listen to Ossetian speech and dive into the culture of Ossetia - all through gameplay!</value>
-  </data>
-  <data name="hello" xml:space="preserve">
-    <value>Hellllllo</value>
-  </data>
-  <data name="join_btn" xml:space="preserve">
-    <value>Join</value>
-  </data>
-  <data name="lang_service_info" xml:space="preserve">
+  <data name="service_info_lang" xml:space="preserve">
     <value>EN</value>
   </data>
-  <data name="main_title" xml:space="preserve">
+  <data name="games_count" xml:space="preserve">
+    <value>(number of) games</value>
+  </data>
+  <data name="users_count" xml:space="preserve">
+    <value>(number of) users</value>
+  </data>
+  <data name="reviews" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="write_review" xml:space="preserve">
+    <value>Write a review</value>
+  </data>
+  <data name="hero_title" xml:space="preserve">
+    <value>Open a window into the world of your native language</value>
+  </data>
+  <data name="our_team" xml:space="preserve">
+    <value>Our team</value>
+  </data>
+  <data name="project_lead" xml:space="preserve">
+    <value>Project lead</value>
+  </data>
+  <data name="design_and_frontend" xml:space="preserve">
+    <value>Design and frontend</value>
+  </data>
+  <data name="developer" xml:space="preserve">
+    <value>Developer</value>
+  </data>
+  <data name="nosu_university" xml:space="preserve">
+    <value>North Ossetian State University</value>
+  </data>
+  <data name="return_to_main_page" xml:space="preserve">
+    <value>Return to main page</value>
+  </data>
+  <data name="show_game_info" xml:space="preserve">
+    <value>Show game information</value>
+  </data>
+  <data name="game_pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="toggle_sound" xml:space="preserve">
+    <value>Mute/unmute sound</value>
+  </data>
+  <data name="fullscreen_mode" xml:space="preserve">
+    <value>Fullscreen mode</value>
+  </data>
+  <data name="close_game" xml:space="preserve">
+    <value>Close game</value>
+  </data>
+  <data name="nav_home" xml:space="preserve">
     <value>Home</value>
   </data>
-  <data name="news_link" xml:space="preserve">
+  <data name="nav_all_games" xml:space="preserve">
+    <value>All games</value>
+  </data>
+  <data name="nav_news" xml:space="preserve">
     <value>News</value>
   </data>
-  <data name="ossetian_closer_than_you_think" xml:space="preserve">
-    <value>THE OSSETIAN LANGUAGE IS CLOSER THAN YOU THINK</value>
+  <data name="nav_for_developers" xml:space="preserve">
+    <value>For developers</value>
   </data>
-  <data name="platform_games_age_desc" xml:space="preserve">
-    <value>On our platform you will find games for any age and skill level.</value>
+  <data name="nav_menu" xml:space="preserve">
+    <value>Menu</value>
   </data>
-  <data name="start_playing_btn" xml:space="preserve">
+  <data name="nav_favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="user" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="auth_logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="auth_login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="games_dashboard" xml:space="preserve">
+    <value>Games dashboard</value>
+  </data>
+  <data name="reviews_dashboard" xml:space="preserve">
+    <value>Reviews dashboard</value>
+  </data>
+  <data name="page_not_found" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="error_something_went_wrong" xml:space="preserve">
+    <value>Oops, something went wrong!</value>
+  </data>
+  <data name="to_home" xml:space="preserve">
+    <value>To home</value>
+  </data>
+  <data name="user_profile" xml:space="preserve">
+    <value>User profile</value>
+  </data>
+  <data name="first_name" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="last_name" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="total_score" xml:space="preserve">
+    <value>Total score</value>
+  </data>
+  <data name="about_me" xml:space="preserve">
+    <value>About me</value>
+  </data>
+  <data name="tell_about_yourself" xml:space="preserve">
+    <value>Tell about yourself</value>
+  </data>
+  <data name="email_not_verified" xml:space="preserve">
+    <value>Your email is not verified</value>
+  </data>
+  <data name="verify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="profile_edit_action" xml:space="preserve">
+    <value>Edit profile</value>
+  </data>
+  <data name="created_games" xml:space="preserve">
+    <value>Created games</value>
+  </data>
+  <data name="upload_game_button" xml:space="preserve">
+    <value>Upload game</value>
+  </data>
+  <data name="previous_games" xml:space="preserve">
+    <value>Previous games</value>
+  </data>
+  <data name="pagination_one_of_one" xml:space="preserve">
+    <value>1 of 1</value>
+  </data>
+  <data name="next_games" xml:space="preserve">
+    <value>Next games</value>
+  </data>
+  <data name="status_inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="feature_in_development" xml:space="preserve">
+    <value>Feature in development.</value>
+  </data>
+  <data name="apologize_temporary_inconvenience" xml:space="preserve">
+    <value>We apologize for the temporary inconvenience.</value>
+  </data>
+  <data name="analytics" xml:space="preserve">
+    <value>Analytics</value>
+  </data>
+  <data name="action_edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="status_under_moderation" xml:space="preserve">
+    <value>Under moderation</value>
+  </data>
+  <data name="moderation_feedback_email" xml:space="preserve">
+    <value>For feedback with moderation, use email: rudzyng@yandex.ru</value>
+  </data>
+  <data name="feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="create_first_game_promo" xml:space="preserve">
+    <value>Create your first game!</value>
+  </data>
+  <data name="create_game" xml:space="preserve">
+    <value>Create game</value>
+  </data>
+  <data name="game_history" xml:space="preserve">
+    <value>Game history</value>
+  </data>
+  <data name="view_all" xml:space="preserve">
+    <value>View all</value>
+  </data>
+  <data name="discover_new_games" xml:space="preserve">
+    <value>Discover new games to learn!</value>
+  </data>
+  <data name="find_games" xml:space="preserve">
+    <value>Find games</value>
+  </data>
+  <data name="close_modal_window" xml:space="preserve">
+    <value>Close modal window</value>
+  </data>
+  <data name="profile_modal_edit_title" xml:space="preserve">
+    <value>Edit profile</value>
+  </data>
+  <data name="avatar" xml:space="preserve">
+    <value>Avatar</value>
+  </data>
+  <data name="upload_new_photo" xml:space="preserve">
+    <value>Upload new photo</value>
+  </data>
+  <data name="action_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="action_save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="download_confirmation_title" xml:space="preserve">
+    <value>Download confirmation</value>
+  </data>
+  <data name="download_desktop_only_warning" xml:space="preserve">
+    <value>You are about to download a game that can only run on a computer. Continue?</value>
+  </data>
+  <data name="action_change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="no_game_with_name_found" xml:space="preserve">
+    <value>There is no game named (name)</value>
+  </data>
+  <data name="no_such_games_exist" xml:space="preserve">
+    <value>It seems no such games exist yet</value>
+  </data>
+  <data name="game_categories" xml:space="preserve">
+    <value>Game categories</value>
+  </data>
+  <data name="learn_ossetian_by_categories" xml:space="preserve">
+    <value>Learn Ossetian by categories</value>
+  </data>
+  <data name="choose_category_description" xml:space="preserve">
+    <value>Choose a category of interest and find games that will help you develop specific skills</value>
+  </data>
+  <data name="all_categories" xml:space="preserve">
+    <value>All categories</value>
+  </data>
+  <data name="choose_category_to_learn" xml:space="preserve">
+    <value>Choose a category to learn</value>
+  </data>
+  <data name="category_culture" xml:space="preserve">
+    <value>Culture</value>
+  </data>
+  <data name="category_culture_desc" xml:space="preserve">
+    <value>Learn traditions, customs, and cultural heritage of Ossetia</value>
+  </data>
+  <data name="category_reading" xml:space="preserve">
+    <value>Reading</value>
+  </data>
+  <data name="category_reading_desc" xml:space="preserve">
+    <value>Develop skills in reading and understanding Ossetian texts</value>
+  </data>
+  <data name="category_vocabulary" xml:space="preserve">
+    <value>Vocabulary</value>
+  </data>
+  <data name="category_vocabulary_desc" xml:space="preserve">
+    <value>Expand your vocabulary and learn new words</value>
+  </data>
+  <data name="category_grammar" xml:space="preserve">
+    <value>Grammar</value>
+  </data>
+  <data name="category_grammar_desc" xml:space="preserve">
+    <value>Learn grammar rules and sentence structure</value>
+  </data>
+  <data name="category_listening" xml:space="preserve">
+    <value>Listening</value>
+  </data>
+  <data name="category_listening_desc" xml:space="preserve">
+    <value>Practice listening comprehension of Ossetian speech</value>
+  </data>
+  <data name="category_pronunciation" xml:space="preserve">
+    <value>Pronunciation</value>
+  </data>
+  <data name="category_pronunciation_desc" xml:space="preserve">
+    <value>Improve pronunciation and intonation</value>
+  </data>
+  <data name="games_in_category" xml:space="preserve">
+    <value>Games in category (category)</value>
+  </data>
+  <data name="categories_title" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="games_for_learning_skill" xml:space="preserve">
+    <value>Games for learning (skill) in the Ossetian language</value>
+  </data>
+  <data name="total_in_category" xml:space="preserve">
+    <value>total in category</value>
+  </data>
+  <data name="no_games_in_category_yet" xml:space="preserve">
+    <value>No games in this category yet</value>
+  </data>
+  <data name="working_on_new_games_for_skill" xml:space="preserve">
+    <value>We are working on adding new games for learning (skill)</value>
+  </data>
+  <data name="back_to_categories" xml:space="preserve">
+    <value>Back to categories</value>
+  </data>
+  <data name="other_categories" xml:space="preserve">
+    <value>Other categories</value>
+  </data>
+  <data name="filter_trending" xml:space="preserve">
+    <value>Trending</value>
+  </data>
+  <data name="news_and_updates" xml:space="preserve">
+    <value>News and updates</value>
+  </data>
+  <data name="badge_event" xml:space="preserve">
+    <value>event</value>
+  </data>
+  <data name="popular_news" xml:space="preserve">
+    <value>Popular news</value>
+  </data>
+  <data name="filter_all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="filter_new_games" xml:space="preserve">
+    <value>New games</value>
+  </data>
+  <data name="filter_updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="filter_events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="filter_development" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="filter_learning" xml:space="preserve">
+    <value>Learning</value>
+  </data>
+  <data name="stats_title" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="stats_active_players_count" xml:space="preserve">
+    <value>(number of) active players</value>
+  </data>
+  <data name="stats_games_on_platform_count" xml:space="preserve">
+    <value>(number of) games on the platform</value>
+  </data>
+  <data name="stats_languages_to_learn_count" xml:space="preserve">
+    <value>(number of) languages to learn</value>
+  </data>
+  <data name="stats_average_rating" xml:space="preserve">
+    <value>(rating) average rating</value>
+  </data>
+  <data name="games_list_title" xml:space="preserve">
+    <value>Game list</value>
+  </data>
+  <data name="filter_platform" xml:space="preserve">
+    <value>Platform</value>
+  </data>
+  <data name="filter_all_platforms" xml:space="preserve">
+    <value>All platforms</value>
+  </data>
+  <data name="platform_web_mobile" xml:space="preserve">
+    <value>Web-mobile</value>
+  </data>
+  <data name="platform_web_desktop" xml:space="preserve">
+    <value>Web-desktop</value>
+  </data>
+  <data name="platform_downloadable" xml:space="preserve">
+    <value>Downloadable</value>
+  </data>
+  <data name="action_search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="action_reset_filter" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="active_filters_label" xml:space="preserve">
+    <value>Active filters:</value>
+  </data>
+  <data name="action_clear_all_filters" xml:space="preserve">
+    <value>Clear all</value>
+  </data>
+  <data name="search_keywords_label" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="filter_history" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="filter_language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="filter_rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="games_search_results_query" xml:space="preserve">
+    <value>Games for query: (query)</value>
+  </data>
+  <data name="status_loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="status_searching_games" xml:space="preserve">
+    <value>Searching for games</value>
+  </data>
+  <data name="action_more_details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="toast_platform_filter_reset" xml:space="preserve">
+    <value>Platform filter reset</value>
+  </data>
+  <data name="toast_all_filters_cleared" xml:space="preserve">
+    <value>All filters cleared</value>
+  </data>
+  <data name="promo_find_game_interests" xml:space="preserve">
+    <value>Find a game for your interests!</value>
+  </data>
+  <data name="promo_categories_explanation" xml:space="preserve">
+    <value>We divided games into categories to make it easier for you to find what you like.</value>
+  </data>
+  <data name="action_view_all_categories" xml:space="preserve">
+    <value>View all categories</value>
+  </data>
+  <data name="feature_learn_traditions" xml:space="preserve">
+    <value>Learn traditions and customs</value>
+  </data>
+  <data name="feature_develop_reading" xml:space="preserve">
+    <value>Develop reading skills</value>
+  </data>
+  <data name="feature_expand_vocabulary" xml:space="preserve">
+    <value>Expand vocabulary</value>
+  </data>
+  <data name="feature_learn_grammar" xml:space="preserve">
+    <value>Learn grammar rules</value>
+  </data>
+  <data name="faq_whats_new" xml:space="preserve">
+    <value>What's new?</value>
+  </data>
+  <data name="faq_help_look_here" xml:space="preserve">
+    <value>Need help? Look here!</value>
+  </data>
+  <data name="faq_collected_answers_desc" xml:space="preserve">
+    <value>Here we collected answers to the most frequently asked questions about our platform.</value>
+  </data>
+  <data name="faq_ask_question_button" xml:space="preserve">
+    <value>Ask a question</value>
+  </data>
+  <data name="faq_question_registration" xml:space="preserve">
+    <value>How to register on the platform?</value>
+  </data>
+  <data name="faq_answer_registration" xml:space="preserve">
+    <value>To register, click the 'Register' button in the upper right corner of the page and fill in the required fields. Then verify your email by following the link in the message.</value>
+  </data>
+  <data name="faq_question_find_game" xml:space="preserve">
+    <value>How to find a game?</value>
+  </data>
+  <data name="faq_answer_find_game" xml:space="preserve">
+    <value>Use search by title or filters by categories, difficulty level, and game type. You can also browse popular games on the home page.</value>
+  </data>
+  <data name="faq_question_is_free" xml:space="preserve">
+    <value>Is the platform free?</value>
+  </data>
+  <data name="faq_answer_is_free" xml:space="preserve">
+    <value>Yes, our platform is completely free for all users. You can play any games without restrictions.</value>
+  </data>
+  <data name="faq_question_teacher_usage" xml:space="preserve">
+    <value>I am a teacher. How do I use the platform in class?</value>
+  </data>
+  <data name="faq_answer_teacher_usage" xml:space="preserve">
+    <value>The platform is great for educational purposes. You can recommend games to students, track their progress, and use games as supplementary material in lessons.</value>
+  </data>
+  <data name="faq_question_developer_upload" xml:space="preserve">
+    <value>I am a developer. How do I upload my game to the platform?</value>
+  </data>
+  <data name="faq_answer_developer_upload" xml:space="preserve">
+    <value>Go to the "Upload game" section and follow the instructions. You will need to fill out a form with game details and upload files.</value>
+  </data>
+  <data name="faq_question_game_requirements" xml:space="preserve">
+    <value>What are the requirements for games to upload to the platform?</value>
+  </data>
+  <data name="faq_answer_game_requirements" xml:space="preserve">
+    <value>The game must be related to learning the Ossetian language, have educational value, and meet technical platform requirements.</value>
+  </data>
+  <data name="dev_info_title" xml:space="preserve">
+    <value>Information for developers</value>
+  </data>
+  <data name="dev_section_navigation" xml:space="preserve">
+    <value>Section navigation</value>
+  </data>
+  <data name="dev_rules" xml:space="preserve">
+    <value>Rules</value>
+  </data>
+  <data name="game_release_date" xml:space="preserve">
+    <value>Release date</value>
+  </data>
+  <data name="game_developed_skills" xml:space="preserve">
+    <value>Skills developed</value>
+  </data>
+  <data name="nav_players" xml:space="preserve">
+    <value>Players</value>
+  </data>
+  <data name="nav_teachers" xml:space="preserve">
+    <value>Teachers</value>
+  </data>
+  <data name="game_count_label" xml:space="preserve">
+    <value>Number of games: (count)</value>
+  </data>
+  <data name="upload_game_page_title" xml:space="preserve">
+    <value>Game upload</value>
+  </data>
+  <data name="dev_read_docs_notice" xml:space="preserve">
+    <value>Read our developer documentation before publishing your project.</value>
+  </data>
+  <data name="form_fix_errors_prompt" xml:space="preserve">
+    <value>Please fix the following errors:</value>
+  </data>
+  <data name="field_game_title" xml:space="preserve">
+    <value>Game title</value>
+  </data>
+  <data name="field_game_title_placeholder" xml:space="preserve">
+    <value>Enter game title</value>
+  </data>
+  <data name="field_game_short_description" xml:space="preserve">
+    <value>Short game description (up to 200 characters)</value>
+  </data>
+  <data name="field_game_short_description_placeholder" xml:space="preserve">
+    <value>Briefly describe the plot or concept of the game</value>
+  </data>
+  <data name="field_game_rules" xml:space="preserve">
+    <value>Game rules</value>
+  </data>
+  <data name="field_game_rules_placeholder" xml:space="preserve">
+    <value>Describe the rules of the game</value>
+  </data>
+  <data name="field_game_platform_label" xml:space="preserve">
+    <value>Choose a platform for your game</value>
+  </data>
+  <data name="field_game_platform_placeholder" xml:space="preserve">
+    <value>Choose a platform</value>
+  </data>
+  <data name="field_game_file" xml:space="preserve">
+    <value>Game file</value>
+  </data>
+  <data name="field_game_file_dropzone" xml:space="preserve">
+    <value>Upload or drag the game here (MSI)</value>
+  </data>
+  <data name="field_game_file_max_size_2gb" xml:space="preserve">
+    <value>Maximum size 2 GB</value>
+  </data>
+  <data name="field_skills_prompt" xml:space="preserve">
+    <value>Select the skills developed that match your game</value>
+  </data>
+  <data name="field_skills_placeholder" xml:space="preserve">
+    <value>Select skills developed</value>
+  </data>
+  <data name="search_skills_placeholder" xml:space="preserve">
+    <value>Search skills</value>
+  </data>
+  <data name="action_select_all" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="field_level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="level_lamb_desc" xml:space="preserve">
+    <value>"A lamb trying to speak" – you are starting to make meaningful sounds, but not everything is clear yet.</value>
+  </data>
+  <data name="level_young_nart_desc" xml:space="preserve">
+    <value>"Young Nart" – you can already form sentences and understand basic language rules.</value>
+  </data>
+  <data name="level_caucasian_eagle_desc" xml:space="preserve">
+    <value>"Caucasian Eagle" – you speak confidently, build complex phrases, and can hold a conversation.</value>
+  </data>
+  <data name="level_elder_toast_desc" xml:space="preserve">
+    <value>"Elder proposing toasts" – you are fluent in the language, understand subtleties and cultural nuances.</value>
+  </data>
+  <data name="level_keeper_of_language_desc" xml:space="preserve">
+    <value>"Keeper of the Language" – you have reached the pinnacle of mastery; your speech is like a mountain song, and words are ancient wisdom.</value>
+  </data>
+  <data name="field_github_repo_link" xml:space="preserve">
+    <value>Link to the game's GitHub repository</value>
+  </data>
+  <data name="field_game_cover" xml:space="preserve">
+    <value>Game cover</value>
+  </data>
+  <data name="field_game_cover_hint" xml:space="preserve">
+    <value>Attach a 512×512 game cover photo</value>
+  </data>
+  <data name="dropzone_upload_or_drag_file" xml:space="preserve">
+    <value>Upload or drag a file</value>
+  </data>
+  <data name="field_cover_max_size_30mb" xml:space="preserve">
+    <value>Maximum size 30 MB</value>
+  </data>
+  <data name="field_vk_video_link" xml:space="preserve">
+    <value>Link to VK video</value>
+  </data>
+  <data name="field_video_hint" xml:space="preserve">
+    <value>Attach a 640×360 or 16:9 video</value>
+  </data>
+  <data name="field_video_url_placeholder" xml:space="preserve">
+    <value>Paste video URL</value>
+  </data>
+  <data name="field_game_screenshots" xml:space="preserve">
+    <value>Game screenshots</value>
+  </data>
+  <data name="field_screenshots_hint" xml:space="preserve">
+    <value>Attach up to 3 game screenshots sized 640×360 or 16:9</value>
+  </data>
+  <data name="dropzone_upload_or_drag_files" xml:space="preserve">
+    <value>Upload or drag files</value>
+  </data>
+  <data name="action_publish_game" xml:space="preserve">
+    <value>Publish game</value>
+  </data>
+  <data name="games_list_page_title" xml:space="preserve">
+    <value>Game list</value>
+  </data>
+  <data name="favorites_empty_state" xml:space="preserve">
+    <value>You don't have any favorite games yet</value>
+  </data>
+  <data name="action_to_all_games_list" xml:space="preserve">
+    <value>To all games list</value>
+  </data>
+  <data name="action_find_game" xml:space="preserve">
+    <value>Find a game</value>
+  </data>
+  <data name="favorite_games_title" xml:space="preserve">
+    <value>Favorite games</value>
+  </data>
+  <data name="dev_section_title" xml:space="preserve">
+    <value>For developers</value>
+  </data>
+  <data name="dev_web_mobile_title" xml:space="preserve">
+    <value>Web-Mobile applications</value>
+  </data>
+  <data name="dev_web_mobile_desc" xml:space="preserve">
+    <value>Web-Mobile applications are games and educational apps developed using web technologies (HTML5, CSS, JavaScript) optimized for mobile devices in a browser. They provide cross-platform access and do not require installation.</value>
+  </data>
+  <data name="dev_instructions_title" xml:space="preserve">
+    <value>Instructions for developers</value>
+  </data>
+  <data name="dev_guide_step_1_title" xml:space="preserve">
+    <value>1. Application preparation</value>
+  </data>
+  <data name="dev_guide_step_1_desc" xml:space="preserve">
+    <value>Build an app using HTML5, CSS, and JavaScript. Make sure it is responsive across screen sizes (320px to 768px). Use frameworks such as Phaser for games or React for interactive apps.</value>
+  </data>
+  <data name="dev_guide_step_2_title" xml:space="preserve">
+    <value>2. Testing</value>
+  </data>
+  <data name="dev_guide_step_2_desc" xml:space="preserve">
+    <value>Test the application in popular mobile browsers (Chrome, Safari, Firefox). Ensure it meets WCAG 2.1 accessibility standards. Check performance using tools like Lighthouse.</value>
+  </data>
+  <data name="dev_guide_step_3_title" xml:space="preserve">
+    <value>3. Metadata preparation</value>
+  </data>
+  <data name="dev_guide_step_3_desc" xml:space="preserve">
+    <value>Create an appealing cover (recommended size: 294x424px), prepare screenshots and description. Specify categories (e.g., "Vocabulary", "Grammar") and keywords for search.</value>
+  </data>
+  <data name="dev_guide_step_4_title" xml:space="preserve">
+    <value>4. Publishing</value>
+  </data>
+  <data name="dev_guide_step_4_desc" xml:space="preserve">
+    <value>Upload the application using the form on the Upload Game page. Provide the game URL or upload a ZIP archive. After moderator approval, the app will appear under "Recommended Games".</value>
+  </data>
+  <data name="dev_web_desktop_title" xml:space="preserve">
+    <value>Web-Desktop applications</value>
+  </data>
+  <data name="dev_web_desktop_desc" xml:space="preserve">
+    <value>Web-Desktop applications are web apps optimized for desktop browsers. They are suited for more complex educational games requiring larger screens and performance.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_1" xml:space="preserve">
+    <value>Develop the application using HTML5, CSS, and JavaScript. Canvas or WebGL is recommended for complex visual effects. Ensure the UI is comfortable for mouse and keyboard use.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_2" xml:space="preserve">
+    <value>Test the app in Chrome, Firefox, and Edge. Optimize performance for screens from 1280x720px resolution. Use tools like Chrome DevTools for debugging.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_3" xml:space="preserve">
+    <value>Prepare a cover (294x424px), screenshots, and detailed description. Specify difficulty level (e.g., "Young Nart" or "Caucasian Eagle") and categories.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_4" xml:space="preserve">
+    <value>Upload the application via the form on the Upload Game page. Provide a URL or ZIP archive. After review, the application will appear in the catalog.</value>
+  </data>
+  <data name="dev_desktop_apps_title" xml:space="preserve">
+    <value>Desktop applications</value>
+  </data>
+  <data name="dev_desktop_apps_desc" xml:space="preserve">
+    <value>Desktop applications are standalone programs for Windows, macOS, or Linux that users download and install. They suit complex educational applications with high interactivity.</value>
+  </data>
+  <data name="dev_desktop_guide_step_1" xml:space="preserve">
+    <value>Develop the application using a suitable language (e.g., C++, Python with Pygame, or Unity). Ensure support for popular operating systems (Windows, macOS, Linux).</value>
+  </data>
+  <data name="dev_desktop_guide_step_2" xml:space="preserve">
+    <value>Test the application on target platforms. Ensure it has no errors and meets security requirements. Check the installer package (EXE, DMG, or AppImage).</value>
+  </data>
+  <data name="dev_desktop_guide_step_3" xml:space="preserve">
+    <value>Create a cover (294x424px), screenshots, and description. Specify system requirements and supported operating systems.</value>
+  </data>
+  <data name="dev_desktop_guide_step_4" xml:space="preserve">
+    <value>Upload the installer file (ZIP, RAR, APK, EXE, DMG) via the form on the Upload Game page. After verification, the application will be available for download.</value>
+  </data>
+  <data name="auth_email_verification_title" xml:space="preserve">
+    <value>Email verification</value>
+  </data>
+  <data name="action_back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="auth_verify_email_publish_prompt" xml:space="preserve">
+    <value>To publish your own games, you need to verify your email</value>
+  </data>
+  <data name="auth_verify_email_instructions" xml:space="preserve">
+    <value>To verify your email, an email with a link will be sent to you. Click the button to receive the email</value>
+  </data>
+  <data name="action_send_email" xml:space="preserve">
+    <value>Send email</value>
+  </data>
+  <data name="auth_email_verification_error" xml:space="preserve">
+    <value>Error during email verification</value>
+  </data>
+  <data name="error_try_again_later" xml:space="preserve">
+    <value>Please try again later</value>
+  </data>
+  <data name="action_go_to_home" xml:space="preserve">
+    <value>Go to home page</value>
+  </data>
+  <data name="auth_verification_email_sent" xml:space="preserve">
+    <value>A verification email has been sent to you</value>
+  </data>
+  <data name="auth_follow_email_link_notice" xml:space="preserve">
+    <value>To verify your email, follow the link in the message</value>
+  </data>
+  <data name="auth_email_verified_success" xml:space="preserve">
+    <value>Your email is verified</value>
+  </data>
+  <data name="auth_can_publish_games_notice" xml:space="preserve">
+    <value>You can now publish your own games</value>
+  </data>
+  <data name="auth_forgot_password" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="auth_password_reset_rate_limit" xml:space="preserve">
+    <value>You are trying to change password too frequently. Please try again later</value>
+  </data>
+  <data name="auth_password_reset_sent_desc" xml:space="preserve">
+    <value>An email with a password reset link has been sent to you. If you can't find it, check your spam folder</value>
+  </data>
+  <data name="field_enter_email_placeholder" xml:space="preserve">
+    <value>Enter email</value>
+  </data>
+  <data name="action_continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="auth_authorization_title" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+  <data name="auth_login_tab" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="field_enter_password_placeholder" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="auth_login_via_vk" xml:space="preserve">
+    <value>Log in via VK</value>
+  </data>
+  <data name="auth_not_registered_prompt" xml:space="preserve">
+    <value>Not registered yet?</value>
+  </data>
+  <data name="auth_sign_up_button" xml:space="preserve">
+    <value>Sign up</value>
+  </data>
+  <data name="action_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="auth_registration_tab" xml:space="preserve">
+    <value>Registration</value>
+  </data>
+  <data name="field_password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="field_confirm_password" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="auth_password_reset_title" xml:space="preserve">
+    <value>Password reset</value>
+  </data>
+  <data name="action_change_password" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="auth_error" xml:space="preserve">
+    <value>Authorization error</value>
+  </data>
+  <data name="auth_try_another_login_method" xml:space="preserve">
+    <value>Try another login method</value>
+  </data>
+  <data name="auth_vk_no_email_error" xml:space="preserve">
+    <value>No email is linked to your VK account. Try logging in with a different VK account or using email</value>
+  </data>
+  <data name="action_start_playing" xml:space="preserve">
     <value>Start playing</value>
+  </data>
+  <data name="hero_platform_description" xml:space="preserve">
+    <value>On our platform you will find games for any age and skill level. Learn words, grammar, listen to Ossetian speech, and dive into Ossetian culture – all through gaming!</value>
+  </data>
+  <data name="hero_banner_slogan" xml:space="preserve">
+    <value>OSSETIAN LANGUAGE IS CLOSER THAN YOU THINK</value>
+  </data>
+  <data name="action_join" xml:space="preserve">
+    <value>Join</value>
   </data>
 </root>

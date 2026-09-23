@@ -1,7 +1,7 @@
 ﻿@model List<GameViewModel>
 
 @{
-    ViewData["Title"] = @SharedLocalizer["main_title"];
+    ViewData["Title"] = @SharedLocalizer["nav_home"];
 }
 
 <link rel="stylesheet" href="/css/homepage.css" />
@@ -11,21 +11,21 @@
 <!-- Hero Section - Full Height Background -->
 <section class="homepage-hero">
     <div class="homepage-hero__content">
-        <h1 class="homepage-hero__title">@SharedLocalizer["ossetian_closer_than_you_think"]</h1>
+        <h1 class="homepage-hero__title">@SharedLocalizer["hero_banner_slogan"]</h1>
         <p class="homepage-hero__description">
-            @SharedLocalizer["platform_games_age_desc"] </br> @SharedLocalizer["games_skill_level_and_learning_text"]
+            @SharedLocalizer["hero_platform_description"]
         </p>
         <div class="homepage-hero__actions">
-            <a href="Home/Games" class="homepage-hero__button homepage-hero__button--primary" data-tooltip="@SecondLocalizer["start_playing_btn"]">
-                @SharedLocalizer["start_playing_btn"]
+            <a href="Home/Games" class="homepage-hero__button homepage-hero__button--primary" data-tooltip="@SecondLocalizer["action_start_playing"]">
+                @SharedLocalizer["action_start_playing"]
             </a>
             @if (User?.Identity?.IsAuthenticated == true)
             {
-                <a href="/Home/News" class="homepage-hero__button homepage-hero__button--secondary" data-tooltip="@SecondLocalizer["news_link"]">@SharedLocalizer["news_link"]</a>
+                <a href="/Home/News" class="homepage-hero__button homepage-hero__button--secondary" data-tooltip="@SecondLocalizer["nav_news"]">@SharedLocalizer["nav_news"]</a>
             }
             else
             {
-                <a href="/Account/Register" class="homepage-hero__button homepage-hero__button--secondary" data-tooltip="@SecondLocalizer["join_btn"]">@SharedLocalizer["join_btn"]</a>
+                <a href="/Account/Register" class="homepage-hero__button homepage-hero__button--secondary" data-tooltip="@SecondLocalizer["action_join"]">@SharedLocalizer["action_join"]</a>
             }
         </div>
     </div>

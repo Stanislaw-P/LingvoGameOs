@@ -15,18 +15,18 @@
         </div>
         <nav class="header__menu menu">
             <ul class="menu__list">
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index" data-tooltip="@SecondLocalizer["main_title"]">@SharedLocalizer["main_title"]</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games" data-tooltip="@SecondLocalizer["all_games"]">@SharedLocalizer["all_games"]</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News" data-tooltip="@SecondLocalizer["news_link"]">@SharedLocalizer["news_link"]</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers" data-tooltip="@SecondLocalizer["for_developers"]">@SharedLocalizer["for_developers"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index" data-tooltip="@SecondLocalizer["nav_home"]">@SharedLocalizer["nav_home"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games" data-tooltip="@SecondLocalizer["nav_all_games"]">@SharedLocalizer["nav_all_games"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News" data-tooltip="@SecondLocalizer["nav_news"]">@SharedLocalizer["nav_news"]</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers" data-tooltip="@SecondLocalizer["nav_for_developers"]">@SharedLocalizer["nav_for_developers"]</a></li>
 
                 <li>
                     <details class="lang-menu">
                         <summary class="lang-trigger">
                             <span class="lang-pair">
-                                <span class="lang-primary">@SharedLocalizer["lang_service_info"]</span>
+                                <span class="lang-primary">@SharedLocalizer["service_info_lang"]</span>
                                 <span class="lang-sep">|</span>
-                                <span class="lang-secondary">@SecondLocalizer["lang_service_info"]</span>
+                                <span class="lang-secondary">@SecondLocalizer["service_info_lang"]</span>
                             </span>
                             <span class="lang-caret" aria-hidden="true">▾</span>
                         </summary>
@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="lang-col">
-                                <div class="lang-col-title">Доп.</div>
+                                <div class="lang-col-title">Дополнительный</div>
                                 <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="ru">Русский</a>
                                 <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="os">Ирон</a>
                                 <a class="lang-item" asp-controller="Language" asp-action="Second" asp-route-culture="en">English</a>

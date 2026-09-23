@@ -1,64 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,37 +58,802 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="all_games" xml:space="preserve">
-    <value>Хъæзтытæ иууылдæр</value>
-  </data>
-  <data name="for_developers" xml:space="preserve">
-    <value>Скæнджытæм</value>
-  </data>
-  <data name="games_skill_level_and_learning_text" xml:space="preserve">
-    <value>Ахуыр кӕн дзырдтӕ, грамматикӕ, хъус ирон ныхасмӕ ӕмӕ арфдӕр зон Ирыстоны культурӕ - уый иууылдӕр хъазгӕйӕ!</value>
-  </data>
-  <data name="hello" xml:space="preserve">
-    <value>Салам</value>
-  </data>
-  <data name="join_btn" xml:space="preserve">
-    <value>Бафтын</value>
-  </data>
-  <data name="lang_service_info" xml:space="preserve">
+  <data name="service_info_lang" xml:space="preserve">
     <value>ИР</value>
   </data>
-  <data name="main_title" xml:space="preserve">
-    <value>Саейраг</value>
+  <data name="games_count" xml:space="preserve">
+    <value>(Цалдæр) хъазты</value>
   </data>
-  <data name="news_link" xml:space="preserve">
-    <value>Хабаерттае</value>
+  <data name="users_count" xml:space="preserve">
+    <value>(Цалдæр) архайæгы</value>
   </data>
-  <data name="ossetian_closer_than_you_think" xml:space="preserve">
-    <value>Ирон ӕвзаг хӕстӕгдӕр у, дӕуӕн куыд кӕсы, уымӕй</value>
+  <data name="reviews" xml:space="preserve">
+    <value>Отзывы</value>
   </data>
-  <data name="platform_games_age_desc" xml:space="preserve">
-    <value>Махмае ды ссардзынае хъазтытае алы кары аемае цаеттаедзинады аемваезадаен даер</value>
+  <data name="write_review" xml:space="preserve">
+    <value>Дæ хъуыды ныффыс (Напиши, что думаешь)</value>
   </data>
-  <data name="start_playing_btn" xml:space="preserve">
-    <value>Хъазт райдайын</value>
+  <data name="hero_title" xml:space="preserve">
+    <value>Байгом кæн рудзынг мадæлон æвзагы дунемæ</value>
+  </data>
+  <data name="our_team" xml:space="preserve">
+    <value>Мах командæ</value>
+  </data>
+  <data name="project_lead" xml:space="preserve">
+    <value>Проекты разамонæг</value>
+  </data>
+  <data name="design_and_frontend" xml:space="preserve">
+    <value>Дизайн æмæ фронтенд</value>
+  </data>
+  <data name="developer" xml:space="preserve">
+    <value>Скæнæг</value>
+  </data>
+  <data name="nosu_university" xml:space="preserve">
+    <value>Цæгат Ирыстоны паддзахадон университет</value>
+  </data>
+  <data name="return_to_main_page" xml:space="preserve">
+    <value>Раздæхын сæйраг фарсмæ</value>
+  </data>
+  <data name="show_game_info" xml:space="preserve">
+    <value>Хъазты тыххæй информаци</value>
+  </data>
+  <data name="game_pause" xml:space="preserve">
+    <value>рлæууын</value>
+  </data>
+  <data name="toggle_sound" xml:space="preserve">
+    <value>Скусын кæнын/ахуыссын кæнын звук</value>
+  </data>
+  <data name="fullscreen_mode" xml:space="preserve">
+    <value>Полноэкранный режим</value>
+  </data>
+  <data name="close_game" xml:space="preserve">
+    <value>Хъазт сыхкæнын</value>
+  </data>
+  <data name="nav_home" xml:space="preserve">
+    <value>Сæйраг</value>
+  </data>
+  <data name="nav_all_games" xml:space="preserve">
+    <value>Хъæзтытæ иууылдæр</value>
+  </data>
+  <data name="nav_news" xml:space="preserve">
+    <value>Ног хабæрттæ</value>
+  </data>
+  <data name="nav_for_developers" xml:space="preserve">
+    <value>Скæнджытæм</value>
+  </data>
+  <data name="nav_menu" xml:space="preserve">
+    <value>Меню</value>
+  </data>
+  <data name="nav_favorites" xml:space="preserve">
+    <value>æвзæрст</value>
+  </data>
+  <data name="user" xml:space="preserve">
+    <value>Пайдагӕнӕг</value>
+  </data>
+  <data name="profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="auth_logout" xml:space="preserve">
+    <value>Рахизын</value>
+  </data>
+  <data name="auth_login" xml:space="preserve">
+    <value>Бахизын</value>
+  </data>
+  <data name="games_dashboard" xml:space="preserve">
+    <value>Хъæзтыты панель</value>
+  </data>
+  <data name="reviews_dashboard" xml:space="preserve">
+    <value>Панель отзывов</value>
+  </data>
+  <data name="page_not_found" xml:space="preserve">
+    <value>Фарс не ссардӕуыд</value>
+  </data>
+  <data name="error_something_went_wrong" xml:space="preserve">
+    <value>Упс. Цыдæр нæ рауад!</value>
+  </data>
+  <data name="to_home" xml:space="preserve">
+    <value>Сæйрагмæ</value>
+  </data>
+  <data name="user_profile" xml:space="preserve">
+    <value>Пайдагӕнӕджы профиль</value>
+  </data>
+  <data name="first_name" xml:space="preserve">
+    <value>Ном</value>
+  </data>
+  <data name="last_name" xml:space="preserve">
+    <value>Мыггаг</value>
+  </data>
+  <data name="total_score" xml:space="preserve">
+    <value>Балтæ иууылдæр</value>
+  </data>
+  <data name="about_me" xml:space="preserve">
+    <value>Мах тыххæй</value>
+  </data>
+  <data name="tell_about_yourself" xml:space="preserve">
+    <value>Радзур дæхи тыххæй</value>
+  </data>
+  <data name="email_not_verified" xml:space="preserve">
+    <value>Дæ пост бæлвырдгонд нæу</value>
+  </data>
+  <data name="verify" xml:space="preserve">
+    <value>Сбæлвырд кæнын</value>
+  </data>
+  <data name="profile_edit_action" xml:space="preserve">
+    <value>Профиль аивын</value>
+  </data>
+  <data name="created_games" xml:space="preserve">
+    <value>Хъазт скæнын</value>
+  </data>
+  <data name="upload_game_button" xml:space="preserve">
+    <value>Загрузить игру</value>
+  </data>
+  <data name="previous_games" xml:space="preserve">
+    <value>Раздæры хъæзтытæ</value>
+  </data>
+  <data name="pagination_one_of_one" xml:space="preserve">
+    <value>иу иуæй</value>
+  </data>
+  <data name="next_games" xml:space="preserve">
+    <value>Иннæ хъазт</value>
+  </data>
+  <data name="status_inactive" xml:space="preserve">
+    <value>Неактивна</value>
+  </data>
+  <data name="download" xml:space="preserve">
+    <value>Скачать</value>
+  </data>
+  <data name="play" xml:space="preserve">
+    <value>Хъазын</value>
+  </data>
+  <data name="feature_in_development" xml:space="preserve">
+    <value>Функционал аразынц</value>
+  </data>
+  <data name="apologize_temporary_inconvenience" xml:space="preserve">
+    <value>Хатыртæ уæ курым рæстæгмæйы зындзинæдты тыххай</value>
+  </data>
+  <data name="analytics" xml:space="preserve">
+    <value>Аналитикæ</value>
+  </data>
+  <data name="action_edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="status_under_moderation" xml:space="preserve">
+    <value>Модерацийы</value>
+  </data>
+  <data name="moderation_feedback_email" xml:space="preserve">
+    <value>Для обратной связи с модерацией используйте почту: rudzyng@yandex.ru</value>
+  </data>
+  <data name="feedback" xml:space="preserve">
+    <value>Обратная связь</value>
+  </data>
+  <data name="create_first_game_promo" xml:space="preserve">
+    <value>Скæн дæ фыццаг хъазт</value>
+  </data>
+  <data name="create_game" xml:space="preserve">
+    <value>Хъазт скæнын</value>
+  </data>
+  <data name="game_history" xml:space="preserve">
+    <value>Хъæзтыты истори</value>
+  </data>
+  <data name="view_all" xml:space="preserve">
+    <value>Иууылдæр фенын</value>
+  </data>
+  <data name="discover_new_games" xml:space="preserve">
+    <value>Байгом кæн ног хъæзтытæ фенынмæ</value>
+  </data>
+  <data name="find_games" xml:space="preserve">
+    <value>Хъæзтытæ ссарын</value>
+  </data>
+  <data name="close_modal_window" xml:space="preserve">
+    <value>Сыхкæнын модалон рудзынг</value>
+  </data>
+  <data name="profile_modal_edit_title" xml:space="preserve">
+    <value>Профиль сраст кæнын</value>
+  </data>
+  <data name="avatar" xml:space="preserve">
+    <value>Аватар</value>
+  </data>
+  <data name="upload_new_photo" xml:space="preserve">
+    <value>Ног къам арвитын</value>
+  </data>
+  <data name="action_cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="action_save" xml:space="preserve">
+    <value>Бахъуыды кæнын</value>
+  </data>
+  <data name="download_confirmation_title" xml:space="preserve">
+    <value>Подтверждение скачивания</value>
+  </data>
+  <data name="download_desktop_only_warning" xml:space="preserve">
+    <value>Вы собираетесь скачать игру, которую можно запустить только на компьютере. Продолжить?</value>
+  </data>
+  <data name="action_change" xml:space="preserve">
+    <value>Баивын</value>
+  </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>Ивындзинæдтæ бахъуыды кæнын</value>
+  </data>
+  <data name="no_game_with_name_found" xml:space="preserve">
+    <value>Хъæзтытæ номимæ (ном) нæй</value>
+  </data>
+  <data name="no_such_games_exist" xml:space="preserve">
+    <value>æвæццæгæн, ахæм хъæзтытæ æрма нæй</value>
+  </data>
+  <data name="game_categories" xml:space="preserve">
+    <value>Хъæзтыты категори</value>
+  </data>
+  <data name="learn_ossetian_by_categories" xml:space="preserve">
+    <value>Ахуыр кæн ирон æвзаг категоритæм гæсгæ</value>
+  </data>
+  <data name="choose_category_description" xml:space="preserve">
+    <value>Цы категори дæ цымыдиссаг кæны, уый равзар æмæ дзы ссар хъæзтытæ, кæцытæ дын баххуыс кæндзысты дæ фæлтæрддзинад фæхуыздæр кæнын</value>
+  </data>
+  <data name="all_categories" xml:space="preserve">
+    <value>Категоритæ иууылдæр</value>
+  </data>
+  <data name="choose_category_to_learn" xml:space="preserve">
+    <value>Равзар категори ахуыр кæнымнæ</value>
+  </data>
+  <data name="category_culture" xml:space="preserve">
+    <value>Культурæ</value>
+  </data>
+  <data name="category_culture_desc" xml:space="preserve">
+    <value>Ахуыр кæн ирон æгъдæуттæ, фæтк, æмæ культурæ</value>
+  </data>
+  <data name="category_reading" xml:space="preserve">
+    <value>Кæсын</value>
+  </data>
+  <data name="category_reading_desc" xml:space="preserve">
+    <value>Иронау кæсыны æмæ æмбарыны фæлтæрддзынад фæхуыздæр кæн.</value>
+  </data>
+  <data name="category_vocabulary" xml:space="preserve">
+    <value>Дзырдуатон сконд</value>
+  </data>
+  <data name="category_vocabulary_desc" xml:space="preserve">
+    <value>Дæ дзырдуатон сконд фæфылдæр кæн æмæ ахуыр кæн ног ныхæстæ</value>
+  </data>
+  <data name="category_grammar" xml:space="preserve">
+    <value>Грамматикæ</value>
+  </data>
+  <data name="category_grammar_desc" xml:space="preserve">
+    <value>Ахуыр кæн грамматикон закъæттæ æмæ хъыдыйады хæйттæ</value>
+  </data>
+  <data name="category_listening" xml:space="preserve">
+    <value>Хъусын</value>
+  </data>
+  <data name="category_listening_desc" xml:space="preserve">
+    <value>Тренируй восприятие осетинской речи на слух</value>
+  </data>
+  <data name="category_pronunciation" xml:space="preserve">
+    <value>Произношение</value>
+  </data>
+  <data name="category_pronunciation_desc" xml:space="preserve">
+    <value>Улучшай произношение и интонацию</value>
+  </data>
+  <data name="games_in_category" xml:space="preserve">
+    <value>(Цыдæр) категорийы хъæзтытæ</value>
+  </data>
+  <data name="categories_title" xml:space="preserve">
+    <value>Категоритæ</value>
+  </data>
+  <data name="games_for_learning_skill" xml:space="preserve">
+    <value>Игры для изучения (какого-то навыка) в осетинском языке</value>
+  </data>
+  <data name="total_in_category" xml:space="preserve">
+    <value>Иууыл категорийы</value>
+  </data>
+  <data name="no_games_in_category_yet" xml:space="preserve">
+    <value>Ацы категорийы æрма хъæзтытæ нæй</value>
+  </data>
+  <data name="working_on_new_games_for_skill" xml:space="preserve">
+    <value>Мах кусæм ног хъазт бафтауыныл, цæмæй ахуыр кæнай ()</value>
+  </data>
+  <data name="back_to_categories" xml:space="preserve">
+    <value>Раздæхын категоритæм</value>
+  </data>
+  <data name="other_categories" xml:space="preserve">
+    <value>æндæр категоритæ</value>
+  </data>
+  <data name="filter_trending" xml:space="preserve">
+    <value>Актуально</value>
+  </data>
+  <data name="news_and_updates" xml:space="preserve">
+    <value>Ног хабæрттæ</value>
+  </data>
+  <data name="badge_event" xml:space="preserve">
+    <value>событие</value>
+  </data>
+  <data name="popular_news" xml:space="preserve">
+    <value>Популярные новости</value>
+  </data>
+  <data name="filter_all" xml:space="preserve">
+    <value>Иууылдæр</value>
+  </data>
+  <data name="filter_new_games" xml:space="preserve">
+    <value>Ног хъæзтытæ</value>
+  </data>
+  <data name="filter_updates" xml:space="preserve">
+    <value>Обновления</value>
+  </data>
+  <data name="filter_events" xml:space="preserve">
+    <value>События</value>
+  </data>
+  <data name="filter_development" xml:space="preserve">
+    <value>Разработка</value>
+  </data>
+  <data name="filter_learning" xml:space="preserve">
+    <value>Ахуырад</value>
+  </data>
+  <data name="stats_title" xml:space="preserve">
+    <value>Статистикæ</value>
+  </data>
+  <data name="stats_active_players_count" xml:space="preserve">
+    <value>(Цалдæр) хъазæгы</value>
+  </data>
+  <data name="stats_games_on_platform_count" xml:space="preserve">
+    <value>(Цалдæр) хъазты платформæйы</value>
+  </data>
+  <data name="stats_languages_to_learn_count" xml:space="preserve">
+    <value>(Цалдæр) æвзаджы ахуыр кæнынмæ</value>
+  </data>
+  <data name="stats_average_rating" xml:space="preserve">
+    <value>(какой-то) средний рейтинг</value>
+  </data>
+  <data name="games_list_title" xml:space="preserve">
+    <value>Хъæзтыты список</value>
+  </data>
+  <data name="filter_platform" xml:space="preserve">
+    <value>Платформæ</value>
+  </data>
+  <data name="filter_all_platforms" xml:space="preserve">
+    <value>Платформæтæ иууылдæр</value>
+  </data>
+  <data name="platform_web_mobile" xml:space="preserve">
+    <value>Веб-мобильная</value>
+  </data>
+  <data name="platform_web_desktop" xml:space="preserve">
+    <value>Веб-компьютерная</value>
+  </data>
+  <data name="platform_downloadable" xml:space="preserve">
+    <value>Для скачивания</value>
+  </data>
+  <data name="action_search" xml:space="preserve">
+    <value>Ссарын</value>
+  </data>
+  <data name="action_reset_filter" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="active_filters_label" xml:space="preserve">
+    <value>Активные фильтры:</value>
+  </data>
+  <data name="action_clear_all_filters" xml:space="preserve">
+    <value>Алцыдæр сыхалын</value>
+  </data>
+  <data name="search_keywords_label" xml:space="preserve">
+    <value>Ключевые слова</value>
+  </data>
+  <data name="filter_history" xml:space="preserve">
+    <value>Истори</value>
+  </data>
+  <data name="filter_language" xml:space="preserve">
+    <value>æвзаг</value>
+  </data>
+  <data name="filter_rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="games_search_results_query" xml:space="preserve">
+    <value>Игры по запросу: (какой-то запрос)</value>
+  </data>
+  <data name="status_loading" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="status_searching_games" xml:space="preserve">
+    <value>Ер агурæм хъазт</value>
+  </data>
+  <data name="action_more_details" xml:space="preserve">
+    <value>Бæлвырддæр</value>
+  </data>
+  <data name="toast_platform_filter_reset" xml:space="preserve">
+    <value>Фильтр платформы сброшен</value>
+  </data>
+  <data name="toast_all_filters_cleared" xml:space="preserve">
+    <value>Все фильтры очищены</value>
+  </data>
+  <data name="promo_find_game_interests" xml:space="preserve">
+    <value>Цы дæ цымыдиссаг кæны, уыцы хъазт ссар</value>
+  </data>
+  <data name="promo_categories_explanation" xml:space="preserve">
+    <value>Мах адих кодтам хъæзтытæ категоритыл, цæмæй дæуæн æнцондæр уа ссарын, дæ зæрдæмæ цы цæуы, уый</value>
+  </data>
+  <data name="action_view_all_categories" xml:space="preserve">
+    <value>Се 'ппæт категоритыдæр фенын</value>
+  </data>
+  <data name="feature_learn_traditions" xml:space="preserve">
+    <value>Ахуыр кæн æгъдæуттæ æмæ фæтк</value>
+  </data>
+  <data name="feature_develop_reading" xml:space="preserve">
+    <value>Дæ кæсыны фæлтæрддзинад фæуæлдæр кæн</value>
+  </data>
+  <data name="feature_expand_vocabulary" xml:space="preserve">
+    <value>Дæ дзырдуат фæфылдæр кæн</value>
+  </data>
+  <data name="feature_learn_grammar" xml:space="preserve">
+    <value>Изучай правила грамматики</value>
+  </data>
+  <data name="faq_whats_new" xml:space="preserve">
+    <value>Ногæй цы и?</value>
+  </data>
+  <data name="faq_help_look_here" xml:space="preserve">
+    <value>Хууыс дæ хъæуы? Ам æй фен</value>
+  </data>
+  <data name="faq_collected_answers_desc" xml:space="preserve">
+    <value>Ам мах сымбырд кодтам дзуæппытæ, æппæты арæхдæр фарстатæн нæ платформæйы тыххæй.</value>
+  </data>
+  <data name="faq_ask_question_button" xml:space="preserve">
+    <value>Бафæрсын</value>
+  </data>
+  <data name="faq_question_registration" xml:space="preserve">
+    <value>Кыд ныффыссон мæхы платформæйы</value>
+  </data>
+  <data name="faq_answer_registration" xml:space="preserve">
+    <value>Чтобы зарегистрироваться, нажмите кнопку 'Регистрация' в правом верхнем углу страницы и заполните необходимые поля. После этого подтвердите свой email, перейдя по ссылке в письме.</value>
+  </data>
+  <data name="faq_question_find_game" xml:space="preserve">
+    <value>Куыд ссарон хъазт?</value>
+  </data>
+  <data name="faq_answer_find_game" xml:space="preserve">
+    <value>Используйте поиск по названию или фильтры по категориям, уровню сложности и типу игры. Также можете просматривать популярные игры на главной странице.</value>
+  </data>
+  <data name="faq_question_is_free" xml:space="preserve">
+    <value>Лæвар у ацы платформæ?</value>
+  </data>
+  <data name="faq_answer_is_free" xml:space="preserve">
+    <value>О, нæ платформæ у лæвар алкæмæндæр. Дæ бон у хъазын кæдфæндыдæр æмæ цасфæндыдæр</value>
+  </data>
+  <data name="faq_question_teacher_usage" xml:space="preserve">
+    <value>æз дæн ахуыргæнæг. Куыд у мæ бон ацы платформæйæ спайда кæнын къласы</value>
+  </data>
+  <data name="faq_answer_teacher_usage" xml:space="preserve">
+    <value>Платформа отлично подходит для образовательных целей. Вы можете рекомендовать игры ученикам, отслеживать их прогресс и использовать игры как дополнительный материал на уроках.</value>
+  </data>
+  <data name="faq_question_developer_upload" xml:space="preserve">
+    <value>æз дæн хъæзтытæгæнæг. Куыд у мæ бон мæ хъазт арбæм баппарын?</value>
+  </data>
+  <data name="faq_answer_developer_upload" xml:space="preserve">
+    <value>Перейдите в раздел "Загрузить игру" и следуйте инструкциям. Вам нужно будет заполнить форму с информацией об игре и загрузить файлы.</value>
+  </data>
+  <data name="faq_question_game_requirements" xml:space="preserve">
+    <value>Цавæр хъуамæ уа хъазт, цæмæй йæ уа ацы платформæмæ баппарын?</value>
+  </data>
+  <data name="faq_answer_game_requirements" xml:space="preserve">
+    <value>Хъазт хъуамæ уа баст ирон æвзагимæ, Ахуыркæнынмæ пайда уа æмæ бæзза платформæйы техникон домæнтæм гæскæ</value>
+  </data>
+  <data name="dev_info_title" xml:space="preserve">
+    <value>Информаци аразджытæн</value>
+  </data>
+  <data name="dev_section_navigation" xml:space="preserve">
+    <value>Навигация по разделу</value>
+  </data>
+  <data name="dev_rules" xml:space="preserve">
+    <value>Правила</value>
+  </data>
+  <data name="game_release_date" xml:space="preserve">
+    <value>Кæд рацид</value>
+  </data>
+  <data name="game_developed_skills" xml:space="preserve">
+    <value>Развиваемые навыки</value>
+  </data>
+  <data name="nav_players" xml:space="preserve">
+    <value>Хъазджытæ</value>
+  </data>
+  <data name="nav_teachers" xml:space="preserve">
+    <value>Ахуыргæнджытæ</value>
+  </data>
+  <data name="game_count_label" xml:space="preserve">
+    <value>Хъæзтыты бæрц (цалдæр хъазты)</value>
+  </data>
+  <data name="upload_game_page_title" xml:space="preserve">
+    <value>Хъазт баппарын</value>
+  </data>
+  <data name="dev_read_docs_notice" xml:space="preserve">
+    <value>Ознакомьтесь с нашей документацией для разработчиков перед публикацией вашего проекта.</value>
+  </data>
+  <data name="form_fix_errors_prompt" xml:space="preserve">
+    <value>Дæ хорзæхæй, сраст ма кæн ацы рæдыдтæ</value>
+  </data>
+  <data name="field_game_title" xml:space="preserve">
+    <value>Хъазты ном</value>
+  </data>
+  <data name="field_game_title_placeholder" xml:space="preserve">
+    <value>Ныффис хъазт куыд хъуыйны, уый</value>
+  </data>
+  <data name="field_game_short_description" xml:space="preserve">
+    <value>Цыбыртæй хъазты тыххæй (200-йы онг дамгъæйы)</value>
+  </data>
+  <data name="field_game_short_description_placeholder" xml:space="preserve">
+    <value>Кратко опишите сюжет или суть игры</value>
+  </data>
+  <data name="field_game_rules" xml:space="preserve">
+    <value>Хъазты уагæвæрдтæ</value>
+  </data>
+  <data name="field_game_rules_placeholder" xml:space="preserve">
+    <value>Ныффыс хъазты уагæвæрдты тыххæй</value>
+  </data>
+  <data name="field_game_platform_label" xml:space="preserve">
+    <value>Равзар платформæ дæ хъазтæн</value>
+  </data>
+  <data name="field_game_platform_placeholder" xml:space="preserve">
+    <value>Равзар платформæ</value>
+  </data>
+  <data name="field_game_file" xml:space="preserve">
+    <value>Хъазты файл</value>
+  </data>
+  <data name="field_game_file_dropzone" xml:space="preserve">
+    <value>Загрузите или перетащите игру сюда (MSI)</value>
+  </data>
+  <data name="field_game_file_max_size_2gb" xml:space="preserve">
+    <value>Максимальный размер 2 ГБ</value>
+  </data>
+  <data name="field_skills_prompt" xml:space="preserve">
+    <value>Выберите развиваемые навыки, соответствующие вашей игре</value>
+  </data>
+  <data name="field_skills_placeholder" xml:space="preserve">
+    <value>Выберите развиваемые навыки</value>
+  </data>
+  <data name="search_skills_placeholder" xml:space="preserve">
+    <value>Поиск навыков</value>
+  </data>
+  <data name="action_select_all" xml:space="preserve">
+    <value>Иууылдæр равзарын</value>
+  </data>
+  <data name="field_level" xml:space="preserve">
+    <value>Уровень</value>
+  </data>
+  <data name="level_lamb_desc" xml:space="preserve">
+    <value>"Фыс, кæцы хъавы дзурын" - Цыдæртæ хъым-хъым кæныс, фæлæ дæ æрма зын æмбарæн у</value>
+  </data>
+  <data name="level_young_nart_desc" xml:space="preserve">
+    <value>«Юный нарт» – уже умеешь составлять предложения и понимаешь базовые правила языка.</value>
+  </data>
+  <data name="level_caucasian_eagle_desc" xml:space="preserve">
+    <value>«Кавказский орёл» – уверенно говоришь, строишь сложные фразы и можешь поддержать разговор.</value>
+  </data>
+  <data name="level_elder_toast_desc" xml:space="preserve">
+    <value>«Старейшина, который говорит тосты» – свободно владеешь языком, понимаешь тонкости и культурные нюансы.</value>
+  </data>
+  <data name="level_keeper_of_language_desc" xml:space="preserve">
+    <value>«Хранитель языка» – ты достиг вершины мастерства, твой язык – как песня гор, а слова – как мудрость веков.</value>
+  </data>
+  <data name="field_github_repo_link" xml:space="preserve">
+    <value>Ссылка на репозиторий GitHub игры</value>
+  </data>
+  <data name="field_game_cover" xml:space="preserve">
+    <value>Хъазты цъар</value>
+  </data>
+  <data name="field_game_cover_hint" xml:space="preserve">
+    <value>Прикрепите фото обложки игры резмером 512×512</value>
+  </data>
+  <data name="dropzone_upload_or_drag_file" xml:space="preserve">
+    <value>Загрузите или перетащите файл</value>
+  </data>
+  <data name="field_cover_max_size_30mb" xml:space="preserve">
+    <value>Максимальный размер 30MB</value>
+  </data>
+  <data name="field_vk_video_link" xml:space="preserve">
+    <value>Ссылка на видео из VK</value>
+  </data>
+  <data name="field_video_hint" xml:space="preserve">
+    <value>Прикрепите видео размером 640×360 или в соотношении 16:9</value>
+  </data>
+  <data name="field_video_url_placeholder" xml:space="preserve">
+    <value>Вставьте URL адрес видео</value>
+  </data>
+  <data name="field_game_screenshots" xml:space="preserve">
+    <value>Скриншоты игры</value>
+  </data>
+  <data name="field_screenshots_hint" xml:space="preserve">
+    <value>Прикрепите до 3 скриншотов игры размером 640×360 или в соотношении 16:9</value>
+  </data>
+  <data name="dropzone_upload_or_drag_files" xml:space="preserve">
+    <value>Загрузите или перетащите файлы</value>
+  </data>
+  <data name="action_publish_game" xml:space="preserve">
+    <value>Опубликовать игру</value>
+  </data>
+  <data name="games_list_page_title" xml:space="preserve">
+    <value>Сипсок игр</value>
+  </data>
+  <data name="favorites_empty_state" xml:space="preserve">
+    <value>У вас ещё нет избранных игр</value>
+  </data>
+  <data name="action_to_all_games_list" xml:space="preserve">
+    <value>К списку всех игр</value>
+  </data>
+  <data name="action_find_game" xml:space="preserve">
+    <value>Найти игру</value>
+  </data>
+  <data name="favorite_games_title" xml:space="preserve">
+    <value>Избранные игры</value>
+  </data>
+  <data name="dev_section_title" xml:space="preserve">
+    <value>Для разработчиков</value>
+  </data>
+  <data name="dev_web_mobile_title" xml:space="preserve">
+    <value>Web-Mobile приложения</value>
+  </data>
+  <data name="dev_web_mobile_desc" xml:space="preserve">
+    <value>Web-Mobile приложения — это игры и образовательные приложения, разработанные с использованием веб-технологий (HTML5, CSS, JavaScript), которые оптимизированы для работы на мобильных устройствах через браузер. Они обеспечивают кроссплатформенную доступность и не требуют установки.</value>
+  </data>
+  <data name="dev_instructions_title" xml:space="preserve">
+    <value>Инструкции для разработчиков</value>
+  </data>
+  <data name="dev_guide_step_1_title" xml:space="preserve">
+    <value>1. Подготовка приложения</value>
+  </data>
+  <data name="dev_guide_step_1_desc" xml:space="preserve">
+    <value>Создайте приложение, используя HTML5, CSS, и JavaScript. Убедитесь, что оно адаптивно и работает на устройствах с разными размерами экрана (от 320px до 768px). Используйте фреймворки, такие как Phaser для игр или React для интерактивных приложений.</value>
+  </data>
+  <data name="dev_guide_step_2_title" xml:space="preserve">
+    <value>2. Тестирование</value>
+  </data>
+  <data name="dev_guide_step_2_desc" xml:space="preserve">
+    <value>Проверьте приложение на популярных мобильных браузерах (Chrome, Safari, Firefox). Убедитесь, что оно соответствует стандартам WCAG 2.1 для доступности. Проверьте производительность с помощью инструментов, таких как Lighthouse.</value>
+  </data>
+  <data name="dev_guide_step_3_title" xml:space="preserve">
+    <value>3. Подготовка метаданных</value>
+  </data>
+  <data name="dev_guide_step_3_desc" xml:space="preserve">
+    <value>оздайте привлекательную обложку (рекомендуемый размер: 294x424px), подготовьте скриншоты и описание. Укажите категории (например, "Словарный запас", "Грамматика") и ключевые слова для поиска.</value>
+  </data>
+  <data name="dev_guide_step_4_title" xml:space="preserve">
+    <value>4. Публикация</value>
+  </data>
+  <data name="dev_guide_step_4_desc" xml:space="preserve">
+    <value>Загрузите приложение через форму на странице Загрузка игры. Укажите URL игры или загрузите ZIP-архив. После проверки модератором приложение станет доступным в разделе "Рекомендуемые игры".</value>
+  </data>
+  <data name="dev_web_desktop_title" xml:space="preserve">
+    <value>Web-Desktop приложения</value>
+  </data>
+  <data name="dev_web_desktop_desc" xml:space="preserve">
+    <value>Web-Desktop приложения — это веб-приложения, оптимизированные для работы в браузерах на настольных компьютерах. Они подходят для более сложных образовательных игр, требующих большего экрана и производительности.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_1" xml:space="preserve">
+    <value>Разработайте приложение с использованием HTML5, CSS, и JavaScript. Рекомендуется использовать canvas или WebGL для сложных визуальных эффектов. Убедитесь, что интерфейс удобен для работы с мышью и клавиатурой.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_2" xml:space="preserve">
+    <value>Проверьте приложение в Chrome, Firefox, и Edge. Оптимизируйте производительность для экранов с разрешением от 1280x720px. Используйте инструменты, такие как Chrome DevTools, для отладки.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_3" xml:space="preserve">
+    <value>Подготовьте обложку (294x424px), скриншоты, и подробное описание. Укажите уровень сложности (например, "Юный нарт" или "Кавказский орёл") и категории.</value>
+  </data>
+  <data name="dev_web_desktop_guide_step_4" xml:space="preserve">
+    <value>Загрузите приложение через форму на странице Загрузка игры. Предоставьте URL или ZIP-архив. После проверки приложение появится в каталоге.</value>
+  </data>
+  <data name="dev_desktop_apps_title" xml:space="preserve">
+    <value>Desktop приложения</value>
+  </data>
+  <data name="dev_desktop_apps_desc" xml:space="preserve">
+    <value>Desktop приложения — это автономные программы для Windows, macOS или Linux, которые пользователи загружают и устанавливают. Они подходят для сложных образовательных приложений с высокой интерактивностью.</value>
+  </data>
+  <data name="dev_desktop_guide_step_1" xml:space="preserve">
+    <value>Разработайте приложение, используя подходящий язык (например, C++, Python с Pygame, или Unity). Убедитесь, что оно поддерживает популярные ОС (Windows, macOS, Linux).</value>
+  </data>
+  <data name="dev_desktop_guide_step_2" xml:space="preserve">
+    <value>Проверьте приложение на целевых платформах. Убедитесь, что оно не содержит ошибок и соответствует требованиям безопасности. Проверьте установочный файл (EXE, DMG, или AppImage).</value>
+  </data>
+  <data name="dev_desktop_guide_step_3" xml:space="preserve">
+    <value>Создайте обложку (294x424px), скриншоты, и описание. Укажите системные требования и поддерживаемые ОС.</value>
+  </data>
+  <data name="dev_desktop_guide_step_4" xml:space="preserve">
+    <value>Загрузите установочный файл (ZIP, RAR, APK, EX выступает, DMG) через форму на странице Загрузка игры После проверки приложение станет доступным для скачивания.</value>
+  </data>
+  <data name="auth_email_verification_title" xml:space="preserve">
+    <value>Подтверждение почты</value>
+  </data>
+  <data name="action_back" xml:space="preserve">
+    <value>Фæстæмæ</value>
+  </data>
+  <data name="auth_verify_email_publish_prompt" xml:space="preserve">
+    <value>Для публикации собственных игр вам необходимо подтвердить свою почту</value>
+  </data>
+  <data name="auth_verify_email_instructions" xml:space="preserve">
+    <value>Для подтверждения почты вам будет выслано пиьсмо с ссылкой, по которой надо перейти. Чтобы получить письмо нажмите на кнопку</value>
+  </data>
+  <data name="action_send_email" xml:space="preserve">
+    <value>Арвитын фыстæг</value>
+  </data>
+  <data name="auth_email_verification_error" xml:space="preserve">
+    <value>Ошибка при подтверждении почты</value>
+  </data>
+  <data name="error_try_again_later" xml:space="preserve">
+    <value>Фæстæдæр иу бафæлвар</value>
+  </data>
+  <data name="action_go_to_home" xml:space="preserve">
+    <value>Сæйраг фарсмæ рахизын</value>
+  </data>
+  <data name="auth_verification_email_sent" xml:space="preserve">
+    <value>Вам отправлено письмо для подтверждения</value>
+  </data>
+  <data name="auth_follow_email_link_notice" xml:space="preserve">
+    <value>Чтобы подтвердить почту, перейдите по ссылке из письма</value>
+  </data>
+  <data name="auth_email_verified_success" xml:space="preserve">
+    <value>Ваша почта подтверждена</value>
+  </data>
+  <data name="auth_can_publish_games_notice" xml:space="preserve">
+    <value>Теперь вы может публиковать собственные игры</value>
+  </data>
+  <data name="auth_forgot_password" xml:space="preserve">
+    <value>Ферох кодтай пароль</value>
+  </data>
+  <data name="auth_password_reset_rate_limit" xml:space="preserve">
+    <value>æгæр арæх ивыс дæ пароль. Фæстæдæр иу бафæлвар</value>
+  </data>
+  <data name="auth_password_reset_sent_desc" xml:space="preserve">
+    <value>На вашу почту отправлено письмо с ссылкой для сброса пароля. Если не находите письмо, проверьте папку спама</value>
+  </data>
+  <data name="field_enter_email_placeholder" xml:space="preserve">
+    <value>Дæ электронон пост ныффыс</value>
+  </data>
+  <data name="action_continue" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+  <data name="auth_authorization_title" xml:space="preserve">
+    <value>Авторизация</value>
+  </data>
+  <data name="auth_login_tab" xml:space="preserve">
+    <value>Бахизын</value>
+  </data>
+  <data name="field_enter_password_placeholder" xml:space="preserve">
+    <value>Введите пароль</value>
+  </data>
+  <data name="auth_login_via_vk" xml:space="preserve">
+    <value>Вконтактейы уылты бахизын</value>
+  </data>
+  <data name="auth_not_registered_prompt" xml:space="preserve">
+    <value>Ещё не зарегистрированы?</value>
+  </data>
+  <data name="auth_sign_up_button" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+  </data>
+  <data name="action_reset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="auth_registration_tab" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="field_password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="field_confirm_password" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+  </data>
+  <data name="auth_password_reset_title" xml:space="preserve">
+    <value>Сброс пароля</value>
+  </data>
+  <data name="action_change_password" xml:space="preserve">
+    <value>Сменить пароль</value>
+  </data>
+  <data name="auth_error" xml:space="preserve">
+    <value>Ошибка авторизации</value>
+  </data>
+  <data name="auth_try_another_login_method" xml:space="preserve">
+    <value>æндæр хуызон быхизын бафæлвар</value>
+  </data>
+  <data name="auth_vk_no_email_error" xml:space="preserve">
+    <value>К вашему аккаунту вк не привязана почта. Попробуйте авторизоваться через другой аккаунт вк или войти с помощью почты</value>
+  </data>
+  <data name="action_start_playing" xml:space="preserve">
+    <value>Райдайын хъазын</value>
+  </data>
+  <data name="hero_platform_description" xml:space="preserve">
+    <value>На нашей платформе ты найдешь игры для любого возраста и уровня подготовки. Учи слова, грамматику, слушай осетинскую речь и погружайся в культуру Осетии – все в игровой форме!</value>
+  </data>
+  <data name="hero_banner_slogan" xml:space="preserve">
+    <value>Ирон æвзаг, ды кыд хъуыды кæныс, уымæй хæстæгдæр у</value>
+  </data>
+  <data name="action_join" xml:space="preserve">
+    <value>рбамбæлын</value>
   </data>
 </root>
