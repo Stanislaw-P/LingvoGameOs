@@ -26,7 +26,6 @@ namespace LingvoGameOs.Controllers
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly IFileStorage _fileStorage;
         readonly GameSessionService _sessionService;
-        readonly IGameSessionRepository _sessionRepository;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -40,8 +39,7 @@ namespace LingvoGameOs.Controllers
             IConfiguration configuration,
             IFavoriteGamesRepository favoriteGamesRepository,
             IFileStorage fileStorage,
-            GameSessionService sessionService,
-            IGameSessionRepository sessionRepository)
+            GameSessionService sessionService)
         {
             _configuration = configuration;
 
@@ -56,7 +54,6 @@ namespace LingvoGameOs.Controllers
             _favoriteGamesRepository = favoriteGamesRepository;
             _fileStorage = fileStorage;
             _sessionService = sessionService;
-            _sessionRepository = sessionRepository;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -102,9 +99,10 @@ namespace LingvoGameOs.Controllers
                 existingGame.GameFolderName = "temp";
 
             string gameFolder =
-                _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
+                _configuration["GAMES_FOLDER_PATH"]
+                ?? (_configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
                     ? Constants.YandexCloudGameFolderPath
-                    : Constants.TimeWebCloudGameFolderPath;
+                    : Constants.TimeWebCloudGameFolderPath);
 
             string runningScript = Path.Combine(gameFolder, existingGame.GameFolderName, "run.sh");
 
@@ -144,7 +142,7 @@ namespace LingvoGameOs.Controllers
 
             var runningProcess = new ProcessStartInfo
             {
-                FileName = "/bin/bash",
+                FileName = OperatingSystem.IsWindows() ? "bash" : "/bin/bash",
                 Arguments = runningScript,
                 WorkingDirectory = Path.GetDirectoryName(runningScript),
                 UseShellExecute = false,
@@ -157,17 +155,16 @@ namespace LingvoGameOs.Controllers
 
                 if (currentUser != null)
                 {
-                    var existingSession = await _sessionRepository.TryGetAsync(currentUser.Id, existingGame.Id);
+                    // каждая игровая сессия выдаётся заново: старая не переиспользуется
+                    var gameSession = await _sessionService.CreateGameSessionAsync(currentUser.Id, existingGame.Id);
+                    ViewBag.GameSessionId = gameSession.Id;
 
-                    if (existingSession == null)
-                    {
-                        var gameSession = await _sessionService.CreateGameSessionAsync(currentUser.Id, existingGame.Id);
-                        ViewBag.GameSessionId = gameSession.Id;
-                    }
-                    else
-                    {
-                        ViewBag.GameSessionId = existingSession.Id;
-                    }
+                    // HMAC-подпись сессии: игра прикладывает её к POST /api/score,
+                    // API сверяет — чужой запрос без подписи отклоняется
+                    var apiSecret = _configuration["GAMES_API_SECRET"]
+                        ?? throw new InvalidOperationException("GAMES_API_SECRET is not configured");
+                    ViewBag.GameSessionToken = LingvoGameOs.Shared.Services.GameSessionHmac
+                        .Compute(gameSession.Id, apiSecret);
                 }
 
                 string? URL =

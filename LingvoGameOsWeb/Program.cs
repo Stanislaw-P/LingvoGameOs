@@ -19,7 +19,8 @@ using LingvoGameOs.Shared.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Load environment variables from .env file
-Env.Load();
+// overwrite: false — переменные окружения (docker compose) приоритетнее файла
+Env.Load(options: new LoadOptions(clobberExistingVars: false));
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
@@ -33,7 +34,8 @@ var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "De
     ? Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_YANDEX")
     : Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_TimeWeb");
 
-var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
+var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+var connectionString = $"Host={dbHost};Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
@@ -168,6 +170,13 @@ app.UseUnobtrusiveAjax();
 
 // Uncomment to enable Serilog request logging
 //app.UseSerilogRequestLogging();
+
+// Миграции применяются один раз при старте (не в каждом scoped DbContext)
+using (var serviceScope = app.Services.CreateScope())
+{
+    var db = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    db.Database.Migrate();
+}
 
 // Initialize identity system with default roles and users
 using (var serviceScope = app.Services.CreateScope())

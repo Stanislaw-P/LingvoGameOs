@@ -1,4 +1,4 @@
 ﻿namespace LingvoGameOsWebApi.Models
 {
-    public record GameScoreRequest(int gameSessionId, int score);
+    public record GameScoreRequest(int gameSessionId, int score, string? token);
 }

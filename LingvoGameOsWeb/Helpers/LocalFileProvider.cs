@@ -189,15 +189,29 @@ namespace LingvoGameOs.Helpers
         }
 
         // Для файлов игр
+        // Разрешённые расширения файлов игр
+        static readonly HashSet<string> AllowedGameExtensions = new(StringComparer.OrdinalIgnoreCase)
+        { ".msi", ".zip", ".rar" };
+
         public async Task<string?> SaveGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, Folders folder)
         {
             if (uploadedFile == null)
                 return null;
+
+            var extension = Path.GetExtension(uploadedFile.FileName);
+            if (!AllowedGameExtensions.Contains(extension))
+                throw new InvalidOperationException($"Недопустимое расширение файла игры: '{extension}'. Разрешены: {string.Join(", ", AllowedGameExtensions)}");
+
+            // санитайз имени: только безопасные для файловой системы символы
+            var safeTitle = string.Concat(gameTitle.Where(ch => !Path.GetInvalidFileNameChars().Contains(ch) && ch != '/')).Trim();
+            if (string.IsNullOrEmpty(safeTitle))
+                safeTitle = $"game-{gameId}";
+
             string folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
-            string fileName = gameTitle + "." + uploadedFile.FileName.Split('.').Last();
+            string fileName = safeTitle + extension;
             string path = Path.Combine(folderPath, fileName);
 
             using (var fileStream = new FileStream(path, FileMode.Create))
