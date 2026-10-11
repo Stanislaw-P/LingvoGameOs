@@ -15,6 +15,38 @@ if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
     throw "Docker CLI not found. Install Docker Desktop and try again."
 }
 
+function Initialize-GameSubmodules {
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        throw "Git CLI not found. It is required to initialize the game submodules."
+    }
+
+    if (-not (Test-Path (Join-Path $projectRoot ".gitmodules"))) {
+        throw "Missing .gitmodules. Clone LingvoGameOs from Git instead of deploying a plain git archive."
+    }
+
+    & git -C $projectRoot rev-parse --is-inside-work-tree *> $null
+    if ($LASTEXITCODE -ne 0) {
+        throw "LingvoGameOs is not a Git checkout. Clone it with --recurse-submodules."
+    }
+
+    & git -C $projectRoot submodule sync --recursive
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to synchronize game submodule URLs."
+    }
+
+    & git -C $projectRoot submodule update --init --recursive
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to checkout the pinned game versions. Check Git access to every game repository."
+    }
+
+    if ($Target -eq "server") {
+        & git -C $projectRoot submodule foreach --quiet --recursive 'test -z "$(git status --porcelain)"'
+        if ($LASTEXITCODE -ne 0) {
+            throw "Server deploy refused: at least one game submodule contains uncommitted changes."
+        }
+    }
+}
+
 if ($Target -eq "local") {
     $localEnv = Join-Path $projectRoot ".env.local"
     $envFile = if (Test-Path $localEnv) {
@@ -53,6 +85,10 @@ function Invoke-Compose {
 }
 
 Write-Host "LingvoGameOs: target=$Target, action=$Action, env=$(Split-Path -Leaf $envFile)"
+
+if ($Action -in @("up", "build", "config")) {
+    Initialize-GameSubmodules
+}
 
 switch ($Action) {
     "up" {

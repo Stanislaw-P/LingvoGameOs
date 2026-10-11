@@ -1,0 +1,21 @@
+[submodule "games/lingvo-piece-by-piece"]
+	path = games/lingvo-piece-by-piece
+	url = https://github.com/DrunkLilith/lingvo-piece-by-piece.git
+[submodule "games/crossword-ossetia"]
+	path = games/crossword-ossetia
+	url = https://github.com/DrunkLilith/crossword-ossetia.git
+[submodule "games/linvgo-puzzles_in_ossetian"]
+	path = games/linvgo-puzzles_in_ossetian
+	url = https://github.com/DrunkLilith/linvgo-puzzles_in_ossetian.git
+[submodule "games/Who_faster"]
+	path = games/Who_faster
+	url = https://github.com/Rudzyng/Who_faster.git
+[submodule "games/iron-detective"]
+	path = games/iron-detective
+	url = https://github.com/Rudzyng/iron-detective.git
+[submodule "games/osetinckie-rebusi"]
+	path = games/osetinckie-rebusi
+	url = https://github.com/Rudzyng/osetinckie-rebusi.git
+[submodule "games/ossetian-mazaika"]
+	path = games/ossetian-mazaika
+	url = https://github.com/Rudzyng/ossetian-mazaika.git

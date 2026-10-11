@@ -20,6 +20,36 @@ command -v docker >/dev/null 2>&1 || {
   exit 1
 }
 
+prepare_game_submodules() {
+  command -v git >/dev/null 2>&1 || {
+    echo "Git CLI not found. It is required to initialize the game submodules." >&2
+    exit 1
+  }
+
+  [[ -f "$project_root/.gitmodules" ]] || {
+    echo "Missing .gitmodules. Clone LingvoGameOs from Git instead of deploying a plain git archive." >&2
+    exit 1
+  }
+
+  git -C "$project_root" rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+    echo "LingvoGameOs is not a Git checkout. Clone it with --recurse-submodules." >&2
+    exit 1
+  }
+
+  git -C "$project_root" submodule sync --recursive
+  git -C "$project_root" submodule update --init --recursive || {
+    echo "Failed to checkout the pinned game versions. Check Git access to every game repository." >&2
+    exit 1
+  }
+
+  if [[ "$target" == "server" ]] &&
+    ! git -C "$project_root" submodule foreach --quiet --recursive \
+      'test -z "$(git status --porcelain)"'; then
+    echo "Server deploy refused: at least one game submodule contains uncommitted changes." >&2
+    exit 1
+  fi
+}
+
 if [[ "$target" == "local" ]]; then
   if [[ -f "$project_root/.env.local" ]]; then
     env_file="$project_root/.env.local"
@@ -48,6 +78,10 @@ if [[ "$target" == "local" ]]; then
 fi
 
 echo "LingvoGameOs: target=$target, action=$action, env=$(basename "$env_file")"
+
+case "$action" in
+  up|build|config) prepare_game_submodules ;;
+esac
 
 case "$action" in
   up)
