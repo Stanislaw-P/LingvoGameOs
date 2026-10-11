@@ -367,3 +367,11 @@ LingvoGameOsWeb/lingvo.db-shm
 LingvoGameOsWeb/lingvo.db-wal
 
 .env*
+!.env.local.example
+!.env.server.example
+
+# Docker runtime data and legacy secret files
+/env
+/postgres-db/
+/pg-db/
+/games/

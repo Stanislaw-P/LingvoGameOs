@@ -1,0 +1,290 @@
+name: lingvogameos
+
+x-game-environment: &game-environment
+  LINGVO_API_URL: http://api:8080/api
+  PORTAL_URL: "${PORTAL_PUBLIC_URL:-${SITE_PUBLIC_HOST:?fill SITE_PUBLIC_HOST in the env file}}"
+  SECRET_KEY: "${GAMES_FLASK_SECRET:-${GAMES_API_SECRET:?fill GAMES_API_SECRET in the env file}}"
+  APP_SECRET_KEY: "${GAMES_FLASK_SECRET:-${GAMES_API_SECRET}}"
+
+x-game-service: &game-service
+  init: true
+  restart: unless-stopped
+  depends_on:
+    api:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?fill POSTGRES_USER in the env file}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?fill POSTGRES_PASSWORD in the env file}"
+      POSTGRES_DB: "${POSTGRES_DB:?fill POSTGRES_DB in the env file}"
+    volumes:
+      - "${POSTGRES_DATA_PATH:-./postgres-db}:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+  web:
+    image: "lingvogameos/web:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROJECT: LingvoGameOsWeb
+        CSPROJ: LingvoGameOsWeb/LingvoGameOs.csproj
+    init: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:?fill ASPNETCORE_ENVIRONMENT in the env file}"
+      ASPNETCORE_URLS: http://+:8080
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_PASSWORD_YANDEX: "${POSTGRES_PASSWORD}"
+      POSTGRES_PASSWORD_TimeWeb: "${POSTGRES_PASSWORD}"
+      ADMIN_USER_PASSWORD: "${ADMIN_USER_PASSWORD:?fill ADMIN_USER_PASSWORD in the env file}"
+      DEVELOPER_USER_PASSWORD: "${DEVELOPER_USER_PASSWORD:?fill DEVELOPER_USER_PASSWORD in the env file}"
+      GAMES_API_SECRET: "${GAMES_API_SECRET:?fill GAMES_API_SECRET in the env file}"
+      GAMES_FOLDER_PATH: /home/app/games
+      GAMES_MANAGED_EXTERNALLY: "true"
+      GAMES_PORTS__lingvo-piece-by-piece: "3001"
+      GAMES_PORTS__crossword-ossetia: "3002"
+      GAMES_PORTS__linvgo-puzzles_in_ossetian: "3003"
+      GAMES_PORTS__who_faster: "3004"
+      GAMES_PORTS__iron-detective: "3005"
+      GAMES_PORTS__osetinckie-rebusi: "3006"
+      GAMES_PORTS__ossetian-mazaika: "3007"
+      PRODUCTION_URL: "${SITE_PUBLIC_HOST:?fill SITE_PUBLIC_HOST in the env file}"
+      DEVELOPMENT_URL: "${SITE_PUBLIC_HOST}"
+      EMAIL_PASSWORD: "${EMAIL_PASSWORD:-}"
+      VKID_CLIENT_ID: "${VKID_CLIENT_ID:-}"
+      VKID_CLIENT_SECRET: "${VKID_CLIENT_SECRET:-}"
+      AWS_YANDEX_KEY_ID: "${AWS_YANDEX_KEY_ID:-}"
+      AWS_YANDEX_KEY: "${AWS_YANDEX_KEY:-}"
+      AWS_YANDEX_BUCKET_NAME: "${AWS_YANDEX_BUCKET_NAME:-}"
+      AWS_YANDEX_SERVICE_URL: "${AWS_YANDEX_SERVICE_URL:-}"
+      AWS_TIMEWEB_KEY_ID: "${AWS_TIMEWEB_KEY_ID:-}"
+      AWS_TIMEWEB_KEY: "${AWS_TIMEWEB_KEY:-}"
+      AWS_TIMEWEB_BUCKET_NAME: "${AWS_TIMEWEB_BUCKET_NAME:-}"
+      AWS_TIMEWEB_SERVICE_URL: "${AWS_TIMEWEB_SERVICE_URL:-}"
+    ports:
+      - "${SITE_IP:-127.0.0.1}:${SITE_PORT:-8080}:8080"
+    volumes:
+      - logs:/app/Logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+  api:
+    image: "lingvogameos/api:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROJECT: LingvoGameOsWebApi
+        CSPROJ: LingvoGameOsWebApi/LingvoGameOsWebApi.csproj
+    init: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:?fill ASPNETCORE_ENVIRONMENT in the env file}"
+      ASPNETCORE_URLS: http://+:8080
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_PASSWORD_YANDEX: "${POSTGRES_PASSWORD}"
+      POSTGRES_PASSWORD_TimeWeb: "${POSTGRES_PASSWORD}"
+      GAMES_API_SECRET: "${GAMES_API_SECRET}"
+    ports:
+      - "${SITE_IP:-127.0.0.1}:${API_PORT:-8081}:8080"
+    volumes:
+      - logs:/app/Logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      # Оба приложения вызывают Database.Migrate(). API ждёт Web, чтобы они
+      # не применяли миграции одновременно на новой базе.
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+  game-piece:
+    <<: *game-service
+    image: "lingvogameos/game-piece:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+      target: final
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/lingvo-piece-by-piece"
+    environment:
+      <<: *game-environment
+      GAME_PORT: "3001"
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3001:3001"
+    volumes:
+      - game-piece-db:/app/db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3001/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  game-crossword:
+    <<: *game-service
+    image: "lingvogameos/game-crossword:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+      target: final
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/crossword-ossetia"
+    environment:
+      <<: *game-environment
+      GAME_PORT: "3002"
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3002:3002"
+    volumes:
+      - game-crossword-db:/app/db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3002/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  game-puzzles:
+    <<: *game-service
+    image: "lingvogameos/game-puzzles:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+      target: final
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/linvgo-puzzles_in_ossetian"
+    environment:
+      <<: *game-environment
+      GAME_PORT: "3003"
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3003:3003"
+    volumes:
+      - game-puzzles-db:/app/db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  game-who-faster:
+    <<: *game-service
+    image: "lingvogameos/game-who-faster:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+      target: final
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/Who_faster/who_faster"
+    environment:
+      <<: *game-environment
+      GAME_PORT: "3004"
+      GAME_MODULE: app
+      GAME_DATABASE_PATH: /app/db/game.db
+    command:
+      - sh
+      - -c
+      - >-
+        test -f /app/db/game.db || cp /app/game.db /app/db/game.db;
+        exec python -c "import os, importlib; m = importlib.import_module(os.environ.get('GAME_MODULE','server')); m.app.run(host='0.0.0.0', port=int(os.environ.get('GAME_PORT','3001')))"
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3004:3004"
+    volumes:
+      - game-who-faster-db:/app/db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3004/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  game-iron-detective:
+    <<: *game-service
+    image: "lingvogameos/game-iron-detective:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game-dotnet
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/iron-detective"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT}"
+      ASPNETCORE_URLS: http://+:8080
+      LINGVO_API_URL: http://api:8080
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3005:8080"
+
+  game-rebusi:
+    <<: *game-service
+    image: "lingvogameos/game-rebusi:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+      target: final
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/osetinckie-rebusi"
+    environment:
+      <<: *game-environment
+      GAME_PORT: "3006"
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3006:3006"
+    volumes:
+      - game-rebusi-db:/app/db
+      - game-rebusi-content:/app/static/images/rebus
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3006/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  game-mazaika:
+    <<: *game-service
+    image: "lingvogameos/game-mazaika:${IMAGE_TAG:-local}"
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+      target: final
+      additional_contexts:
+        game: "${GAMES_SOURCE_PATH:-../games}/ossetian-mazaika"
+    environment:
+      <<: *game-environment
+      GAME_PORT: "3007"
+    ports:
+      - "${GAMES_IP:-127.0.0.1}:3007:3007"
+    volumes:
+      - game-mazaika-db:/app/db
+      - game-mazaika-content:/app/static/custom_levels
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3007/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+volumes:
+  logs:
+  game-piece-db:
+  game-crossword-db:
+  game-puzzles-db:
+  game-who-faster-db:
+  game-rebusi-db:
+  game-rebusi-content:
+  game-mazaika-db:
+  game-mazaika-content:

@@ -105,6 +105,7 @@ namespace LingvoGameOs.Controllers
                     : Constants.TimeWebCloudGameFolderPath);
 
             string runningScript = Path.Combine(gameFolder, existingGame.GameFolderName, "run.sh");
+            bool gamesManagedExternally = _configuration.GetValue<bool>("GAMES_MANAGED_EXTERNALLY");
 
             var currentUser = await _userManager.GetUserAsync(User);
             // Добавление игры в историю пользователя
@@ -120,7 +121,7 @@ namespace LingvoGameOs.Controllers
                 RequestTime = DateTimeOffset.UtcNow,
             };
 
-            if (!System.IO.File.Exists(runningScript))
+            if (!gamesManagedExternally && !System.IO.File.Exists(runningScript))
             {
                 _logger.LogError(
                     "ошибка запуска игры. отсутсвует скрипт запуска игры {@gamestartdata}",
@@ -151,7 +152,8 @@ namespace LingvoGameOs.Controllers
 
             try
             {
-                Process.Start(runningProcess);
+                if (!gamesManagedExternally)
+                    Process.Start(runningProcess);
 
                 if (currentUser != null)
                 {
@@ -172,7 +174,12 @@ namespace LingvoGameOs.Controllers
                         ? _configuration["DEVELOPMENT_URL"]
                         : _configuration["PRODUCTION_URL"];
 
-                ViewBag.GameUrl = $"{URL}:{existingGame.Port}";
+                int gamePort = existingGame.Port;
+                string? configuredPort = _configuration[$"GAMES_PORTS:{existingGame.GameFolderName}"];
+                if (int.TryParse(configuredPort, out int mappedPort))
+                    gamePort = mappedPort;
+
+                ViewBag.GameUrl = $"{URL}:{gamePort}";
 
 
                 _logger.LogInformation(

@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1.7
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY --from=game /SearchingForItems/SearchingForItems.csproj /src/SearchingForItems/
+RUN --mount=type=cache,id=nuget-iron-detective,target=/root/.nuget/packages \
+    dotnet restore SearchingForItems/SearchingForItems.csproj
+COPY --from=game / /src
+RUN --mount=type=cache,id=nuget-iron-detective,target=/root/.nuget/packages \
+    dotnet publish SearchingForItems/SearchingForItems.csproj \
+    -c Release \
+    --no-restore \
+    -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+ENV ASPNETCORE_URLS=http://+:8080 \
+    DOTNET_EnableDiagnostics=0
+WORKDIR /app
+COPY --from=build --chown=app:app /app/publish .
+USER app
+EXPOSE 8080
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
+    CMD bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080' || exit 1
+ENTRYPOINT ["dotnet", "SearchingForItems.dll"]

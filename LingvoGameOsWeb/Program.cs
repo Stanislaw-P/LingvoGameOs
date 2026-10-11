@@ -119,11 +119,15 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
 });
 
-builder.Services.AddAuthentication()
-    .AddVkId(options =>
+var authenticationBuilder = builder.Services.AddAuthentication();
+var vkIdClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
+var vkIdClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
+if (!string.IsNullOrWhiteSpace(vkIdClientId) && !string.IsNullOrWhiteSpace(vkIdClientSecret))
+{
+    authenticationBuilder.AddVkId(options =>
     {
-        options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
-        options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
+        options.ClientId = vkIdClientId;
+        options.ClientSecret = vkIdClientSecret;
         options.CallbackPath = "/signin-vkid"; // URL для callback
         options.Scope.Add("email"); // Запрашиваем email
         options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
@@ -132,18 +136,19 @@ builder.Services.AddAuthentication()
         options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         options.ClaimActions.MapJsonKey("photo", "avatar");
     });
+}
 
 var app = builder.Build();
 
 // test
 app.UseForwardedHeaders();
-app.UseHttpsRedirection();
-app.UseHsts();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
 // Serve static files with caching headers

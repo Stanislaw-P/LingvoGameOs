@@ -8,7 +8,9 @@ obj/
 *.log
 Logs/
 logs/
-.env
+.env*
+**/.env*
+env
 LingvoGameOsWeb/.env
 demo/
 *.md
@@ -16,3 +18,10 @@ __pycache__/
 *.pyc
 db/*.db
 gunicorn.pid
+postgres-db/
+pg-db/
+games/
+docker-compose*.yml
+Dockerfile*
+stack.ps1
+stack.sh

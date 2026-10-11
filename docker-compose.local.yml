@@ -1,0 +1,46 @@
+# Локально Python-игры используют зависимости из образа и исходники с хоста.
+# Сервер этот override не подключает: туда код копируется в final-образы.
+services:
+  game-piece:
+    build:
+      target: dev
+    volumes:
+      - "${GAMES_SOURCE_PATH}/lingvo-piece-by-piece:/app"
+      - "${GAMES_SOURCE_PATH}/lingvo-piece-by-piece/db:/app/db"
+
+  game-crossword:
+    build:
+      target: dev
+    volumes:
+      - "${GAMES_SOURCE_PATH}/crossword-ossetia:/app"
+      - "${GAMES_SOURCE_PATH}/crossword-ossetia/db:/app/db"
+
+  game-puzzles:
+    build:
+      target: dev
+    volumes:
+      - "${GAMES_SOURCE_PATH}/linvgo-puzzles_in_ossetian:/app"
+      - "${GAMES_SOURCE_PATH}/linvgo-puzzles_in_ossetian/db:/app/db"
+
+  game-who-faster:
+    build:
+      target: dev
+    volumes:
+      - "${GAMES_SOURCE_PATH}/Who_faster/who_faster:/app"
+      - "${GAMES_SOURCE_PATH}/Who_faster/who_faster/db:/app/db"
+
+  game-rebusi:
+    build:
+      target: dev
+    volumes:
+      - "${GAMES_SOURCE_PATH}/osetinckie-rebusi:/app"
+      - "${GAMES_SOURCE_PATH}/osetinckie-rebusi/db:/app/db"
+      - "${GAMES_SOURCE_PATH}/osetinckie-rebusi/static/images/rebus:/app/static/images/rebus"
+
+  game-mazaika:
+    build:
+      target: dev
+    volumes:
+      - "${GAMES_SOURCE_PATH}/ossetian-mazaika:/app"
+      - "${GAMES_SOURCE_PATH}/ossetian-mazaika/db:/app/db"
+      - "${GAMES_SOURCE_PATH}/ossetian-mazaika/static/custom_levels:/app/static/custom_levels"

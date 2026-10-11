@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1.7
+
+FROM python:3.11-slim AS dependencies
+
+WORKDIR /app
+COPY --from=game /requirements.txt ./requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r requirements.txt
+
+# Локально код приходит bind mount-ом из ../games/<game>.
+FROM dependencies AS dev
+ENV PYTHONUNBUFFERED=1 \
+    GAME_PORT=3001 \
+    GAME_MODULE=server
+EXPOSE 3001 3002 3003 3004 3006 3007
+CMD ["sh", "-c", "python -c \"import os, importlib; m = importlib.import_module(os.environ.get('GAME_MODULE','server')); m.app.run(host='0.0.0.0', port=int(os.environ.get('GAME_PORT','3001')))\""]
+
+# Серверный target: исходники копируются в образ, процесс работает без root.
+FROM dependencies AS final
+RUN useradd --create-home --uid 10001 game \
+    && mkdir -p /app/db \
+    && chown game:game /app/db
+COPY --from=game --chown=game:game / /app
+ENV PYTHONUNBUFFERED=1 \
+    GAME_PORT=3001 \
+    GAME_MODULE=server
+USER game
+EXPOSE 3001 3002 3003 3004 3006 3007
+CMD ["sh", "-c", "python -c \"import os, importlib; m = importlib.import_module(os.environ.get('GAME_MODULE','server')); m.app.run(host='0.0.0.0', port=int(os.environ.get('GAME_PORT','3001')))\""]
