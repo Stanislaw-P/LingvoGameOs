@@ -1,0 +1,117 @@
+@model ApiKeyManagementViewModel
+
+@{
+    ViewData["Title"] = "API-ключи";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/api-keys.css" asp-append-version="true" />
+}
+
+<div class="api-keys">
+    <header class="api-keys__hero">
+        <div>
+            <p class="api-keys__eyebrow">API разработчика</p>
+            <h1 class="api-keys__title">Управление API-ключами</h1>
+            <p class="api-keys__lead">
+                Ключ открывает только разрешённые developer API. Начисление игровых баллов
+                по-прежнему защищено отдельной одноразовой HMAC-сессией.
+            </p>
+        </div>
+        <span class="api-keys__limit">До @Model.MaxActiveKeys активных ключей</span>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(Model.CreatedSecret))
+    {
+        <section class="api-keys__secret" aria-labelledby="new-api-key-title">
+            <div>
+                <p class="api-keys__eyebrow">Показан один раз</p>
+                <h2 id="new-api-key-title" class="api-keys__section-title">Скопируй новый ключ сейчас</h2>
+                <p class="api-keys__hint">После ухода с этой страницы восстановить ключ нельзя — только создать новый.</p>
+            </div>
+            <div class="api-keys__secret-row">
+                <code id="created-api-key" class="api-keys__code">@Model.CreatedSecret</code>
+                <button type="button" class="api-keys__button api-keys__button--secondary" data-copy-api-key>
+                    Скопировать
+                </button>
+            </div>
+            <p class="api-keys__copy-status" data-copy-status role="status" aria-live="polite"></p>
+        </section>
+    }
+
+    <section class="api-keys__panel" aria-labelledby="create-api-key-title">
+        <div class="api-keys__panel-heading">
+            <div>
+                <h2 id="create-api-key-title" class="api-keys__section-title">Создать ключ</h2>
+                <p class="api-keys__hint">Назови ключ по месту использования, например «Ноутбук» или «CI».</p>
+            </div>
+        </div>
+
+        <form asp-action="Create" method="post" class="api-keys__form">
+            <div asp-validation-summary="ModelOnly" class="api-keys__validation"></div>
+            <div class="api-keys__field">
+                <label asp-for="NewKeyName" class="api-keys__label"></label>
+                <input asp-for="NewKeyName" class="api-keys__input" autocomplete="off" />
+                <span asp-validation-for="NewKeyName" class="api-keys__validation"></span>
+            </div>
+            <button type="submit" class="api-keys__button">Создать API-ключ</button>
+        </form>
+    </section>
+
+    <section class="api-keys__panel" aria-labelledby="api-key-list-title">
+        <div class="api-keys__panel-heading">
+            <div>
+                <h2 id="api-key-list-title" class="api-keys__section-title">Твои ключи</h2>
+                <p class="api-keys__hint">В базе хранится только SHA-256-хеш. Открытый ключ сервер не знает.</p>
+            </div>
+        </div>
+
+        @if (Model.ApiKeys.Count == 0)
+        {
+            <div class="api-keys__empty">API-ключей пока нет.</div>
+        }
+        else
+        {
+            <div class="api-keys__list">
+                @foreach (var apiKey in Model.ApiKeys)
+                {
+                    <article class="api-keys__item">
+                        <div class="api-keys__item-main">
+                            <div class="api-keys__item-title-row">
+                                <h3 class="api-keys__item-title">@apiKey.Name</h3>
+                                <span class="api-keys__status @(apiKey.IsActive ? "api-keys__status--active" : "api-keys__status--inactive")">
+                                    @(apiKey.IsActive ? "Активен" : apiKey.RevokedAt != null ? "Отозван" : "Истёк")
+                                </span>
+                            </div>
+                            <code class="api-keys__prefix">@apiKey.KeyPrefix…</code>
+                            <dl class="api-keys__meta">
+                                <div><dt>Создан</dt><dd>@apiKey.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</dd></div>
+                                <div><dt>Последнее использование</dt><dd>@(apiKey.LastUsedAt?.ToLocalTime().ToString("dd.MM.yyyy HH:mm") ?? "Ещё не использовался")</dd></div>
+                                <div><dt>Действует до</dt><dd>@(apiKey.ExpiresAt?.ToLocalTime().ToString("dd.MM.yyyy") ?? "Без срока")</dd></div>
+                                <div><dt>Права</dt><dd><code>@apiKey.Scopes</code></dd></div>
+                            </dl>
+                        </div>
+                        @if (apiKey.IsActive)
+                        {
+                            <form asp-action="Revoke" method="post">
+                                <input type="hidden" name="id" value="@apiKey.Id" />
+                                <button type="submit" class="api-keys__button api-keys__button--danger">Отозвать</button>
+                            </form>
+                        }
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section class="api-keys__panel api-keys__docs" aria-labelledby="api-docs-title">
+        <h2 id="api-docs-title" class="api-keys__section-title">Быстрая проверка</h2>
+        <p class="api-keys__hint">Передавай ключ только в заголовке <code>X-API-Key</code>.</p>
+        <pre class="api-keys__example"><code>curl -H "X-API-Key: YOUR_KEY" https://YOUR_API_HOST/api/developer/ping
+curl -H "X-API-Key: YOUR_KEY" https://YOUR_API_HOST/api/developer/games</code></pre>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/api-keys.js" asp-append-version="true"></script>
+}

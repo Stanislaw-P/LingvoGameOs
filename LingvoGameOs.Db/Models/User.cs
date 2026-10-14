@@ -15,5 +15,6 @@ namespace LingvoGameOs.Db.Models
         public List<FavoriteGame>? FavoriteGames { get; set; }
         public int TotalPoints { get; set; }
         public List<GameSession>? GameSessions { get; set; }
+        public List<ApiKey>? ApiKeys { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 using DotNetEnv;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
+using LingvoGameOs.Db.Services;
+using LingvoGameOsWebApi.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
@@ -37,6 +39,35 @@ builder
 // Register DatabaseContext with SQLite provider
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IGameSessionRepository, GameSessionRepository>();
+builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+
+builder.Services
+    .AddAuthentication()
+    .AddScheme<DeveloperApiKeyAuthenticationOptions, DeveloperApiKeyAuthenticationHandler>(
+        DeveloperApiKeyAuthenticationDefaults.Scheme,
+        _ => { });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        DeveloperApiKeyAuthenticationDefaults.Policy,
+        policy =>
+        {
+            policy.AddAuthenticationSchemes(DeveloperApiKeyAuthenticationDefaults.Scheme);
+            policy.RequireAuthenticatedUser();
+        });
+
+    options.AddPolicy(
+        DeveloperApiKeyAuthenticationDefaults.GamesReadPolicy,
+        policy =>
+        {
+            policy.AddAuthenticationSchemes(DeveloperApiKeyAuthenticationDefaults.Scheme);
+            policy.RequireAuthenticatedUser();
+            policy.RequireClaim(
+                DeveloperApiKeyAuthenticationDefaults.ScopeClaim,
+                ApiKeyService.GamesReadScope);
+        });
+});
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -78,6 +109,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRateLimiter();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

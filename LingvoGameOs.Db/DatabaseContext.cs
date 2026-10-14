@@ -15,6 +15,7 @@ namespace LingvoGameOs.Db
         public DbSet<Review> Reviews { get; set; }
         public DbSet<FavoriteGame> FavoriteGames { get; set; }
         public DbSet<GameSession> GameSessions { get; set; }
+        public DbSet<ApiKey> ApiKeys { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -29,6 +30,21 @@ namespace LingvoGameOs.Db
                 .HasOne(g => g.Author)
                 .WithMany(a => a.DevGames)
                 .HasForeignKey(g => g.AuthorId);
+
+            modelBuilder.Entity<ApiKey>(entity =>
+            {
+                entity.HasKey(key => key.Id);
+                entity.Property(key => key.Name).HasMaxLength(100).IsRequired();
+                entity.Property(key => key.KeyPrefix).HasMaxLength(16).IsRequired();
+                entity.Property(key => key.KeyHash).HasMaxLength(64).IsRequired();
+                entity.Property(key => key.Scopes).HasMaxLength(256).IsRequired();
+                entity.HasIndex(key => key.KeyHash).IsUnique();
+                entity.HasIndex(key => key.UserId);
+                entity.HasOne(key => key.User)
+                    .WithMany(user => user.ApiKeys)
+                    .HasForeignKey(key => key.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             // Настройка связи многие-ко-многим
             //modelBuilder.Entity<Game>()
