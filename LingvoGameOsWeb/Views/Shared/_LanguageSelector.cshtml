@@ -1,0 +1,74 @@
+@using System.Globalization
+@{
+    var returnUrl = $"{Context.Request.PathBase}{Context.Request.Path}{Context.Request.QueryString}";
+    var primaryCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var secondaryCulture = SecondLocalizer.Culture?.TwoLetterISOLanguageName ?? "off";
+    var languages = new[]
+    {
+        (Code: "ru", ShortName: "RU", Name: SharedLocalizer["language_russian"].Value),
+        (Code: "os", ShortName: "OS", Name: SharedLocalizer["language_ossetian"].Value),
+        (Code: "en", ShortName: "EN", Name: SharedLocalizer["language_english"].Value)
+    };
+}
+
+<details class="language-selector">
+    <summary class="language-selector__trigger"
+             aria-label="@SharedLocalizer["language_settings"]">
+        <span>@primaryCulture.ToUpperInvariant()</span>
+        <span class="language-selector__separator" aria-hidden="true">/</span>
+        <span>@SecondLocalizer.CultureCode</span>
+        <span class="language-selector__caret" aria-hidden="true">▾</span>
+    </summary>
+
+    <div class="language-selector__panel">
+        <h2 class="language-selector__title">@SharedLocalizer["language_settings"]</h2>
+
+        <form asp-area="" asp-controller="Language" asp-action="Primary" method="post" class="language-selector__form">
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            <span class="language-selector__label">@SharedLocalizer["primary_language"]</span>
+            <div class="language-selector__options" role="group" aria-label="@SharedLocalizer["primary_language"]">
+                @foreach (var language in languages)
+                {
+                    var isActive = primaryCulture == language.Code;
+                    <button type="submit"
+                            name="culture"
+                            value="@language.Code"
+                            class="language-selector__option @(isActive ? "is-active" : null)"
+                            aria-label="@language.Name"
+                            aria-pressed="@isActive.ToString().ToLowerInvariant()"
+                            disabled="@isActive">
+                        @language.ShortName
+                    </button>
+                }
+            </div>
+        </form>
+
+        <form asp-area="" asp-controller="Language" asp-action="Secondary" method="post" class="language-selector__form">
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            <span class="language-selector__label">@SharedLocalizer["secondary_language"]</span>
+            <div class="language-selector__options" role="group" aria-label="@SharedLocalizer["secondary_language"]">
+                @{ var isOff = secondaryCulture == "off"; }
+                <button type="submit"
+                        name="culture"
+                        value="off"
+                        class="language-selector__option language-selector__option--off @(isOff ? "is-active" : null)"
+                        aria-label="@SharedLocalizer["language_off"]"
+                        aria-pressed="@isOff.ToString().ToLowerInvariant()"
+                        disabled="@isOff">—</button>
+                @foreach (var language in languages.Where(language => language.Code != primaryCulture))
+                {
+                    var isActive = secondaryCulture == language.Code;
+                    <button type="submit"
+                            name="culture"
+                            value="@language.Code"
+                            class="language-selector__option @(isActive ? "is-active" : null)"
+                            aria-label="@language.Name"
+                            aria-pressed="@isActive.ToString().ToLowerInvariant()"
+                            disabled="@isActive">
+                        @language.ShortName
+                    </button>
+                }
+            </div>
+        </form>
+    </div>
+</details>

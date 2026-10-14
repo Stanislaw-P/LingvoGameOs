@@ -1,7 +1,7 @@
 ﻿@model List<GameViewModel>
 
 @{
-    ViewData["Title"] = "Главная";
+    ViewData["Title"] = SharedLocalizer["nav_home"];
 }
 
 <link rel="stylesheet" href="/css/homepage.css" />
@@ -11,21 +11,19 @@
 <!-- Hero Section - Full Height Background -->
 <section class="homepage-hero">
     <div class="homepage-hero__content">
-        <h1 class="homepage-hero__title">ОСЕТИНСКИЙ ЯЗЫК БЛИЖЕ, ЧЕМ ТЫ ДУМАЕШЬ</h1>
-        <p class="homepage-hero__description">
-            На нашей платформе ты найдешь игры для любого возраста </br> и уровня подготовки. Учи слова, грамматику, слушай осетинскую речь</br> и погружайся в культуру Осетии – все в игровой форме!
-        </p>
+        <h1 class="homepage-hero__title"><localized-text key="hero_banner_slogan" /></h1>
+        <p class="homepage-hero__description"><localized-text key="hero_platform_description" /></p>
         <div class="homepage-hero__actions">
             <a href="Home/Games" class="homepage-hero__button homepage-hero__button--primary">
-                Начать играть
+                <localized-text key="action_start_playing" />
             </a>
             @if (User?.Identity?.IsAuthenticated == true)
             {
-                <a href="/Home/News" class="homepage-hero__button homepage-hero__button--secondary">Новости</a>
+                <a href="/Home/News" class="homepage-hero__button homepage-hero__button--secondary"><localized-text key="nav_news" /></a>
             }
             else
             {
-                <a href="/Account/Register" class="homepage-hero__button homepage-hero__button--secondary">Присоединиться</a>
+                <a href="/Account/Register" class="homepage-hero__button homepage-hero__button--secondary"><localized-text key="action_join" /></a>
             }
         </div>
     </div>
@@ -88,8 +86,8 @@
     <div class="homepage-new-games__container">
         <div class="homepage-new-games__header">
             <div class="homepage-new-games__text">
-                <h2 class="homepage-new-games__title">Что нового?</h2>
-                <p class="homepage-new-games__description">Попробуй новые игры, добавленные на платформу.</p>
+                <h2 class="homepage-new-games__title"><localized-text key="faq_whats_new" /></h2>
+                <p class="homepage-new-games__description"><localized-text key="new_games_description" /></p>
             </div>
         </div>
         <div class="games__list" id="all-games">
@@ -107,7 +105,7 @@
                                 <button class="games__favorite-btn @(game.IsFavorite ? "active" : "")"
                                         data-game-id="@game.Id">
                                     <img src="@(game.IsFavorite ? "/icon/like2.svg" : "/icon/like.svg")"
-                                         alt="Добавить в избранное"
+                                         alt="@SharedLocalizer["add_to_favorites"]"
                                          class="games__favorite-icon">
                                 </button>
                             }
@@ -115,7 +113,7 @@
                             {
                                 <a role="button" asp-area="" asp-controller="Account" asp-action="Login" class="games__favorite-btn">
                                     <img src="/icon/like.svg"
-                                         alt="Добавить в избранное"
+                                         alt="@SharedLocalizer["add_to_favorites"]"
                                          class="games__favorite-icon">
                                 </a>
                             }
@@ -137,13 +135,13 @@
                                 <div class="games__actions">
                                     @if (game.GamePlatform.Name == "Desktop")
                                     {
-                                        <a href="@game.GameFilePath" download role="button" class="games__button download-btn">Скачать</a>
+                                        <a href="@game.GameFilePath" download role="button" class="games__button download-btn"><localized-text key="download" /></a>
                                     }
                                     else
                                     {
-                                        <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                                        <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button"><localized-text key="play" /></a>
                                     }
-                                    <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                                    <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button"><localized-text key="action_more_details" /></a>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +162,7 @@
         </button>
 
         <div class="download-modal__header">
-            <h3 class="download-modal__title">Подтверждение скачивания</h3>
+            <h3 class="download-modal__title"><localized-text key="download_confirmation_title" /></h3>
         </div>
 
         <div class="download-modal__body">
@@ -175,12 +173,12 @@
                     <path d="M12 15V3" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <p class="download-modal__message">Вы собираетесь скачать игру, которую можно запустить только на компьютере. Продолжить?</p>
+            <p class="download-modal__message"><localized-text key="download_desktop_only_warning" /></p>
         </div>
 
         <div class="download-modal__footer">
-            <button type="button" class="download-modal__cancel games__preview">Отмена</button>
-            <button type="button" class="download-modal__confirm games__button">Скачать</button>
+            <button type="button" class="download-modal__cancel games__preview"><localized-text key="action_cancel" /></button>
+            <button type="button" class="download-modal__confirm games__button"><localized-text key="download" /></button>
         </div>
     </div>
 </div>

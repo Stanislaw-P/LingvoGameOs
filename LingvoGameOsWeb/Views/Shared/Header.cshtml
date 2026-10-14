@@ -5,45 +5,48 @@
 <header class="header">
     <div class="header__container _container">
         <a class="header__logo" asp-area="" asp-controller="Home" asp-action="Index">
-            <img src="~/img/logo/logo_2.3.svg" alt="Логотип" class="logo-image" />
+            <img src="~/img/logo/logo_2.3.svg" alt="@SharedLocalizer["logo_alt"]" class="logo-image" />
         </a>
         <!-- Кнопка бургер-меню (только для мобильных) -->
-        <div class="header__burger burger">
+        <button type="button" class="header__burger burger" aria-label="@SharedLocalizer["open_menu"]">
             <span></span>
             <span></span>
             <span></span>
-        </div>
+        </button>
         <nav class="header__menu menu">
             <ul class="menu__list">
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games">Все игры</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
-                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers">Разработчикам</a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index"><localized-text key="nav_home" /></a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Games"><localized-text key="nav_all_games" /></a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="News"><localized-text key="nav_news" /></a></li>
+                <li class="menu__item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers"><localized-text key="nav_for_developers" /></a></li>
             </ul>
         </nav>
         <!-- Боковое меню -->
         <div class="sidebar-overlay"></div>
         <aside class="sidebar-menu">
             <div class="sidebar-menu__header">
-                <span class="sidebar-menu__title">Меню</span>
-                <button class="sidebar-menu__close">×</button>
+                <span class="sidebar-menu__title">@SharedLocalizer["nav_menu"]</span>
+                <button type="button" class="sidebar-menu__close" aria-label="@SharedLocalizer["close_menu"]">×</button>
+            </div>
+            <div class="sidebar-menu__language">
+                @await Html.PartialAsync("_LanguageSelector")
             </div>
             <nav class="sidebar-menu__nav">
                 <ul class="sidebar-menu__list">
                     <li class="sidebar-menu__item">
-                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="Index"><localized-text key="nav_home" /></a>
                     </li>
                     <li class="sidebar-menu__item">
-                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="Games">Все игры</a>
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="Games"><localized-text key="nav_all_games" /></a>
                     </li>
                     <li class="sidebar-menu__item">
-                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="News">Новости</a>
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="News"><localized-text key="nav_news" /></a>
                     </li>
                     <li class="sidebar-menu__item">
-                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers">Разработчикам</a>
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Home" asp-action="NewsForDevelopers"><localized-text key="nav_for_developers" /></a>
                     </li>
                     <li class="sidebar-menu__item">
-                        <a class="sidebar-menu__link" asp-area="" asp-controller="Favorites" asp-action="Index">Избранное</a>
+                        <a class="sidebar-menu__link" asp-area="" asp-controller="Favorites" asp-action="Index"><localized-text key="nav_favorites" /></a>
                     </li>
 
                     @if (User.Identity?.IsAuthenticated == true)
@@ -60,25 +63,28 @@
                         </li>
 
                         <li class="sidebar-menu__item">
-                            <a class="sidebar-menu__link" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId">Профиль</a>
+                            <a class="sidebar-menu__link" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId"><localized-text key="profile" /></a>
                         </li>
 
                         <li class="sidebar-menu__item">
-                            <a class="sidebar-menu__link" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
+                            <a class="sidebar-menu__link" asp-area="" asp-controller="Account" asp-action="Logout"><localized-text key="auth_logout" /></a>
                         </li>
                     }
                     else
                     {
                         
                         <li class="sidebar-menu__item">
-                            <a class="sidebar-menu__link" asp-controller="Account" asp-action="Login">Войти</a>
+                            <a class="sidebar-menu__link" asp-controller="Account" asp-action="Login"><localized-text key="auth_login" /></a>
                         </li>
                     }
                 </ul>
             </nav>
         </aside>
-        <a role="button" asp-area="" asp-controller="Favorites" asp-action="Index" class="header__like" aria-label="Избранное">
-            <img src="~/icon/like.svg" alt="Избранное" class="like-icon" />
+        <div class="header__language">
+            @await Html.PartialAsync("_LanguageSelector")
+        </div>
+        <a role="button" asp-area="" asp-controller="Favorites" asp-action="Index" class="header__like" aria-label="@SharedLocalizer["nav_favorites"]">
+            <img src="~/icon/like.svg" alt="@SharedLocalizer["nav_favorites"]" class="like-icon" />
         </a>
         @if (User.Identity?.IsAuthenticated == true)
         {
@@ -89,7 +95,7 @@
                 <div class="user-profile__container">
                     <div class="user-profile__content">
                         <div class="user-profile__avatar-wrapper">
-                            <img src="@await Component.InvokeAsync("Avatar")" alt="Аватар" class="user-profile__avatar" />
+                            <img src="@await Component.InvokeAsync("Avatar")" alt="@SharedLocalizer["avatar"]" class="user-profile__avatar" />
                         </div>
 
                         <div class="user-profile__user-info">
@@ -97,22 +103,22 @@
                         </div>
                         <div class="user-profile__dropdown">
                             <div class="user-profile__toggle">
-                                <img src="~/icon/more.svg" alt="Открыть меню" class="user-profile__more" />
+                                <img src="~/icon/more.svg" alt="@SharedLocalizer["open_menu"]" class="user-profile__more" />
                             </div>
                             <div class="user-profile__menu">
                                 @if (User.IsInRole(Constants.AdminRoleName))
                                 {
-                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Home" asp-action="Index">Панель игр</a></div>
-                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Reviews" asp-action="Index" asp-route-userId="@userId">Панель отзывов</a></div>
+                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Home" asp-action="Index"><localized-text key="games_dashboard" /></a></div>
+                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="Admin" asp-controller="Reviews" asp-action="Index" asp-route-userId="@userId"><localized-text key="reviews_dashboard" /></a></div>
                                 }
                                 else
                                 {
-                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId">Профиль</a></div>
+                                    <div class="user-profile__menu-item" data-target="profile"><a class="menu__link" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId"><localized-text key="profile" /></a></div>
                                     @* <div class="user-profile__menu-item" data-target="game-stats"><a class="menu__link" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-userId="@userId">Рейтинг в играх</a></div> *@
                                     @* <div class="user-profile__menu-item"><a class="menu__link" asp-area="" asp-controller="Home" asp-action="Index">Рекомендуемые игры</a></div> *@
                                     @* <div class="user-profile__menu-item"><a class="menu__link" asp-area="" asp-controller="Profile" asp-action="Settings" asp-route-userId="@userId">Настройки</a></div> *@
                                 }
-                                <div class="user-profile__menu-item"><a class="menu__link" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a></div>
+                                <div class="user-profile__menu-item"><a class="menu__link" asp-area="" asp-controller="Account" asp-action="Logout"><localized-text key="auth_logout" /></a></div>
                             </div>
                         </div>
                     </div>
@@ -121,7 +127,7 @@
         }
         else
         {
-            <a class="header__logout" asp-controller="Account" asp-action="Login">Войти</a>
+            <a class="header__logout" asp-controller="Account" asp-action="Login"><localized-text key="auth_login" /></a>
         }
     </div>
 </header>

@@ -16,6 +16,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 using LingvoGameOs.Shared.Services;
 using LingvoGameOs.Db.Services;
+using LingvoGameOs.Localization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,26 @@ Env.Load(options: new LoadOptions(clobberExistingVars: false));
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = SupportedLanguages.All
+        .Select(culture => new System.Globalization.CultureInfo(culture))
+        .ToArray();
+
+    options.DefaultRequestCulture = new RequestCulture(SupportedLanguages.Default);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = [new CookieRequestCultureProvider()];
+});
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<SecondLocalizer>();
 
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -144,6 +165,7 @@ var app = builder.Build();
 
 // test
 app.UseForwardedHeaders();
+app.UseRequestLocalization();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
