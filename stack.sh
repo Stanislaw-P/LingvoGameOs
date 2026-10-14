@@ -50,21 +50,15 @@ prepare_game_submodules() {
   fi
 }
 
-if [[ "$target" == "local" ]]; then
-  if [[ -f "$project_root/.env.local" ]]; then
-    env_file="$project_root/.env.local"
+env_file="$project_root/.env"
+if [[ ! -f "$env_file" ]]; then
+  if [[ "$target" == "local" ]]; then
+    env_template=".env.local.example"
   else
-    env_file="$project_root/.env.local.example"
+    env_template=".env.server.example"
   fi
-else
-  if [[ -f "$project_root/.env.server" ]]; then
-    env_file="$project_root/.env.server"
-  elif [[ -f "$project_root/.env" ]]; then
-    env_file="$project_root/.env"
-  else
-    echo "Create .env.server from .env.server.example and fill the server secrets." >&2
-    exit 1
-  fi
+  echo "Create .env from $env_template and fill the required settings." >&2
+  exit 1
 fi
 
 compose=(

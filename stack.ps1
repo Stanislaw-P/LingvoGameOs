@@ -47,23 +47,10 @@ function Initialize-GameSubmodules {
     }
 }
 
-if ($Target -eq "local") {
-    $localEnv = Join-Path $projectRoot ".env.local"
-    $envFile = if (Test-Path $localEnv) {
-        $localEnv
-    } else {
-        Join-Path $projectRoot ".env.local.example"
-    }
-} else {
-    $serverEnv = Join-Path $projectRoot ".env.server"
-    $legacyEnv = Join-Path $projectRoot ".env"
-    if (Test-Path $serverEnv) {
-        $envFile = $serverEnv
-    } elseif (Test-Path $legacyEnv) {
-        $envFile = $legacyEnv
-    } else {
-        throw "Create .env.server from .env.server.example and fill the server secrets."
-    }
+$envFile = Join-Path $projectRoot ".env"
+if (-not (Test-Path $envFile)) {
+    $envTemplate = if ($Target -eq "local") { ".env.local.example" } else { ".env.server.example" }
+    throw "Create .env from $envTemplate and fill the required settings."
 }
 
 $composeArgs = @(
