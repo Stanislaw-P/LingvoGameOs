@@ -70,6 +70,7 @@ services:
       - "${SITE_IP:-127.0.0.1}:${SITE_PORT:-8080}:8080"
     volumes:
       - logs:/app/Logs
+      - web-dataprotection:/home/app/.aspnet/DataProtection-Keys
     depends_on:
       postgres:
         condition: service_healthy
@@ -98,6 +99,7 @@ services:
       - "${SITE_IP:-127.0.0.1}:${API_PORT:-8081}:8080"
     volumes:
       - logs:/app/Logs
+      - api-dataprotection:/home/app/.aspnet/DataProtection-Keys
     depends_on:
       postgres:
         condition: service_healthy
@@ -122,6 +124,7 @@ services:
       GAME_PORT: "8080"
       GAME_PATH_BASE: "/games/piece-by-piece"
       GAME_COOKIE_NAME: "lingvogameos_piece_session"
+      LINGVO_GAME_ID: "1"
     expose:
       - "8080"
     volumes:
@@ -147,6 +150,7 @@ services:
       GAME_PORT: "8080"
       GAME_PATH_BASE: "/games/crossword"
       GAME_COOKIE_NAME: "lingvogameos_crossword_session"
+      LINGVO_GAME_ID: "2"
     expose:
       - "8080"
     volumes:
@@ -172,6 +176,7 @@ services:
       GAME_PORT: "8080"
       GAME_PATH_BASE: "/games/puzzles"
       GAME_COOKIE_NAME: "lingvogameos_puzzles_session"
+      LINGVO_GAME_ID: "3"
     expose:
       - "8080"
     volumes:
@@ -199,6 +204,7 @@ services:
       GAME_DATABASE_PATH: /app/db/game.db
       GAME_PATH_BASE: "/games/who-faster"
       GAME_COOKIE_NAME: "lingvogameos_who_faster_session"
+      LINGVO_GAME_ID: "5"
     command:
       - sh
       - -c
@@ -230,8 +236,11 @@ services:
       LINGVO_API_URL: http://api:8080
       GAME_PATH_BASE: "/games/iron-detective"
       GAME_COOKIE_NAME: "lingvogameos_iron_detective_session"
+      LINGVO_GAME_ID: "6"
     expose:
       - "8080"
+    volumes:
+      - game-iron-dataprotection:/home/app/.aspnet/DataProtection-Keys
 
   game-rebusi:
     <<: *game-service
@@ -247,6 +256,7 @@ services:
       GAME_PORT: "8080"
       GAME_PATH_BASE: "/games/rebusi"
       GAME_COOKIE_NAME: "lingvogameos_rebusi_session"
+      LINGVO_GAME_ID: "7"
     expose:
       - "8080"
     volumes:
@@ -273,6 +283,7 @@ services:
       GAME_PORT: "8080"
       GAME_PATH_BASE: "/games/mazaika"
       GAME_COOKIE_NAME: "lingvogameos_mazaika_session"
+      LINGVO_GAME_ID: "8"
     expose:
       - "8080"
     volumes:
@@ -287,6 +298,9 @@ services:
 
 volumes:
   logs:
+  web-dataprotection:
+  api-dataprotection:
+  game-iron-dataprotection:
   game-piece-db:
   game-crossword-db:
   game-puzzles-db:

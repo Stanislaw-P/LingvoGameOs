@@ -42,6 +42,8 @@ namespace LingvoGameOs.Db
         // Гонок нет: БД сериализует и Used, и инкремент в одной транзакции.
         public async Task<int?> AddScoreAsync(int gameSessionId, int score)
         {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
             // Шаг 1 (атомарный захват): UPDATE ... WHERE Used=false возвращает UserId.
             // Конкурентный запрос увидит Used=true и получит 0 строк.
             var claimed = await _context.Database
@@ -54,7 +56,10 @@ namespace LingvoGameOs.Db
                 .ToListAsync();
 
             if (claimed.Count == 0)
+            {
+                await transaction.RollbackAsync();
                 return null;
+            }
 
 
             // Шаг 2: инкремент одним statement'ом — параллельные инкременты не теряются.
@@ -68,7 +73,14 @@ namespace LingvoGameOs.Db
                     new Npgsql.NpgsqlParameter("score", score))
                 .ToListAsync();
 
-            return rows.Count > 0 ? rows[0] : (int?)null;
+            if (rows.Count == 0)
+            {
+                await transaction.RollbackAsync();
+                return null;
+            }
+
+            await transaction.CommitAsync();
+            return rows[0];
         }
 
         // Помечает сессию использованной (одноразовость)

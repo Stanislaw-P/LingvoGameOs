@@ -35,6 +35,12 @@ ENV ASPNETCORE_URLS=http://+:8080 \
 
 COPY --from=build --chown=app:app /app/publish /app
 
+# A named volume mounted here must remain writable by the non-root runtime user.
+# Pre-creating the mount point with the correct owner also gives fresh volumes
+# the right ownership when Docker initializes them from the image.
+RUN mkdir -p /home/app/.aspnet/DataProtection-Keys \
+    && chown -R app:app /home/app/.aspnet
+
 # Имя DLL совпадает с именем csproj, а не обязательно с именем каталога.
 RUN printf '#!/bin/sh\nexec dotnet %s.dll\n' "$(basename "${CSPROJ}" .csproj)" > /entrypoint.sh \
     && chmod 0555 /entrypoint.sh

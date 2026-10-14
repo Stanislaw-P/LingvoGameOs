@@ -42,7 +42,7 @@ namespace LingvoGameOsWebApi.Controllers
             // Подпись выдаёт портал при запуске игры и передаёт в iframe вместе с session id.
             var apiSecret = _configuration["GAMES_API_SECRET"]
                 ?? throw new InvalidOperationException("GAMES_API_SECRET is not configured");
-            if (!GameSessionHmac.Verify(request.gameSessionId, request.token, apiSecret))
+            if (!GameSessionHmac.Verify(request.gameSessionId, request.token ?? string.Empty, apiSecret))
                 return Unauthorized("Неверная подпись игровой сессии");
 
             var existingSession = await _sessionRepository.TryGetByIdAsync(request.gameSessionId);

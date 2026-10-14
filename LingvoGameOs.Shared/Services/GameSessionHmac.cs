@@ -2,7 +2,7 @@ namespace LingvoGameOs.Shared.Services
 {
     // HMAC-подпись идентификатора игровой сессии.
     // Web подписывает sessionId при запуске игры и передаёт подпись в iframe;
-    // WebApi сверяет подпись при начислении баллов.
+    // WebApi сверяет её при получении профиля сессии и начислении баллов.
     // Секрет задаётся переменной окружения GAMES_API_SECRET и должен совпадать
     // у обоих приложений.
     public static class GameSessionHmac

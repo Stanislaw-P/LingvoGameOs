@@ -15,23 +15,18 @@ namespace LingvoGameOs.Shared.Services
 
         public async Task<GameSession> CreateGameSessionAsync(string userId, int gameId)
         {
-            try
+            var session = new GameSession
             {
-                var session = new GameSession
-                {
-                    UserId = userId,
-                    GameId = gameId,
-                    CreatedAt = DateTimeOffset.UtcNow
-                };
+                UserId = userId,
+                GameId = gameId,
+                CreatedAt = DateTimeOffset.UtcNow
+            };
 
-                await _sessionRepository.AddAsync(session);
+            // Ошибка создания сессии должна прервать запуск игры. Объект с Id=0
+            // нельзя подписывать и выдавать как успешно созданную сессию.
+            await _sessionRepository.AddAsync(session);
 
-                return session;
-            }
-            catch (Exception ex)
-            {
-                return new GameSession();
-            }
+            return session;
         }
     }
 }
