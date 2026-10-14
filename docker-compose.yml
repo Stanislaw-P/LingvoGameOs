@@ -53,13 +53,6 @@ services:
       GAMES_API_SECRET: "${GAMES_API_SECRET:?fill GAMES_API_SECRET in the env file}"
       GAMES_FOLDER_PATH: /home/app/games
       GAMES_MANAGED_EXTERNALLY: "true"
-      GAMES_PORTS__lingvo-piece-by-piece: "3001"
-      GAMES_PORTS__crossword-ossetia: "3002"
-      GAMES_PORTS__linvgo-puzzles_in_ossetian: "3003"
-      GAMES_PORTS__who_faster: "3004"
-      GAMES_PORTS__iron-detective: "3005"
-      GAMES_PORTS__osetinckie-rebusi: "3006"
-      GAMES_PORTS__ossetian-mazaika: "3007"
       PRODUCTION_URL: "${SITE_PUBLIC_HOST:?fill SITE_PUBLIC_HOST in the env file}"
       DEVELOPMENT_URL: "${SITE_PUBLIC_HOST}"
       EMAIL_PASSWORD: "${EMAIL_PASSWORD:-}"
@@ -126,13 +119,15 @@ services:
         game: "${GAMES_SOURCE_PATH:-./games}/lingvo-piece-by-piece"
     environment:
       <<: *game-environment
-      GAME_PORT: "3001"
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3001:3001"
+      GAME_PORT: "8080"
+      GAME_PATH_BASE: "/games/piece-by-piece"
+      GAME_COOKIE_NAME: "lingvogameos_piece_session"
+    expose:
+      - "8080"
     volumes:
       - game-piece-db:/app/db
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3001/', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -149,13 +144,15 @@ services:
         game: "${GAMES_SOURCE_PATH:-./games}/crossword-ossetia"
     environment:
       <<: *game-environment
-      GAME_PORT: "3002"
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3002:3002"
+      GAME_PORT: "8080"
+      GAME_PATH_BASE: "/games/crossword"
+      GAME_COOKIE_NAME: "lingvogameos_crossword_session"
+    expose:
+      - "8080"
     volumes:
       - game-crossword-db:/app/db
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3002/', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -172,13 +169,15 @@ services:
         game: "${GAMES_SOURCE_PATH:-./games}/linvgo-puzzles_in_ossetian"
     environment:
       <<: *game-environment
-      GAME_PORT: "3003"
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3003:3003"
+      GAME_PORT: "8080"
+      GAME_PATH_BASE: "/games/puzzles"
+      GAME_COOKIE_NAME: "lingvogameos_puzzles_session"
+    expose:
+      - "8080"
     volumes:
       - game-puzzles-db:/app/db
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -195,21 +194,23 @@ services:
         game: "${GAMES_SOURCE_PATH:-./games}/Who_faster/who_faster"
     environment:
       <<: *game-environment
-      GAME_PORT: "3004"
+      GAME_PORT: "8080"
       GAME_MODULE: app
       GAME_DATABASE_PATH: /app/db/game.db
+      GAME_PATH_BASE: "/games/who-faster"
+      GAME_COOKIE_NAME: "lingvogameos_who_faster_session"
     command:
       - sh
       - -c
       - >-
         test -f /app/db/game.db || cp /app/game.db /app/db/game.db;
-        exec python -c "import os, importlib; m = importlib.import_module(os.environ.get('GAME_MODULE','server')); m.app.run(host='0.0.0.0', port=int(os.environ.get('GAME_PORT','3001')))"
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3004:3004"
+        exec python -c "import os, importlib; m = importlib.import_module(os.environ.get('GAME_MODULE','server')); m.app.run(host='0.0.0.0', port=int(os.environ.get('GAME_PORT','8080')))"
+    expose:
+      - "8080"
     volumes:
       - game-who-faster-db:/app/db
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3004/', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -227,8 +228,10 @@ services:
       ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT}"
       ASPNETCORE_URLS: http://+:8080
       LINGVO_API_URL: http://api:8080
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3005:8080"
+      GAME_PATH_BASE: "/games/iron-detective"
+      GAME_COOKIE_NAME: "lingvogameos_iron_detective_session"
+    expose:
+      - "8080"
 
   game-rebusi:
     <<: *game-service
@@ -241,14 +244,16 @@ services:
         game: "${GAMES_SOURCE_PATH:-./games}/osetinckie-rebusi"
     environment:
       <<: *game-environment
-      GAME_PORT: "3006"
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3006:3006"
+      GAME_PORT: "8080"
+      GAME_PATH_BASE: "/games/rebusi"
+      GAME_COOKIE_NAME: "lingvogameos_rebusi_session"
+    expose:
+      - "8080"
     volumes:
       - game-rebusi-db:/app/db
       - game-rebusi-content:/app/static/images/rebus
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3006/', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -265,14 +270,16 @@ services:
         game: "${GAMES_SOURCE_PATH:-./games}/ossetian-mazaika"
     environment:
       <<: *game-environment
-      GAME_PORT: "3007"
-    ports:
-      - "${GAMES_IP:-127.0.0.1}:3007:3007"
+      GAME_PORT: "8080"
+      GAME_PATH_BASE: "/games/mazaika"
+      GAME_COOKIE_NAME: "lingvogameos_mazaika_session"
+    expose:
+      - "8080"
     volumes:
       - game-mazaika-db:/app/db
       - game-mazaika-content:/app/static/custom_levels
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3007/', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 12

@@ -41,6 +41,7 @@
     <PackageReference Include="NuGet.Protocol" Version="6.11.2" PrivateAssets="all" />
     <!-- Overrides the vulnerable transitive 10.0.0 brought by MimeKit and NuGet. -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+    <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />

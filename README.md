@@ -46,8 +46,9 @@ Copy-Item .env.local.example .env
 ```
 
 Локальный запуск всегда использует `.env`. Сайт откроется на
-`http://localhost:5086`, API — на `http://localhost:5147`, игры — на портах
-`3001`–`3007`.
+`http://localhost:5086`, API — на `http://localhost:5147`, а игры — на адресах
+вида `http://localhost:5086/games/<название>`. Отдельные игровые порты на
+хосте не публикуются.
 
 ### На сервере, Linux
 
@@ -103,7 +104,8 @@ bash ./stack.sh server restart
 ## Важные настройки
 
 - `SITE_PUBLIC_HOST` указывается с протоколом и без завершающего `/`, например
-  `http://localhost` или `https://рудзынг.рф`. Порт игры добавляет приложение.
+  `http://localhost` или `https://рудзынг.рф`. Все игры доступны с этого же
+  origin через `/games/...`.
 - `SITE_IP=127.0.0.1` оставляет Web/API доступными только reverse proxy на
   сервере. Для прямого доступа снаружи используй `0.0.0.0` и настрой firewall.
 - `GAMES_API_SECRET` должен быть одинаковым у Web, WebApi и игр.
@@ -112,8 +114,10 @@ bash ./stack.sh server restart
   путь можно переопределить через `GAMES_SOURCE_PATH`.
 - Identity seed добавляет недостающие web-игры по `GameFolderName` даже в уже
   существующую БД, не создавая повторов при следующих запусках.
-- Порты игр централизованы: три старые игры `3001`–`3003`, `Who_faster` — `3004`,
-  `iron-detective` — `3005`, `osetinckie-rebusi` — `3006`, `ossetian-mazaika` — `3007`.
+- Web проксирует игры по понятным адресам: `/games/piece-by-piece`,
+  `/games/crossword`, `/games/puzzles`, `/games/who-faster`,
+  `/games/iron-detective`, `/games/rebusi` и `/games/mazaika`. Игровые сервисы
+  слушают порты только внутри Docker-сети и снаружи напрямую недоступны.
 - EF-миграции и Identity seed запускает Web. WebApi ждёт healthy-состояния Web,
   чтобы два процесса не применяли миграции одновременно на пустой базе.
 - Файл `.env` и старый файл `env` игнорируются Git.

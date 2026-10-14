@@ -17,7 +17,9 @@ using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 using LingvoGameOs.Shared.Services;
 using LingvoGameOs.Db.Services;
 using LingvoGameOs.Localization;
+using LingvoGameOs.Infrastructure;
 using Microsoft.AspNetCore.Localization;
+using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,48 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<SecondLocalizer>();
+
+var gameProxyRoutes = GameProxyCatalog.All.Select(game =>
+    new RouteConfig
+    {
+        RouteId = $"game-{game.Slug}",
+        ClusterId = $"game-{game.Slug}",
+        Match = new RouteMatch { Path = $"/games/{game.Slug}/{{**catch-all}}" },
+        Transforms =
+        [
+            new Dictionary<string, string>
+            {
+                ["PathRemovePrefix"] = $"/games/{game.Slug}"
+            },
+            new Dictionary<string, string>
+            {
+                // YARP normally derives this header from Request.PathBase. The
+                // public game prefix is removed by a route transform instead,
+                // so keep the default transform from overwriting our value.
+                ["X-Forwarded"] = "Set",
+                ["Prefix"] = "Off"
+            },
+            new Dictionary<string, string>
+            {
+                ["RequestHeader"] = "X-Forwarded-Prefix",
+                ["Set"] = $"/games/{game.Slug}"
+            }
+        ]
+    }).ToArray();
+
+var gameProxyClusters = GameProxyCatalog.All.Select(game =>
+    new ClusterConfig
+    {
+        ClusterId = $"game-{game.Slug}",
+        Destinations = new Dictionary<string, DestinationConfig>
+        {
+            ["game"] = new() { Address = game.Destination }
+        }
+    }).ToArray();
+
+builder.Services
+    .AddReverseProxy()
+    .LoadFromMemory(gameProxyRoutes, gameProxyClusters);
 
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -219,6 +263,18 @@ using (var serviceScope = app.Services.CreateScope())
 }
 
 // Configure area routing
+foreach (var game in GameProxyCatalog.All)
+{
+    var publicPath = $"/games/{game.Slug}";
+    app.MapGet(publicPath, context =>
+    {
+        context.Response.Redirect($"{publicPath}/{context.Request.QueryString}");
+        return Task.CompletedTask;
+    });
+}
+
+app.MapReverseProxy();
+
 app.MapControllerRoute(
     name: "MyAreas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

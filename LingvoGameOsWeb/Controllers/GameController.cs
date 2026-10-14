@@ -4,6 +4,7 @@ using System.Text.Json;
 using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
+using LingvoGameOs.Infrastructure;
 using LingvoGameOs.Models;
 using LingvoGameOs.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -169,17 +170,9 @@ namespace LingvoGameOs.Controllers
                         .Compute(gameSession.Id, apiSecret);
                 }
 
-                string? URL =
-                    _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
-                        ? _configuration["DEVELOPMENT_URL"]
-                        : _configuration["PRODUCTION_URL"];
-
-                int gamePort = existingGame.Port;
-                string? configuredPort = _configuration[$"GAMES_PORTS:{existingGame.GameFolderName}"];
-                if (int.TryParse(configuredPort, out int mappedPort))
-                    gamePort = mappedPort;
-
-                ViewBag.GameUrl = $"{URL}:{gamePort}";
+                ViewBag.GameUrl = GameProxyCatalog.GetPublicPath(existingGame.GameFolderName)
+                    ?? throw new InvalidOperationException(
+                        $"Game proxy is not configured for '{existingGame.GameFolderName}'");
 
 
                 _logger.LogInformation(
