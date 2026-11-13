@@ -29,22 +29,23 @@ namespace LingvoGameOsWebApi.Controllers
             });
         }
 
-        [HttpPost("{userId}/points")]
-        public async Task<ActionResult> AddPoints(string userId, [FromBody] AddPointsRequest request)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound("Пользователя с таким id не существует");
+        // В БУДУЩЕМ УБЕРУ КОД НИЖЕ
+        //[HttpPost("{userId}/points")]
+        //public async Task<ActionResult> AddPoints(string userId, [FromBody] AddPointsRequest request)
+        //{
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    if (user == null)
+        //        return NotFound("Пользователя с таким id не существует");
 
-            if (request.Amount <= 0)
-                return BadRequest("Количество баллов должно быть положительным");
+        //    if (request.Amount <= 0)
+        //        return BadRequest("Количество баллов должно быть положительным");
 
-            user.TotalPoints += request.Amount;
-            int newTotalPoints = user.TotalPoints;
-            await _userManager.UpdateAsync(user);
-            return Ok(new { UserId = userId, NewTotalPoints = newTotalPoints });
-        }
+        //    user.TotalPoints += request.Amount;
+        //    int newTotalPoints = user.TotalPoints;
+        //    await _userManager.UpdateAsync(user);
+        //    return Ok(new { UserId = userId, NewTotalPoints = newTotalPoints });
+        //}
     }
 
-    public record AddPointsRequest(int Amount);
+    //public record AddPointsRequest(int Amount);
 }

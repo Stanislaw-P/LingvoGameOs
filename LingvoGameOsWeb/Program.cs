@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
+using LingvoGameOs.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,10 +65,13 @@ builder.Services.AddTransient<ISkillsLearningRepository, SkillsLearningDbReposit
 builder.Services.AddTransient<IPendingGamesRepository, PendingGamesDbRepository>();
 builder.Services.AddTransient<IReviewsRepository, ReviewsDbRepository>();
 builder.Services.AddTransient<IFavoriteGamesRepository, FavoriteGamesDbRepository>();
+builder.Services.AddTransient<IGameSessionRepository, GameSessionRepository>();
 
 // Встраивание зависимости для работы с почтой
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<EmailService>();
+
+builder.Services.AddScoped<GameSessionService>();
 
 // S3 or local storage Service for file
 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
@@ -164,6 +168,13 @@ app.UseUnobtrusiveAjax();
 
 // Uncomment to enable Serilog request logging
 //app.UseSerilogRequestLogging();
+
+// Миграции применяются один раз при старте (не в каждом scoped DbContext)
+using (var serviceScope = app.Services.CreateScope())
+{
+    var db = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    db.Database.Migrate();
+}
 
 // Initialize identity system with default roles and users
 using (var serviceScope = app.Services.CreateScope())

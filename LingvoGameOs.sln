@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LingvoGameOs.Db", "LingvoGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LingvoGameOsWebApi", "LingvoGameOsWebApi\LingvoGameOsWebApi.csproj", "{FA614C1B-5A49-4CD1-A24D-7257AC553178}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LingvoGameOs.Shared", "LingvoGameOs.Shared\LingvoGameOs.Shared.csproj", "{B863F670-E429-43BF-BA41-171F8F44E4B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FA614C1B-5A49-4CD1-A24D-7257AC553178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA614C1B-5A49-4CD1-A24D-7257AC553178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA614C1B-5A49-4CD1-A24D-7257AC553178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B863F670-E429-43BF-BA41-171F8F44E4B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B863F670-E429-43BF-BA41-171F8F44E4B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B863F670-E429-43BF-BA41-171F8F44E4B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B863F670-E429-43BF-BA41-171F8F44E4B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

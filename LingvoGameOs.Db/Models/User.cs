@@ -2,11 +2,11 @@
 
 namespace LingvoGameOs.Db.Models
 {
-	public class User : IdentityUser
-	{
-		public string Name { get; set; }
-		public string Surname { get; set; }
-		public string? Description { get; set; }
+    public class User : IdentityUser
+    {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string? Description { get; set; }
         public string AvatarImgPath { get; set; } = null!;
         public List<GameHistory>? GamesHistory { get; set; }
         public List<Game>? DevGames { get; set; }
@@ -14,5 +14,6 @@ namespace LingvoGameOs.Db.Models
         public List<Review>? Reviews { get; set; }
         public List<FavoriteGame>? FavoriteGames { get; set; }
         public int TotalPoints { get; set; }
+        public List<GameSession>? GameSessions { get; set; }
     }
 }
