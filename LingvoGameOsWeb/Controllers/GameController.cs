@@ -5,6 +5,7 @@ using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
+using LingvoGameOs.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace LingvoGameOs.Controllers
         readonly ILogger<GameController> _logger;
         readonly IFavoriteGamesRepository _favoriteGamesRepository;
         readonly IFileStorage _fileStorage;
+        readonly GameSessionService _sessionService;
 
         public GameController(
             IGamesRepository gamesRepository,
@@ -36,7 +38,8 @@ namespace LingvoGameOs.Controllers
             ILogger<GameController> logger,
             IConfiguration configuration,
             IFavoriteGamesRepository favoriteGamesRepository,
-            IFileStorage fileStorage)
+            IFileStorage fileStorage,
+            GameSessionService sessionService)
         {
             _configuration = configuration;
 
@@ -50,6 +53,7 @@ namespace LingvoGameOs.Controllers
             _logger = logger;
             _favoriteGamesRepository = favoriteGamesRepository;
             _fileStorage = fileStorage;
+            _sessionService = sessionService;
         }
 
         public async Task<IActionResult> DetailsAsync(int idGame)
@@ -145,6 +149,20 @@ namespace LingvoGameOs.Controllers
             try
             {
                 Process.Start(runningProcess);
+
+                if (currentUser != null)
+                {
+                    // каждая игровая сессия выдаётся заново: старая не переиспользуется
+                    var gameSession = await _sessionService.CreateGameSessionAsync(currentUser.Id, existingGame.Id);
+                    ViewBag.GameSessionId = gameSession.Id;
+
+                    // HMAC-подпись сессии: игра прикладывает её к POST /api/score,
+                    // API сверяет — чужой запрос без подписи отклоняется
+                    var apiSecret = _configuration["GAMES_API_SECRET"]
+                        ?? throw new InvalidOperationException("GAMES_API_SECRET is not configured");
+                    ViewBag.GameSessionToken = LingvoGameOs.Shared.Services.GameSessionHmac
+                        .Compute(gameSession.Id, apiSecret);
+                }
 
                 string? URL =
                     _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"

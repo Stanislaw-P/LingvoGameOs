@@ -14,10 +14,10 @@ namespace LingvoGameOs.Db
         public DbSet<PendingGame> PendingGames { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<FavoriteGame> FavoriteGames { get; set; }
+        public DbSet<GameSession> GameSessions { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

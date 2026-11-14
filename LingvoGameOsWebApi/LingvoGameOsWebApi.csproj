@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LingvoGameOs.Db\LingvoGameOs.Db.csproj" />
+    <ProjectReference Include="..\LingvoGameOs.Shared\LingvoGameOs.Shared.csproj" />
   </ItemGroup>
 
 </Project>

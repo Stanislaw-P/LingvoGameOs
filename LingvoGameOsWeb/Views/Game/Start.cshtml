@@ -14,7 +14,7 @@
     else
     {
         <div class="game-container">
-            <iframe src="@ViewBag.GameUrl"
+            <iframe src="@(ViewBag.GameSessionId is null ? $"{ViewBag.GameUrl}/start?guest=1" : $"{ViewBag.GameUrl}/start?session={ViewBag.GameSessionId}&token={ViewBag.GameSessionToken}")"
                     frameborder="0"
                     allowfullscreen
                     class="game-iframe">
