@@ -161,6 +161,34 @@ namespace LingvoGameOs.Db.Migrations
                     b.ToTable("GameHistory");
                 });
 
+            modelBuilder.Entity("LingvoGameOs.Db.Models.GameSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GameSessions");
+                });
+
             modelBuilder.Entity("LingvoGameOs.Db.Models.GameSkillLearning", b =>
                 {
                     b.Property<int>("GameId")
@@ -633,6 +661,17 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("LingvoGameOs.Db.Models.GameSession", b =>
+                {
+                    b.HasOne("LingvoGameOs.Db.Models.User", "User")
+                        .WithMany("GameSessions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LingvoGameOs.Db.Models.GameSkillLearning", b =>
                 {
                     b.HasOne("LingvoGameOs.Db.Models.Game", "Game")
@@ -782,6 +821,8 @@ namespace LingvoGameOs.Db.Migrations
                     b.Navigation("DevPendingGames");
 
                     b.Navigation("FavoriteGames");
+
+                    b.Navigation("GameSessions");
 
                     b.Navigation("GamesHistory");
 
