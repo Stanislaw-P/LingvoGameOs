@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@inject IConfiguration Configuration
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -12,6 +13,8 @@
     @await RenderSectionAsync("Styles", required: false)
     @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
 
+    @if (!Configuration.GetValue<bool>("OFFLINE_MODE"))
+    {
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
@@ -25,6 +28,7 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/106990010" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+    }
 </head>
 <body>
     @if (ViewContext.RouteData.Values["Action"]?.ToString() == "Start")

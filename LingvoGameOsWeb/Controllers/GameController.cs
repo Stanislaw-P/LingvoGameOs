@@ -5,6 +5,7 @@ using LingvoGameOs.Db;
 using LingvoGameOs.Db.Models;
 using LingvoGameOs.Helpers;
 using LingvoGameOs.Models;
+using LingvoGameOs.Infrastructure;
 using LingvoGameOs.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -99,11 +100,13 @@ namespace LingvoGameOs.Controllers
                 existingGame.GameFolderName = "temp";
 
             string gameFolder =
-                _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
+                _configuration["GAMES_FOLDER_PATH"]
+                ?? (_configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
                     ? Constants.YandexCloudGameFolderPath
-                    : Constants.TimeWebCloudGameFolderPath;
+                    : Constants.TimeWebCloudGameFolderPath);
 
             string runningScript = Path.Combine(gameFolder, existingGame.GameFolderName, "run.sh");
+            bool gamesManagedExternally = _configuration.GetValue<bool>("GAMES_MANAGED_EXTERNALLY");
             var currentUser = await _userManager.GetUserAsync(User);
             // Добавление игры в историю пользователя
             if (currentUser != null)
@@ -117,7 +120,7 @@ namespace LingvoGameOs.Controllers
                 RequestTime = DateTimeOffset.UtcNow,
             };
 
-            if (!System.IO.File.Exists(runningScript))
+            if (!gamesManagedExternally && !System.IO.File.Exists(runningScript))
             {
                 _logger.LogError(
                     "Ошибка запуска игры. Отсутсвует скрипт запуска игры {@GameStartData}",
@@ -139,7 +142,7 @@ namespace LingvoGameOs.Controllers
 
             var runningProcess = new ProcessStartInfo
             {
-                FileName = "/bin/bash",
+                FileName = OperatingSystem.IsWindows() ? "bash" : "/bin/bash",
                 Arguments = runningScript,
                 WorkingDirectory = Path.GetDirectoryName(runningScript),
                 UseShellExecute = false,
@@ -148,7 +151,8 @@ namespace LingvoGameOs.Controllers
 
             try
             {
-                Process.Start(runningProcess);
+                if (!gamesManagedExternally)
+                    Process.Start(runningProcess);
 
                 if (currentUser != null)
                 {
@@ -164,12 +168,9 @@ namespace LingvoGameOs.Controllers
                         .Compute(gameSession.Id, apiSecret);
                 }
 
-                string? URL =
-                    _configuration["ASPNETCORE_ENVIRONMENT"] == "Development"
-                        ? _configuration["DEVELOPMENT_URL"]
-                        : _configuration["PRODUCTION_URL"];
-
-                ViewBag.GameUrl = $"{URL}:{existingGame.Port}";
+                ViewBag.GameUrl = GameProxyCatalog.GetPublicPath(existingGame.GameFolderName)
+                    ?? throw new InvalidOperationException(
+                        $"Game proxy is not configured for '{existingGame.GameFolderName}'");
 
 
 
