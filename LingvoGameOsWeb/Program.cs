@@ -15,15 +15,59 @@ using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 using LingvoGameOs.Shared.Services;
+using LingvoGameOs.Infrastructure;
+using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load environment variables from .env file
-Env.Load();
+Env.Load(options: new LoadOptions(clobberExistingVars: false));
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var gameProxyRoutes = GameProxyCatalog.All.Select(game =>
+    new RouteConfig
+    {
+        RouteId = $"game-{game.Slug}",
+        ClusterId = $"game-{game.Slug}",
+        Match = new RouteMatch { Path = $"/games/{game.Slug}/{{**catch-all}}" },
+        Transforms =
+        [
+            new Dictionary<string, string>
+            {
+                ["PathRemovePrefix"] = $"/games/{game.Slug}"
+            },
+            new Dictionary<string, string>
+            {
+                // YARP normally derives this header from Request.PathBase. The
+                // public game prefix is removed by a route transform instead,
+                // so keep the default transform from overwriting our value.
+                ["X-Forwarded"] = "Set",
+                ["Prefix"] = "Off"
+            },
+            new Dictionary<string, string>
+            {
+                ["RequestHeader"] = "X-Forwarded-Prefix",
+                ["Set"] = $"/games/{game.Slug}"
+            }
+        ]
+    }).ToArray();
+
+var gameProxyClusters = GameProxyCatalog.All.Select(game =>
+    new ClusterConfig
+    {
+        ClusterId = $"game-{game.Slug}",
+        Destinations = new Dictionary<string, DestinationConfig>
+        {
+            ["game"] = new() { Address = game.Destination }
+        }
+    }).ToArray();
+
+builder.Services
+    .AddReverseProxy()
+    .LoadFromMemory(gameProxyRoutes, gameProxyClusters);
 
 // Get database connection string from configuration
 var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -33,7 +77,8 @@ var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "De
     ? Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_YANDEX")
     : Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_TimeWeb");
 
-var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
+var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+var connectionString = $"Host={dbHost};Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
@@ -74,7 +119,7 @@ builder.Services.AddTransient<EmailService>();
 builder.Services.AddScoped<GameSessionService>();
 
 // S3 or local storage Service for file
-if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+if (builder.Configuration["FILE_STORAGE"] == "local" || builder.Environment.IsDevelopment())
 {
     builder.Services.AddScoped<IFileStorage, LocalFileProvider>();
 }
@@ -117,11 +162,15 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
 });
 
-builder.Services.AddAuthentication()
-    .AddVkId(options =>
+var authenticationBuilder = builder.Services.AddAuthentication();
+var vkIdClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
+var vkIdClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
+if (!string.IsNullOrWhiteSpace(vkIdClientId) && !string.IsNullOrWhiteSpace(vkIdClientSecret))
+{
+    authenticationBuilder.AddVkId(options =>
     {
-        options.ClientId = Environment.GetEnvironmentVariable("VKID_CLIENT_ID");
-        options.ClientSecret = Environment.GetEnvironmentVariable("VKID_CLIENT_SECRET");
+        options.ClientId = vkIdClientId;
+        options.ClientSecret = vkIdClientSecret;
         options.CallbackPath = "/signin-vkid"; // URL для callback
         options.Scope.Add("email"); // Запрашиваем email
         options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
@@ -130,18 +179,19 @@ builder.Services.AddAuthentication()
         options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         options.ClaimActions.MapJsonKey("photo", "avatar");
     });
+}
 
 var app = builder.Build();
 
 // test
 app.UseForwardedHeaders();
-app.UseHttpsRedirection();
-app.UseHsts();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
 // Serve static files with caching headers
@@ -188,6 +238,18 @@ using (var serviceScope = app.Services.CreateScope())
 }
 
 // Configure area routing
+foreach (var game in GameProxyCatalog.All)
+{
+    var publicPath = $"/games/{game.Slug}";
+    app.MapGet(publicPath, context =>
+    {
+        context.Response.Redirect($"{publicPath}/{context.Request.QueryString}");
+        return Task.CompletedTask;
+    });
+}
+
+app.MapReverseProxy();
+
 app.MapControllerRoute(
     name: "MyAreas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

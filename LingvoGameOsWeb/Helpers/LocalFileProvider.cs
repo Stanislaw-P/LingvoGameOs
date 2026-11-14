@@ -23,7 +23,7 @@ namespace LingvoGameOs.Helpers
             // Создаем путь: /Folders/GameId/Guid.ext
             var extension = Path.GetExtension(file.FileName);
             var fileName = $"{Guid.NewGuid()}{extension}";
-            var relativePath = Path.Combine(folder.ToString(), gameId.ToString(), fileName).Replace("\\", "/");
+            var relativePath = Path.Combine("uploads", folder.ToString(), gameId.ToString(), fileName).Replace("\\", "/");
             var fullPath = GetPhysicalPath(relativePath);
 
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
@@ -42,7 +42,7 @@ namespace LingvoGameOs.Helpers
 
             var extension = Path.GetExtension(file.FileName);
             var fileName = $"{Guid.NewGuid()}{extension}";
-            var relativePath = Path.Combine(folder.ToString(), fileName).Replace("\\", "/");
+            var relativePath = Path.Combine("uploads", folder.ToString(), fileName).Replace("\\", "/");
             var fullPath = GetPhysicalPath(relativePath);
 
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
@@ -97,7 +97,8 @@ namespace LingvoGameOs.Helpers
         public async Task DeleteDirectoryAsync(string prefix)
         {
             if (string.IsNullOrEmpty(prefix)) return;
-            var fullPath = GetPhysicalPath(prefix);
+            var uploadsPath = GetPhysicalPath("uploads/" + prefix.TrimStart('/'));
+            var fullPath = Directory.Exists(uploadsPath) ? uploadsPath : GetPhysicalPath(prefix);
             if (Directory.Exists(fullPath))
             {
                 await Task.Run(() => Directory.Delete(fullPath, true));
@@ -154,7 +155,7 @@ namespace LingvoGameOs.Helpers
             if (file == null)
                 return null;
 
-            var folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
+            var folderPath = Path.Combine(_appEnvironment.WebRootPath, "uploads", folder.ToString(), gameId.ToString());
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
@@ -165,7 +166,7 @@ namespace LingvoGameOs.Helpers
             {
                 await file.CopyToAsync(fileStream);
             }
-            return Path.Combine("/", folder + "/" + gameId + "/" + fileName);
+            return Path.Combine("/uploads/", folder + "/" + gameId + "/" + fileName);
         }
 
         // Для картинок профиля
@@ -174,7 +175,7 @@ namespace LingvoGameOs.Helpers
             if (file == null)
                 return null;
 
-            var folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString());
+            var folderPath = Path.Combine(_appEnvironment.WebRootPath, "uploads", folder.ToString());
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
@@ -185,19 +186,33 @@ namespace LingvoGameOs.Helpers
             {
                 await file.CopyToAsync(fileStream);
             }
-            return Path.Combine("/", folder + "/" + fileName);
+            return Path.Combine("/uploads/", folder + "/" + fileName);
         }
 
         // Для файлов игр
+        // Разрешённые расширения файлов игр
+        static readonly HashSet<string> AllowedGameExtensions = new(StringComparer.OrdinalIgnoreCase)
+        { ".msi", ".zip", ".rar" };
+
         public async Task<string?> SaveGameFileAsync(IFormFile uploadedFile, int gameId, string gameTitle, Folders folder)
         {
             if (uploadedFile == null)
                 return null;
-            string folderPath = Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
+
+            var extension = Path.GetExtension(uploadedFile.FileName);
+            if (!AllowedGameExtensions.Contains(extension))
+                throw new InvalidOperationException($"Недопустимое расширение файла игры: '{extension}'. Разрешены: {string.Join(", ", AllowedGameExtensions)}");
+
+            // санитайз имени: только безопасные для файловой системы символы
+            var safeTitle = string.Concat(gameTitle.Where(ch => !Path.GetInvalidFileNameChars().Contains(ch) && ch != '/')).Trim();
+            if (string.IsNullOrEmpty(safeTitle))
+                safeTitle = $"game-{gameId}";
+
+            string folderPath = Path.Combine(_appEnvironment.WebRootPath, "uploads", folder.ToString(), gameId.ToString());
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
-            string fileName = gameTitle + "." + uploadedFile.FileName.Split('.').Last();
+            string fileName = safeTitle + extension;
             string path = Path.Combine(folderPath, fileName);
 
             using (var fileStream = new FileStream(path, FileMode.Create))
@@ -205,7 +220,7 @@ namespace LingvoGameOs.Helpers
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            return $"/{folder}/{gameId}/{fileName}";
+            return $"/uploads/{folder}/{gameId}/{fileName}";
         }
 
         public string GetFileFullPath(string filePath)
@@ -247,15 +262,17 @@ namespace LingvoGameOs.Helpers
 
         public string GetGameDirectoryPath(int gameId, Folders folder)
         {
-            return Path.Combine(_appEnvironment.WebRootPath, folder.ToString(), gameId.ToString());
+            return Path.Combine(_appEnvironment.WebRootPath, "uploads", folder.ToString(), gameId.ToString());
         }
 
         public void MoveGameFiles(int sourceGameId, int destGameId, Folders sourceGameFolder, Folders destGameFolder)
         {
             try
             {
-                var sourcePath = Path.Combine(_appEnvironment.WebRootPath, sourceGameFolder.ToString(), sourceGameId.ToString());
-                var destPath = Path.Combine(_appEnvironment.WebRootPath, destGameFolder.ToString(), destGameId.ToString());
+                var sourcePath = GetGameDirectoryPath(sourceGameId, sourceGameFolder);
+                if (!Directory.Exists(sourcePath))
+                    sourcePath = Path.Combine(_appEnvironment.WebRootPath, sourceGameFolder.ToString(), sourceGameId.ToString());
+                var destPath = GetGameDirectoryPath(destGameId, destGameFolder);
 
                 if (!Directory.Exists(sourcePath))
                 {

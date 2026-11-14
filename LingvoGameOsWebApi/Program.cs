@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Load environment variables from .env file
-Env.Load("../LingvoGameOsWeb/.env");
+Env.Load("../LingvoGameOsWeb/.env", new LoadOptions(clobberExistingVars: false));
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
@@ -23,7 +23,8 @@ var dbPass = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "De
     ? Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_YANDEX")
     : Environment.GetEnvironmentVariable("POSTGRES_PASSWORD_TimeWeb");
 
-var connectionString = $"Host=localhost;Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
+var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+var connectionString = $"Host={dbHost};Port=5432;Database={dbName};Username={dbUser};Password={dbPass}";
 
 // Configure ASP.NET Core Identity with custom User and IdentityRole
 builder
