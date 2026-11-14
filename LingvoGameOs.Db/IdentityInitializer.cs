@@ -98,6 +98,14 @@ namespace LingvoGameOs.Db
                 await _CreateUserAsync(userManager, devNastya, passwordDev, Constants.DevRoleName);
                 await _CreateUserAsync(userManager, devVlad, passwordDev, Constants.DevRoleName);
 
+                // _CreateUserAsync ничего не меняет в переданном объекте, если пользователь
+                // уже существует. Для повторного seed берём реальные идентификаторы из БД.
+                devMarat = await userManager.FindByEmailAsync(devMarat.Email!) ?? devMarat;
+                devDavid = await userManager.FindByEmailAsync(devDavid.Email!) ?? devDavid;
+                devIlona = await userManager.FindByEmailAsync(devIlona.Email!) ?? devIlona;
+                devNastya = await userManager.FindByEmailAsync(devNastya.Email!) ?? devNastya;
+                devVlad = await userManager.FindByEmailAsync(devVlad.Email!) ?? devVlad;
+
                 // Далее инициализация и добавление в БД данных
                 var languageLevelBeginning = new LanguageLevel
                 {
@@ -141,6 +149,22 @@ namespace LingvoGameOs.Db
                     await context.SaveChangesAsync();
                 }
 
+                languageLevelBeginning = await context.LanguageLevels.SingleAsync(level =>
+                    level.Name == languageLevelBeginning.Name
+                );
+                languageLevelIntermediate = await context.LanguageLevels.SingleAsync(level =>
+                    level.Name == languageLevelIntermediate.Name
+                );
+                languageLevelAdvanced = await context.LanguageLevels.SingleAsync(level =>
+                    level.Name == languageLevelAdvanced.Name
+                );
+                languageLevelPro = await context.LanguageLevels.SingleAsync(level =>
+                    level.Name == languageLevelPro.Name
+                );
+                languageLevelGrandMaster = await context.LanguageLevels.SingleAsync(level =>
+                    level.Name == languageLevelGrandMaster.Name
+                );
+
                 var gameType1 = new SkillLearning { Name = "Словарный запас" };
                 var gameType2 = new SkillLearning { Name = "Грамматика" };
                 var gameType3 = new SkillLearning { Name = "Аудирование" };
@@ -160,6 +184,13 @@ namespace LingvoGameOs.Db
                     await context.SaveChangesAsync();
                 }
 
+                gameType1 = await context.SkillsLearning.SingleAsync(skill => skill.Name == gameType1.Name);
+                gameType2 = await context.SkillsLearning.SingleAsync(skill => skill.Name == gameType2.Name);
+                gameType3 = await context.SkillsLearning.SingleAsync(skill => skill.Name == gameType3.Name);
+                gameType4 = await context.SkillsLearning.SingleAsync(skill => skill.Name == gameType4.Name);
+                gameType5 = await context.SkillsLearning.SingleAsync(skill => skill.Name == gameType5.Name);
+                gameType6 = await context.SkillsLearning.SingleAsync(skill => skill.Name == gameType6.Name);
+
                 var platform1 = new Platform { Name = "Web-Desktop" };
                 var platform2 = new Platform { Name = "Desktop" };
                 var platform3 = new Platform { Name = "Web-Mobile" };
@@ -168,6 +199,10 @@ namespace LingvoGameOs.Db
                     await context.Platforms.AddRangeAsync(platform1, platform2, platform3);
                     await context.SaveChangesAsync();
                 }
+
+                platform1 = await context.Platforms.SingleAsync(platform => platform.Name == platform1.Name);
+                platform2 = await context.Platforms.SingleAsync(platform => platform.Name == platform2.Name);
+                platform3 = await context.Platforms.SingleAsync(platform => platform.Name == platform3.Name);
 
                 var game1 = new Game
                 {
@@ -280,11 +315,129 @@ namespace LingvoGameOs.Db
                     GameGitHubUrl = ""
                 };
 
+                var game5 = new Game
+                {
+                    Title = "Чи рӕвздӕр",
+                    Description =
+                        "Языковая дуэль для двух игроков: быстрее соперника выберите осетинское слово, соответствующее картинке.",
+                    Rules =
+                        "Два игрока по очереди выбирают подходящие к картинке осетинские слова. Побеждает тот, кто даст больше правильных ответов за десять раундов.",
+                    GameFolderName = "who_faster",
+                    AuthorId = devVlad.Id,
+                    PublicationDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LanguageLevelId = languageLevelBeginning.Id,
+                    GamePlatformId = platform3.Id,
+                    AverageRaitingPlayers = 0,
+                    CoverImagePath = "img/default-img.jpg",
+                    ImagesPaths = new List<string>(),
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType4 },
+                    NumberDownloads = 0,
+                    Port = 3004,
+                    GameGitHubUrl = "https://github.com/Rudzyng/Who_faster"
+                };
+
+                var game6 = new Game
+                {
+                    Title = "Ирон",
+                    Description =
+                        "Тренажёр базовой осетинской лексики: находите на интерактивных локациях предметы из списка.",
+                    Rules =
+                        "Найдите на изображении все предметы, названия которых даны на осетинском языке. После завершения локации переходите к следующей.",
+                    GameFolderName = "iron-detective",
+                    AuthorId = devDavid.Id,
+                    PublicationDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LanguageLevelId = languageLevelBeginning.Id,
+                    GamePlatformId = platform3.Id,
+                    AverageRaitingPlayers = 0,
+                    CoverImagePath = "img/default-img.jpg",
+                    ImagesPaths = new List<string>(),
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType4 },
+                    NumberDownloads = 0,
+                    Port = 3005,
+                    GameGitHubUrl = "https://github.com/Rudzyng/iron-detective"
+                };
+
+                var game7 = new Game
+                {
+                    Title = "Осетинские ребусы",
+                    Description =
+                        "Решайте тематические ребусы на осетинском языке и создавайте собственные задания.",
+                    Rules =
+                        "Разгадайте слова по картинкам, заполните буквы ребуса и введите перевод итогового слова на русский язык.",
+                    GameFolderName = "osetinckie-rebusi",
+                    AuthorId = devNastya.Id,
+                    PublicationDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LanguageLevelId = languageLevelIntermediate.Id,
+                    GamePlatformId = platform3.Id,
+                    AverageRaitingPlayers = 0,
+                    CoverImagePath = "img/default-img.jpg",
+                    ImagesPaths = new List<string>(),
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType2, gameType4 },
+                    NumberDownloads = 0,
+                    Port = 3006,
+                    GameGitHubUrl = "https://github.com/Rudzyng/osetinckie-rebusi"
+                };
+
+                var game8 = new Game
+                {
+                    Title = "Осетинская мозаика",
+                    Description =
+                        "Собирайте мозаику из картинок и осетинских слов, меняя фрагменты местами.",
+                    Rules =
+                        "Выберите две части мозаики, чтобы поменять их местами. Соберите правильное изображение и сопоставьте его с осетинскими словами.",
+                    GameFolderName = "ossetian-mazaika",
+                    AuthorId = devIlona.Id,
+                    PublicationDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LastUpdateDate = new DateTimeOffset(2026, 10, 11, 00, 00, 00, TimeSpan.FromHours(3)).UtcDateTime,
+                    LanguageLevelId = languageLevelBeginning.Id,
+                    GamePlatformId = platform3.Id,
+                    AverageRaitingPlayers = 0,
+                    CoverImagePath = "img/default-img.jpg",
+                    ImagesPaths = new List<string>(),
+                    SkillsLearning = new List<SkillLearning> { gameType1, gameType4 },
+                    NumberDownloads = 0,
+                    Port = 3007,
+                    GameGitHubUrl = "https://github.com/Rudzyng/ossetian-mazaika"
+                };
+
                 if (!await context.Games.AnyAsync())
                 {
-                    await context.AddRangeAsync(game1, game2, game3, game4);
+                    await context.AddRangeAsync(game1, game2, game3, game4, game5, game6, game7, game8);
                     await context.SaveChangesAsync();
                 }
+                else
+                {
+                    // Production-база уже содержит игры, поэтому общий AnyAsync раньше
+                    // навсегда пропускал новые проекты. Добавляем только отсутствующие
+                    // web-игры, определяя их по стабильному имени папки.
+                    var seededWebGames = new[] { game1, game2, game3, game5, game6, game7, game8 };
+                    var existingFolders = (await context.Games
+                        .Where(game => game.GameFolderName != null)
+                        .Select(game => game.GameFolderName!)
+                        .ToListAsync())
+                        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    var missingGames = seededWebGames
+                        .Where(game => !existingFolders.Contains(game.GameFolderName!))
+                        .ToList();
+
+                    if (missingGames.Count > 0)
+                    {
+                        await context.AddRangeAsync(missingGames);
+                        await context.SaveChangesAsync();
+                    }
+                }
+
+                // Для старых production-записей допускаем отличие регистра в
+                // GameFolderName — проверка отсутствующих игр выше делает то же.
+                var gamesByFolder = (await context.Games.ToListAsync())
+                    .Where(game => !string.IsNullOrWhiteSpace(game.GameFolderName))
+                    .ToDictionary(game => game.GameFolderName!, StringComparer.OrdinalIgnoreCase);
+                game1 = gamesByFolder[game1.GameFolderName!];
+                game2 = gamesByFolder[game2.GameFolderName!];
+                game3 = gamesByFolder[game3.GameFolderName!];
 
                 var review1 = new Review
                 {

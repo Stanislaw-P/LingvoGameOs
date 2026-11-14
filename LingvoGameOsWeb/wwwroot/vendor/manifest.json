@@ -1,0 +1,50 @@
+[
+  {
+    "package": "bootstrap",
+    "version": "5.3.3",
+    "sha1": "de35e1a765c897ac940021900fcbb831602bac38",
+    "files": 45
+  },
+  {
+    "package": "bootstrap",
+    "version": "4.4.1",
+    "sha1": "8582960eea0c5cd2bede84d8b0baf3789c3e8b01",
+    "files": 13
+  },
+  {
+    "package": "bootstrap-icons",
+    "version": "1.11.0",
+    "sha1": "34902091e8ed6ac830f4e9fbc998b47d7a0fe8a6",
+    "files": 7
+  },
+  {
+    "package": "@fortawesome/fontawesome-free",
+    "version": "6.4.0",
+    "sha1": "1ee0c174e472c84b23cb46c995154dc383e3b4fe",
+    "files": 27
+  },
+  {
+    "package": "@tailwindcss/browser",
+    "version": "4.1.14",
+    "sha1": "4bc7fed75c4d06b2ab510ce94b16603444b700a0",
+    "files": 2
+  },
+  {
+    "package": "@fontsource/press-start-2p",
+    "version": "5.2.5",
+    "sha1": "13b69c92e1743dbbe71c1a5ea0a398e68aa93749",
+    "files": 12
+  },
+  {
+    "package": "@fontsource/alegreya-sc",
+    "version": "5.2.5",
+    "sha1": "112f9f3a2d58e820518f5c8e4da8d4f51f4eac80",
+    "files": 146
+  },
+  {
+    "package": "@fontsource/dela-gothic-one",
+    "version": "5.2.5",
+    "sha1": "4e84946f6abe7ef29bf7b1233e8b1d374f5e3530",
+    "files": 250
+  }
+]

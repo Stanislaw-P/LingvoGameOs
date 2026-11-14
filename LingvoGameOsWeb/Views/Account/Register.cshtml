@@ -1,5 +1,6 @@
 ﻿@model RegisterViewModel
 
+@inject IConfiguration Configuration
 @{
     Layout = null;
     ViewData["Title"] = "Регистрация";
@@ -10,6 +11,8 @@
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    @if (!Configuration.GetValue<bool>("OFFLINE_MODE"))
+    {
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
@@ -23,6 +26,7 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/106990010" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+    }
 </head>
 
 <style>

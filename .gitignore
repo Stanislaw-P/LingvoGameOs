@@ -367,3 +367,14 @@ LingvoGameOsWeb/lingvo.db-shm
 LingvoGameOsWeb/lingvo.db-wal
 
 .env*
+!.env.local.example
+!.env.server.example
+
+# Docker runtime data
+/env
+/postgres-db/
+/pg-db/
+/LingvoGameOsWeb/wwwroot/uploads/
+
+# Local verification scripts and fixtures are not part of the repository.
+/tests/

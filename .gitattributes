@@ -2,6 +2,8 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.sh text eol=lf
+LingvoGameOsWeb/wwwroot/vendor/** -text whitespace=cr-at-eol
 
 ###############################################################################
 # Set default behavior for command prompt diff.
