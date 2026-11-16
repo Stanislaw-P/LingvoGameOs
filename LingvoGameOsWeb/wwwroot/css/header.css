@@ -468,3 +468,55 @@
         display: none;
     }
 }
+
+/* Тултипы, которые рисует JS (не обрезаются контейнерами с overflow: hidden) */
+html.has-js-tooltip [data-tooltip]::after,
+html.has-js-tooltip [data-tooltip]::before {
+    display: none !important;
+    content: none !important;
+}
+
+.global-tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20000;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: calc(100vw - 24px);
+    padding: .45rem .75rem;
+    border-radius: 6px;
+    background: #2d2d2d;
+    color: #fff;
+    font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    text-align: center;
+    white-space: normal;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .12s ease, transform .12s ease;
+}
+
+.global-tooltip--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.global-tooltip::before {
+    content: "";
+    position: absolute;
+    left: var(--arrow-left, 50%);
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+}
+
+.global-tooltip:not(.global-tooltip--above)::before {
+    bottom: 100%;
+    border-bottom-color: #2d2d2d;
+}
+
+.global-tooltip--above::before {
+    top: 100%;
+    border-top-color: #2d2d2d;
+}
