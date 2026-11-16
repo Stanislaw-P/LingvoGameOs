@@ -62,10 +62,10 @@
     <value>РУ</value>
   </data>
   <data name="games_count" xml:space="preserve">
-    <value>(сколько-то) игр</value>
+    <value>игр</value>
   </data>
   <data name="users_count" xml:space="preserve">
-    <value>(сколько-то) пользователей</value>
+    <value>пользователей</value>
   </data>
   <data name="reviews" xml:space="preserve">
     <value>Отзывы</value>
@@ -332,7 +332,7 @@
     <value>Улучшай произношение и интонацию</value>
   </data>
   <data name="games_in_category" xml:space="preserve">
-    <value>Игры категории (какая-то категория)</value>
+    <value>Игры категории</value>
   </data>
   <data name="categories_title" xml:space="preserve">
     <value>Категории</value>
@@ -389,16 +389,16 @@
     <value>Статистика</value>
   </data>
   <data name="stats_active_players_count" xml:space="preserve">
-    <value>(сколько-то) активных игроков</value>
+    <value>активных игроков</value>
   </data>
   <data name="stats_games_on_platform_count" xml:space="preserve">
-    <value>(сколько-то) игр на платформе</value>
+    <value>игр на платформе</value>
   </data>
   <data name="stats_languages_to_learn_count" xml:space="preserve">
-    <value>(сколько-то) языков для изучения</value>
+    <value>языков для изучения</value>
   </data>
   <data name="stats_average_rating" xml:space="preserve">
-    <value>(какой-то) средний рейтинг</value>
+    <value>средний рейтинг</value>
   </data>
   <data name="games_list_title" xml:space="preserve">
     <value>Список игр</value>
@@ -443,7 +443,7 @@
     <value>Рейтинг</value>
   </data>
   <data name="games_search_results_query" xml:space="preserve">
-    <value>Игры по запросу: (какой-то запрос)</value>
+    <value>Игры по запросу:</value>
   </data>
   <data name="status_loading" xml:space="preserve">
     <value>Загрузка</value>
@@ -551,7 +551,7 @@
     <value>Учителя</value>
   </data>
   <data name="game_count_label" xml:space="preserve">
-    <value>Количество игр: (сколько-то)</value>
+    <value>Количество игр:</value>
   </data>
   <data name="upload_game_page_title" xml:space="preserve">
     <value>Загрузка игры</value>

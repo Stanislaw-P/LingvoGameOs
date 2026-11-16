@@ -1,10 +1,10 @@
 ﻿@{
     Layout = null; // Remove header and footer for this page only
-    ViewData["Title"] = "Забыли пароль?";
+    ViewData["Title"] = SharedLocalizer["auth_forgot_password"];
     ViewData["FaviconUrl"] = "/img/logo/logo_2.1.svg";
 }
 <head>
-    <title>Забыли пароль?</title>
+    <title>@SharedLocalizer["auth_forgot_password"]</title>
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
 </head>
 
@@ -260,9 +260,9 @@
 
 <div class="login-main-block">
     <div class="login-main-left">
-        <h1 class="login-title">Забыли пароль?</h1>
-        <p>Вы слишком часто пытаетесь сменить пароль. Попробуйте позже</p>
-        <a asp-controller="Home" asp-action="Index">Перейти на главную</a>
+        <h1 class="login-title">@SharedLocalizer["auth_forgot_password"]</h1>
+        <p>@SharedLocalizer["auth_password_reset_rate_limit"]</p>
+        <a asp-controller="Home" asp-action="Index" data-tooltip="@SecondLocalizer["action_go_to_home"]">@SharedLocalizer["action_go_to_home"]</a>
     </div>
     <div class="login-main-right">
         <img src="~/img/Registration.png" alt="Историческая сцена" class="login-photo-inside" />

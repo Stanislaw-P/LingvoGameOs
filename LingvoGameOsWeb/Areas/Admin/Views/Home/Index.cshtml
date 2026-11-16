@@ -13,7 +13,7 @@
     <div class="admin-header__container">
         <div class="admin-header__logo">
             <img src="/img/logo/logo_3.1.svg" alt="Рудзынг" class="admin-header__logo-img">
-            <span class="admin-header__title">Панель-игр</span>
+            <span class="admin-header__title">@SharedLocalizer["games_dashboard"]</span>
         </div>
         <div class="admin-header__user">
             <span class="admin-header__user-name">@Model.Name @Model.Surname</span>
@@ -38,7 +38,7 @@
             </div>
             <div class="admin-stats__content">
                 <span class="admin-stats__value">@Model?.ExistingDevGames?.Count(g => g.IsActive)</span>
-                <span class="admin-stats__label">Игр на платформе</span>
+                <span class="admin-stats__label">@SharedLocalizer["stats_games_on_platform_count"]</span>
             </div>
         </div>
         <div class="admin-stats__card">
@@ -49,7 +49,7 @@
             </div>
             <div class="admin-stats__content">
                 <span class="admin-stats__value">@Model?.PendingGames?.Count</span>
-                <span class="admin-stats__label">На модерации</span>
+                <span class="admin-stats__label">@SharedLocalizer["status_under_moderation"]</span>
             </div>
         </div>
         <div class="admin-stats__card">
@@ -99,13 +99,13 @@
                         <div class="admin-game-card__actions">
                             @if (game.GamePlatform?.Name == "Desktop")
                             {
-                                <a href="@game.GameFilePath" download class="admin-btn admin-btn--primary">Скачать</a>
+                                <a href="@game.GameFilePath" download class="admin-btn admin-btn--primary" data-tooltip="@SecondLocalizer["download"]">@SharedLocalizer["download"]</a>
                             }
                             else
                             {
-                                <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="admin-btn admin-btn--primary">Играть</a>
+                                <a asp-area="" asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="admin-btn admin-btn--primary" data-tooltip="@SecondLocalizer["play"]">@SharedLocalizer["play"]</a>
                             }
-                            <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary">Редактировать</a>
+                            <a asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-gameId="@game.Id" class="admin-btn admin-btn--secondary" data-tooltip="@SecondLocalizer["action_edit"]">@SharedLocalizer["action_edit"]</a>
                             @* <button class="admin-btn admin-btn--outline" onclick="openAnalytics(@game.Id)">Аналитика</button> *@
                             <a asp-area="Admin" asp-controller="Game" asp-action="Deactivate" asp-route-gameId="@game.Id" class="admin-btn admin-btn--danger">Скрыть</a>
                         </div>
@@ -143,7 +143,7 @@
                     <div class="admin-game-card admin-game-card--pending" id="pending-game-@pendingGame.Id">
                         <div class="admin-game-card__image">
                             <img src="@(pendingGame.CoverImagePath ?? "/img/default-game.png")" alt="@pendingGame.Title">
-                            <div class="admin-game-card__status">На модерации</div>
+                            <div class="admin-game-card__status">@SharedLocalizer["status_under_moderation"]</div>
                         </div>
                         <div class="admin-game-card__content">
                             <h3 class="admin-game-card__title">@pendingGame.Title</h3>
@@ -152,7 +152,7 @@
                         </div>
                         <div class="admin-game-card__actions">
                             <a asp-area="Admin" asp-controller="PendingGames" asp-action="Details" asp-route-gameId="@pendingGame.Id" class="admin-btn admin-btn--secondary">Детали</a>
-                            <button class="admin-btn admin-btn--outline" onclick="openFeedback(@pendingGame.Id)">Обратная связь</button>
+                            <button class="admin-btn admin-btn--outline" onclick="openFeedback(@pendingGame.Id)" data-tooltip="@SecondLocalizer["feedback"]">@SharedLocalizer["feedback"]</button>
                             <button class="admin-btn admin-btn--success" onclick="approveGame(@pendingGame.Id)">Опубликовать</button>
                             <button class="admin-btn admin-btn--danger delete-game-btn"
                                     data-game-id="@pendingGame.Id"
@@ -194,7 +194,7 @@
                     <div class="admin-game-card admin-game-card--inactive" id="inactive-game-@inactiveGame.Id">
                         <div class="admin-game-card__image">
                             <img src="@(inactiveGame.CoverImagePath ?? "/img/default-game.png")" alt="@inactiveGame.Title">
-                            <div class="admin-game-card__status admin-game-card__status--inactive">Неактивна</div>
+                            <div class="admin-game-card__status admin-game-card__status--inactive">@SharedLocalizer["status_inactive"]</div>
                         </div>
                         <div class="admin-game-card__content">
                             <h3 class="admin-game-card__title">@inactiveGame.Title</h3>
@@ -242,7 +242,7 @@
             </div>
         </div>
         <div class="admin-modal__footer">
-            <button class="admin-btn admin-btn--outline" onclick="closeFeedback()">Отмена</button>
+            <button class="admin-btn admin-btn--outline" onclick="closeFeedback()" data-tooltip="@SecondLocalizer["action_cancel"]">@SharedLocalizer["action_cancel"]</button>
             <button class="admin-btn admin-btn--primary" onclick="sendFeedback()">Отправить</button>
         </div>
     </div>
@@ -302,7 +302,7 @@
         </div>
 
         <div class="admin-modal__footer">
-            <button type="button" class="admin-btn admin-btn--secondary" onclick="closeDeleteModal()">Отмена</button>
+            <button type="button" class="admin-btn admin-btn--secondary" onclick="closeDeleteModal()" data-tooltip="@SecondLocalizer["action_cancel"]">@SharedLocalizer["action_cancel"]</button>
             <button type="button" class="admin-btn admin-btn--danger" id="confirm-delete-btn" onclick="confirmDeleteGame()">
                 Удалить игру
             </button>

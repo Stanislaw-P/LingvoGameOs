@@ -1,7 +1,7 @@
 @model List<Game>
 
 @{
-    ViewData["Title"] = "Категории игр";
+    ViewData["Title"] = SharedLocalizer["game_categories"].Value;
 }
 
 <link rel="stylesheet" href="/css/categories-page.css" />
@@ -10,9 +10,9 @@
 <section class="categories-hero">
     <div class="categories-hero__container">
         <div class="categories-hero__content">
-            <h1 class="categories-hero__title">Изучай осетинский язык по категориям</h1>
+            <h1 class="categories-hero__title">@SharedLocalizer["learn_ossetian_by_categories"]</h1>
             <p class="categories-hero__description">
-                Выбери интересующую тебя категорию и найди игры, которые помогут тебе развить конкретные навыки
+                @SharedLocalizer["choose_category_description"]
             </p>
         </div>
     </div>
@@ -22,8 +22,8 @@
 <section class="categories-grid">
     <div class="categories-grid__container">
         <div class="categories-grid__header">
-            <h2 class="categories-grid__title">Все категории</h2>
-            <p class="categories-grid__description">Выбери категорию для изучения</p>
+            <h2 class="categories-grid__title">@SharedLocalizer["all_categories"]</h2>
+            <p class="categories-grid__description">@SharedLocalizer["choose_category_to_learn"]</p>
         </div>
         
         <div class="categories-grid__list">
@@ -31,7 +31,7 @@
                 var categories = new[] {
                     new { 
                         Name = "Культура", 
-                        Description = "Изучай традиции, обычаи и культурные особенности Осетии",
+                        Description = SharedLocalizer["category_culture_desc"].Value,
                         Icon = "/icon/categories.svg",
                         Color = "#FF6B6B",
                         Images = new[] { "/img/games/art-object-1.png", "/img/games/art-object-2.jpeg" },
@@ -39,7 +39,7 @@
                     },
                     new { 
                         Name = "Чтение", 
-                        Description = "Развивай навыки чтения и понимания осетинских текстов",
+                        Description = SharedLocalizer["category_reading_desc"].Value,
                         Icon = "/icon/categories.svg",
                         Color = "#4ECDC4",
                         Images = new[] { "/img/games/art-object-3.png", "/img/games/cross-1.jpg" },
@@ -47,7 +47,7 @@
                     },
                     new { 
                         Name = "Словарный запас", 
-                        Description = "Расширяй свой словарный запас и изучай новые слова",
+                        Description = SharedLocalizer["category_vocabulary_desc"].Value,
                         Icon = "/icon/categories.svg",
                         Color = "#45B7D1",
                         Images = new[] { "/img/games/gameplay-animal-1.jpg", "/img/games/gameplay-animal-2.jpg" },
@@ -55,7 +55,7 @@
                     },
                     new { 
                         Name = "Грамматика", 
-                        Description = "Изучай правила грамматики и структуру предложений",
+                        Description = SharedLocalizer["category_grammar_desc"].Value,
                         Icon = "/icon/categories.svg",
                         Color = "#96CEB4",
                         Images = new[] { "/img/games/gameplay-animal.png", "/img/games/mountain-labyrinth-banner-1.png" },
@@ -63,7 +63,7 @@
                     },
                     new { 
                         Name = "Аудирование", 
-                        Description = "Тренируй восприятие осетинской речи на слух",
+                        Description = SharedLocalizer["category_listening_desc"].Value,
                         Icon = "/icon/categories.svg",
                         Color = "#FFEAA7",
                         Images = new[] { "/img/games/mountain-labyrinth-banner-2.png", "/img/games/mountain-labyrinth-banner-3.png" },
@@ -71,12 +71,22 @@
                     },
                     new { 
                         Name = "Произношение", 
-                        Description = "Улучшай произношение и интонацию",
+                        Description = SharedLocalizer["category_pronunciation_desc"].Value,
                         Icon = "/icon/categories.svg",
                         Color = "#DDA0DD",
                         Images = new[] { "/img/games/art-object-1.png", "/img/games/art-object-2.jpeg" },
                         GameCount = Model?.Count(g => g.SkillsLearning != null && g.SkillsLearning.Any(s => s.Name.Contains("Произношение"))) ?? 0
                     }
+                };
+
+                var categoryTitles = new Dictionary<string, string>
+                {
+                    { "Культура", SharedLocalizer["category_culture"].Value },
+                    { "Чтение", SharedLocalizer["category_reading"].Value },
+                    { "Словарный запас", SharedLocalizer["category_vocabulary"].Value },
+                    { "Грамматика", SharedLocalizer["category_grammar"].Value },
+                    { "Аудирование", SharedLocalizer["category_listening"].Value },
+                    { "Произношение", SharedLocalizer["category_pronunciation"].Value }
                 };
             }
             
@@ -85,19 +95,19 @@
                 <div class="category-card" style="--category-color: @category.Color">
                     <a href="@Url.Action("CategoryGames", "Home", new { category = category.Name })" class="category-card__link">
                         <div class="category-card__images">
-                            <img src="@category.Images[0]" alt="@category.Name" class="category-card__image category-card__image--primary" loading="lazy">
-                            <img src="@category.Images[1]" alt="@category.Name" class="category-card__image category-card__image--secondary" loading="lazy">
+                            <img src="@category.Images[0]" alt="@categoryTitles[category.Name]" class="category-card__image category-card__image--primary" loading="lazy">
+                            <img src="@category.Images[1]" alt="@categoryTitles[category.Name]" class="category-card__image category-card__image--secondary" loading="lazy">
                         </div>
                         <div class="category-card__content">
                             <div class="category-card__header">
-                                <h3 class="category-card__title">@category.Name</h3>
+                                <h3 class="category-card__title">@categoryTitles[category.Name]</h3>
                                 <div class="category-card__icon-wrapper">
-                                    <img src="@category.Icon" alt="Иконка @category.Name" class="category-card__icon">
+                                    <img src="@category.Icon" alt="@categoryTitles[category.Name]" class="category-card__icon">
                                 </div>
                             </div>
                             <p class="category-card__description">@category.Description</p>
                             <div class="category-card__stats">
-                                <span class="category-card__game-count">@category.GameCount игр</span>
+                                <span class="category-card__game-count">@category.GameCount @SharedLocalizer["games_count"]</span>
                                 <div class="category-card__arrow">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7"/>

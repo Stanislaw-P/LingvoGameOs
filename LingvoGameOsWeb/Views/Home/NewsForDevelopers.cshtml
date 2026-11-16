@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Разработчикам";
+    ViewData["Title"] = SharedLocalizer["nav_for_developers"].Value;
 }
 
 @section Styles {
@@ -20,7 +20,7 @@
                 <img src="/icon/calendar.svg" alt="Новости" class="news-header__badge-icon">
                 <span>Актуально</span>
             </div> *@
-            <h1 class="news-header__title">Информация для разработчиков</h1>
+            <h1 class="news-header__title">@SharedLocalizer["dev_info_title"]</h1>
         </div>
 
        
@@ -54,7 +54,7 @@
                             <img src="/Avatars/admin-avatar-11.png" alt="Команда портала" class="news-card__author-avatar">
                             <div class="news-card__author-info">
                                 <span class="news-card__author-name">Команда портала</span>
-                                <span class="news-card__author-role">Руководитель проекта</span>
+                                <span class="news-card__author-role">@SharedLocalizer["project_lead"]</span>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                             <img src="/Avatars/admin-avatar-11.png" alt="Команда портала" class="news-card__author-avatar">
                             <div class="news-card__author-info">
                                 <span class="news-card__author-name">Команда портала</span>
-                                <span class="news-card__author-role">Руководитель проекта</span>
+                                <span class="news-card__author-role">@SharedLocalizer["project_lead"]</span>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
             <div class="news-sidebar">
                 <!-- Навигация по разделу -->
                 <div class="news-sidebar__section">
-                    <h3 class="news-sidebar__title">Навигация по разделу</h3>
+                    <h3 class="news-sidebar__title">@SharedLocalizer["dev_section_navigation"]</h3>
                     <div class="news-sidebar__list">
                         <div class="news-sidebar__item">
                             <a href="#news1">

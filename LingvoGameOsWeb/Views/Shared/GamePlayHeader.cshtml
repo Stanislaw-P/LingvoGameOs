@@ -1,10 +1,10 @@
 ﻿<header class="game-play__header">
     <div class="game-play__container _container">
-        <a href="/" class="game-play__logo" aria-label="Вернуться на главную страницу">
+        <a href="/" class="game-play__logo" aria-label="@SharedLocalizer["return_to_main_page"]" data-tooltip="@SecondLocalizer["return_to_main_page"]">
             <img src="/img/logo/logo_2.3.svg" alt="Рудзынг лого" class="game-play__logo-image">
         </a>
         <h1 class="game-play__title">
-            <button class="game-play__title-button" aria-label="Показать информацию об игре" lang="ru">
+            <button class="game-play__title-button" aria-label="@SharedLocalizer["show_game_info"]" lang="ru">
                 @ViewBag.GameTitle
             </button>
         </h1>
@@ -21,7 +21,7 @@
         <button class="game-play__fullscreen" aria-label="Полноэкранный режим" aria-pressed="false">
             <img src="/icon/fullscreen.svg" alt="" class="game-play__fullscreen-icon">
         </button> *@
-        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@ViewBag.GameId" class="game-play__close" aria-label="Закрыть игру">
+        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@ViewBag.GameId" class="game-play__close" aria-label="@SharedLocalizer["close_game"]" data-tooltip="@SecondLocalizer["close_game"]">
             <img src="/icon/close.svg" alt="" class="game-play__close-icon">
         </a>
     </div>

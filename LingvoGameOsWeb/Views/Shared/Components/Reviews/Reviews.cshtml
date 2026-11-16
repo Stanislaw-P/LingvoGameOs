@@ -2,11 +2,11 @@
 
 <section class="game-reviews">
     <div class="game-reviews__header">
-        <h2 class="game-reviews__title">Отзывы</h2>
+        <h2 class="game-reviews__title">@SharedLocalizer["reviews"]</h2>
         @if (ViewBag.IsDetailsPage)
         {
-            <button class="game-reviews__button profile__button" data-game-id="@ViewBag.GameId" id="write-review-btn">
-                <img src="/icon/write.svg" alt="Write" class="game-reviews__icon"> Написать отзыв
+            <button class="game-reviews__button profile__button" data-game-id="@ViewBag.GameId" id="write-review-btn" data-tooltip="@SecondLocalizer["write_review"]">
+                <img src="/icon/write.svg" alt="Write" class="game-reviews__icon"> @SharedLocalizer["write_review"]
             </button>
         }
     </div>

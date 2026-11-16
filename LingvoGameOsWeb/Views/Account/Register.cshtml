@@ -2,11 +2,11 @@
 
 @{
     Layout = null;
-    ViewData["Title"] = "Регистрация";
+    ViewData["Title"] = SharedLocalizer["auth_registration_tab"];
 }
 
 <head>
-    <title>Регистрация</title>
+    <title>@SharedLocalizer["auth_registration_tab"]</title>
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -475,19 +475,19 @@
 </style>
 
 <div class="register-main-block">
-    <a href="/" class="register-back-btn">Назад</a>
+    <a href="/" class="register-back-btn" data-tooltip="@SecondLocalizer["action_back"]">@SharedLocalizer["action_back"]</a>
     <div class="register-main-left">
-        <h1 class="register-title">Регистрация</h1>
+        <h1 class="register-title">@SharedLocalizer["auth_registration_tab"]</h1>
         <form method="post" class="register-form">
             <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
             <div class="register-fields-row">
                 <div class="register-field">
-                    <label asp-for="Name" class="register-label">Имя</label>
+                    <label asp-for="Name" class="register-label">@SharedLocalizer["first_name"]</label>
                     <input type="text" asp-for="Name" class="register-input" required />
                     <span asp-validation-for="Name" class="register-validation"></span>
                 </div>
                 <div class="register-field">
-                    <label asp-for="Surname" class="register-label">Фамилия</label>
+                    <label asp-for="Surname" class="register-label">@SharedLocalizer["last_name"]</label>
                     <input type="text" asp-for="Surname" class="register-input" required />
                     <span asp-validation-for="Surname" class="register-validation"></span>
                 </div>
@@ -499,26 +499,26 @@
             </div>
             <div class="register-passwords-row">
                 <div class="register-field">
-                    <label asp-for="Password" class="register-label">Пароль</label>
+                    <label asp-for="Password" class="register-label">@SharedLocalizer["field_password"]</label>
                     <input type="password" asp-for="Password" class="register-input" required />
                     <span asp-validation-for="Password" class="register-validation"></span>
                 </div>
                 <div class="register-field">
-                    <label asp-for="ConfirmPassword" class="register-label">Подтвердите пароль</label>
+                    <label asp-for="ConfirmPassword" class="register-label">@SharedLocalizer["field_confirm_password"]</label>
                     <input type="password" asp-for="ConfirmPassword" class="register-input" required />
                     <span asp-validation-for="ConfirmPassword" class="register-validation"></span>
                 </div>
             </div>
-            <button type="submit" asp-controller="Account" asp-action="Register" class="register-btn-main">Зарегистрироваться</button>
+            <button type="submit" asp-controller="Account" asp-action="Register" class="register-btn-main" data-tooltip="@SecondLocalizer["auth_sign_up_button"]">@SharedLocalizer["auth_sign_up_button"]</button>
 
-            <a asp-area="" asp-controller="Account" asp-action="LoginVK" asp-route-returnUrl="@Model.ReturnUrl" class="login-btn-vk">
-                <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> Вход через ВКонтакте
+            <a asp-area="" asp-controller="Account" asp-action="LoginVK" asp-route-returnUrl="@Model.ReturnUrl" class="login-btn-vk" data-tooltip="@SecondLocalizer["auth_login_via_vk"]">
+                <img src="~/icon/vk.svg" alt="VK" class="login-btn-icon" /> @SharedLocalizer["auth_login_via_vk"]
             </a>
 
             <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
         </form>
         <div class="register-bottom-link">
-            Уже есть аккаунт? <a asp-area="" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Войти</a>
+            Уже есть аккаунт? <a asp-area="" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl" data-tooltip="@SecondLocalizer["auth_login"]">@SharedLocalizer["auth_login"]</a>
         </div>
     </div>
     <div class="register-main-right">

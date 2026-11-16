@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404 - Страница не найдена | LingvoGameOs</title>
+    <title>404 - @SharedLocalizer["page_not_found"] | LingvoGameOs</title>
     <meta name="robots" content="noindex, nofollow" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -247,21 +247,21 @@
     <div class="error-page">
         <div class="error-container">
             <div class="error-image">
-                <img src="~/img/svg/404.svg" alt="Страница не найдена" />
+                <img src="~/img/svg/404.svg" alt="@SharedLocalizer["page_not_found"]" />
             </div>
 
             <p class="error-message">
-                Упс, что-то пошло не так!<br />
+                @SharedLocalizer["error_something_went_wrong"]<br />
                 Гъæй дæ гъа!<br />
                 Мæттæ бабæй!
             </p>
 
             <div class="error-actions">
-                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
-                    На главную
+                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary" data-tooltip="@SecondLocalizer["to_home"]">
+                    @SharedLocalizer["to_home"]
                 </a>
-                <a href="@Url.Action("Games", "Home")" class="btn btn-secondary">
-                    Все игры
+                <a href="@Url.Action("Games", "Home")" class="btn btn-secondary" data-tooltip="@SecondLocalizer["nav_all_games"]">
+                    @SharedLocalizer["nav_all_games"]
                 </a>
             </div>
         </div>

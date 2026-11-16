@@ -8,14 +8,14 @@
     <aside class="content__sidebar">
         <!-- Профиль пользователя -->
         <div class="profile">
-            <h3 class="profile__title">Профиль пользователя</h3>
+            <h3 class="profile__title">@SharedLocalizer["user_profile"]</h3>
 
             <div class="profile__avatar profile__avatar__settings">
                 <div class="profile__avatar-wrapper profile__avatar-wrapper__settings">
-                    <img src="@Model.AvatarImgPath" alt="Аватар пользователя" class="profile__image profile__image__settings">
+                    <img src="@Model.AvatarImgPath" alt="@SharedLocalizer["avatar"]" class="profile__image profile__image__settings">
                     <div class="profile__avatar-overlay__settings">
-                        <button type="button" class="profile__avatar-upload__settings">
-                            Сменить
+                        <button type="button" class="profile__avatar-upload__settings" data-tooltip="@SecondLocalizer["action_change"]">
+                            @SharedLocalizer["action_change"]
                         </button>
                     </div>
                 </div>
@@ -27,12 +27,12 @@
                 <input asp-for="AvatarImgPath" type="hidden" value="@Model.AvatarImgPath">
 
                 <div class="profile__field">
-                    <label asp-for="Name" class="profile__label">Имя</label>
+                    <label asp-for="Name" class="profile__label">@SharedLocalizer["first_name"]</label>
                     <input asp-for="Name" type="text" class="profile__input" id="firstName" value="@Model.Name" required>
                     <span asp-validation-for="Name" />                    
                 </div>
                 <div class="profile__field">
-                    <label asp-for="Surname" class="profile__label">Фамилия</label>
+                    <label asp-for="Surname" class="profile__label">@SharedLocalizer["last_name"]</label>
                     <input asp-for="Surname" type="text" class="profile__input" id="lastName" value="@Model.Surname" required>
                     <span asp-validation-for="Surname" />
                 </div>
@@ -42,8 +42,8 @@
                     <span asp-validation-for="UserName" />
                 </div>
                 <div class="profile__field profile__field--bio">
-                    <label asp-for="Description" class="profile__label">О себе</label>
-                    <textarea asp-for="Description" class="profile__input profile__textarea" id="bio" placeholder="Расскажите о себе">@Model.Description</textarea>
+                    <label asp-for="Description" class="profile__label">@SharedLocalizer["about_me"]</label>
+                    <textarea asp-for="Description" class="profile__input profile__textarea" id="bio" placeholder="@SharedLocalizer["tell_about_yourself"]">@Model.Description</textarea>
                     <span asp-validation-for="Description" />
                 </div>
                 
@@ -51,8 +51,8 @@
 
                 <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
 
-                <button type="submit" asp-controller="Profile" asp-action="Settings" class="profile__button">
-                    Сохранить изменения
+                <button type="submit" asp-controller="Profile" asp-action="Settings" class="profile__button" data-tooltip="@SecondLocalizer["save_changes"]">
+                    @SharedLocalizer["save_changes"]
                 </button>
             </form>
         </div>

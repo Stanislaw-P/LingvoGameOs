@@ -1,7 +1,7 @@
 ﻿@model List<ReviewViewModel>
 
 @{
-    ViewData["Title"] = "Панель-отзывы";
+    ViewData["Title"] = SharedLocalizer["reviews_dashboard"].Value;
 }
 
 @section Styles {
@@ -15,7 +15,7 @@
     <div class="admin-header__container">
         <div class="admin-header__logo">
             <img src="/img/logo/logo_3.1.svg" alt="Рудзынг" class="admin-header__logo-img">
-            <span class="admin-header__title">Панель-отзывов</span>
+            <span class="admin-header__title">@SharedLocalizer["reviews_dashboard"]</span>
         </div>
         <div class="admin-header__user">
             <span class="admin-header__user-name">@ViewBag.AdminName</span>
@@ -75,9 +75,9 @@
         <h2>Управление отзывами</h2>
 
         <div class="admin-reviews__filters">
-            <button class="btn--filter active" data-filter="all">Все</button>
+            <button class="btn--filter active" data-filter="all" data-tooltip="@SecondLocalizer["filter_all"]">@SharedLocalizer["filter_all"]</button>
             <button class="btn--filter" data-filter="published">Опубликованные</button>
-            <button class="btn--filter" data-filter="pending">На модерации</button>
+            <button class="btn--filter" data-filter="pending" data-tooltip="@SecondLocalizer["status_under_moderation"]">@SharedLocalizer["status_under_moderation"]</button>
         </div>
 
         <div class="admin-reviews__list">
@@ -109,7 +109,7 @@
 
                     <div class="admin-review__footer">
                         <span class="review-status @(item.Review.IsApproved ? "status-published" : "status-pending")">
-                            @(item.Review.IsApproved ? "Опубликовано" : "На модерации")
+                            @(item.Review.IsApproved ? "Опубликовано" : SharedLocalizer["status_under_moderation"].Value)
                         </span>
                         <div class="admin-review__actions">
                             @if (!item.Review.IsApproved)

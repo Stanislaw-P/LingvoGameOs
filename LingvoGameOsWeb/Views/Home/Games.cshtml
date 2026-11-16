@@ -1,7 +1,7 @@
 @model List<GameViewModel>
 
 @{
-    ViewData["Title"] = "Список игр";
+    ViewData["Title"] = SharedLocalizer["games_list_title"].Value;
 }
 
 <link rel="stylesheet" href="/css/games-page.css" />
@@ -70,27 +70,27 @@
 
         <div class="games__filter-dropdowns">
             <div class="games__dropdown" style="max-width: 240px;">
-                <button class="games__dropdown-toggle">
-                    <span>Платформа</span>
+                <button class="games__dropdown-toggle" data-tooltip="@SecondLocalizer["filter_platform"]">
+                    <span>@SharedLocalizer["filter_platform"]</span>
                     <img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">
                 </button>
                 <div class="games__dropdown-menu">
                     <ul class="games__dropdown-list">
                         <li class="games__dropdown-item platform-filter" data-platform="">
                             <span class="filter-checkbox"></span>
-                            Все платформы
+                            @SharedLocalizer["filter_all_platforms"]
                         </li>
                         <li class="games__dropdown-item platform-filter" data-platform="Web-Mobile">
                             <span class="filter-checkbox"></span>
-                            Веб-мобильная
+                            @SharedLocalizer["platform_web_mobile"]
                         </li>
                         <li class="games__dropdown-item platform-filter" data-platform="Web-Desktop">
                             <span class="filter-checkbox"></span>
-                            Веб-компьютерная
+                            @SharedLocalizer["platform_web_desktop"]
                         </li>
                         <li class="games__dropdown-item platform-filter" data-platform="Desktop">
                             <span class="filter-checkbox"></span>
-                            Для скачивания
+                            @SharedLocalizer["platform_downloadable"]
                         </li>
                     </ul>
                 </div>
@@ -161,11 +161,11 @@
     @if (ViewBag.GameName != null)
     {
         <!-- Это сейчас не отображается, не работает-->
-        <h2 class="games__title">Игры по запросу: @ViewBag.GameName</h2>
+        <h2 class="games__title">@SharedLocalizer["games_search_results_query"] @ViewBag.GameName</h2>
     }
     else
     {
-        <h2 class="games__title">Все игры</h2>
+        <h2 class="games__title">@SharedLocalizer["nav_all_games"]</h2>
     }
 
     <!-- Индикатор загрузки -->
@@ -174,7 +174,7 @@
         @* <div role="status">
                 <span">Загрузка...</span>
             </div> *@
-        <p class="game-play__loading-text">Идет поиск игр...</p>
+        <p class="game-play__loading-text">@SharedLocalizer["status_searching_games"]</p>
     </div>
 
     <div class="games__list" id="all-games">
@@ -226,13 +226,13 @@
                             <div class="games__actions">
                                 @if (game?.GamePlatform?.Name == "Desktop")
                                 {
-                                    <a href="@game.GameFilePath" download role="button" class="games__button download-btn">Скачать</a>
+                                    <a href="@game.GameFilePath" download role="button" class="games__button download-btn" data-tooltip="@SecondLocalizer["download"]">@SharedLocalizer["download"]</a>
                                 }
                                 else
                                 {
-                                    <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                                    <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button" data-tooltip="@SecondLocalizer["play"]">@SharedLocalizer["play"]</a>
                                 }
-                                <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                                <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button" data-tooltip="@SecondLocalizer["action_more_details"]">@SharedLocalizer["action_more_details"]</a>
                             </div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@
         </button>
 
         <div class="download-modal__header">
-            <h3 class="download-modal__title">Подтверждение скачивания</h3>
+            <h3 class="download-modal__title">@SharedLocalizer["download_confirmation_title"]</h3>
         </div>
 
         <div class="download-modal__body">
@@ -263,12 +263,12 @@
                     <path d="M12 15V3" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <p class="download-modal__message">Вы собираетесь скачать игру, которую можно запустить только на компьютере. Продолжить?</p>
+            <p class="download-modal__message">@SharedLocalizer["download_desktop_only_warning"]</p>
         </div>
 
         <div class="download-modal__footer">
-            <button type="button" class="download-modal__cancel games__preview">Отмена</button>
-            <button type="button" class="download-modal__confirm games__button">Скачать</button>
+            <button type="button" class="download-modal__cancel games__preview" data-tooltip="@SecondLocalizer["action_cancel"]">@SharedLocalizer["action_cancel"]</button>
+            <button type="button" class="download-modal__confirm games__button" data-tooltip="@SecondLocalizer["download"]">@SharedLocalizer["download"]</button>
         </div>
     </div>
 </div>
@@ -277,6 +277,15 @@
     <script src="/js/download-handler.js"></script>
 
     <script>
+        const platformLabel = @Json.Serialize(SharedLocalizer["filter_platform"].Value);
+        const platformNames = {
+            'Web-Mobile': @Json.Serialize(SharedLocalizer["platform_web_mobile"].Value),
+            'Web-Desktop': @Json.Serialize(SharedLocalizer["platform_web_desktop"].Value),
+            'Desktop': @Json.Serialize(SharedLocalizer["platform_downloadable"].Value)
+        };
+        const toastPlatformFilterReset = @Json.Serialize(SharedLocalizer["toast_platform_filter_reset"].Value);
+        const toastAllFiltersCleared = @Json.Serialize(SharedLocalizer["toast_all_filters_cleared"].Value);
+
         // Глобальная переменная для хранения выбранной платформы
         let selectedPlatform = '';
 
@@ -355,7 +364,7 @@
             button.innerHTML = '';
 
             if (selectedPlatform === '') {
-                button.innerHTML = '<span>Платформа</span><img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">';
+                button.innerHTML = '<span>' + platformLabel + '</span><img src="/icon/chevron-down.svg" alt="Chevron" class="games__chevron">';
             } else {
                 const span = document.createElement('span');
                 span.textContent = platformText;
@@ -379,13 +388,6 @@
 
             activeFiltersList.innerHTML = '';
 
-            // Маппинг русских названий
-            const platformNames = {
-                'Web-Mobile': 'Веб-мобильная',
-                'Web-Desktop': 'Веб-компьютерная',
-                'Desktop': 'Для скачивания'
-            };
-
             // Добавляем фильтр платформы, если выбран
             if (selectedPlatform) {
                 const filterElement = document.createElement('div');
@@ -397,7 +399,7 @@
 
                 filterElement.innerHTML = `
                     <span class="games__active-filter-text">
-                        Платформа: ${displayValue}
+                        ${platformLabel}: ${displayValue}
                     </span>
                     <button class="games__active-filter-remove"
                             onclick="clearPlatformFilter()">
@@ -421,7 +423,7 @@
         function clearPlatformFilter() {
             selectedPlatform = '';
             filterByPlatform('');
-            showNotification('Фильтр платформы сброшен', 'info');
+            showNotification(toastPlatformFilterReset, 'info');
         }
 
         // Функция сброса всех фильтров
@@ -441,7 +443,7 @@
             // Вызываем фильтрацию без параметров
             filterByPlatform('');
 
-            showNotification('Все фильтры очищены', 'info');
+            showNotification(toastAllFiltersCleared, 'info');
         }
 
         // Инициализация обработчиков при загрузке страницы

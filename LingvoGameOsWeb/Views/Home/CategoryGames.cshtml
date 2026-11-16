@@ -1,7 +1,7 @@
 @model List<Game>
 
 @{
-    ViewData["Title"] = $"Игры категории {ViewBag.Category}";
+    ViewData["Title"] = $"{SharedLocalizer["games_in_category"].Value} {ViewBag.Category}";
 }
 
 <link rel="stylesheet" href="/css/category-games.css" />
@@ -11,17 +11,17 @@
     <div class="category-hero__container">
         <div class="category-hero__content">
             <div class="category-hero__breadcrumb">
-                <a href="/Home/Categories" class="category-hero__breadcrumb-link">Категории</a>
+                <a href="/Home/Categories" class="category-hero__breadcrumb-link" data-tooltip="@SecondLocalizer["categories_title"]">@SharedLocalizer["categories_title"]</a>
                 <span class="category-hero__breadcrumb-separator">/</span>
                 <span class="category-hero__breadcrumb-current">@ViewBag.Category</span>
             </div>
             <h1 class="category-hero__title">@ViewBag.Category</h1>
             <p class="category-hero__description">
-                Игры для изучения @ViewBag.Category.ToLower() в осетинском языке
+                @(System.Text.RegularExpressions.Regex.Replace(SharedLocalizer["games_for_learning_skill"].Value, @"\([^)]*\)", ViewBag.Category.ToLower()))
             </p>
             <div class="category-hero__stats">
-                <span class="category-hero__game-count">@Model.Count игр</span>
-                <span class="category-hero__total-games">всего в категории</span>
+                <span class="category-hero__game-count">@Model.Count @SharedLocalizer["games_count"]</span>
+                <span class="category-hero__total-games">@SharedLocalizer["total_in_category"]</span>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
                                 <img class="category-games__image" src="@game.CoverImagePath" alt="@game.Title" loading="lazy">
                                 <div class="category-games__overlay">
                                     <div class="category-games__overlay-content">
-                                        <span class="category-games__play-text">Играть</span>
+                                        <span class="category-games__play-text">@SharedLocalizer["play"]</span>
                                     </div>
                                 </div>
                             </div>
@@ -96,11 +96,11 @@
                         <line x1="15" y1="9" x2="15.01" y2="9"/>
                     </svg>
                 </div>
-                <h3 class="category-games__empty-title">Пока нет игр в этой категории</h3>
+                <h3 class="category-games__empty-title">@SharedLocalizer["no_games_in_category_yet"]</h3>
                 <p class="category-games__empty-description">
-                    Мы работаем над добавлением новых игр для изучения @ViewBag.Category.ToLower()
+                    @(System.Text.RegularExpressions.Regex.Replace(SharedLocalizer["working_on_new_games_for_skill"].Value, @"\([^)]*\)", ViewBag.Category.ToLower()))
                 </p>
-                <a href="/Home/Categories" class="category-games__empty-button">Вернуться к категориям</a>
+                <a href="/Home/Categories" class="category-games__empty-button" data-tooltip="@SecondLocalizer["back_to_categories"]">@SharedLocalizer["back_to_categories"]</a>
             </div>
         }
     </div>
@@ -109,17 +109,26 @@
 <!-- Related Categories Section -->
 <section class="related-categories">
     <div class="related-categories__container">
-        <h2 class="related-categories__title">Другие категории</h2>
+        <h2 class="related-categories__title">@SharedLocalizer["other_categories"]</h2>
         <div class="related-categories__list">
             @{
                 var allCategories = new[] { "Культура", "Чтение", "Словарный запас", "Грамматика", "Аудирование", "Произношение" };
+                var categoryDisplayNames = new Dictionary<string, string>
+                {
+                    { "Культура", SharedLocalizer["category_culture"].Value },
+                    { "Чтение", SharedLocalizer["category_reading"].Value },
+                    { "Словарный запас", SharedLocalizer["category_vocabulary"].Value },
+                    { "Грамматика", SharedLocalizer["category_grammar"].Value },
+                    { "Аудирование", SharedLocalizer["category_listening"].Value },
+                    { "Произношение", SharedLocalizer["category_pronunciation"].Value }
+                };
                 var otherCategories = allCategories.Where(c => c != ViewBag.Category).Take(3);
             }
             
             @foreach (var category in otherCategories)
             {
                 <a href="@Url.Action("CategoryGames", "Home", new { category = category })" class="related-categories__item">
-                    <span class="related-categories__name">@category</span>
+                    <span class="related-categories__name">@categoryDisplayNames[category]</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>

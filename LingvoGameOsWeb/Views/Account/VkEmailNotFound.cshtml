@@ -1,10 +1,10 @@
 ﻿@{
     Layout = null; // Remove header and footer for this page only
-    ViewData["Title"] = "Ошибка авторизации";
+    ViewData["Title"] = SharedLocalizer["auth_error"];
     ViewData["FaviconUrl"] = "/img/logo/logo_2.1.svg";
 }
 <head>
-    <title>Ошибка авторизации</title>
+    <title>@SharedLocalizer["auth_error"]</title>
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
 </head>
 
@@ -260,9 +260,9 @@
 
 <div class="login-main-block">
     <div class="login-main-left">
-        <h1 class="login-title">Попробуйте другой способ входа</h1>
-        <p>К вашему аккаунту вк не привязана почта. Попробуйте авторизоваться через другой аккаунт вк или войти с помощью почты</p>
-        <a asp-controller="Home" asp-action="Index">Перейти на главную</a>
+        <h1 class="login-title">@SharedLocalizer["auth_try_another_login_method"]</h1>
+        <p>@SharedLocalizer["auth_vk_no_email_error"]</p>
+        <a asp-controller="Home" asp-action="Index" data-tooltip="@SecondLocalizer["action_go_to_home"]">@SharedLocalizer["action_go_to_home"]</a>
     </div>
     <div class="login-main-right">
         <img src="~/img/Registration.png" alt="Историческая сцена" class="login-photo-inside" />

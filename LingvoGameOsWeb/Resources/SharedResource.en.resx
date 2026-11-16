@@ -62,10 +62,10 @@
     <value>EN</value>
   </data>
   <data name="games_count" xml:space="preserve">
-    <value>(number of) games</value>
+    <value>games</value>
   </data>
   <data name="users_count" xml:space="preserve">
-    <value>(number of) users</value>
+    <value>users</value>
   </data>
   <data name="reviews" xml:space="preserve">
     <value>Reviews</value>
@@ -332,7 +332,7 @@
     <value>Improve pronunciation and intonation</value>
   </data>
   <data name="games_in_category" xml:space="preserve">
-    <value>Games in category (category)</value>
+    <value>Games in category</value>
   </data>
   <data name="categories_title" xml:space="preserve">
     <value>Categories</value>
@@ -389,16 +389,16 @@
     <value>Statistics</value>
   </data>
   <data name="stats_active_players_count" xml:space="preserve">
-    <value>(number of) active players</value>
+    <value>active players</value>
   </data>
   <data name="stats_games_on_platform_count" xml:space="preserve">
-    <value>(number of) games on the platform</value>
+    <value>games on the platform</value>
   </data>
   <data name="stats_languages_to_learn_count" xml:space="preserve">
-    <value>(number of) languages to learn</value>
+    <value>languages to learn</value>
   </data>
   <data name="stats_average_rating" xml:space="preserve">
-    <value>(rating) average rating</value>
+    <value>average rating</value>
   </data>
   <data name="games_list_title" xml:space="preserve">
     <value>Game list</value>
@@ -443,7 +443,7 @@
     <value>Rating</value>
   </data>
   <data name="games_search_results_query" xml:space="preserve">
-    <value>Games for query: (query)</value>
+    <value>Games for query:</value>
   </data>
   <data name="status_loading" xml:space="preserve">
     <value>Loading</value>
@@ -551,7 +551,7 @@
     <value>Teachers</value>
   </data>
   <data name="game_count_label" xml:space="preserve">
-    <value>Number of games: (count)</value>
+    <value>Number of games:</value>
   </data>
   <data name="upload_game_page_title" xml:space="preserve">
     <value>Game upload</value>

@@ -1,10 +1,10 @@
 ﻿@{
     Layout = null; // Remove header and footer for this page only
-    ViewData["Title"] = "Подтверждение почты";
+    ViewData["Title"] = SharedLocalizer["auth_email_verification_title"];
     ViewData["FaviconUrl"] = "/img/logo/logo_2.1.svg";
 }
 <head>
-    <title>Подтверждение почты</title>
+    <title>@SharedLocalizer["auth_email_verification_title"]</title>
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
 </head>
 
@@ -260,9 +260,9 @@
 
 <div class="login-main-block">
     <div class="login-main-left">
-        <h1 class="login-title">Вам отправлено письмо для подтверждения</h1>
-        <p>Чтобы подтвердить почту, перейдите по ссылке из письма</p>
-        <a asp-controller="Home" asp-action="Index">Перейти на главную</a>
+        <h1 class="login-title">@SharedLocalizer["auth_verification_email_sent"]</h1>
+        <p>@SharedLocalizer["auth_follow_email_link_notice"]</p>
+        <a asp-controller="Home" asp-action="Index" data-tooltip="@SecondLocalizer["action_go_to_home"]">@SharedLocalizer["action_go_to_home"]</a>
     </div>
     <div class="login-main-right">
         <img src="~/img/Registration.png" alt="Историческая сцена" class="login-photo-inside" />

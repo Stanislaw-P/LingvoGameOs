@@ -67,14 +67,14 @@
 
                 @if (Model?.GamePlatform?.Name == "Desktop")
                 {
-                    <a role="button" href="@Model.GameFilePath" download class="game-hero__button profile__button download-btn">
-                        <img src="/icon/play.svg" alt="Download" class="game-hero__play-icon"> Скачать
+                    <a role="button" href="@Model.GameFilePath" download class="game-hero__button profile__button download-btn" data-tooltip="@SecondLocalizer["download"]">
+                        <img src="/icon/play.svg" alt="Download" class="game-hero__play-icon"> @SharedLocalizer["download"]
                     </a>
                 }
                 else
                 {
-                    <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model?.Id" class="game-hero__button profile__button">
-                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Играть
+                    <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model?.Id" class="game-hero__button profile__button" data-tooltip="@SecondLocalizer["play"]">
+                        <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> @SharedLocalizer["play"]
                     </a>
                 }
 
@@ -101,20 +101,20 @@
 
     <div class="game-info__row">
         <article class="game-info__description">
-            <h3 class="game-info__subtitle">Правила</h3>
+            <h3 class="game-info__subtitle">@SharedLocalizer["dev_rules"]</h3>
             <p style="white-space: pre-line" class="game-info__text">
                 @Model.Rules
             </p>
             @if (Model?.GamePlatform?.Name == "Desktop")
             {
-                <a role="button" href="@Model.GameFilePath" download class="game-hero__button profile__button download-btn" style="margin-top: 15px;">
-                    <img src="/icon/play.svg" alt="Download" class="game-hero__play-icon"> Скачать
+                <a role="button" href="@Model.GameFilePath" download class="game-hero__button profile__button download-btn" style="margin-top: 15px;" data-tooltip="@SecondLocalizer["download"]">
+                    <img src="/icon/play.svg" alt="Download" class="game-hero__play-icon"> @SharedLocalizer["download"]
                 </a>
             }
             else
             {
-                <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model?.Id" class="game-hero__button profile__button" style="margin-top: 15px;">
-                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> Играть
+                <a role="button" asp-controller="Game" asp-action="Start" asp-route-IdGame="@Model?.Id" class="game-hero__button profile__button" style="margin-top: 15px;" data-tooltip="@SecondLocalizer["play"]">
+                    <img src="/icon/play.svg" alt="Play" class="game-hero__play-icon"> @SharedLocalizer["play"]
                 </a>
             }
         </article>
@@ -122,14 +122,14 @@
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">
                     <img src="/icon/calendar.svg" alt="Calendar" class="game-info__metadata-icon">
-                    <h4 class="game-info__metadata-title">Дата выхода</h4>
+                    <h4 class="game-info__metadata-title">@SharedLocalizer["game_release_date"]</h4>
                 </div>
                 <p class="game-info__metadata-value">@Model.PublicationDate.ToString("dd:MM:yyyy")</p>
             </div>
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">
                     <img src="/icon/categories.svg" alt="Platform" class="game-info__metadata-icon">
-                    <h4 class="game-info__metadata-title">Платформа</h4>
+                    <h4 class="game-info__metadata-title">@SharedLocalizer["filter_platform"]</h4>
                 </div>
                 <div class="game-info__metadata-list">
                     <span class="game-info__metadata-tag">@Model.GamePlatform.Name</span>
@@ -150,11 +150,11 @@
             <div class="game-info__metadata-item">
                 <div class="game-info__metadata-header">
                     <img src="/icon/rating.svg" alt="Rating" class="game-info__metadata-icon">
-                    <h4 class="game-info__metadata-title">Рейтинг</h4>
+                    <h4 class="game-info__metadata-title">@SharedLocalizer["filter_rating"]</h4>
                 </div>
                 <div class="game-info__ratings">
                     <div class="game-info__rating-group">
-                        <h5 class="game-info__rating-title">Игроки</h5>
+                        <h5 class="game-info__rating-title">@SharedLocalizer["nav_players"]</h5>
                         <div class="game-info__rating-details">
                             <div class="game-info__stars">
                                 <img src="/icon/star-filled.svg" alt="Star" class="game-info__star">
@@ -179,14 +179,14 @@
             </div>
 
             <div class="game-info__metadata-item">
-                <h4 class="game-info__metadata-title">Разработчик</h4>
+                <h4 class="game-info__metadata-title">@SharedLocalizer["developer"]</h4>
                 <a asp-controller="Profile" asp-action="index" asp-route-userId="@Model.Author.Id">
                     <div class="game-info__developer">
                         <img src="@ViewBag.AuthorAvatarFullUrl" alt="@Model.Author.Name"
                              class="game-info__developer-avatar">
                         <div class="game-info__developer-details">
                             <span class="game-info__developer-name">@Model.Author.Name @Model.Author.Surname</span>
-                            <span class="game-info__developer-games">Количество игр: @Model.Author?.DevGames?.Count</span>
+                            <span class="game-info__developer-games">@SharedLocalizer["game_count_label"] @Model.Author?.DevGames?.Count</span>
                         </div>
                     </div>
                 </a>
@@ -210,7 +210,7 @@
         </button>
 
         <div class="download-modal__header">
-            <h3 class="download-modal__title">Подтверждение скачивания</h3>
+            <h3 class="download-modal__title">@SharedLocalizer["download_confirmation_title"]</h3>
         </div>
 
         <div class="download-modal__body">
@@ -221,12 +221,12 @@
                     <path d="M12 15V3" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <p class="download-modal__message">Вы собираетесь скачать игру, которую можно запустить только на компьютере. Продолжить?</p>
+            <p class="download-modal__message">@SharedLocalizer["download_desktop_only_warning"]</p>
         </div>
 
         <div class="download-modal__footer">
-            <button type="button" class="download-modal__cancel games__preview">Отмена</button>
-            <button type="button" class="download-modal__confirm games__button">Скачать</button>
+            <button type="button" class="download-modal__cancel games__preview" data-tooltip="@SecondLocalizer["action_cancel"]">@SharedLocalizer["action_cancel"]</button>
+            <button type="button" class="download-modal__confirm games__button" data-tooltip="@SecondLocalizer["download"]">@SharedLocalizer["download"]</button>
         </div>
     </div>
 </div>

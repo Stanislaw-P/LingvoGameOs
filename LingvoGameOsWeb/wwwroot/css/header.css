@@ -428,7 +428,10 @@
         font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
         padding: .45rem .75rem;
         border-radius: 6px;
-        white-space: nowrap;
+        white-space: normal;
+        width: max-content;
+        max-width: calc(100vw - 32px);
+        text-align: center;
         box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
         opacity: 0;
         pointer-events: none;

@@ -46,13 +46,13 @@
                     <div class="games__actions">
                         @if (game?.GamePlatform?.Name == "Desktop")
                         {
-                            <a href="@game.GameFilePath" download role="button" class="games__button download-btn">Скачать</a>
+                            <a href="@game.GameFilePath" download role="button" class="games__button download-btn" data-tooltip="@SecondLocalizer["download"]">@SharedLocalizer["download"]</a>
                         }
                         else
                         {
-                            <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button">Играть</a>
+                            <a asp-controller="Game" asp-action="Start" asp-route-idGame="@game.Id" class="games__button" data-tooltip="@SecondLocalizer["play"]">@SharedLocalizer["play"]</a>
                         }
-                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button">Подробнее</a>
+                        <a asp-controller="Game" asp-action="Details" asp-route-idGame="@game.Id" role="button" class="games__preview button" data-tooltip="@SecondLocalizer["action_more_details"]">@SharedLocalizer["action_more_details"]</a>
                     </div>
                 </div>
             </div>
@@ -61,10 +61,10 @@
 }
 else if (@ViewBag.GameName != null)
 {
-    <h4 class="game-hero__secondary">:( Игры с названием '@ViewBag.GameName' нет</h4>
+    <h4 class="game-hero__secondary">:( @(System.Text.RegularExpressions.Regex.Replace(SharedLocalizer["no_game_with_name_found"].Value, @"\([^)]*\)", ViewBag.GameName))</h4>
 }
 else
 {
-    <h4 class="game-hero__secondary">:( Похоже таких игр пока не существует</h4>
+    <h4 class="game-hero__secondary">:( @SharedLocalizer["no_such_games_exist"]</h4>
 }
 

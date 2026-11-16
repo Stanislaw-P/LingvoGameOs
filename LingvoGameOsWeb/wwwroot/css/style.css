@@ -3401,7 +3401,9 @@ a.link {
         border-radius: 8px;
         font: 400 12px "Axiforma", sans-serif;
         white-space: normal;
-        width: 200px;
+        width: max-content;
+        max-width: calc(100vw - 32px);
+        transform: none;
         z-index: 10;
     }
 

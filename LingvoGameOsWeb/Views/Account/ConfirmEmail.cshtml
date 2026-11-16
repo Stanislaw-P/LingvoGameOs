@@ -1,10 +1,10 @@
 ﻿@{
     Layout = null;
-    ViewData["Title"] = "Подтверждение почты";
+    ViewData["Title"] = SharedLocalizer["auth_email_verification_title"];
 }
 
 <head>
-    <title>Подтверждение почты</title>
+    <title>@SharedLocalizer["auth_email_verification_title"]</title>
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
 </head>
 
@@ -269,13 +269,13 @@
 </style>
 
 <div class="register-main-block">
-    <a href="/" class="register-back-btn">Назад</a>
+    <a href="/" class="register-back-btn" data-tooltip="@SecondLocalizer["action_back"]">@SharedLocalizer["action_back"]</a>
     <div class="register-main-left">
-        <h1 class="register-title">Подтверждение почты</h1>
+        <h1 class="register-title">@SharedLocalizer["auth_email_verification_title"]</h1>
         <form method="post" class="register-form">
-            <p>Для публикации собственных игр вам необходимо подтвердить свою почту</p>
-            <p>Для подтверждения почты вам будет выслано пиьсмо с ссылкой, по которой надо перейти. Чтобы получить письмо нажмите на кнопку</p>
-            <button type="submit" asp-controller="Account" asp-action="ConfirmEmailPost" class="register-btn-main">Отправить письмо</button>
+            <p>@SharedLocalizer["auth_verify_email_publish_prompt"]</p>
+            <p>@SharedLocalizer["auth_verify_email_instructions"]</p>
+            <button type="submit" asp-controller="Account" asp-action="ConfirmEmailPost" class="register-btn-main" data-tooltip="@SecondLocalizer["action_send_email"]">@SharedLocalizer["action_send_email"]</button>
         </form>
     </div>
     <div class="register-main-right">
