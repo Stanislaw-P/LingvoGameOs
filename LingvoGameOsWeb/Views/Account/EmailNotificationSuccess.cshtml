@@ -6,6 +6,7 @@
 <head>
     <title>@SharedLocalizer["auth_forgot_password"]</title>
     <link rel="icon" href="/img/logo/logo_2.1.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/tooltip.css" asp-append-version="true" />
 </head>
 
 <style>
@@ -276,3 +277,5 @@
 }
 
 @await Html.PartialAsync("_ValidationScriptsPartial")
+
+<script src="~/js/tooltip.js" asp-append-version="true" type="module"></script>
